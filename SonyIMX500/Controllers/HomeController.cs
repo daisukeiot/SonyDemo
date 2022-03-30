@@ -12,6 +12,7 @@ namespace SonyIMX500.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private string _token = "test";
 
         public HomeController(ILogger<HomeController> logger)
         {
@@ -20,6 +21,7 @@ namespace SonyIMX500.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Token"] = _token;
             return View();
         }
 
@@ -32,6 +34,14 @@ namespace SonyIMX500.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        [HttpPost]
+        public bool PostToken(string token)
+        {
+            ViewData["Token"] = token;
+            _token = token;
+            return true;
         }
     }
 }
