@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+ 
+    <title>Token tool</title>
+</head>
+<body>
+  <span>Client Id</span>
+  <input id="clientId" type="text" style="display: block; width:400px;" onchange="renewAuthConfig()">
+  <br>
+  <span>Id Token</span>
+  <textarea id="idToken" cols="30" rows="10" style="display: block; overflow-y: scroll; width:700px; height:246px;" readonly></textarea>
+  <span>Expire time: </span>
+  <span id='idExpire'></span>
+  <br>
+  <br>
+  <span>Last update: </span>
+  <span id='lastTime'></span>
+
+  <script src="~/lib/azure/msal/dist/msal.js"></script>
+  <script>
+    var expiresOn = '';
+    var accessExpiresOn = '';
+    var defaultClientId = '6b8bbe61-f6e0-4490-ba1e-c65665741629';
+    window.onload = function() {
+      auth();
+      getTokens();
+      var currentId = document.getElementById('idToken').value;
+      if (currentId === '' || currentId === undefined) {
+        document.getElementById('clientId').value = defaultClientId;
+      }
+      var interval = setInterval(function() { getTokens(); }, 300000);
+    }
+
+    authConfig = {
+      auth: {
+          clientId: defaultClientId
+      }
+    }
+
+  const loginRequest = {
+      scopes: ["User.Read"]
+  }
+
+  myMsal = new Msal.UserAgentApplication(authConfig);
+
+  renewTokenRequest = {
+    scopes: [authConfig.auth.clientId], // here process.env.VUE_APP_CLIENT_ID is my Azure AD application id value
+    prompt: 'none',
+    authority: null, // I tried also without setting authority to null
+    account: myMsal.getAccount() // this one and the authority value I added because of another thread from git with another id token renewal issue
+  }
+
+  function auth() {
+      if (!myMsal.getAccount()) {
+          myMsal.loginRedirect(loginRequest);
+      } 
+  }
+
+  function getLoginToken() {
+    console.log('getLoginToken');
+    let  raw_token = '';
+    myMsal.acquireTokenSilent(renewTokenRequest)
+        .then(function (response) {
+            console.log("acquireTokenSilent succeed.");
+            console.log(response.idToken);
+            if (response != undefined) {
+                document.getElementById('idToken').value = response.idToken.rawIdToken;
+                console.log('id Record time:' + String(expiresOn));
+                console.log('id Expire time:' + String(response.expiresOn));
+                if (String(expiresOn) !== String(response.expiresOn)) {
+                  expiresOn = response.expiresOn;
+                  document.getElementById('idExpire').innerHTML = String(response.expiresOn);
+                }
+            }
+            return response.idToken.rawIdToken;
+        })
+        .catch((error) => {
+            document.getElementById('idToken').value = error.errorMessage;
+            console.log(error.errorMessage);
+            if (error.errorMessage.indexOf("User login is required") !== -1) {
+                auth();
+            }
+            else if (error.errorMessage.indexOf("interactive") !== -1) {
+                myMsal.acquireTokenRedirect(renewTokenRequest);
+            }
+            else {
+                console.log(error);
+                return '';
+            }
+        });
+  }
+  
+  function getTokens(){
+    getLoginToken();
+    // RetrieveAccessToken();
+    document.getElementById('lastTime').innerHTML = new Date();
+  }
+
+  function renewAuthConfig() {
+    var clientId = document.getElementById('clientId').value;
+    authConfig = {
+      auth: {
+          clientId: clientId
+      }
+    }
+    renewTokenRequest = {
+      scopes: [authConfig.auth.clientId], // here process.env.VUE_APP_CLIENT_ID is my Azure AD application id value
+      prompt: 'none',
+      authority: null, // I tried also without setting authority to null
+      account: myMsal.getAccount() // this one and the authority value I added because of another thread from git with another id token renewal issue
+    }
+    myMsal = new Msal.UserAgentApplication(authConfig);
+    getTokens();
+  }
+</script>
+</body>
+ 
+</html>

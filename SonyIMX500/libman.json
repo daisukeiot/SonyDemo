@@ -1,0 +1,16 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "@azure/msal@1.4.5",
+      "destination": "wwwroot/js/azure/msal/",
+      "files": [
+        "dist/msal.js",
+        "dist/msal.js.map",
+        "dist/msal.min.js",
+        "dist/msal.min.js.map"
+      ]
+    }
+  ]
+}
