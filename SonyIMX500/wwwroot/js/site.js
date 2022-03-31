@@ -14,8 +14,8 @@ function initialize() {
     authConfig = {
         auth: {
             clientId: defaultClientId,
-            //redirectUri: window.location.href + "index.html"
-            redirectUri:"http://localhost:8080/index.html"
+            redirectUri: window.location.href + "index.html"
+            //redirectUri:"http://localhost:8080/index.html"
         }
     }
 
@@ -92,8 +92,8 @@ function renewAuthConfig() {
     authConfig = {
         auth: {
             clientId: defaultClientId,
-            //redirectUri: window.location.href + "index.html"
-            redirectUri: "http://localhost:8080/index.html"
+            redirectUri: window.location.href + "index.html"
+            //redirectUri: "http://localhost:8080/index.html"
         }
     }
 
@@ -114,7 +114,11 @@ function PostToken(token) {
             console.log(response)
         },
         error: function (req, status, error) {
-            alert("Error " + status);
+            alert("PostToken Error " + status);
         }
     });
+}
+
+function AddToListBox(listBoxId) {
+
 }

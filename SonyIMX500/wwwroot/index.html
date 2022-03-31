@@ -19,8 +19,12 @@
     <span>Last update: </span>
     <span id='lastTime'></span>
 
-    <input id="deviceId" type="text" style="display: block; width:400px;" value="7c9ebd92cc24">
-    <span><button type="button" id="btnGetDevices">GetDevice</button></span>
+    <select id="idDevices">
+    </select>
+    <span><button type="button" id="btnGetDevices">GetDevices</button></span>
+
+    <input id="idDevice" type="text" style="display: block; width:400px;" value="7c9ebd92cc24">
+    <span><button type="button" id="btnGetDevice">GetDevice</button></span>
     <textarea id="txtGetDevice" cols="30" rows="10" style="display: block; overflow-y: scroll; width:700px; height:246px;" readonly></textarea>
 
     <script src="/js/azure/msal/dist/msal.js"></script>
@@ -59,9 +63,27 @@
             PostToken(document.getElementById('idToken').value);
 
             $.ajax({
-                type: "POST",
+                type: "GET",
                 url: window.location.href + 'home/GetDevices',
-                data: { deviceId: document.getElementById('deviceId').value },
+                data: { },
+                success: function (response) {
+                    var json = JSON.parse(response.value);
+                    console.log(JSON.stringify(json, null, 2));
+                    document.getElementById('txtGetDevice').value = JSON.stringify(json, null, 2);
+                },
+                error: function (req, status, error) {
+                    alert("btnGetDevices() : Error " + status);
+                }
+            });
+        })
+
+        $('#btnGetDevice').click(function () {
+            PostToken(document.getElementById('idToken').value);
+
+            $.ajax({
+                type: "POST",
+                url: window.location.href + 'home/GetDevice',
+                data: { deviceId: document.getElementById('idDevice').value },
                 success: function (response) {
                     var json = JSON.parse(response.value);
                     console.log(JSON.stringify(json, null, 2));
