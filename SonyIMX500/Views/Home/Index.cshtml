@@ -11,8 +11,12 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script type="text/javascript">
     window.onload = function () {
-        console.log("Test " + '@ViewData["Token"]');
+        console.log("Test " + '@ViewData["Token"]')
+        console.log(window.location.href);
         document.getElementById('idToken').value = '@ViewData["Token"]';
+                    initialize();
+            auth();
+            getTokens();
     }
 
     $(window).load(function () {
@@ -22,6 +26,8 @@
     $(document).ready(function () {
             alert("document is ready." + '@ViewData["Token"]');
     });
+
+
 </script>
 
 <p>test1.</p>

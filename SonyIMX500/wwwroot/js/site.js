@@ -14,7 +14,8 @@ function initialize() {
     authConfig = {
         auth: {
             clientId: defaultClientId,
-            redirectUri: window.location.href + "index.html"
+            //redirectUri: window.location.href + "index.html"
+            redirectUri:"http://localhost:8080/index.html"
         }
     }
 
@@ -91,7 +92,8 @@ function renewAuthConfig() {
     authConfig = {
         auth: {
             clientId: defaultClientId,
-            redirectUri: window.location.href + "index.html"
+            //redirectUri: window.location.href + "index.html"
+            redirectUri: "http://localhost:8080/index.html"
         }
     }
 
