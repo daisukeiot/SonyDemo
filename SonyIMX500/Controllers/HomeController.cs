@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
@@ -16,10 +19,11 @@ namespace SonyIMX500.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private static string _token = "test";
-        HttpClient httpClient;
+        private readonly AppSettings _appSettings;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IOptions<AppSettings> optionsAccessor, ILogger<HomeController> logger)
         {
+            _appSettings = optionsAccessor.Value;
             _logger = logger;
         }
 
@@ -43,72 +47,6 @@ namespace SonyIMX500.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        [HttpPost]
-        public bool PostToken(string token)
-        {
-            ViewData["Token"] = token;
-            _token = token;
-            return true;
-        }
-
-        [HttpGet]
-        public async Task<ActionResult> GetDevices()
-        {
-
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-                    client.DefaultRequestHeaders.Add("X-AppGw-Validation", "PMrcP4UvN.XvoYbC");
-                    client.DefaultRequestHeaders.Host = "apim-labstaging05.azure-api.net";
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    var response = await client.GetAsync($"https://apim-labstaging05.azure-api.net/v09_m/v1/devices");
-
-                    response.EnsureSuccessStatusCode();
-
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString.Replace(@"\", "");
-                    return Ok(Json(jsonString));
-                }
-            }
-            catch (Exception ex)
-            {
-                //
-            }
-            return null;
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> GetDevice(string deviceId)
-        {
-
-            try
-            {
-                using (HttpClient client = new HttpClient())
-                {
-                    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-                    client.DefaultRequestHeaders.Add("X-AppGw-Validation", "PMrcP4UvN.XvoYbC");
-                    client.DefaultRequestHeaders.Host = "apim-labstaging05.azure-api.net";
-                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-                    var response = await client.GetAsync($"https://apim-labstaging05.azure-api.net/v09_m/v1/devices/{deviceId}");
-
-                    response.EnsureSuccessStatusCode();
-
-                    var jsonString = await response.Content.ReadAsStringAsync();
-                    jsonString.Replace(@"\", "");
-                    return Ok(Json(jsonString));
-                }
-            }
-            catch (Exception ex)
-            {
-                //
-            }
-            return null;
         }
     }
 }
