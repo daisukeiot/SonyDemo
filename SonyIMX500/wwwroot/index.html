@@ -1,432 +1,870 @@
 ﻿<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <title>Dashboard Prototyp</title>
-        <!-- for responsive -->
-        <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
-        <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/alt/adminlte.light.min.css" />
-        <!--
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.light.min.css" />
-        -->
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" />
-    </head>
-    <body class="hold-transition sidebar-mini layout-fixed">
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard Prototyp</title>
+    <!-- for responsive -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/alt/adminlte.light.min.css" />
+    <!--
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.light.min.css" />
+    -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/site.css" />
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
 
-        <div class="wrapper">
+    <div class="wrapper">
 
-            <div class="preloader flex-column justify-content-center align-items-center">
-                <img class="animation__shake" src="images/azure.png" alt="Azure Logo" height="120" width="120">
-            </div>
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="images/azure.png" alt="Azure Logo" height="120" width="120">
+        </div>
 
-            <!-- Top Navbar -->
-            <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-                <!-- Top Left navbar links -->
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-                    </li>
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">API Portal</a>
-                    </li>
-                </ul>
+        <!-- Top Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Top Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">API Portal</a>
+                </li>
+            </ul>
 
-                <!-- Top Right navbar links -->
-                <ul class="navbar-nav ml-auto">
+            <!-- Top Right navbar links -->
+            <ul class="navbar-nav ml-auto">
 
-                    <!-- Navbar Search -->
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                            <i class="fas fa-search"></i>
-                        </a>
-                        <div class="navbar-search-block">
-                            <form class="form-inline">
-                                <div class="input-group input-group-sm">
-                                    <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-navbar" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                        <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
+                <!-- Navbar Search -->
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="navbar-search-block">
+                        <form class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
                                 </div>
-                            </form>
-                        </div>
-                    </li>
-
-                    <!-- Notifications Dropdown Menu -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-bell"></i>
-                            <span class="badge badge-warning navbar-badge">15</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-header">15 Notifications</span>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i> 4 new messages
-                                <span class="float-right text-muted text-sm">3 mins</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i> 8 friend requests
-                                <span class="float-right text-muted text-sm">12 hours</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-file mr-2"></i> 3 new reports
-                                <span class="float-right text-muted text-sm">2 days</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                        </div>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                            <i class="fas fa-expand-arrows-alt"></i>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                            <i class="fas fa-th-large"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-
-            <!-- Side Bar -->
-            <aside class="main-sidebar sidebar-dark-primary elevation-4">
-                <!-- Brand Logo -->
-                <a href="index3.html" class="brand-link">
-                    <img src="images/azure.png" alt="Brand Logo" class="brand-image img-circle" style=".img-circle.border-circle:10%">
-                    <span class="brand-text font-weight-light">Dashboard Sample</span>
-                </a>
-                <div class="sidebar">
-                    <!-- SidebarSearch Form -->
-                    <div class="form-inline">
-                        <div class="input-group" data-widget="sidebar-search">
-                            <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-sidebar">
-                                    <i class="fas fa-search fa-fw"></i>
-                                </button>
                             </div>
+                        </form>
+                    </div>
+                </li>
+
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file mr-2"></i> 3 new reports
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Side Bar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+                <img src="images/azure.png" alt="Brand Logo" class="brand-image img-circle" style=".img-circle.border-circle:10%">
+                <span class="brand-text font-weight-light">Dashboard Sample</span>
+            </a>
+            <div class="sidebar">
+                <!-- SidebarSearch Form -->
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                                <i class="fas fa-search fa-fw"></i>
+                            </button>
                         </div>
                     </div>
-
-                    <nav class="mt-2">
-                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li class="nav-item menu-open">
-                                <a href="#" class="nav-link active">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <span class="badge badge-info right">3</span>
-                                    <p>
-                                        Drop Down Menu
-                                        <i class="right fas fa-angle-left"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview">
-                                    <li class="nav-item">
-                                        <a href="./index.html" class="nav-link active">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dropdown 1</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="./index.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dropdown 2</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="#" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Dropdown 3</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-th"></i>
-                                    <p>
-                                        Link
-                                        <span class="right badge badge-danger">New</span>
-                                    </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
                 </div>
-            </aside>
 
-            <div class="content-wrapper">
-                <section class="content-header">
-                    <div class="container-fluid">
-                        <div class="row mb-2">
-                            <div class="col-md-10">
-                                <h1>Sony IMX500 Hands-on Lab</h1>
-                            </div>
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <span class="badge badge-info right">3</span>
+                                <p>
+                                    Drop Down Menu
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./index.html" class="nav-link active">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 1</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./index.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 2</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 3</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Link
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-md-10">
+                            <h1>Sony IMX500 Hands-on Lab</h1>
                         </div>
                     </div>
-                </section>
-                <!-- Main content -->
-                <section class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12 col-sm-12">
-                                <div class="card card-primary card-tabs">
-                                    <div class="card-header p-0 pt-1">
-                                        <ul class="nav nav-tabs" id="tab-main" role="tablist">
-                                            <li class="nav-item">
-                                                <a class="nav-link active" id="tab-setup-tab" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="tab-telemetry-tab" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="tab-ai-result-tab" data-toggle="pill" href="#tab-ai-result" role="tab" aria-controls="tab-ai-result" aria-selected="false">AI Result</a>
-                                            </li>
-                                            <li class="nav-item">
-                                                <a class="nav-link" id="tab-other-tab" data-toggle="pill" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="false">Other</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="tab-content" id="tab-main">
-                                            <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-tab">
-                                                <!-- Progress Bar -->
-                                                <div class="row">
-                                                    <div class="col-md-10">
-                                                        <div class="card">
-                                                            <div class="card-header">
-                                                                <h3 class="card-title">Overall Progress</h3>
-                                                            </div>
-                                                            <div class="card-body">
-                                                                <div class="progress mb-3">
-                                                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                                                                         aria-valuemax="100" style="width: 0%">
-                                                                    </div>
+                </div>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="card card-primary card-tabs">
+                                <div class="card-header p-0 pt-1">
+                                    <ul class="nav nav-tabs" id="tab-main" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="tab-setup-tab" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-telemetry-tab" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-ai-result-tab" data-toggle="pill" href="#tab-ai-result" role="tab" aria-controls="tab-ai-result" aria-selected="false">AI Result</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-api-output-tab" data-toggle="pill" href="#tab-api-output" role="tab" aria-controls="tab-api-output" aria-selected="false">API Output</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-other-tab" data-toggle="pill" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="false">Other</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="tab-main">
+                                        <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-tab">
+                                            <!-- Progress Bar -->
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Overall Progress</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="progress mb-3">
+                                                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                                                                     aria-valuemax="100" style="width: 0%">
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <!-- End of Progress Bar row -->
+                                            </div>
+                                            <!-- End of Progress Bar row -->
 
-                                                <div class="row">
-                                                    <div class="col-md-10">
-                                                        <div class="card">
-                                                            <div class="card-body">
-                                                                <div id="accordion">
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseOne">
-                                                                                    Step 1 : Login to acquire "Access Token" to Sony API.
-                                                                                </a>
-                                                                            </h4>
-                                                                        </div>
-                                                                        <div id="collapseOne" class="collapse show" data-parent="#accordion">
-                                                                            <form id="loginForm">
-                                                                                <div class="card-body">
-                                                                                    <div class="form-group">
-                                                                                        <label for="clientId">Client ID</label>
-                                                                                        <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="6b8bbe61-f6e0-4490-ba1e-c6566574162">
-                                                                                    </div>
-                                                                                    <div>
-                                                                                        <label for="taToken">Token</label>
-                                                                                        <textarea id="taToken" class="form-control" cols="30" rows="3" readonly></textarea>
-                                                                                        <br />
-                                                                                        <label for="spanTokenExpire">Expiration</label>
-                                                                                        <span id='spanTokenExpire'></span>
-                                                                                        <br />
-                                                                                        <label for="spanTokenLastUpdate"> Last update</label>
-                                                                                        <span id='spanTokenLastUpdate'></span>
-                                                                                        <br />
-                                                                                        <a class="btn btn-outline-dark" id="btnCopyToken">
-                                                                                            <i class="fas fa-copy"></i> Copy Token
-                                                                                        </a>
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div id="accordion">
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionSetup">
+                                                                                Step 1 : Login to acquire "Access Token" to Sony API.
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionSetup" class="collapse show" data-parent="#accordion">
+                                                                        <form id="loginForm">
+                                                                            <div class="card-body">
+                                                                                <div class="card card-widget widget-user-2">
+                                                                                    <div class="widget-user-header bg-warning">
+                                                                                        <div class="widget-user-image">
+                                                                                            <i class="fas fa-user" style="float:left;font-size:4em"></i>
+                                                                                        </div>
+                                                                                        <h3 id="userName" class="widget-user-username">User Name</h3>
+                                                                                        <h5 id="userDesc" class="widget-user-desc">User Desc</h5>
                                                                                     </div>
                                                                                 </div>
-                                                                                <div class="card-footer">
-                                                                                    <a class="btn btn-success" id="btnLogin">
-                                                                                        <i class="fas fa-sign-in-alt"></i> Login
-                                                                                    </a>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="clientId">Client ID</label>
+                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="43132861-898d-4c85-9b7f-6f0552f5360b">
                                                                                 </div>
-                                                                            </form>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseTwo">
-                                                                                    Step 2 : Custom Vision project
+
+                                                                                <div class="info-box">
+                                                                                    <div class="info-box-content">
+                                                                                        <span class="info-box-text">
+                                                                                            <label for="taToken">Token</label>
+                                                                                            <textarea id="taToken" class="form-control" cols="30" rows="3" readonly></textarea>
+                                                                                        </span>
+                                                                                        <div style="margin-top:0.5em">
+                                                                                            <button type="button" class="btn btn-outline-dark" id="btnCopyToken">
+                                                                                                <i class="fas fa-copy"></i> Copy Token
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <span class="info-box-text" style="margin-top:0.5em">
+                                                                                            <label for="spanTokenExpire" class="label-right">Expiration:</label>
+                                                                                            <span class="info-box-text" style="display:contents" id='spanTokenExpire'></span>
+                                                                                        </span>
+                                                                                        <span class="info-box-text" style="margin-top:0.5em">
+                                                                                            <label for="spanTokenLastUpdate" class="label-right">Last Update:</label>
+                                                                                            <span class="info-box-text" id='spanTokenLastUpdate' style="display:contents"></span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card-footer">
+                                                                                <a class="btn btn-success" id="btnLogin">
+                                                                                    <i class="fas fa-sign-in-alt"></i> Login
                                                                                 </a>
-                                                                            </h4>
-                                                                        </div>
-                                                                        <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCustomVision">
+                                                                                Step 2 : Create or select Custom Vision project
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionCustomVision" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div>
+                                                                                <div class="info-box">
+                                                                                    <div class="info-box-content">
+                                                                                        <div class="info-box-text">
+                                                                                            <label for="newProjectDiv">Create a New Project</label>
+                                                                                        </div>
+                                                                                        <div id="newProjectDiv">
+                                                                                            <label for="newCustomVisionProject">Project Name</label>
+                                                                                            <input type="text" name="newCustomVisionProject" class="form-control" id="newCustomVisionProject" placeholder="Enter name of new Custom Vision project" value="">
+                                                                                            <label for="newCustomVisionProjectComment">Comment (Optional)</label>
+                                                                                            <input type="text" name="newCustomVisionProjectComment" class="form-control" id="newCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
+                                                                                        </div>
+                                                                                        <div style="margin-top:0.5em">
+                                                                                            <button type="button" class="btn btn-success" id="btnNewCustomVisionProject">
+                                                                                                <i class="fas fa-sign-in-alt"></i> Create
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="info-box">
+                                                                                    <div class="info-box-content">
+                                                                                        <div class="info-box-text">
+                                                                                            <label for="projectListDiv">Project List</label>
+                                                                                        </div>
+                                                                                        <div id="projectListDiv">
+                                                                                            <select id="listCustomVisionProjects" class="form-control select2" style="width: 100%;">
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div style="margin-top:0.5em">
+                                                                                            <button type="button" class="btn btn-danger" id="btnDeleteCustomVisionProjectCV" disabled>
+                                                                                                <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
+                                                                                            </button>
+                                                                                            <button type="button" class="btn btn-danger" id="btnDeleteCustomVisionProject" disabled>
+                                                                                                <i class="fas fa-trash-alt"></i> Delete (Sony API)
+                                                                                            </button>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
-                                                                                    Step 3 : Save AI Model
-                                                                                </a>
-                                                                            </h4>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionBuildCustomVisionModel">
+                                                                                Step 3 : Build Custom Vision Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionBuildCustomVisionModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div class="info-box-text">
+                                                                                Visit https://customvision.ai to Upload and Tag photos, and start training.
+                                                                            </div>
                                                                         </div>
-                                                                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnVisitCustomVision" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Open a new tab.
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
-                                                                                    Step 4 : Convert AI Model
-                                                                                </a>
-                                                                            </h4>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveAiModel">
+                                                                                Step 4 : Save AI Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionSaveAiModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="newProjectDiv">
+                                                                                <label for="spanCVProjectName" class="label-right">Project Name : </label>
+                                                                                <div class="info-box-text" id='spanCVProjectName'></div>
+
+                                                                                <label for="newModelId">Model ID (Optional)</label>
+                                                                                <input type="text" name="newModelId" class="form-control" id="newModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+
+                                                                                <label for="newModelInitVersion">Initial Version Number (Optional)</label>
+                                                                                <input type="text" name="newModelInitVersion" class="form-control" id="newModelInitVersion" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="">
+
+                                                                                <label for="newModelFunctionality">Functionality (Optional)</label>
+                                                                                <input type="text" name="newModelFunctionality" class="form-control" id="newModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
+
+                                                                                <label for="newModelVendorName">Vendor Name (Optional)</label>
+                                                                                <input type="text" name="newModelVendorName" class="form-control" id="newModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
+
+                                                                                <label for="newModelComment">Comment (Optional)</label>
+                                                                                <input type="text" name="newModelComment" class="form-control" id="newModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                            </div>
                                                                         </div>
-                                                                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnSaveCVModel" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Save Custom Vision model.
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
-                                                                                    Step 5 : Publish AI Model
-                                                                                </a>
-                                                                            </h4>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionConvertAiModel">
+                                                                                Step 5 : Convert AI Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionConvertAiModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="newProjectDiv">
+                                                                                <label for="convertModelId">Model ID</label>
+                                                                                <input type="text" name="convertModelId" class="form-control" id="convertModelId" placeholder="Enter Target Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+
+                                                                                <label for="convertDeviceId">Device ID (Optional)</label>
+                                                                                <input type="text" name="convertDeviceId" class="form-control" id="convertDeviceId" placeholder="Specify device id when the Device model is the target. Do not specify it when target is a base model." value="">
+                                                                            </div>
                                                                         </div>
-                                                                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnConvertModel" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Convert Model
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
-                                                                                    Step 6 : Prepare Deployment
-                                                                                </a>
-                                                                            </h4>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPublishAiModel">
+                                                                                Step 6 : Publish AI Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionPublishAiModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="publishModelDiv">
+                                                                                <label for="publishModelId">Model ID</label>
+                                                                                <input type="text" name="publishModelId" class="form-control" id="publishModelId" placeholder="Enter Target Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+
+                                                                                <label for="publishModelDeviceId">Device ID (Optional)</label>
+                                                                                <input type="text" name="publishModelDeviceId" class="form-control" id="publishModelDeviceId" placeholder="Specify device id when the Device model is the target. Do not specify it when target is a base model." value="">
+                                                                            </div>
                                                                         </div>
-                                                                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnPublishModel" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Publish Model
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
-                                                                                    Step 7 : Deploy AI Model
-                                                                                </a>
-                                                                            </h4>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPeployPrep">
+                                                                                Step 7 : Prepare Deployment
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionPeployPrep" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="prepDeployDiv">
+                                                                                <label for="createDeployConfigId">Model ID</label>
+                                                                                <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
+
+                                                                                <label for="createDeploySensorLoaderVer">SensorLoader version number</label>
+                                                                                <!-- to do : convert to list-->
+                                                                                <input type="text" name="createDeploySensorLoaderVer" class="form-control" id="createDeploySensorLoaderVer" placeholder="Specify device id when the Device model is the target. Do not specify it when target is a base model." value="">
+
+                                                                                <label for="createDeploySensorVer">Sensor version number</label>
+                                                                                <!-- to do : convert to list-->
+                                                                                <input type="text" name="createDeploySensorVer" class="form-control" id="createDeploySensorVer" placeholder="Specify SensorLoader version number." value="">
+
+                                                                                <label for="createDeployModelId">Model ID</label>
+                                                                                <!-- to do : convert to list-->
+                                                                                <input type="text" name="createDeployModelId" class="form-control" id="createDeployModelId" placeholder="Specify Sensor version number." value="">
+
+                                                                                <label for="createDeployAppFwVer">ApFw version number</label>
+                                                                                <!-- to do : convert to list-->
+                                                                                <input type="text" name="createDeployAppFwVer" class="form-control" id="createDeployAppFwVer" placeholder="Specify ApFw version number." value="">
+
+                                                                                <label for="createDeployComment">Comment (Optional)</label>
+                                                                                <input type="text" name="createDeployComment" class="form-control" id="createDeployComment" placeholder="Description. Less than 100 characters." value="">
+
+                                                                                <label for="createDeployDeviceType">Device Type (Optional)</label>
+                                                                                <select name="createDeployDeviceType" id="createDeployDeviceType" class="form-control">
+                                                                                    <option value="00">MPU Based (Type4)</option>
+                                                                                    <option value="01">MCU Bsed (Type3)</option>
+                                                                                </select>
+
+                                                                                <label for="createDeployModelVer">Model Version Number (Optional)</label>
+                                                                                <input type="text" name="createDeployModelVer" class="form-control" id="createDeployModelVer" placeholder="Model version number." value="">
+
+                                                                                <label for="createDeployColorMatrixMode">Color Matrix Mode (Optional)</label>
+                                                                                <select name="createDeployColorMatrixMode" id="createDeployColorMatrixMode" class="form-control">
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+
+                                                                                <label for="createDeployColorMatrixFileName">Color Matrix File Name (Optional)</label>
+                                                                                <input type="text" name="createDeployColorMatrixFileName" class="form-control" id="createDeployColorMatrixFileName" placeholder="Color tone adjustment Custom settings file (bin) name." value="">
+
+                                                                                <label for="createDeployGammaMode">Gamma Mode (Optional)</label>
+                                                                                <select name="createDeployGammaMode" id="createDeployGammaMode" class="form-control">
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+
+                                                                                <label for="createDeployGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
+                                                                                <input type="text" name="createDeployGammaFileName" class="form-control" id="createDeployGammaFileName" placeholder="Gamma Correction Custom settings file (bin) name." value="">
+
+                                                                                <label for="createDeployLscMode">LSC Correction Camera Settings (Optional)</label>
+                                                                                <select name="createDeployLscMode" id="createDeployLscMode" class="form-control">
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+
+                                                                                <label for="createDeployLscModeFile">LSC Correction Camera Settings File (bin) name (Optional)</label>
+                                                                                <input type="text" name="createDeployLscModeFile" class="form-control" id="createDeployLscModeFile" placeholder="LSC Correction Camera Settings file (bin) name." value="">
+
+                                                                                <label for="createDeployPrewbMode">PreWB adjustment value Camera settings (bin) type. (Optional)</label>
+                                                                                <select name="createDeployPrewbMode" id="createDeployPrewbMode" class="form-control">
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+
+                                                                                <label for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) name (Optional)</label>
+                                                                                <input type="text" name="createDeployPrewbModeFile" class="form-control" id="createDeployPrewbModeFile" placeholder="PreWB adjustment value Camera settings (bin) file." value="">
+
+                                                                                <label for="createDeployDewarpMode">Distortion correction Camera settings(bin)type. (Optional)</label>
+                                                                                <select name="createDeployDewarpMode" id="createDeployDewarpMode" class="form-control">
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+
+                                                                                <label for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name. (Optional)</label>
+                                                                                <input type="text" name="createDeployPrewbModeFile" class="form-control" id="createDeployPrewbModeFile" placeholder="Distortion correction Custom settings file(bin)name." value="">
+
+                                                                            </div>
                                                                         </div>
-                                                                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnCreateDeployConfiguration" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Create Deploy Configuraion
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="card card-primary">
-                                                                        <div class="card-header">
-                                                                            <h4 class="card-title w-100">
-                                                                                <a class="d-block w-100" data-toggle="collapse" href="#collapseThree">
-                                                                                    Step 8 : Start/Stop Image Capture
-                                                                                </a>
-                                                                            </h4>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPeploy">
+                                                                                Step 8 : Deploy AI Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionPeploy" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="deployDiv">
+                                                                                <label for="deployConfigId">Config ID</label>
+                                                                                <input type="text" name="deployConfigId" class="form-control" id="deployConfigId" placeholder="configID. Less than 20 characters." value="">
+
+                                                                                <label for="deployDeviceId">Device IDs</label>
+                                                                                <!-- ToDO Convert to multi select list-->
+                                                                                <input type="text" name="deployDeviceId" class="form-control" id="deployDeviceId" placeholder="DeviceID. Specify multiple DeviceID by separating it with commas." value="">
+
+                                                                                <label for="deployComment">Comment (Optional)</label>
+                                                                                <input type="text" name="deployComment" class="form-control" id="deployComment" placeholder="Description. Less than 100 characters." value="">
+
+                                                                                <label for="deployReplaceModelID">Model ID to replace (Optional)</label>
+                                                                                <input type="text" name="deployReplaceModelID" class="form-control" id="deployReplaceModelID" placeholder="Specify the ModelID to be replaced." value="">
+
+                                                                            </div>
                                                                         </div>
-                                                                        <div id="collapseThree" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnDeployByConfiguration" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Deploy by Configuraion
+                                                                            </button>
                                                                         </div>
                                                                     </div>
-                                                                </div> <!-- End of Accordion -->
-                                                            </div>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartStopInference">
+                                                                                Step 9 : Start/Stop Inference
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStartStopInference" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="startStopInferenceDiv">
+                                                                                <label for="startInferenceDeviceId">Device ID</label>
+                                                                                <input type="text" name="startInferenceDeviceId" class="form-control" id="startInferenceDeviceId" placeholder="Device ID." value="">
+
+                                                                                <label for="startInferenceFrequency">Frequency of Inference (Optional)</label>
+                                                                                <input type="text" name="startInferenceFrequency" class="form-control" id="startInferenceFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="">
+
+                                                                                <label for="startInferenceMaxDetection">Number of objects included in 1 frame (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="">
+
+                                                                                <label for="startInferenceCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                <input type="text" name="startInferenceCropHOffset" class="form-control" id="startInferenceCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="">
+
+                                                                                <label for="startInferenceCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                <input type="text" name="startInferenceCropVOffset" class="form-control" id="startInferenceCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="">
+
+                                                                                <label for="startInferenceCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                <input type="text" name="startInferenceCropHSize" class="form-control" id="startInferenceCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="">
+
+                                                                                <label for="startInferenceCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                <input type="text" name="startInferenceCropVSize" class="form-control" id="startInferenceCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="">
+
+                                                                                <label for="startInferenceMaxDetection">Number of objects included in 1 frame (Optional)</label>
+                                                                                <input type="text" name="startInferenceMaxDetection" class="form-control" id="startInferenceMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="">
+
+                                                                                <label for="startInferenceModelId">Model ID (Optional)</label>
+                                                                                <input type="text" name="startInferenceModelId" class="form-control" id="startInferenceModelId" placeholder="Target Model ID" value="">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnStartUploadInferenceResult" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Start Inference
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-warning" id="btnStopUploadInferenceResult" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Stop Inference
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartStopCapture">
+                                                                                Step 10 : Start/Stop Uploading Retraining Data
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStartStopCapture" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="startUploadRetrainingDataDiv">
+                                                                                <label for="startUploadRetrainingDataDeviceId">Model ID</label>
+                                                                                <!-- to do : Convert to list -->
+                                                                                <input type="text" name="startUploadRetrainingDataDeviceId" class="form-control" id="startUploadRetrainingDataDeviceId" placeholder="Enter Target Device ID (E.g. YYMMDD_Name_Model_01)" value="">
+
+                                                                                <label for="startUploadRetrainingDataMode">Collection mode (Optional)</label>
+                                                                                <select name="startUploadRetrainingDataMode" id="startUploadRetrainingDataMode" class="form-control">
+                                                                                    <option value="0">Image</option>
+                                                                                    <option value="1">image & Inference results metadata</option>
+                                                                                </select>
+
+                                                                                <label for="startUploadRetrainingDataFileFormat">Image file format (Optional)</label>
+                                                                                <select name="startUploadRetrainingDataFileFormat" id="startUploadRetrainingDataFileFormat" class="form-control">
+                                                                                    <option value="JPG">JPEG</option>
+                                                                                    <option value="BMP">Bitmap (BMP)</option>
+                                                                                </select>
+
+                                                                                <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="">
+
+                                                                                <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="">
+
+                                                                                <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="">
+
+                                                                                <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="">
+
+                                                                                <label for="startUploadRetrainingDataNumImages">Number of Image crop (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000" value="">
+
+                                                                                <label for="startUploadRetrainingDataFrequency">Frequency of fetching images (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataFrequency" class="form-control" id="startUploadRetrainingDataFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="">
+
+                                                                                <label for="startUploadRetrainingDataMaxDetection">Number of objects included in 1 frame (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="">
+
+                                                                                <label for="startUploadRetrainingDataModelId">Model ID (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataModelId" class="form-control" id="startUploadRetrainingDataNumInference" placeholder="Target Model ID" value="">
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="btnStartUploadRetrainingData" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Start Upload Retraining Data
+                                                                            </button>
+                                                                            <button type="button" class="btn btn-warning" id="btnStopUploadRetrainingData" disabled>
+                                                                                <i class="fas fa-external-link-alt"></i> Stop Upload Retraining Data
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div> <!-- End of Accordion -->
                                                         </div>
                                                     </div>
                                                 </div>
+                                            </div>
 
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-tab">
+                                            placeholder for telemetry
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-ai-result-tab">
+                                            placeholder for AI Result View
+                                        </div>
+                                        <div class="tab-pane fade" id="tab-api-output" role="tabpanel" aria-labelledby="tab-api-output-tab">
+                                            <div>
+                                                <a class="btn btn-outline-dark" id="btnClearApiOutput">
+                                                    <i class="fas fa-trash-alt"></i> Clear
+                                                </a>
                                             </div>
-                                            <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-tab">
-                                                placeholder for telemetry
-                                            </div>
-                                            <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-ai-result-tab">
-                                                placeholder for AI Result View
-                                            </div>
-                                            <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-tab">
-                                                placeholder for other (firmware info etc)
+                                            <div>
+                                                <textarea id="taApiOutput" class="p-3" readonly rows="10" style="width:100%;height:100%;font-family:Consolas">
+                                                    </textarea>
                                             </div>
                                         </div>
+                                        <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-tab">
+                                            placeholder for other (firmware info etc)
+                                        </div>
                                     </div>
-                                    <!-- /setup -->
                                 </div>
+                                <!-- /setup -->
                             </div>
                         </div>
                     </div>
-                </section>
-            </div>
+                </div>
+            </section>
         </div>
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="">Hooter</a>.</strong>
-            All rights reserved.
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 0.0.0
-            </div>
-        </footer>
+    </div>
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2014-2021 <a href="">Hooter</a>.</strong>
+        All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 0.0.0
+        </div>
+    </footer>
 
-        <!-- JS -->
-        <!-- jquery -->
-        <script src="lib/jquery/dist/jquery.min.js"></script>
-        <script src="lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="lib/jquery-validation/dist/additional-methods.min.js"></script>
-        <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- adminLTE -->
-        <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
-        <!-- MSAL -->
-        <script src="/js/azure/msal/dist/msal.js"></script>
-        <!-- Local -->
-        <script src="/js/SonyAPI.js"></script>
-        <!--<script src="/js/site.js"></script>-->
-        <script>
-            var expiresOn = '';
+    <!-- JS -->
+    <!-- jquery -->
+    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script src="lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- adminLTE -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <!-- MSAL -->
+    <script src="/js/azure/msal/dist/msal.js"></script>
+    <!-- Local -->
+    <script src="/js/SonyAPI.js"></script>
+    <script src="/js/CustomVision.js"></script>
+    <!--<script src="/js/site.js"></script>-->
+    <script>
+        var expiresOn = '';
+        var currentCvProject = '';
 
-            $(document).ready(function () {
-                sonyApiInitialize();
-            })
+        $(document).ready(function () {
+            sonyApiInitialize();
+        })
 
-            $('#btnLogin').click(function () {
-                $('#loginForm').valid();
-                sonyApiAuth();
-                getLoginToken();
-            })
+        //
+        // button clicks
+        //
+        $('#btnLogin').click(function () {
+            $('#loginForm').valid();
+            sonyApiAuth();
+            getToken();
+        })
 
-            $('#loginForm').validate({
-                rules: {
-                    clientId: {
-                        required: true,
-                        minlength: 35
-                    },
+
+        $('#btnClearApiOutput').click(function () {
+            document.getElementById('taApiOutput').value = null;
+        })
+
+        $('#btnNewCustomVisionProject').click(function () {
+            console.debug("btnNewCustomVisionProject Click");
+            CreateCustomVisionProject();
+        })
+
+        $('#btnDeleteCustomVisionProjectCV').click(function () {
+            console.debug("btnDeleteCustomVisionProject Click");
+            var projectList = document.getElementById('listCustomVisionProjects');
+            if (projectList[projectList.selectedIndex].value != 0) {
+                DeleteCustomVisionProject(projectList[projectList.selectedIndex].value);
+            }
+        })
+
+        $('#btnVisitCustomVision').click(function () {
+            console.debug("btnDeleteCustomVisionProject Click");
+            var projectList = document.getElementById('listCustomVisionProjects');
+            if (projectList[projectList.selectedIndex].value != 0) {
+                var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
+                window.open(url, "_blank");
+            }
+        })
+
+        //
+        //form validations
+        //
+        $('#loginForm').validate({
+            rules: {
+                clientId: {
+                    required: true,
+                    minlength: 35
                 },
-                messages: {
-                    clientId: {
-                        required: "Please enter a Client ID",
-                        minlength: "Please enter a valid Client ID"
-                    }
-                },
-                errorElement: 'span',
-                errorPlacement: function (error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
+            },
+            messages: {
+                clientId: {
+                    required: "Please enter a Client ID",
+                    minlength: "Please enter a valid Client ID"
                 }
-            });
-        </script>
-    </body>
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#accordionSetup').on('show.bs.collapse', function () {
+            console.log("accordionSetup show")
+        })
+
+        $('#accordionSetup').on('hide.bs.collapse', function () {
+            console.log("accordionSetup hidden")
+        })
+
+        $('#accordionCustomVision').on('show.bs.collapse', function () {
+            console.log("accordionCustomVision show");
+            GetCustomVisionProjects();
+        })
+
+        $('#accordionCustomVision').on('hide.bs.collapse', function () {
+            console.log("accordionCustomVision hidden");
+        })
+
+        $('#accordionSaveAiModel').on('show.bs.collapse', function () {
+            console.log("accordionSaveAiModel show : " + currentCvProject);
+            $('#spanCVProjectName').html(currentCvProject);
+        })
+
+        $('#listCustomVisionProjects').on('change', function () {
+            var projectList = document.getElementById('listCustomVisionProjects');
+            console.log("listCustomVisionProjects change : " + projectList[projectList.selectedIndex].value);
+            if (projectList[projectList.selectedIndex].value != 0) {
+                currentCvProject = projectList[projectList.selectedIndex].text;
+                $('#btnVisitCustomVision').prop('disabled', false);
+                $('#btnDeleteCustomVisionProjectCV').prop('disabled', false);
+                $('#btnDeleteCustomVisionProject').prop('disabled', false);
+            }
+            else {
+                currentCvProject = '';
+                $('#btnVisitCustomVision').prop('disabled', true);
+                $('#btnDeleteCustomVisionProjectCV').prop('disabled', true);
+                $('#btnDeleteCustomVisionProject').prop('disabled', true);
+
+            }
+        })
+    </script>
+</body>
 </html>

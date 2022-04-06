@@ -49,15 +49,17 @@ namespace SonyIMX500.Controllers
                 return await client.GetAsync(requestUri.AbsoluteUri);
             }
         }
-        public async Task<HttpResponseMessage> SendPost(HttpClient client, string requestSegment, HttpContent content)
+        public async Task<HttpResponseMessage> SendPost(string requestSegment)
         {
+            using (HttpClient client = new HttpClient())
+            {
+                Uri baseUri = new Uri(_appSettings.SonyApi.BaseUrl);
+                Uri requestUri = new Uri($"{baseUri.AbsoluteUri}/{requestSegment}");
 
-            Uri baseUri = new Uri(_appSettings.SonyApi.BaseUrl);
-            Uri requestUri = new Uri($"{baseUri.AbsoluteUri}/{requestSegment}");
+                AddRequestHeader(client);
 
-            AddRequestHeader(client);
-
-            return await client.PostAsync(requestUri.AbsoluteUri, content);
+                return await client.PostAsync(requestUri.AbsoluteUri, null);
+            }
         }
 
         [HttpPost]
@@ -399,7 +401,7 @@ namespace SonyIMX500.Controllers
         }
 
         #endregion
-#if POST
+
         #region SONYAPIPOST
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-convert-model?
@@ -414,14 +416,18 @@ namespace SonyIMX500.Controllers
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-create-custom-vision-project-of-base?
         //
         [HttpPost]
-        public ActionResult CreateBaseCustomVisionProject()
+        public async Task<ActionResult> CreateBaseCustomVisionProject(string project_name, string comment)
         {
-
+            try
             {
-                Uri url = new Uri(_appSettings.SonyApi.BaseUrl);
-                HttpContent content = null;
-                var apiUrl = $"{url.AbsoluteUri}/manage/users?principal={principal}&belong_group_id={belong_group_id}";
-                var response = await SendPost(apiUrl, content);
+                string urlSegment = $"model_projects/customvision_base?project_name={project_name}";
+
+                if (!string.IsNullOrEmpty(comment))
+                {
+                    urlSegment += $"&comment={comment}";
+                }
+
+                var response = await SendPost(urlSegment);
                 response.EnsureSuccessStatusCode();
 
                 var jsonString = await response.Content.ReadAsStringAsync();
@@ -429,11 +435,11 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
             }
             return BadRequest();
         }
-
+#if POST
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-create-deploy-configuration?
         //
@@ -730,8 +736,9 @@ namespace SonyIMX500.Controllers
             }
             return BadRequest();
         }
-        #endregion
 #endif
+#endregion
+
         public class SonyApiModel
         {
             public string model_version_id { get; set; }
