@@ -702,7 +702,24 @@
 
                                         </div>
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-tab">
-                                            placeholder for telemetry
+                                            <div class="card-body">
+                                                <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll"">
+                                                    <table id="device-events" class="table table-striped" style="max-height: 100%">
+                                                        <thead>
+                                                        <th>&nbsp;</th>
+                                                        <th>Event Time(UTC)</th>
+                                                        <th>Device ID</th>
+                                                        <th>Model ID</th>
+                                                        <th>Event Type</th>
+                                                        <th>Event Source</th>
+                                                        </thead>
+                                                        <tbody id="device-event-details"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" id="btnClearTelemetryTable"><i class="far fa-trash-alt"></i>Clear Events</button>
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-ai-result-tab">
                                             placeholder for AI Result View
@@ -749,18 +766,37 @@
     <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
     <!-- MSAL -->
     <script src="/js/azure/msal/dist/msal.js"></script>
+    <script src="lib/signalr/dist/browser/signalr.js"></script>
     <!-- Local -->
     <script src="/js/SonyAPI.js"></script>
     <script src="/js/CustomVision.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script src="/js/SignalR.js"></script>
     <!--<script src="/js/site.js"></script>-->
     <script>
         var expiresOn = '';
         var currentCvProject = '';
 
+        var hubConnection;
+
         $(document).ready(function () {
             sonyApiInitialize();
-        })
 
+            hubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("telemetryHub")
+                .configureLogging(signalR.LogLevel.Trace)
+                .build();
+
+            hubConnection.on('DeviceTelemetry', function (payload) {
+                var jsonData = JSON.parse(payload);
+                addEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.data);
+            });
+
+            hubConnection.start()
+                .then(() => console.log('SignalR connected!'))
+                .catch(console.error);
+
+        })
         //
         // button clicks
         //
@@ -770,6 +806,9 @@
             getToken();
         })
 
+        $('#btnCopyToken').click(function () {
+            navigator.clipboard.writeText(document.getElementById('taToken').value);
+        })
 
         $('#btnClearApiOutput').click(function () {
             document.getElementById('taApiOutput').value = null;
@@ -795,6 +834,12 @@
                 var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
                 window.open(url, "_blank");
             }
+        })
+
+        $('#btnClearTelemetryTable').click(function () {
+            console.debug("btnClearTelemetryTable Click");
+            $("#device-events").find("tr:gt(0)").remove();
+            $("#device-events").hide();
         })
 
         //
@@ -865,6 +910,28 @@
 
             }
         })
+    </script>
+
+    <script id="event-template" type="text/x-handlebars-template">
+        <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
+            <td>
+                <button class="btn btn-primary btn-xs">
+                    <i class="fas fa-angle-double-down"></i>
+                </button>
+            </td>
+            <td>{{eventTime}}</td>
+            <td>{{eventDeviceId}}</td>
+            <td>{{eventModelId}}</td>
+            <td>{{eventSource}}</td>
+            <td>{{eventType}}</td>
+        </tr>
+        <tr class="hiddenRow collapse" id="event-{{eventId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{eventData}}</code></pre>
+                </div>
+            </td>
+        </tr>
     </script>
 </body>
 </html>

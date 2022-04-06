@@ -8,3 +8,20 @@ label {
     margin-top : 0.5em;
     margin-bottom : 0.2em;
 }
+
+.TelemetrySection {
+    display: table;
+    width: auto;
+    text-align: left;
+    margin: 0;
+    padding: 0px;
+}
+
+.EventTBody{
+    overflow-y:scroll;
+    display:block;
+}
+
+.EventTHead {
+    display:block;
+}

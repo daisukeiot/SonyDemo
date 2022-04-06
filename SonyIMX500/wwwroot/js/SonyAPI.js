@@ -75,7 +75,7 @@ function updateSetupUi(tokenResp) {
         document.getElementById('userName').innerHTML = tokenResp.account.name;
         document.getElementById('userDesc').innerHTML = tokenResp.account.userName;
 
-        PostToken(tokenResp.token.rawIdToken);
+        PostToken(tokenResp.idToken.rawIdToken);
     }
 
 }
@@ -112,7 +112,7 @@ async function getLoginToken() {
             console.log('### MSAL acquireTokenPopup was successful')
         }
         else if (error.errorCode == "user_login_error") {
-            if (!myMsal.getUser() && !myMsal.loginInProgress()) {
+            if (!myMsal.loginInProgress()) {
                 myMsal.loginRedirect(requestObj);
             }
         }

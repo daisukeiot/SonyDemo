@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SonyIMX500.Hubs;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace SonyIMX500
         {
             services.AddControllersWithViews();
             services.Configure<AppSettings>(Configuration.GetSection("Azure"));
+            services.AddSignalR(options => options.EnableDetailedErrors = true).AddAzureSignalR(Configuration.GetSection("Azure").GetSection("SignalR").GetValue<string>("ConnectionString"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,16 +47,16 @@ namespace SonyIMX500
 
             app.UseAuthorization();
 
+            app.UseAzureSignalR(routes =>
+            {
+                routes.MapHub<TelemetryHub>("/telemetryhub");
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-                //endpoints.MapControllerRoute(
-                //    name: "Spa",
-                //    pattern: "{*url}",
-                //    new { Controller = "Home", action = "Spa" });
             });
         }
     }
