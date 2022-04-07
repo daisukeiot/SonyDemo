@@ -266,3 +266,75 @@ async function StopUploadInferenceResult() {
         alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
     }
 }
+
+async function StartUploadRetrainingData() {
+
+    try {
+        var device_id = document.getElementById("startUploadRetrainingDataDeviceId").value;
+        var Mode = document.getElementById("startUploadRetrainingDataMode").value;
+        var FileFormat = document.getElementById("startUploadRetrainingDataFileFormat").value;
+        var CropHOffset = document.getElementById("startUploadRetrainingDataCropHOffset").value;
+        var CropVOffset = document.getElementById("startUploadRetrainingDataCropVOffset").value;
+        var CropHSize = document.getElementById("startUploadRetrainingDataCropHSize").value;
+        var CropVSize = document.getElementById("startUploadRetrainingDataCropVSize").value;
+        var NumberOfImages = document.getElementById("startUploadRetrainingDataNumImages").value;
+        var FrequencyOfImages = document.getElementById("startUploadRetrainingDataFrequency").value;
+        var MaxDetectionsPerFrame = document.getElementById("startUploadRetrainingDataMaxDetection").value;
+        var NumberOfInferencesPerMessage = document.getElementById("startUploadRetrainingDataNumInference").value;
+        var model_id = document.getElementById("startUploadRetrainingDataModelId").value;
+
+        const result = await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.href + 'sony/StartUploadRetrainingData',
+            data: {
+                device_id: device_id,
+                Mode: Mode,
+                FileFormat: FileFormat,
+                CropHOffset: CropHOffset,
+                CropVOffset: CropVOffset,
+                CropHSize: CropHSize,
+                CropVSize: CropVSize,
+                NumberOfImages: NumberOfImages,
+                FrequencyOfImages: FrequencyOfImages,
+                MaxDetectionsPerFrame: MaxDetectionsPerFrame,
+                NumberOfInferencesPerMessage: NumberOfInferencesPerMessage,
+                model_id: model_id
+            },
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput(result.value);
+
+    } catch (err) {
+        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+    }
+}
+
+async function StopUploadRetrainingData() {
+
+    try {
+        var device_id = document.getElementById("startUploadRetrainingDataDeviceId").value;
+
+        const result = await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.href + 'sony/StopUploadRetrainingData',
+            data: {
+                device_id: device_id
+            },
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput(result.value);
+
+    } catch (err) {
+        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+    }
+}

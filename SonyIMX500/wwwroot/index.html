@@ -261,7 +261,7 @@
                                                                                     <div class="info-box-content">
                                                                                         <span class="info-box-text">
                                                                                             <label for="taToken">Token</label>
-                                                                                            <textarea id="taToken" class="form-control" cols="30" rows="3" readonly></textarea>
+                                                                                            <textarea id="taToken" class="form-control" cols="30" rows="3"></textarea>
                                                                                         </span>
                                                                                         <div style="margin-top:0.5em">
                                                                                             <button type="button" class="btn btn-outline-dark" id="btnCopyToken">
@@ -642,7 +642,7 @@
                                                                     <div id="accordionStartStopCapture" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="startUploadRetrainingDataDiv">
-                                                                                <label for="startUploadRetrainingDataDeviceId">Model ID</label>
+                                                                                <label for="startUploadRetrainingDataDeviceId">Device ID</label>
                                                                                 <!-- to do : Convert to list -->
                                                                                 <input type="text" name="startUploadRetrainingDataDeviceId" class="form-control" id="startUploadRetrainingDataDeviceId" placeholder="Enter Target Device ID (E.g. YYMMDD_Name_Model_01)" value="">
 
@@ -679,16 +679,18 @@
                                                                                 <label for="startUploadRetrainingDataMaxDetection">Number of objects included in 1 frame (Optional)</label>
                                                                                 <input type="text" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="">
 
-                                                                                <label for="startUploadRetrainingDataModelId">Model ID (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataModelId" class="form-control" id="startUploadRetrainingDataNumInference" placeholder="Target Model ID" value="">
+                                                                                <label for="startUploadRetrainingDataNumInference">Model ID (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataNumInference" class="form-control" id="startUploadRetrainingDataNumInference" placeholder="Target Model ID" value="">
 
+                                                                                <label for="startUploadRetrainingDataModelId">Model ID (Optional)</label>
+                                                                                <input type="text" name="startUploadRetrainingDataModelId" class="form-control" id="startUploadRetrainingDataModelId" placeholder="Target Model ID" value="">
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnStartUploadRetrainingData" disabled>
+                                                                            <button type="button" class="btn btn-success" id="btnStartUploadRetrainingData">
                                                                                 <i class="fas fa-external-link-alt"></i> Start Upload Retraining Data
                                                                             </button>
-                                                                            <button type="button" class="btn btn-warning" id="btnStopUploadRetrainingData" disabled>
+                                                                            <button type="button" class="btn btn-warning" id="btnStopUploadRetrainingData">
                                                                                 <i class="fas fa-external-link-alt"></i> Stop Upload Retraining Data
                                                                             </button>
                                                                         </div>

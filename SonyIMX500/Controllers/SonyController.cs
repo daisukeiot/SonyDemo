@@ -728,20 +728,102 @@ namespace SonyIMX500.Controllers
             }
             return BadRequest();
         }
-#if POST
 
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-start-upload-retraining-data?
         //
         [HttpPost]
-        public async Task<ActionResult> StartUploadRetrainingData(string device_id)
+        public async Task<ActionResult> StartUploadRetrainingData(string device_id,
+                                                                  string Mode,
+                                                                  string FileFormat,
+                                                                  string CropHOffset,
+                                                                  string CropVOffset,
+                                                                  string CropHSize,
+                                                                  string CropVSize,
+                                                                  string NumberOfImages,
+                                                                  string FrequencyOfImages,
+                                                                  string MaxDetectionsPerFrame,
+                                                                  string NumberOfInferencesPerMessage,
+                                                                  string model_id)
         {
             try
             {
-                Uri url = new Uri(_appSettings.SonyApi.BaseUrl);
-                StringContent content = null;
-                var apiUrl = $"{url.AbsoluteUri}/devices/{device_id}/images/collectstart";
-                var response = await SendPost(apiUrl, content);
+                string urlSegment = $"devices/{device_id}/images/collectstart";
+                List<string> options = new List<string>();
+
+                if (!string.IsNullOrEmpty(Mode))
+                {
+                    options.Add($"Mode={Mode}");
+                }
+
+                if (!string.IsNullOrEmpty(FileFormat))
+                {
+                    options.Add($"FileFormat={FileFormat}");
+                }
+
+
+                if (!string.IsNullOrEmpty(CropHOffset))
+                {
+                    options.Add($"CropHOffset={CropHOffset}");
+                }
+
+                if (!string.IsNullOrEmpty(CropVOffset))
+                {
+                    options.Add($"CropVOffset={CropVOffset}");
+                }
+
+                if (!string.IsNullOrEmpty(CropHSize))
+                {
+                    options.Add($"CropHSize={CropHSize}");
+                }
+
+                if (!string.IsNullOrEmpty(CropVSize))
+                {
+                    options.Add($"CropVSize={CropVSize}");
+                }
+
+                if (!string.IsNullOrEmpty(NumberOfImages))
+                {
+                    options.Add($"NumberOfImages={NumberOfImages}");
+                }
+
+                if (!string.IsNullOrEmpty(FrequencyOfImages))
+                {
+                    options.Add($"FrequencyOfImages={FrequencyOfImages}");
+                }
+
+                if (!string.IsNullOrEmpty(MaxDetectionsPerFrame))
+                {
+                    options.Add($"MaxDetectionsPerFrame={MaxDetectionsPerFrame}");
+                }
+
+                if (!string.IsNullOrEmpty(NumberOfInferencesPerMessage))
+                {
+                    options.Add($"NumberOfInferencesPerMessage={NumberOfInferencesPerMessage}");
+                }
+
+                if (!string.IsNullOrEmpty(model_id))
+                {
+                    options.Add($"model_id={model_id}");
+                }
+
+                if (options.Count > 0)
+                {
+                    for (int index = 0; index < options.Count; index++)
+                    {
+                        if (index == 0)
+                        {
+                            urlSegment += $"?{options[index]}";
+                        }
+                        else
+                        {
+                            urlSegment += $"&{options[index]}";
+                        }
+
+                    }
+                }
+
+                var response = await SendPost(urlSegment);
                 response.EnsureSuccessStatusCode();
 
                 var jsonString = await response.Content.ReadAsStringAsync();
@@ -749,20 +831,20 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
             }
             return BadRequest();
         }
-#endif
-        //
-        // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-stop-upload-inference-result?
-        //
-        [HttpPost]
+
+            //
+            // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-stop-upload-inference-result?
+            //
+            [HttpPost]
         public async Task<ActionResult> StopUploadInferenceResult(string device_id)
         {
             try
             {
-                string urlSegment = $"devices/{device_id}/inferenceresults/collectstop";
+                string urlSegment = $"devices/{device_id}/images/collectstop";
                 var response = await SendPost(urlSegment);
                 response.EnsureSuccessStatusCode();
 
