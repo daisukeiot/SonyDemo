@@ -267,6 +267,9 @@
                                                                                             <button type="button" class="btn btn-outline-dark" id="btnCopyToken">
                                                                                                 <i class="fas fa-copy"></i> Copy Token
                                                                                             </button>
+                                                                                            <button type="button" class="btn btn-outline-dark" id="btnPasteToken">
+                                                                                                <i class="fas fa-copy"></i> Paste Token
+                                                                                            </button>
                                                                                         </div>
                                                                                         <span class="info-box-text" style="margin-top:0.5em">
                                                                                             <label for="spanTokenExpire" class="label-right">Expiration:</label>
@@ -812,6 +815,11 @@
             navigator.clipboard.writeText(document.getElementById('taToken').value);
         })
 
+        $('#btnPasteToken').click(function () {
+            document.getElementById('taToken').value = navigator.clipboard.readText();
+        })
+        
+
         $('#btnClearApiOutput').click(function () {
             document.getElementById('taApiOutput').value = null;
         })
@@ -854,6 +862,7 @@
             console.debug("btnStopUploadInferenceResult Click");
             StopUploadInferenceResult();
         })
+
         //
         //form validations
         //
@@ -883,6 +892,10 @@
             }
         });
 
+        //
+        // Accordion
+        //
+
         $('#accordionSetup').on('show.bs.collapse', function () {
             console.log("accordionSetup show")
         })
@@ -903,6 +916,14 @@
         $('#accordionSaveAiModel').on('show.bs.collapse', function () {
             console.log("accordionSaveAiModel show : " + currentCvProject);
             $('#spanCVProjectName').html(currentCvProject);
+        })
+
+        //
+        // Change event
+        //
+        $('#taToken').on('change', function () {
+            console.log("taToken Change");
+            PostToken(document.getElementById('taToken').value);
         })
 
         $('#listCustomVisionProjects').on('change', function () {

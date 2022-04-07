@@ -844,7 +844,7 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                string urlSegment = $"devices/{device_id}/images/collectstop";
+                string urlSegment = $"devices/{device_id}/inferenceresults/collectstop";
                 var response = await SendPost(urlSegment);
                 response.EnsureSuccessStatusCode();
 
@@ -857,7 +857,6 @@ namespace SonyIMX500.Controllers
             }
             return BadRequest();
         }
-#if POST
 
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-stop-upload-retraining-data?
@@ -867,10 +866,8 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                Uri url = new Uri(_appSettings.SonyApi.BaseUrl);
-                StringContent content = null;
-                var apiUrl = $"{url.AbsoluteUri}/devices/{device_id}/images/collectstop";
-                var response = await SendPost(apiUrl, content);
+                string urlSegment = $"devices/{device_id}/images/collectstop";
+                var response = await SendPost(urlSegment);
                 response.EnsureSuccessStatusCode();
 
                 var jsonString = await response.Content.ReadAsStringAsync();
@@ -878,11 +875,12 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
             }
             return BadRequest();
+            return BadRequest();
         }
-#endif
+
         #endregion
 
         public class SonyApiModel
