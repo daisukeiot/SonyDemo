@@ -14,7 +14,7 @@ namespace SonyIMX500.Controllers
     public class SonyController : Controller
     {
         private readonly ILogger<SonyController> _logger;
-        private static string _token = "test";
+        private static string _token = string.Empty;
         private readonly AppSettings _appSettings;
 
         public IActionResult Index()
@@ -39,6 +39,10 @@ namespace SonyIMX500.Controllers
 
         public async Task<HttpResponseMessage> SendGet(string requestSegment)
         {
+            if (string.IsNullOrEmpty(_token))
+            {
+                throw new Exception("Need Token");
+            }
             using (HttpClient client = new HttpClient())
             {
                 Uri baseUri = new Uri(_appSettings.SonyApi.BaseUrl);
@@ -51,6 +55,10 @@ namespace SonyIMX500.Controllers
         }
         public async Task<HttpResponseMessage> SendPost(string requestSegment)
         {
+            if (string.IsNullOrEmpty(_token))
+            {
+                throw new Exception("Need Token");
+            }
             using (HttpClient client = new HttpClient())
             {
                 Uri baseUri = new Uri(_appSettings.SonyApi.BaseUrl);
@@ -93,10 +101,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -116,10 +123,10 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
+
         }
 
         //
@@ -139,10 +146,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -160,13 +166,12 @@ namespace SonyIMX500.Controllers
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
             }
-
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
+
         }
 
         //
@@ -186,10 +191,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -209,10 +213,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -255,10 +258,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -278,7 +280,7 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
                 //return StatusCode(StatusCodes.Status500InternalServerError);
             }
             return BadRequest();
@@ -299,41 +301,91 @@ namespace SonyIMX500.Controllers
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
             }
-           catch (Exception ex)
+            catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/get-get-models?
         //
         [HttpGet]
-        public async Task<ActionResult> GetModels(string model_id)
+        public async Task<ActionResult> GetModels(string model_id,
+                                                  string comment,
+                                                  string project_name,
+                                                  string model_platform,
+                                                  string project_type,
+                                                  string device_id,
+                                                  string latest_type)
         {
             try
             {
                 string urlSegment = "models";
+                List<string> options = new List<string>();
 
                 if (!string.IsNullOrEmpty(model_id))
                 {
-                    urlSegment += $"?model_id={model_id}";
+                    options.Add($"model_id={model_id}");
                 }
+
+                if (!string.IsNullOrEmpty(comment))
+                {
+                    options.Add($"comment={comment}");
+                }
+
+                if (!string.IsNullOrEmpty(project_name))
+                {
+                    options.Add($"project_name={project_name}");
+                }
+
+                if (!string.IsNullOrEmpty(model_platform))
+                {
+                    options.Add($"model_platform={model_platform}");
+                }
+
+                if (!string.IsNullOrEmpty(project_type))
+                {
+                    options.Add($"project_type={project_type}");
+                }
+
+                if (!string.IsNullOrEmpty(device_id))
+                {
+                    options.Add($"device_id={device_id}");
+                }
+
+                if (!string.IsNullOrEmpty(latest_type))
+                {
+                    options.Add($"latest_type={latest_type}");
+                }
+
+                if (options.Count > 0)
+                {
+                    for (int index = 0; index < options.Count; index++)
+                    {
+                        if (index == 0)
+                        {
+                            urlSegment += $"?{options[index]}";
+                        }
+                        else
+                        {
+                            urlSegment += $"&{options[index]}";
+                        }
+                    }
+                }
+
                 var response = await SendGet(urlSegment);
 
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
+
                 return Ok(Json(jsonString));
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -353,10 +405,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -376,10 +427,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -399,10 +449,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         #endregion
@@ -441,8 +490,8 @@ namespace SonyIMX500.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 #if POST
         //
@@ -491,9 +540,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -521,9 +570,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -545,9 +594,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -569,9 +618,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -593,9 +642,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -617,9 +666,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -641,9 +690,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 #endif
         //
@@ -717,7 +766,6 @@ namespace SonyIMX500.Controllers
                         {
                             urlSegment += $"&{options[index]}";
                         }
-
                     }
                 }
 
@@ -729,8 +777,8 @@ namespace SonyIMX500.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -836,8 +884,8 @@ namespace SonyIMX500.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
             //
@@ -858,8 +906,8 @@ namespace SonyIMX500.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
 
         //
@@ -880,9 +928,8 @@ namespace SonyIMX500.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
-            return BadRequest();
         }
 
         #endregion

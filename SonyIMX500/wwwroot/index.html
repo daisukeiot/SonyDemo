@@ -410,12 +410,12 @@
                                                                     </div>
                                                                     <div id="accordionConvertAiModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="newProjectDiv">
+                                                                            <div id="convertModelDiv">
                                                                                 <label for="convertModelId">Model ID</label>
-                                                                                <input type="text" name="convertModelId" class="form-control" id="convertModelId" placeholder="Enter Target Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                                <select name="convertModelId" id="convertModelId" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                 <label for="convertDeviceId">Device ID (Optional)</label>
-                                                                                <input type="text" name="convertDeviceId" class="form-control" id="convertDeviceId" placeholder="Specify device id when the Device model is the target. Do not specify it when target is a base model." value="">
+                                                                                <select name="convertDeviceId" id="convertDeviceId" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -437,10 +437,10 @@
                                                                         <div class="card-body">
                                                                             <div id="publishModelDiv">
                                                                                 <label for="publishModelId">Model ID</label>
-                                                                                <input type="text" name="publishModelId" class="form-control" id="publishModelId" placeholder="Enter Target Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                                <select name="publishModelId" id="publishModelId" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                 <label for="publishModelDeviceId">Device ID (Optional)</label>
-                                                                                <input type="text" name="publishModelDeviceId" class="form-control" id="publishModelDeviceId" placeholder="Specify device id when the Device model is the target. Do not specify it when target is a base model." value="">
+                                                                                <select name="publishModelDeviceId" id="publishModelDeviceId" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -453,97 +453,120 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPeployPrep">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCreatePeploy">
                                                                                 Step 7 : Prepare Deployment
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionPeployPrep" class="collapse" data-parent="#accordion">
-                                                                        <div class="card-body">
-                                                                            <div id="prepDeployDiv">
-                                                                                <label for="createDeployConfigId">Model ID</label>
-                                                                                <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
+                                                                    <div id="accordionCreatePeploy" class="collapse" data-parent="#accordion">
+                                                                        <form id="deployPrepForm">
+                                                                            <div class="card-body">
+                                                                                <div id="prepDeployDiv">
+                                                                                    <label for="createDeployConfigId">Config ID</label>
+                                                                                    <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
 
-                                                                                <label for="createDeploySensorLoaderVer">SensorLoader version number</label>
-                                                                                <!-- to do : convert to list-->
-                                                                                <input type="text" name="createDeploySensorLoaderVer" class="form-control" id="createDeploySensorLoaderVer" placeholder="Specify device id when the Device model is the target. Do not specify it when target is a base model." value="">
+                                                                                    <label for="createDeploySensorLoaderVer">SensorLoader version number</label>
+                                                                                    <select name="createDeploySensorLoaderVer" id="createDeploySensorLoaderVer" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="createDeploySensorVer">Sensor version number</label>
-                                                                                <!-- to do : convert to list-->
-                                                                                <input type="text" name="createDeploySensorVer" class="form-control" id="createDeploySensorVer" placeholder="Specify SensorLoader version number." value="">
+                                                                                    <label for="createDeploySensorVer">Sensor version number</label>
+                                                                                    <select name="createDeploySensorVer" id="createDeploySensorVer" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="createDeployModelId">Model ID</label>
-                                                                                <!-- to do : convert to list-->
-                                                                                <input type="text" name="createDeployModelId" class="form-control" id="createDeployModelId" placeholder="Specify Sensor version number." value="">
+                                                                                    <label for="createDeployModelId">Model ID</label>
+                                                                                    <select name="createDeployModelId" id="createDeployModelId" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="createDeployAppFwVer">ApFw version number</label>
-                                                                                <!-- to do : convert to list-->
-                                                                                <input type="text" name="createDeployAppFwVer" class="form-control" id="createDeployAppFwVer" placeholder="Specify ApFw version number." value="">
+                                                                                    <label for="createDeployAppFwVer">ApFw version number</label>
+                                                                                    <select name="createDeployAppFwVer" id="createDeployAppFwVer" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="createDeployComment">Comment (Optional)</label>
-                                                                                <input type="text" name="createDeployComment" class="form-control" id="createDeployComment" placeholder="Description. Less than 100 characters." value="">
+                                                                                    <label for="createDeployComment">Comment (Optional)</label>
+                                                                                    <input type="text" name="createDeployComment" class="form-control" id="createDeployComment" placeholder="Description. Less than 100 characters." value="">
 
-                                                                                <label for="createDeployDeviceType">Device Type (Optional)</label>
-                                                                                <select name="createDeployDeviceType" id="createDeployDeviceType" class="form-control">
-                                                                                    <option value="00">MPU Based (Type4)</option>
-                                                                                    <option value="01">MCU Bsed (Type3)</option>
-                                                                                </select>
+                                                                                    <label for="createDeployDeviceType">Device Type (Optional)</label>
+                                                                                    <select name="createDeployDeviceType" id="createDeployDeviceType" class="form-control">
+                                                                                        <option disabled selected>Select Device Type</option>
+                                                                                        <option value="00">MPU Based (Type4)</option>
+                                                                                        <option value="01">MCU Bsed (Type3)</option>
+                                                                                    </select>
 
-                                                                                <label for="createDeployModelVer">Model Version Number (Optional)</label>
-                                                                                <input type="text" name="createDeployModelVer" class="form-control" id="createDeployModelVer" placeholder="Model version number." value="">
+                                                                                    <label for="createDeployModelVer">Model Version Number (Optional)</label>
+                                                                                    <input type="text" name="createDeployModelVer" class="form-control" id="createDeployModelVer" placeholder="Model version number." value="">
 
-                                                                                <label for="createDeployColorMatrixMode">Color Matrix Mode (Optional)</label>
-                                                                                <select name="createDeployColorMatrixMode" id="createDeployColorMatrixMode" class="form-control">
-                                                                                    <option>none</option>
-                                                                                    <option>std</option>
-                                                                                    <option>custom</option>
-                                                                                </select>
+                                                                                    <label for="createDeployColorMatrixMode">Color Matrix Mode (Optional)</label>
+                                                                                    <select name="createDeployColorMatrixMode" id="createDeployColorMatrixMode" class="form-control">
+                                                                                        <option disabled selected>Select Matrix Mode</option>
+                                                                                        <option>none</option>
+                                                                                        <option>std</option>
+                                                                                        <option>custom</option>
+                                                                                    </select>
 
-                                                                                <label for="createDeployColorMatrixFileName">Color Matrix File Name (Optional)</label>
-                                                                                <input type="text" name="createDeployColorMatrixFileName" class="form-control" id="createDeployColorMatrixFileName" placeholder="Color tone adjustment Custom settings file (bin) name." value="">
+                                                                                    <label for="createDeployColorMatrixFileName">Color Matrix File Name (Optional)</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="custom-file">
+                                                                                            <input type="file" name="createDeployColorMatrixFileName" class="custom-file-input" id="createDeployColorMatrixFileName">
+                                                                                            <label class="custom-file-label" for="createDeployColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                                        </div>
+                                                                                    </div>
 
-                                                                                <label for="createDeployGammaMode">Gamma Mode (Optional)</label>
-                                                                                <select name="createDeployGammaMode" id="createDeployGammaMode" class="form-control">
-                                                                                    <option>none</option>
-                                                                                    <option>std</option>
-                                                                                    <option>custom</option>
-                                                                                </select>
+                                                                                    <label for="createDeployGammaMode">Gamma Mode (Optional)</label>
+                                                                                    <select name="createDeployGammaMode" id="createDeployGammaMode" class="form-control">
+                                                                                        <option disabled selected>Select Gamma Mode</option>
+                                                                                        <option>none</option>
+                                                                                        <option>std</option>
+                                                                                        <option>custom</option>
+                                                                                    </select>
 
-                                                                                <label for="createDeployGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
-                                                                                <input type="text" name="createDeployGammaFileName" class="form-control" id="createDeployGammaFileName" placeholder="Gamma Correction Custom settings file (bin) name." value="">
+                                                                                    <label for="createDeployGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="custom-file">
+                                                                                            <input type="file" name="createDeployGammaFileName" class="custom-file-input" id="createDeployGammaFileName">
+                                                                                            <label class="custom-file-label" for="createDeployGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                                        </div>
+                                                                                    </div>
 
-                                                                                <label for="createDeployLscMode">LSC Correction Camera Settings (Optional)</label>
-                                                                                <select name="createDeployLscMode" id="createDeployLscMode" class="form-control">
-                                                                                    <option>none</option>
-                                                                                    <option>std</option>
-                                                                                    <option>custom</option>
-                                                                                </select>
+                                                                                    <label for="createDeployLscMode">LSC Correction Camera Settings (Optional)</label>
+                                                                                    <select name="createDeployLscMode" id="createDeployLscMode" class="form-control">
+                                                                                        <option disabled selected>Select LSC Mode</option>
+                                                                                        <option>none</option>
+                                                                                        <option>std</option>
+                                                                                        <option>custom</option>
+                                                                                    </select>
 
-                                                                                <label for="createDeployLscModeFile">LSC Correction Camera Settings File (bin) name (Optional)</label>
-                                                                                <input type="text" name="createDeployLscModeFile" class="form-control" id="createDeployLscModeFile" placeholder="LSC Correction Camera Settings file (bin) name." value="">
+                                                                                    <label for="createDeployLscModeFile">LSC Correction Camera Settings File (bin) name (Optional)</label>
+                                                                                    <input type="text" name="createDeployLscModeFile" class="form-control" id="createDeployLscModeFile" placeholder="LSC Correction Camera Settings file (bin) name." value="">
 
-                                                                                <label for="createDeployPrewbMode">PreWB adjustment value Camera settings (bin) type. (Optional)</label>
-                                                                                <select name="createDeployPrewbMode" id="createDeployPrewbMode" class="form-control">
-                                                                                    <option>none</option>
-                                                                                    <option>std</option>
-                                                                                    <option>custom</option>
-                                                                                </select>
+                                                                                    <label for="createDeployPrewbMode">PreWB adjustment value Camera settings. (Optional)</label>
+                                                                                    <select name="createDeployPrewbMode" id="createDeployPrewbMode" class="form-control">
+                                                                                        <option disabled selected>Select PreWB Mode</option>
+                                                                                        <option>none</option>
+                                                                                        <option>std</option>
+                                                                                        <option>custom</option>
+                                                                                    </select>
 
-                                                                                <label for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) name (Optional)</label>
-                                                                                <input type="text" name="createDeployPrewbModeFile" class="form-control" id="createDeployPrewbModeFile" placeholder="PreWB adjustment value Camera settings (bin) file." value="">
+                                                                                    <label for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) name (Optional)</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="custom-file">
+                                                                                            <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
+                                                                                            <label class="custom-file-label" for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                                        </div>
+                                                                                    </div>
 
-                                                                                <label for="createDeployDewarpMode">Distortion correction Camera settings(bin)type. (Optional)</label>
-                                                                                <select name="createDeployDewarpMode" id="createDeployDewarpMode" class="form-control">
-                                                                                    <option>none</option>
-                                                                                    <option>std</option>
-                                                                                    <option>custom</option>
-                                                                                </select>
+                                                                                    <label for="createDeployDewarpMode">Distortion correction Camera settings(bin)type. (Optional)</label>
+                                                                                    <select name="createDeployDewarpMode" id="createDeployDewarpMode" class="form-control">
+                                                                                        <option disabled selected>Select Distortion Correction Type</option>
+                                                                                        <option>none</option>
+                                                                                        <option>std</option>
+                                                                                        <option>custom</option>
+                                                                                    </select>
 
-                                                                                <label for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name. (Optional)</label>
-                                                                                <input type="text" name="createDeployPrewbModeFile" class="form-control" id="createDeployPrewbModeFile" placeholder="Distortion correction Custom settings file(bin)name." value="">
-
+                                                                                    <label for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name. (Optional)</label>
+                                                                                    <div class="input-group">
+                                                                                        <div class="custom-file">
+                                                                                            <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
+                                                                                            <label class="custom-file-label" for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name.</label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
-                                                                        </div>
+                                                                        </form>
                                                                         <div class="card-footer">
                                                                             <button type="button" class="btn btn-success" id="btnCreateDeployConfiguration" disabled>
                                                                                 <i class="fas fa-external-link-alt"></i> Create Deploy Configuraion
@@ -565,15 +588,14 @@
                                                                                 <label for="deployConfigId">Config ID</label>
                                                                                 <input type="text" name="deployConfigId" class="form-control" id="deployConfigId" placeholder="configID. Less than 20 characters." value="">
 
-                                                                                <label for="deployDeviceId">Device IDs</label>
-                                                                                <!-- ToDO Convert to multi select list-->
-                                                                                <input type="text" name="deployDeviceId" class="form-control" id="deployDeviceId" placeholder="DeviceID. Specify multiple DeviceID by separating it with commas." value="">
+                                                                                <label for="deployDeviceId">Device ID</label>
+                                                                                <select name="deployDeviceId" id="deployDeviceId" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                 <label for="deployComment">Comment (Optional)</label>
                                                                                 <input type="text" name="deployComment" class="form-control" id="deployComment" placeholder="Description. Less than 100 characters." value="">
 
                                                                                 <label for="deployReplaceModelID">Model ID to replace (Optional)</label>
-                                                                                <input type="text" name="deployReplaceModelID" class="form-control" id="deployReplaceModelID" placeholder="Specify the ModelID to be replaced." value="">
+                                                                                <select name="deployReplaceModelID" id="deployReplaceModelID" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                             </div>
                                                                         </div>
@@ -596,32 +618,31 @@
                                                                         <div class="card-body">
                                                                             <div id="startStopInferenceDiv">
                                                                                 <label for="startInferenceDeviceId">Device ID</label>
-                                                                                <input type="text" name="startInferenceDeviceId" class="form-control" id="startInferenceDeviceId" placeholder="Device ID." value="">
+                                                                                <select name="startInferenceDeviceId" id="startInferenceDeviceId" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                 <label for="startInferenceFrequency">Frequency of Inference (Optional)</label>
-                                                                                <input type="number" name="startInferenceFrequency" class="form-control" id="startInferenceFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="" min="1", max="2592000">
+                                                                                <input type="number" name="startInferenceFrequency" class="form-control" id="startInferenceFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="" min="1" , max="2592000">
 
                                                                                 <label for="startInferenceMaxDetection">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value=""  min="1", max="64">
+                                                                                <input type="number" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="64">
 
                                                                                 <label for="startInferenceCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropHOffset" class="form-control" id="startInferenceCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0", max="4056">
+                                                                                <input type="number" name="startInferenceCropHOffset" class="form-control" id="startInferenceCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
 
                                                                                 <label for="startInferenceCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropVOffset" class="form-control" id="startInferenceCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0", max="3040">
+                                                                                <input type="number" name="startInferenceCropVOffset" class="form-control" id="startInferenceCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
 
                                                                                 <label for="startInferenceCropHSize">Hsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropHSize" class="form-control" id="startInferenceCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0", max="4056">
+                                                                                <input type="number" name="startInferenceCropHSize" class="form-control" id="startInferenceCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
 
                                                                                 <label for="startInferenceCropVSize">Vsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropVSize" class="form-control" id="startInferenceCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0", max="3040">
+                                                                                <input type="number" name="startInferenceCropVSize" class="form-control" id="startInferenceCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
 
                                                                                 <label for="startInferenceNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="number" name="startInferenceNumberOfInferencesPerMessage" class="form-control" id="startInferenceNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value=""  min="1", max="100">
+                                                                                <input type="number" name="startInferenceNumberOfInferencesPerMessage" class="form-control" id="startInferenceNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="100">
 
                                                                                 <label for="startInferenceModelId">Model ID (Optional)</label>
-                                                                                <input type="text" name="startInferenceModelId" class="form-control" id="startInferenceModelId" placeholder="Target Model ID" value="">
-
+                                                                                <select name="startInferenceModelId" id="startInferenceModelId" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -637,56 +658,57 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartStopCapture">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartStopUploadRetrainingData">
                                                                                 Step 10 : Start/Stop Uploading Retraining Data
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionStartStopCapture" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionStartStopUploadRetrainingData" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="startUploadRetrainingDataDiv">
                                                                                 <label for="startUploadRetrainingDataDeviceId">Device ID</label>
-                                                                                <!-- to do : Convert to list -->
-                                                                                <input type="text" name="startUploadRetrainingDataDeviceId" class="form-control" id="startUploadRetrainingDataDeviceId" placeholder="Enter Target Device ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                                <select name="startUploadRetrainingDataDeviceId" id="startUploadRetrainingDataDeviceId" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                 <label for="startUploadRetrainingDataMode">Collection mode (Optional)</label>
                                                                                 <select name="startUploadRetrainingDataMode" id="startUploadRetrainingDataMode" class="form-control">
+                                                                                    <option disabled selected>Select Collection Mode</option>
                                                                                     <option value="0">Image</option>
                                                                                     <option value="1">image & Inference results metadata</option>
                                                                                 </select>
 
                                                                                 <label for="startUploadRetrainingDataFileFormat">Image file format (Optional)</label>
                                                                                 <select name="startUploadRetrainingDataFileFormat" id="startUploadRetrainingDataFileFormat" class="form-control">
+                                                                                    <option disabled selected>Select Image File Format</option>
                                                                                     <option value="JPG">JPEG</option>
                                                                                     <option value="BMP">Bitmap (BMP)</option>
                                                                                 </select>
 
                                                                                 <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
 
                                                                                 <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040"  min="0" max="3040">
 
                                                                                 <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056"  min="0" max="4056">
 
                                                                                 <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040"  min="0" max="3040">
 
                                                                                 <label for="startUploadRetrainingDataNumImages">Number of Image crop (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000" min="0" max="10000">
 
                                                                                 <label for="startUploadRetrainingDataFrequency">Frequency of fetching images (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataFrequency" class="form-control" id="startUploadRetrainingDataFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataFrequency" class="form-control" id="startUploadRetrainingDataFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" min="1" max="2592000">
 
                                                                                 <label for="startUploadRetrainingDataMaxDetection">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="">
+                                                                                <input type="number" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" min="1" max="64">
 
-                                                                                <label for="startUploadRetrainingDataNumInference">Model ID (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataNumInference" class="form-control" id="startUploadRetrainingDataNumInference" placeholder="Target Model ID" value="">
+                                                                                <label for="startUploadRetrainingDataNumInference">Number of inference results to include in one message. (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataNumInference" class="form-control" id="startUploadRetrainingDataNumInference" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100" min="1" max="100">
 
                                                                                 <label for="startUploadRetrainingDataModelId">Model ID (Optional)</label>
-                                                                                <input type="text" name="startUploadRetrainingDataModelId" class="form-control" id="startUploadRetrainingDataModelId" placeholder="Target Model ID" value="">
+                                                                                <select name="startUploadRetrainingDataModelId" id="startUploadRetrainingDataModelId" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -802,6 +824,8 @@
                 .catch(console.error);
 
         })
+
+
         //
         // button clicks
         //
@@ -816,8 +840,6 @@
         })
 
         $('#btnPasteToken').click(function () {
-
-
 
             navigator.clipboard.readText()
                 .then(clipText => {
@@ -919,13 +941,48 @@
             GetCustomVisionProjects();
         })
 
-        $('#accordionCustomVision').on('hide.bs.collapse', function () {
-            console.log("accordionCustomVision hidden");
+        $('#accordionBuildCustomVisionModel').on('show.bs.collapse', function () {
+            console.log("accordionBuildCustomVisionModel show");
         })
 
         $('#accordionSaveAiModel').on('show.bs.collapse', function () {
             console.log("accordionSaveAiModel show : " + currentCvProject);
             $('#spanCVProjectName').html(currentCvProject);
+        })
+
+        $('#accordionConvertAiModel').on('show.bs.collapse', function () {
+            console.log("accordionConvertAiModel show : " + currentCvProject);
+            GetAllModels("convertModelId");
+            GetDevices("convertDeviceId");
+        })
+
+        $('#accordionPublishAiModel').on('show.bs.collapse', function () {
+            console.log("accordionPublishAiModel show : " + currentCvProject);
+            GetAllModels("publishModelId");
+            GetDevices("publishModelDeviceId");
+        })
+
+        $('#accordionCreatePeploy').on('show.bs.collapse', function () {
+            console.log("accordionCreatePeploy show : " + currentCvProject);
+            GetAllModels("createDeployModelId");
+        })
+
+        $('#accordionPeploy').on('show.bs.collapse', function () {
+            console.log("accordionPeploy show");
+            GetAllModels("deployReplaceModelID");
+            GetDevices("deployDeviceId");
+        })
+
+        $('#accordionStartStopInference').on('show.bs.collapse', function () {
+            console.log("accordionStartStopInference show : " + currentCvProject);
+            GetDevices("startInferenceDeviceId");
+            GetAllModels("startInferenceModelId");
+        })
+
+        $('#accordionStartStopUploadRetrainingData').on('show.bs.collapse', function () {
+            console.log("accordionStartStopUploadRetrainingData show : " + currentCvProject);
+            GetDevices("startUploadRetrainingDataDeviceId");
+            GetAllModels("startUploadRetrainingDataModelId");
         })
 
         //
@@ -953,6 +1010,31 @@
 
             }
         })
+
+        $('#convertModelId').on('change', function () {
+            var list = document.getElementById('convertModelId');
+            console.log("convertModelId change : " + list[list.selectedIndex].value);
+            if (list[list.selectedIndex].value != 0) {
+                $('#btnConvertModel').prop('disabled', false);
+            }
+            else {
+                $('#btnConvertModel').prop('disabled', true);
+
+            }
+        })
+
+        $('#publishModelId').on('change', function () {
+            var list = document.getElementById('publishModelId');
+            console.log("publishModelId change : " + list[list.selectedIndex].value);
+            if (list[list.selectedIndex].value != 0) {
+                $('#btnPublishModel').prop('disabled', false);
+            }
+            else {
+                $('#btnPublishModel').prop('disabled', true);
+
+            }
+        })
+
     </script>
 
     <script id="event-template" type="text/x-handlebars-template">

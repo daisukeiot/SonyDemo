@@ -197,7 +197,7 @@ async function CreateCustomVisionProject() {
         AddApiOutput(result.value);
 
     } catch (err) {
-        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -238,7 +238,7 @@ async function StartUploadInferenceResult() {
         AddApiOutput(result.value);
 
     } catch (err) {
-        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -263,7 +263,7 @@ async function StopUploadInferenceResult() {
         AddApiOutput(result.value);
 
     } catch (err) {
-        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -310,7 +310,7 @@ async function StartUploadRetrainingData() {
         AddApiOutput(result.value);
 
     } catch (err) {
-        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -335,6 +335,91 @@ async function StopUploadRetrainingData() {
         AddApiOutput(result.value);
 
     } catch (err) {
-        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+    }
+}
+
+async function GetDevices(listElement) {
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetDevices',
+            data: {}
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput(result.value);
+
+        if (listElement) {
+            var json = JSON.parse(result.value);
+
+            var list = document.getElementById(listElement);
+            list.innerText = null;
+            var option = new Option("Select from list", null);
+            option.disabled = true;
+            list.append(option);
+            for (var device in json.devices) {
+              list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
+            }
+            list.options[0].selected = true;
+        }
+    } catch (err) {
+        alert("GetDevices() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+    }
+}
+
+async function GetAllModels(listElement) {
+
+    try {
+        resp = await GetModels(null, null, null, null, null, null, null, listElement);
+    } catch (err) {
+        alert("GetAllModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+    }
+}
+
+async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement) {
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetModels',
+            data: {
+                model_id: model_id,
+                comment: comment,
+                project_name: project_name,
+                model_platform: model_platform,
+                project_type: project_type,
+                device_id: device_id,
+                latest_type: latest_type
+            }
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput(result.value);
+
+        if (listElement) {
+            var json = JSON.parse(result.value);
+
+            var list = document.getElementById(listElement);
+            list.innerText = null;
+            var option = new Option("Select from list", null);
+            option.disabled = true;
+            list.append(option);
+            for (var project in json.models[0].projects) {
+                list.append(new Option(json.models[0].projects[project].model_project_name, json.models[0].projects[project].model_project_name));
+            }
+            list.options[0].selected = true;
+        }
+    } catch (err) {
+        alert("GetModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
