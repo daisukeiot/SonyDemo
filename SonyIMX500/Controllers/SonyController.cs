@@ -65,9 +65,14 @@ namespace SonyIMX500.Controllers
         [HttpPost]
         public bool PostToken(string token)
         {
-            ViewData["Token"] = token;
-            _token = token;
-            return true;
+            if (token != null)
+            {
+                ViewData["Token"] = token;
+                _token = token;
+                return true;
+            }
+
+            return false;
         }
 
         #region SONYAPIGET
@@ -717,9 +722,8 @@ namespace SonyIMX500.Controllers
                 }
 
                 var response = await SendPost(urlSegment);
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
+                
                 return Ok(Json(jsonString));
             }
             catch (Exception ex)

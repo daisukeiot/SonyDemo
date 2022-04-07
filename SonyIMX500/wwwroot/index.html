@@ -789,7 +789,7 @@
 
             hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("telemetryHub")
-                .configureLogging(signalR.LogLevel.Trace)
+                .configureLogging(signalR.LogLevel.Information)
                 .build();
 
             hubConnection.on('DeviceTelemetry', function (payload) {
@@ -816,7 +816,17 @@
         })
 
         $('#btnPasteToken').click(function () {
-            document.getElementById('taToken').value = navigator.clipboard.readText();
+
+
+
+            navigator.clipboard.readText()
+                .then(clipText => {
+                    document.getElementById('taToken').value = clipText;
+                    document.getElementById('taToken').dispatchEvent(new Event("change"));
+                })
+                .catch(err => {
+                    console.log("Could not read clipboard", err);
+                });
         })
         
 
