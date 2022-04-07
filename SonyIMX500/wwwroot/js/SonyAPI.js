@@ -200,3 +200,69 @@ async function CreateCustomVisionProject() {
         alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
     }
 }
+
+async function StartUploadInferenceResult() {
+
+    try {
+        var device_id = document.getElementById("startInferenceDeviceId").value;
+        var FrequencyOfInferences = document.getElementById("startInferenceFrequency").value;
+        var MaxDetectionsPerFrame = document.getElementById("startUploadRetrainingDataMaxDetection").value;
+        var CropHOffset = document.getElementById("startInferenceCropHOffset").value;
+        var CropVOffset = document.getElementById("startInferenceCropVOffset").value;
+        var CropHSize = document.getElementById("startInferenceCropHSize").value;
+        var CropVSize = document.getElementById("startInferenceCropVSize").value;
+        var NumberOfInferencesPerMessage = document.getElementById("startInferenceNumberOfInferencesPerMessage").value;
+        var model_id = document.getElementById("startInferenceModelId").value;
+
+        const result = await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.href + 'sony/StartUploadInferenceResult',
+            data: {
+                device_id: device_id,
+                FrequencyOfInferences: FrequencyOfInferences,
+                MaxDetectionsPerFrame: MaxDetectionsPerFrame,
+                CropHOffset: CropHOffset,
+                CropVOffset: CropVOffset,
+                CropHSize: CropHSize,
+                CropVSize: CropVSize,
+                NumberOfInferencesPerMessage: NumberOfInferencesPerMessage,
+                model_id: model_id
+            },
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput(result.value);
+
+    } catch (err) {
+        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+    }
+}
+
+async function StopUploadInferenceResult() {
+
+    try {
+        var device_id = document.getElementById("startInferenceDeviceId").value;
+
+        const result = await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.href + 'sony/StopUploadInferenceResult',
+            data: {
+                device_id: device_id
+            },
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput(result.value);
+
+    } catch (err) {
+        alert("customvision_base() : Error (" + err.status + ") " + err.statusText);
+    }
+}
