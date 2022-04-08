@@ -1,9 +1,6 @@
-﻿async function GetCustomVisionProjects() {
+﻿async function GetCustomVisionProjects(listElementId) {
 
     try {
-        var list = document.getElementById("listCustomVisionProjects");
-        list.innerText = null;
-        list.append(new Option("", 0));
 
         const result = await $.ajax({
             async: true,
@@ -16,15 +13,29 @@
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput('customvision/GetProjects', result.value);
 
-        var json = JSON.parse(result.value);
+        if (listElementId) {
+            var json = JSON.parse(result.value);
 
-        json.forEach(project => {
-            list.append(new Option(project.name, project.id));
-        });
+            var list = document.getElementById(listElementId);
+            list.innerText = null;
+            var option = new Option("Select from list", null);
+            option.disabled = true;
+
+            list.append(option);
+
+            json.forEach(project => {
+                list.append(new Option(project.name, project.id));
+            });
+
+            list.selectedIndex = 0;
+            list.blur();
+        }
+
+
     } catch (err) {
-        alert("GetModels() : Error (" + err.status + ") " + err.statusText);
+        alert("GetCustomVisionProjects() : Error (" + err.status + ") " + err.statusText);
     }
 }
 

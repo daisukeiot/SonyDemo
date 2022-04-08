@@ -208,6 +208,10 @@
                                 <div class="card-body">
                                     <div class="tab-content" id="tab-main">
                                         <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
+                                            <!-- Summary -->
+                                            <div class="row">
+                                            </div>
+
                                             <!-- Progress Bar -->
                                             <div class="row">
                                                 <div class="col-md-10">
@@ -284,9 +288,9 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="card-footer">
-                                                                                <a class="btn btn-success" id="btnLogin">
+                                                                                <button type="button" class="btn btn-success" id="btnLogin">
                                                                                     <i class="fas fa-sign-in-alt"></i> Login
-                                                                                </a>
+                                                                                </button>
                                                                                 <div class="info-box-text" style="float:right">
                                                                                     <label for="loginResult">Result</label>
                                                                                     <span class="info-box-text" id='loginResult' style="display:contents; min-width:10em; width: 10em"></span>
@@ -378,28 +382,33 @@
                                                                     </div>
                                                                     <div id="accordionSaveAiModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="newProjectDiv">
-                                                                                <label for="spanCVProjectName" class="label-right">Project Name : </label>
-                                                                                <div class="info-box-text" id='spanCVProjectName'></div>
+                                                                            <div id="saveModelDiv">
+                                                                                <div class="info-box-text">
+                                                                                    <label for="saveModelProjectList">Project List</label>
+                                                                                </div>
+                                                                                <div id="projectListDiv">
+                                                                                    <select id="saveModelProjectList" class="form-control select2" style="width: 100%;">
+                                                                                    </select>
+                                                                                </div>
 
-                                                                                <label for="newModelId">Model ID (Optional)</label>
-                                                                                <input type="text" name="newModelId" class="form-control" id="newModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                                <label for="saveModelModelId">Model ID (Optional)</label>
+                                                                                <input type="text" name="saveModelModelId" class="form-control" id="saveModelModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
 
-                                                                                <label for="newModelInitVersion">Initial Version Number (Optional)</label>
-                                                                                <input type="text" name="newModelInitVersion" class="form-control" id="newModelInitVersion" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="">
+                                                                                <label for="saveModelInitialVersion">Initial Version Number (Optional)</label>
+                                                                                <input type="text" name="saveModelInitialVersion" class="form-control" id="saveModelInitialVersion" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="">
 
-                                                                                <label for="newModelFunctionality">Functionality (Optional)</label>
-                                                                                <input type="text" name="newModelFunctionality" class="form-control" id="newModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                                <label for="saveModelFunctionality">Functionality (Optional)</label>
+                                                                                <input type="text" name="saveModelFunctionality" class="form-control" id="saveModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
 
-                                                                                <label for="newModelVendorName">Vendor Name (Optional)</label>
-                                                                                <input type="text" name="newModelVendorName" class="form-control" id="newModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                                <label for="saveModelVendorName">Vendor Name (Optional)</label>
+                                                                                <input type="text" name="saveModelVendorName" class="form-control" id="saveModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
 
-                                                                                <label for="newModelComment">Comment (Optional)</label>
-                                                                                <input type="text" name="newModelComment" class="form-control" id="newModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                                <label for="saveModelComment">Comment (Optional)</label>
+                                                                                <input type="text" name="saveModelComment" class="form-control" id="saveModelComment" placeholder="Description. Within 100 characters." value="">
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnSaveCVModel" disabled>
+                                                                            <button type="button" class="btn btn-success" id="btnSaveModel" disabled>
                                                                                 <i class="fas fa-external-link-alt"></i> Save Custom Vision model.
                                                                             </button>
                                                                         </div>
@@ -416,11 +425,11 @@
                                                                     <div id="accordionConvertAiModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="convertModelDiv">
-                                                                                <label for="convertModelId">Model ID</label>
-                                                                                <select name="convertModelId" id="convertModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="convertModelModelList">Model ID</label>
+                                                                                <select name="convertModelModelList" id="convertModelModelList" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="convertDeviceId">Device ID (Optional)</label>
-                                                                                <select name="convertDeviceId" id="convertDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="convertModelDeviceList">Device ID (Optional)</label>
+                                                                                <select name="convertModelDeviceList" id="convertModelDeviceList" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -441,11 +450,11 @@
                                                                     <div id="accordionPublishAiModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="publishModelDiv">
-                                                                                <label for="publishModelId">Model ID</label>
-                                                                                <select name="publishModelId" id="publishModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="publishModelModelList">Model ID</label>
+                                                                                <select name="publishModelModelList" id="publishModelModelList" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="publishModelDeviceId">Device ID (Optional)</label>
-                                                                                <select name="publishModelDeviceId" id="publishModelDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="publishModelDeviceList">Device ID (Optional)</label>
+                                                                                <select name="publishModelDeviceList" id="publishModelDeviceList" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -459,14 +468,14 @@
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
                                                                             <a class="d-block w-100" data-toggle="collapse" href="#accordionCreatePeploy">
-                                                                                Step 7 : Prepare Deployment
+                                                                                Step 7 : Create Deployment
                                                                             </a>
                                                                         </h4>
                                                                     </div>
                                                                     <div id="accordionCreatePeploy" class="collapse" data-parent="#accordion">
-                                                                        <form id="deployPrepForm">
+                                                                        <form id="createDeploymentForm">
                                                                             <div class="card-body">
-                                                                                <div id="prepDeployDiv">
+                                                                                <div id="createDeploymentDiv">
                                                                                     <label for="createDeployConfigId">Config ID</label>
                                                                                     <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
 
@@ -750,7 +759,9 @@
                                                 </div>
                                             </div>
                                             <div class="card-footer">
-                                                <button type="button" id="btnClearTelemetryTable" class="btn btn-danger"><i class="far fa-trash-alt"></i>Clear Events</button>
+                                                <button type="button" class="btn btn-danger" id="btnClearTelemetryTable">
+                                                    <i class="far fa-trash-alt"></i>Clear Events
+                                                </button>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-telemetry-label">
@@ -909,14 +920,12 @@
             }
         })
 
-
-
         $('#btnClearApiOutput').click(function () {
             document.getElementById('taApiOutput').value = null;
         })
 
-        $('#btnSaveCVModel').click(function () {
-            console.debug("btnSaveCVModel Click");
+        $('#btnSaveModel').click(function () {
+            console.debug("btnSaveModel Click");
         })
 
         $('#btnConvertModel').click(function () {
@@ -1008,7 +1017,7 @@
 
         $('#accordionCustomVision').on('show.bs.collapse', function () {
             console.log("accordionCustomVision show");
-            GetCustomVisionProjects();
+            //GetCustomVisionProjects();
         })
 
         $('#accordionBuildCustomVisionModel').on('show.bs.collapse', function () {
@@ -1017,19 +1026,19 @@
 
         $('#accordionSaveAiModel').on('show.bs.collapse', function () {
             console.log("accordionSaveAiModel show : " + currentCvProject);
-            $('#spanCVProjectName').html(currentCvProject);
+            GetCustomVisionProjects("saveModelProjectList");
         })
 
         $('#accordionConvertAiModel').on('show.bs.collapse', function () {
             console.log("accordionConvertAiModel show : " + currentCvProject);
-            GetAllModels("convertModelId");
-            GetDevices("convertDeviceId");
+            GetAllModels("convertModelModelList");
+            GetDevices("convertModelDeviceList");
         })
 
         $('#accordionPublishAiModel').on('show.bs.collapse', function () {
             console.log("accordionPublishAiModel show : " + currentCvProject);
-            GetAllModels("publishModelId");
-            GetDevices("publishModelDeviceId");
+            GetAllModels("publishModelModelList");
+            GetDevices("publishModelDeviceList");
         })
 
         $('#accordionCreatePeploy').on('show.bs.collapse', function () {
@@ -1087,6 +1096,10 @@
             PostToken(document.getElementById('taToken').value);
         })
 
+        //
+        // List Selected
+        //
+
         $('#listCustomVisionProjects').on('change', function () {
             var projectList = document.getElementById('listCustomVisionProjects');
             console.log("listCustomVisionProjects change : " + projectList[projectList.selectedIndex].value);
@@ -1105,21 +1118,30 @@
             }
         })
 
-        $('#convertModelId').on('change', function () {
-            var list = document.getElementById('convertModelId');
-            console.log("convertModelId change : " + list[list.selectedIndex].value);
+        //$('#saveModelProjectList').on('change', function () {
+        //    var list = document.getElementById('saveModelProjectList');
+        //    console.log("saveModelProjectList change : " + list.selectedIndex);
+        //})
+
+        $('#saveModelProjectList').on('input', function () {
+            var list = document.getElementById('saveModelProjectList');
+            console.log("saveModelProjectList input : " + list.selectedIndex);
+        })
+
+        $('#convertModelModelList').on('change', function () {
+            var list = document.getElementById('convertModelModelList');
+            console.log("convertModelModelList change : " + list[list.selectedIndex].value);
             if (list[list.selectedIndex].value != 0) {
                 $('#btnConvertModel').prop('disabled', false);
             }
             else {
                 $('#btnConvertModel').prop('disabled', true);
-
             }
         })
 
-        $('#publishModelId').on('change', function () {
-            var list = document.getElementById('publishModelId');
-            console.log("publishModelId change : " + list[list.selectedIndex].value);
+        $('#publishModelModelList').on('change', function () {
+            var list = document.getElementById('publishModelModelList');
+            console.log("publishModelModelList change : " + list[list.selectedIndex].value);
             if (list[list.selectedIndex].value != 0) {
                 $('#btnPublishModel').prop('disabled', false);
             }

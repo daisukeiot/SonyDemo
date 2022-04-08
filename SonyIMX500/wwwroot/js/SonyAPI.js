@@ -360,7 +360,7 @@ async function GetDevices(listElement) {
         if (listElement) {
             var json = JSON.parse(result.value);
 
-            var list = document.getElementById(listElement);
+            var list = document.getElementById(listElementId);
             list.innerText = null;
             var option = new Option("Select from list", null);
             option.disabled = true;
@@ -426,3 +426,51 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
     }
 }
 
+async function SaveModel() {
+
+    var project_id = document.getElementById("newModelProjectList").selectedIndex == 0 ? null : document.getElementById("newModelProjectList").value;
+    var model_id = document.getElementById("newModelId").value;
+    var init_version = document.getElementById("newModelInitVersion").value;
+    var functionality = document.getElementById("newModelFunctionality").value;
+    var verdorName = document.getElementById("newModelVendorName").value;
+    var comment = document.getElementById("newModelComment").value;
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetModels',
+            data: {
+                model_id: model_id,
+                comment: comment,
+                project_name: project_name,
+                model_platform: model_platform,
+                project_type: project_type,
+                device_id: device_id,
+                latest_type: latest_type
+            }
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+
+        AddApiOutput("GetModels", result.value);
+
+        if (listElement) {
+            var json = JSON.parse(result.value);
+
+            var list = document.getElementById(listElement);
+            list.innerText = null;
+            var option = new Option("Select from list", null);
+            option.disabled = true;
+            list.append(option);
+            for (var project in json.models[0].projects) {
+                list.append(new Option(json.models[0].projects[project].model_project_name, json.models[0].projects[project].model_project_name));
+            }
+            list.options[0].selected = true;
+        }
+    } catch (err) {
+        alert("GetModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+    }
+}
