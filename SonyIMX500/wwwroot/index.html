@@ -758,10 +758,10 @@
                                                 <div>
                                                     <div class="mb-2 row">
                                                         <div class="float-right">
-                                                            <select class="custom-select" style="width: auto;" data-sortOrder>
+                                                            <!--<select class="custom-select" style="width: auto;" data-sortOrder>
                                                                 <option value="index"> Sort by Position </option>
                                                                 <option value="sortData"> Sort by Custom Data </option>
-                                                            </select>
+                                                            </select>-->
                                                             <div class="btn-group">
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
@@ -1100,9 +1100,9 @@
     </script>
 
     <script id="image-template" type="text/x-handlebars-template">
-        <div class="filtr-item col-sm-2" data-category="1" data-sort={{deviceId}}>
+        <div class="filtr-item col-sm-1" data-category={{deviceId}} data-sort={{deviceId}}>
             <a href={{image_url}} data-toggle={{deviceId}} data-title={{image_file_name}}>
-                <img src={{image_url}} class="img-fluid mb-2" alt={{image_file_name}} />
+                <img src={{image_url}} class="img-fluid mb-1" alt={{image_file_name}} />
             </a>
         </div>
     </script>
