@@ -189,25 +189,25 @@
                                 <div class="card-header p-0 pt-1">
                                     <ul class="nav nav-tabs" id="tab-main" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="tab-setup-tab" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
+                                            <a class="nav-link active" id="tab-setup-label" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tab-telemetry-tab" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry</a>
+                                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tab-ai-result-tab" data-toggle="pill" href="#tab-ai-result" role="tab" aria-controls="tab-ai-result" aria-selected="false">AI Result</a>
+                                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-ai-result" role="tab" aria-controls="tab-ai-result" aria-selected="false">AI Result</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tab-api-output-tab" data-toggle="pill" href="#tab-api-output" role="tab" aria-controls="tab-api-output" aria-selected="false">API Output</a>
+                                            <a class="nav-link" id="tab-apiOutput-label" data-toggle="pill" href="#tab-api-output" role="tab" aria-controls="tab-api-output" aria-selected="false">API Output</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tab-other-tab" data-toggle="pill" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="false">Other</a>
+                                            <a class="nav-link" id="tab-other-label" data-toggle="pill" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="false">Other</a>
                                         </li>
                                     </ul>
                                 </div>
                                 <div class="card-body">
                                     <div class="tab-content" id="tab-main">
-                                        <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-tab">
+                                        <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
                                             <!-- Progress Bar -->
                                             <div class="row">
                                                 <div class="col-md-10">
@@ -733,7 +733,7 @@
                                             </div>
 
                                         </div>
-                                        <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-tab">
+                                        <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
                                                 <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll" ">
                                                     <table id="device-events" class="table table-striped" style="max-height: 100%">
@@ -753,7 +753,7 @@
                                                 <button type="button" id="btnClearTelemetryTable" class="btn btn-danger"><i class="far fa-trash-alt"></i>Clear Events</button>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-ai-result-tab">
+                                        <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
                                                 <div>
                                                     <div class="mb-2 row">
@@ -773,7 +773,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="tab-api-output" role="tabpanel" aria-labelledby="tab-api-output-tab">
+                                        <div class="tab-pane fade" id="tab-api-output" role="tabpanel" aria-labelledby="tab-apiOutput-label">
                                             <div class="card card-primary">
                                                 <div class="card-body">
                                                     <div>
@@ -792,7 +792,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-tab">
+                                        <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-label">
                                             placeholder for other (firmware info etc)
                                         </div>
                                     </div>
@@ -861,12 +861,6 @@
         //
         // button clicks
         //
-        $('#btnLogin').click(function () {
-            $('#loginForm').valid();
-            sonyApiAuth();
-            getToken();
-        })
-
         $('#btnCopyToken').click(function () {
             navigator.clipboard.writeText(document.getElementById('taToken').value);
         })
@@ -883,9 +877,10 @@
                 });
         })
 
-
-        $('#btnClearApiOutput').click(function () {
-            document.getElementById('taApiOutput').value = null;
+        $('#btnLogin').click(function () {
+            $('#loginForm').valid();
+            sonyApiAuth();
+            getToken();
         })
 
         $('#btnNewCustomVisionProject').click(function () {
@@ -894,11 +889,15 @@
         })
 
         $('#btnDeleteCustomVisionProjectCV').click(function () {
-            console.debug("btnDeleteCustomVisionProject Click");
+            console.debug("btnDeleteCustomVisionProjectCV Click");
             var projectList = document.getElementById('listCustomVisionProjects');
             if (projectList[projectList.selectedIndex].value != 0) {
                 DeleteCustomVisionProject(projectList[projectList.selectedIndex].value);
             }
+        })
+
+        $('#btnDeleteCustomVisionProject').click(function () {
+            console.debug("btnDeleteCustomVisionProject Click");
         })
 
         $('#btnVisitCustomVision').click(function () {
@@ -910,10 +909,30 @@
             }
         })
 
-        $('#btnClearTelemetryTable').click(function () {
-            console.debug("btnClearTelemetryTable Click");
-            $("#device-events").find("tr:gt(0)").remove();
-            $("#device-events").hide();
+
+
+        $('#btnClearApiOutput').click(function () {
+            document.getElementById('taApiOutput').value = null;
+        })
+
+        $('#btnSaveCVModel').click(function () {
+            console.debug("btnSaveCVModel Click");
+        })
+
+        $('#btnConvertModel').click(function () {
+            console.debug("btnConvertModel Click");
+        })
+
+        $('#btnPublishModel').click(function () {
+            console.debug("btnPublishModel Click");
+        })
+
+        $('#btnCreateDeployConfiguration').click(function () {
+            console.debug("btnCreateDeployConfiguration Click");
+        })
+
+        $('#btnDeployByConfiguration').click(function () {
+            console.debug("btnDeployByConfiguration Click");
         })
 
 
@@ -922,10 +941,29 @@
             StartUploadInferenceResult();
         })
 
+        $('#btnStopUploadInferenceResult').click(function () {
+            console.debug("btnStopUploadInferenceResult Click");
+        })
+
         $('#btnStartUploadRetrainingData').click(function () {
             console.debug("btnStartUploadRetrainingData Click");
             StartUploadRetrainingData();
         })
+
+        $('#btnStopUploadRetrainingData').click(function () {
+            console.debug("btnStopUploadRetrainingData Click");
+        })
+
+        $('#btnClearTelemetryTable').click(function () {
+            console.debug("btnClearTelemetryTable Click");
+            $("#device-events").find("tr:gt(0)").remove();
+            $("#device-events").hide();
+        })
+
+        $('#btnClearApiOutput').click(function () {
+            console.debug("btnClearApiOutput Click");
+        })
+
 
         //
         //form validations
@@ -1020,9 +1058,25 @@
         //
         // Tab
         //
-        $('#tab-ai-result-tab').on('show.bs.tab', function () {
-            console.log("tab-ai-result-tab show : ");
+        $('#tab-setup-label').on('show.bs.tab', function () {
+            console.log("tab-setup-label show : ");
+        })
+
+        $('#tab-telemetry-label').on('show.bs.tab', function () {
+            console.log("tab-telemetry-label show : ");
+        })
+
+        $('#tab-telemetry-label').on('show.bs.tab', function () {
+            console.log("tab-telemetry-label show : ");
             GetAllImages();
+        })
+
+        $('#tab-apiOutput-label').on('show.bs.tab', function () {
+            console.log("tab-apiOutput-label show : ");
+        })
+
+        $('#tab-other-label').on('show.bs.tab', function () {
+            console.log("tab-other-label show : ");
         })
 
         //
