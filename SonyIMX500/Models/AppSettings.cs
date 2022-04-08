@@ -12,6 +12,11 @@
         public string ConnectionString { get; set; }
     }
 
+    public class CosmosDbSetings
+    {
+        public string Uri { get; set; }
+        public string AccessKey { get; set; }   
+    }
     public class CustomVisionSettins
     {
         public string Endpoint { get; set; }
@@ -23,5 +28,6 @@
         public SonyApiSettings SonyApi {get;set;}
         public BlobSettings Blob { get; set; }
         public CustomVisionSettins CustomVision { get; set; }
+        public CosmosDbSetings CosmosDb { get; set; }
     }
 }

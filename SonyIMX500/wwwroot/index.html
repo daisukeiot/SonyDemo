@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
     <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/alt/adminlte.light.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.css" />
     <!--
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.light.min.css" />
     -->
@@ -277,7 +278,7 @@
                                                                                         </span>
                                                                                         <span class="info-box-text" style="margin-top:0.5em">
                                                                                             <label for="spanTokenLastUpdate" class="label-right">Last Update:</label>
-                                                                                            <span class="info-box-text" id='spanTokenLastUpdate' style="display:contents"></span>
+                                                                                            <div class="info-box-text" id='spanTokenLastUpdate' style="display:contents"></div>
                                                                                         </span>
                                                                                     </div>
                                                                                 </div>
@@ -286,6 +287,10 @@
                                                                                 <a class="btn btn-success" id="btnLogin">
                                                                                     <i class="fas fa-sign-in-alt"></i> Login
                                                                                 </a>
+                                                                                <div class="info-box-text" style="float:right">
+                                                                                    <label for="loginResult">Result</label>
+                                                                                    <span class="info-box-text" id='loginResult' style="display:contents; min-width:10em; width: 10em"></span>
+                                                                                </div>
                                                                             </div>
                                                                         </form>
                                                                     </div>
@@ -687,15 +692,15 @@
                                                                                 <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
 
                                                                                 <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040"  min="0" max="3040">
+                                                                                <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" min="0" max="3040">
 
                                                                                 <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056"  min="0" max="4056">
+                                                                                <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" min="0" max="4056">
 
                                                                                 <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040"  min="0" max="3040">
+                                                                                <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
 
-                                                                                <label for="startUploadRetrainingDataNumImages">Number of Image crop (Optional)</label>
+                                                                                <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
                                                                                 <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000" min="0" max="10000">
 
                                                                                 <label for="startUploadRetrainingDataFrequency">Frequency of fetching images (Optional)</label>
@@ -730,7 +735,7 @@
                                         </div>
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-tab">
                                             <div class="card-body">
-                                                <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll"">
+                                                <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll" ">
                                                     <table id="device-events" class="table table-striped" style="max-height: 100%">
                                                         <thead>
                                                         <th>&nbsp;</th>
@@ -749,17 +754,42 @@
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-ai-result-tab">
-                                            placeholder for AI Result View
+                                            <div class="card-body">
+                                                <div>
+                                                    <div class="mb-2 row">
+                                                        <div class="float-right">
+                                                            <select class="custom-select" style="width: auto;" data-sortOrder>
+                                                                <option value="index"> Sort by Position </option>
+                                                                <option value="sortData"> Sort by Custom Data </option>
+                                                            </select>
+                                                            <div class="btn-group">
+                                                                <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
+                                                                <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="filter-container p-0 row" id="image_gallery">
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-api-output" role="tabpanel" aria-labelledby="tab-api-output-tab">
-                                            <div>
-                                                <button type="button"  class="btn btn-danger" id="btnClearApiOutput">
-                                                    <i class="fas fa-trash-alt"></i> Clear
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <textarea id="taApiOutput" class="p-3" readonly rows="10" style="width:100%;height:100%;font-family:Consolas">
-                                                    </textarea>
+                                            <div class="card card-primary">
+                                                <div class="card-body">
+                                                    <div>
+                                                        <button type="button" class="btn btn-danger" id="btnClearApiOutput">
+                                                            <i class="fas fa-trash-alt"></i> Clear
+                                                        </button>
+                                                    </div>
+                                                    <div class="info-box-text">
+                                                        <label for="apiOutputLabel" class="label-right">API:</label>
+                                                        <span class="info-box-text" id='apiOutputLabel' style="display:contents"></span>
+                                                    </div>
+                                                    <div class="info-box-text">
+                                                        <textarea id="taApiOutput" class="p-3" readonly rows="10" style="width:100%;height:100%;font-family:Consolas">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-tab">
@@ -797,7 +827,9 @@
     <!-- Local -->
     <script src="/js/SonyAPI.js"></script>
     <script src="/js/CustomVision.js"></script>
+    <script src="/js/BlobStorage.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.min.js"></script>
     <script src="/js/SignalR.js"></script>
     <!--<script src="/js/site.js"></script>-->
     <script>
@@ -850,7 +882,7 @@
                     console.log("Could not read clipboard", err);
                 });
         })
-        
+
 
         $('#btnClearApiOutput').click(function () {
             document.getElementById('taApiOutput').value = null;
@@ -890,9 +922,9 @@
             StartUploadInferenceResult();
         })
 
-        $('#btnStopUploadInferenceResult').click(function () {
-            console.debug("btnStopUploadInferenceResult Click");
-            StopUploadInferenceResult();
+        $('#btnStartUploadRetrainingData').click(function () {
+            console.debug("btnStartUploadRetrainingData Click");
+            StartUploadRetrainingData();
         })
 
         //
@@ -986,6 +1018,14 @@
         })
 
         //
+        // Tab
+        //
+        $('#tab-ai-result-tab').on('show.bs.tab', function () {
+            console.log("tab-ai-result-tab show : ");
+            GetAllImages();
+        })
+
+        //
         // Change event
         //
         $('#taToken').on('change', function () {
@@ -1057,6 +1097,14 @@
                 </div>
             </td>
         </tr>
+    </script>
+
+    <script id="image-template" type="text/x-handlebars-template">
+        <div class="filtr-item col-sm-2" data-category="1" data-sort={{deviceId}}>
+            <a href={{image_url}} data-toggle={{deviceId}} data-title={{image_file_name}}>
+                <img src={{image_url}} class="img-fluid mb-2" alt={{image_file_name}} />
+            </a>
+        </div>
     </script>
 </body>
 </html>

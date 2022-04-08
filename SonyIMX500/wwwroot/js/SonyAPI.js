@@ -125,7 +125,7 @@ async function getLoginToken() {
 
 
 
-function AddApiOutput(result) {
+function AddApiOutput(apiName, result) {
     var json;
 
     if (typeof (result) == 'string') {
@@ -134,6 +134,8 @@ function AddApiOutput(result) {
     else {
         json = result;
     }
+    
+    document.getElementById('apiOutputLabel').innerHTML = apiName;
     document.getElementById('taApiOutput').value = null;
     document.getElementById('taApiOutput').value = JSON.stringify(json, null, 2);
 }
@@ -194,7 +196,7 @@ async function CreateCustomVisionProject() {
 
         await GetCustomVisionProjects();
 
-        AddApiOutput(result.value);
+        AddApiOutput("CreateBaseCustomVisionProject", result.value);
 
     } catch (err) {
         alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
@@ -235,7 +237,7 @@ async function StartUploadInferenceResult() {
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput("StartUploadInferenceResult", result.value);
 
     } catch (err) {
         alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
@@ -260,7 +262,7 @@ async function StopUploadInferenceResult() {
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput("StopUploadInferenceResult", result.value);
 
     } catch (err) {
         alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
@@ -271,8 +273,8 @@ async function StartUploadRetrainingData() {
 
     try {
         var device_id = document.getElementById("startUploadRetrainingDataDeviceId").value;
-        var Mode = document.getElementById("startUploadRetrainingDataMode").value;
-        var FileFormat = document.getElementById("startUploadRetrainingDataFileFormat").value;
+        var Mode = document.getElementById("startUploadRetrainingDataMode").selectedIndex == 0 ? null : document.getElementById("startUploadRetrainingDataMode").value;
+        var FileFormat = document.getElementById("startUploadRetrainingDataFileFormat").selectedIndex == 0?null: document.getElementById("startUploadRetrainingDataFileFormat").value;
         var CropHOffset = document.getElementById("startUploadRetrainingDataCropHOffset").value;
         var CropVOffset = document.getElementById("startUploadRetrainingDataCropVOffset").value;
         var CropHSize = document.getElementById("startUploadRetrainingDataCropHSize").value;
@@ -307,7 +309,7 @@ async function StartUploadRetrainingData() {
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput("StartUploadRetrainingData", result.value);
 
     } catch (err) {
         alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
@@ -332,7 +334,7 @@ async function StopUploadRetrainingData() {
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput("StopUploadRetrainingData", result.value);
 
     } catch (err) {
         alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
@@ -353,7 +355,7 @@ async function GetDevices(listElement) {
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput("GetDevices", result.value);
 
         if (listElement) {
             var json = JSON.parse(result.value);
@@ -404,7 +406,7 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
             throw new Error(res["error"] + ". Please fix the problem and click Run again.");
         }
 
-        AddApiOutput(result.value);
+        AddApiOutput("GetModels", result.value);
 
         if (listElement) {
             var json = JSON.parse(result.value);
@@ -423,3 +425,4 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
         alert("GetModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
+

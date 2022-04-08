@@ -12,6 +12,8 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace SonyIMX500.Controllers
 {
@@ -20,11 +22,14 @@ namespace SonyIMX500.Controllers
         private readonly ILogger<HomeController> _logger;
         private static string _token = "test";
         private readonly AppSettings _appSettings;
-
+        const string blobContainerName = "iothub-link";
+        static BlobContainerClient blobContainer;
         public HomeController(IOptions<AppSettings> optionsAccessor, ILogger<HomeController> logger)
         {
             _appSettings = optionsAccessor.Value;
             _logger = logger;
+            BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
+            blobContainer = blobServiceClient.GetBlobContainerClient(blobContainerName);
         }
 
         public IActionResult Spa()
@@ -48,5 +53,29 @@ namespace SonyIMX500.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        #region BLOB
+        [HttpGet]
+        public ActionResult GetAllImagesFromBlob()
+        {
+            try
+            {
+                List<Uri> allBlobs = new List<Uri>();
+
+                foreach (BlobItem blob in blobContainer.GetBlobs())
+                {
+                    if (blob.Properties.BlobType == BlobType.Block)
+                        allBlobs.Add(blobContainer.GetBlobClient(blob.Name).Uri);
+                }
+
+                return Ok(Json(allBlobs));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion // blob
     }
 }
