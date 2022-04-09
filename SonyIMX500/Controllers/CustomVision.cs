@@ -60,7 +60,7 @@ namespace SonyIMX500.Controllers
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
         //
         [HttpGet]
-        public async Task<ActionResult> GetProjects(string model_id)
+        public async Task<IActionResult> GetProjects(string model_id)
         {
             try
             {

@@ -12,6 +12,7 @@ loginRequest = {
     scopes: ["User.Read"]
 }
 
+
 function sonyApiInitialize() {
 
     console.debug("sonyApiInitialize()");
@@ -175,11 +176,12 @@ function AddApiOutput(apiName, result) {
 async function CreateCustomVisionProject() {
 
     try {
-        var projectName = document.getElementById("newCustomVisionProject");
+        var projectName = document.getElementById("newCustomVisionProjectName");
         console.log("CreateCustomVisionProject() Name " + projectName.value)
 
         var projectComment = document.getElementById("newCustomVisionProjectComment");
-        if (projectComment.value != "") {
+
+        if (projectComment.value.length > 0) {
             console.log("Comment " + projectComment.value)
         }
 
@@ -187,14 +189,11 @@ async function CreateCustomVisionProject() {
             async: true,
             type: "POST",
             url: window.location.href + 'sony/CreateBaseCustomVisionProject',
-            data: { project_name: projectName.value, comment: projectComment.value },
+            data: {
+                project_name: projectName.value,
+                comment: projectComment.value.length == 0 ? null : projectComment.value
+            },
         });
-
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
-        await GetCustomVisionProjects();
 
         AddApiOutput("CreateBaseCustomVisionProject", result.value);
 
@@ -233,10 +232,6 @@ async function StartUploadInferenceResult() {
             },
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput("StartUploadInferenceResult", result.value);
 
     } catch (err) {
@@ -258,14 +253,10 @@ async function StopUploadInferenceResult() {
             },
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput("StopUploadInferenceResult", result.value);
 
     } catch (err) {
-        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        alert("StopUploadInferenceResult() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -305,14 +296,10 @@ async function StartUploadRetrainingData() {
             },
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput("StartUploadRetrainingData", result.value);
 
     } catch (err) {
-        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        alert("StartUploadRetrainingData() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -330,14 +317,10 @@ async function StopUploadRetrainingData() {
             },
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput("StopUploadRetrainingData", result.value);
 
     } catch (err) {
-        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        alert("StopUploadRetrainingData() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }
 
@@ -350,10 +333,6 @@ async function GetDevices(listElement) {
             url: window.location.href + 'sony/GetDevices',
             data: {}
         });
-
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
 
         AddApiOutput("GetDevices", result.value);
 
@@ -402,10 +381,6 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
             }
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput("GetModels", result.value);
 
         if (listElement) {
@@ -451,10 +426,6 @@ async function SaveModel() {
             }
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput("GetModels", result.value);
 
         if (listElement) {
@@ -471,6 +442,6 @@ async function SaveModel() {
             list.options[0].selected = true;
         }
     } catch (err) {
-        alert("GetModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        alert("SaveModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
     }
 }

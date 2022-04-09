@@ -14,6 +14,17 @@
     -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" />
     <link rel="stylesheet" type="text/css" href="/css/site.css" />
+    <style>
+        @keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+    </style>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 
@@ -182,6 +193,7 @@
             </section>
             <!-- Main content -->
             <section class="content">
+                <div id="loader" class="loading" style="display:none"></div>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12 col-sm-12">
@@ -316,14 +328,14 @@
                                                                                             <label for="newProjectDiv">Create a New Project</label>
                                                                                         </div>
                                                                                         <div id="newProjectDiv">
-                                                                                            <label for="newCustomVisionProject">Project Name</label>
-                                                                                            <input type="text" name="newCustomVisionProject" class="form-control" id="newCustomVisionProject" placeholder="Enter name of new Custom Vision project" value="">
+                                                                                            <label for="newCustomVisionProjectName">Project Name</label>
+                                                                                            <input type="text" name="newCustomVisionProjectName" class="form-control" id="newCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
                                                                                             <label for="newCustomVisionProjectComment">Comment (Optional)</label>
                                                                                             <input type="text" name="newCustomVisionProjectComment" class="form-control" id="newCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
                                                                                         </div>
                                                                                         <div style="margin-top:0.5em">
-                                                                                            <button type="button" class="btn btn-success" id="btnNewCustomVisionProject">
-                                                                                                <i class="fas fa-sign-in-alt"></i> Create
+                                                                                            <button type="button" class="btn btn-success" id="btnNewCustomVisionProjectCreate" disabled>
+                                                                                                <i class="fas fa-plus"></i> Create
                                                                                             </button>
                                                                                         </div>
                                                                                     </div>
@@ -334,7 +346,7 @@
                                                                                             <label for="projectListDiv">Project List</label>
                                                                                         </div>
                                                                                         <div id="projectListDiv">
-                                                                                            <select id="listCustomVisionProjects" class="form-control select2" style="width: 100%;">
+                                                                                            <select id="customVisionList" class="form-control select2" style="width: 100%;">
                                                                                             </select>
                                                                                         </div>
                                                                                         <div style="margin-top:0.5em">
@@ -354,12 +366,12 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionBuildCustomVisionModel">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionBuildCustomVisionBuildModel">
                                                                                 Step 3 : Build Custom Vision Model
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionBuildCustomVisionModel" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionBuildCustomVisionBuildModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div class="info-box-text">
                                                                                 Visit https://customvision.ai to Upload and Tag photos, and start training.
@@ -770,9 +782,9 @@
                                                     <div class="mb-2 row">
                                                         <div class="float-right">
                                                             <!--<select class="custom-select" style="width: auto;" data-sortOrder>
-                                                                <option value="index"> Sort by Position </option>
-                                                                <option value="sortData"> Sort by Custom Data </option>
-                                                            </select>-->
+                                                    <option value="index"> Sort by Position </option>
+                                                    <option value="sortData"> Sort by Custom Data </option>
+                                                </select>-->
                                                             <div class="btn-group">
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
@@ -868,6 +880,18 @@
 
         })
 
+        function toggleLoader() {
+            var loader = document.getElementById("loader");
+
+            if (loader.style.display == "none") {
+                console.log("Toggle block");
+                loader.style.display = "block";
+            }
+            else {
+                loader.style.display = "none";
+                console.log("Toggle none");
+            }
+        }
 
         //
         // button clicks
@@ -889,19 +913,25 @@
         })
 
         $('#btnLogin').click(function () {
+            toggleLoader();
             $('#loginForm').valid();
             sonyApiAuth();
             getToken();
+            toggleLoader();
         })
 
-        $('#btnNewCustomVisionProject').click(function () {
-            console.debug("btnNewCustomVisionProject Click");
+        $('#btnNewCustomVisionProjectCreate').click(function () {
+            toggleLoader();
+            console.debug("btnNewCustomVisionProjectCreate Click");
             CreateCustomVisionProject();
+
+            GetCustomVisionProjects("customVisionList");
+            toggleLoader();
         })
 
         $('#btnDeleteCustomVisionProjectCV').click(function () {
             console.debug("btnDeleteCustomVisionProjectCV Click");
-            var projectList = document.getElementById('listCustomVisionProjects');
+            var projectList = document.getElementById('customVisionList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 DeleteCustomVisionProject(projectList[projectList.selectedIndex].value);
             }
@@ -912,12 +942,14 @@
         })
 
         $('#btnVisitCustomVision').click(function () {
+            toggleLoader();
             console.debug("btnDeleteCustomVisionProject Click");
-            var projectList = document.getElementById('listCustomVisionProjects');
+            var projectList = document.getElementById('customVisionList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
                 window.open(url, "_blank");
             }
+            toggleLoader();
         })
 
         $('#btnClearApiOutput').click(function () {
@@ -1016,52 +1048,76 @@
         })
 
         $('#accordionCustomVision').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionCustomVision show");
-            //GetCustomVisionProjects();
+            GetCustomVisionProjects("customVisionList").then(() => {
+                toggleLoader();
+            })
         })
 
-        $('#accordionBuildCustomVisionModel').on('show.bs.collapse', function () {
-            console.log("accordionBuildCustomVisionModel show");
+        $('#accordionBuildCustomVisionBuildModel').on('show.bs.collapse', function () {
+            console.log("accordionBuildCustomVisionBuildModel show");
         })
 
         $('#accordionSaveAiModel').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionSaveAiModel show : " + currentCvProject);
-            GetCustomVisionProjects("saveModelProjectList");
+            GetCustomVisionProjects("saveModelProjectList").then(() => {
+                toggleLoader();
+            })
         })
 
         $('#accordionConvertAiModel').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionConvertAiModel show : " + currentCvProject);
             GetAllModels("convertModelModelList");
-            GetDevices("convertModelDeviceList");
+            GetDevices("convertModelDeviceList").then(() => {
+                toggleLoader();
+            })
         })
 
         $('#accordionPublishAiModel').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionPublishAiModel show : " + currentCvProject);
             GetAllModels("publishModelModelList");
-            GetDevices("publishModelDeviceList");
+            GetDevices("publishModelDeviceList").then(() => {
+                toggleLoader();
+            })
         })
 
         $('#accordionCreatePeploy').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionCreatePeploy show : " + currentCvProject);
-            GetAllModels("createDeployModelId");
+            GetAllModels("createDeployModelId").then(() => {
+                toggleLoader();
+            })
         })
 
         $('#accordionPeploy').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionPeploy show");
             GetAllModels("deployReplaceModelID");
-            GetDevices("deployDeviceId");
+            GetDevices("deployDeviceId").then(() => {
+                toggleLoader();
+            })
         })
 
         $('#accordionStartStopInference').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionStartStopInference show : " + currentCvProject);
             GetDevices("startInferenceDeviceId");
-            GetAllModels("startInferenceModelId");
+            GetAllModels("startInferenceModelId").then(() => {
+                toggleLoader();
+            })
         })
 
         $('#accordionStartStopUploadRetrainingData').on('show.bs.collapse', function () {
+            toggleLoader();
             console.log("accordionStartStopUploadRetrainingData show : " + currentCvProject);
             GetDevices("startUploadRetrainingDataDeviceId");
-            GetAllModels("startUploadRetrainingDataModelId");
+            GetAllModels("startUploadRetrainingDataModelId").then(() => {
+                toggleLoader();
+            })
         })
 
         //
@@ -1100,9 +1156,9 @@
         // List Selected
         //
 
-        $('#listCustomVisionProjects').on('change', function () {
-            var projectList = document.getElementById('listCustomVisionProjects');
-            console.log("listCustomVisionProjects change : " + projectList[projectList.selectedIndex].value);
+        $('#customVisionList').on('change', function () {
+            var projectList = document.getElementById('customVisionList');
+            console.log("customVisionList change : " + projectList[projectList.selectedIndex].value);
             if (projectList[projectList.selectedIndex].value != 0) {
                 currentCvProject = projectList[projectList.selectedIndex].text;
                 $('#btnVisitCustomVision').prop('disabled', false);
@@ -1141,13 +1197,24 @@
 
         $('#publishModelModelList').on('change', function () {
             var list = document.getElementById('publishModelModelList');
-            console.log("publishModelModelList change : " + list[list.selectedIndex].value);
             if (list[list.selectedIndex].value != 0) {
                 $('#btnPublishModel').prop('disabled', false);
             }
             else {
                 $('#btnPublishModel').prop('disabled', true);
 
+            }
+        })
+
+        // Input
+        $('#newCustomVisionProjectName').on('input', function () {
+            var inputField = document.getElementById('newCustomVisionProjectName');
+
+            if (inputField.value.length > 0) {
+                $('#btnNewCustomVisionProjectCreate').prop('disabled', false);
+            }
+            else {
+                $('#btnNewCustomVisionProjectCreate').prop('disabled', true);
             }
         })
 

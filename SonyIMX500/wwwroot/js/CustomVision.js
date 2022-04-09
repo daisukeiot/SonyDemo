@@ -9,10 +9,6 @@
             data: {},
         });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
         AddApiOutput('customvision/GetProjects', result.value);
 
         if (listElementId) {
@@ -33,7 +29,6 @@
             list.blur();
         }
 
-
     } catch (err) {
         alert("GetCustomVisionProjects() : Error (" + err.status + ") " + err.statusText);
     }
@@ -49,10 +44,6 @@ async function DeleteCustomVisionProject(projectId) {
             url: window.location.href + 'customvision/DeleteProject',
             data: {projectId:projectId},
         });
-
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
 
         AddApiOutput(result.value);
 
