@@ -127,8 +127,6 @@ function PostToken(token) {
 
 async function GetDevices() {
 
-    PostToken(document.getElementById('idToken').value);
-
     try {
         const result = await $.ajax({
             async: true,
@@ -277,8 +275,6 @@ async function GetModelVersion(model_id, project_id, model_version) {
 
 function RebootDevice(deviceId) {
 
-    PostToken(document.getElementById('idToken').value);
-
     $.ajax({
         type: "POST",
         url: window.location.href + 'sony/RebootDevice',
@@ -293,8 +289,6 @@ function RebootDevice(deviceId) {
 }
 
 function GetFirmwares(deviceId) {
-
-    PostToken(document.getElementById('idToken').value);
 
     $.ajax({
         type: "GET",

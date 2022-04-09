@@ -60,11 +60,14 @@ function PostToken(token) {
 
 function updateSetupUi(tokenResp) {
 
+    console.log("updateSetUi");
     if (tokenResp == null) {
         document.getElementById('taToken').value = "Access Token not found in response.";
+        document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
     }
     else {
         document.getElementById('taToken').value = tokenResp.idToken.rawIdToken;
+        document.getElementById('taToken').dispatchEvent(new Event("change"));
         console.log('id Record time:' + String(expiresOn));
         console.log('id Expire time:' + String(tokenResp.expiresOn));
 
@@ -75,10 +78,8 @@ function updateSetupUi(tokenResp) {
 
         document.getElementById('userName').innerHTML = tokenResp.account.name;
         document.getElementById('userDesc').innerHTML = tokenResp.account.userName;
-
-        PostToken(tokenResp.idToken.rawIdToken);
+        document.getElementById('btnLoginResult').innerHTML = "Login Success";
     }
-
 }
 
 function requiresInteraction(errorCode) {
@@ -123,8 +124,6 @@ async function getLoginToken() {
 
     return tokenResp.accessToken;
 }
-
-
 
 function AddApiOutput(apiName, result) {
     var json;
@@ -175,6 +174,8 @@ function AddApiOutput(apiName, result) {
 
 async function CreateCustomVisionProject() {
 
+    var resultElement = document.getElementById('btnNewCustomVisionProjectCreateResult');
+
     try {
         var projectName = document.getElementById("newCustomVisionProjectName");
         console.log("CreateCustomVisionProject() Name " + projectName.value)
@@ -196,9 +197,98 @@ async function CreateCustomVisionProject() {
         });
 
         AddApiOutput("CreateBaseCustomVisionProject", result.value);
+        resultElement.innerHTML = result.value;
 
     } catch (err) {
         alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+    }
+}
+
+async function DeleteCustomVisionProject(project_name) {
+
+    var resultElement = document.getElementById('btnDeleteCustomVisionProjectResult');
+
+    try {
+        var projectName = document.getElementById("newCustomVisionProjectName");
+        console.log("CreateCustomVisionProject() Name " + projectName.value)
+
+        const result = await $.ajax({
+            async: true,
+            type: "DELETE",
+            url: window.location.href + 'sony/DeleteProject',
+            data: {
+                project_name: project_name
+            },
+        });
+
+        AddApiOutput("CreateBaseCustomVisionProject", result.value);
+        resultElement.innerHTML = result.value;
+
+    } catch (err) {
+        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+    }
+}
+
+async function SaveCustomVisionModel() {
+
+    var resultElement = document.getElementById('btnSaveModelResult');
+
+    try {
+        var project_name = document.getElementById("saveModelProjectList").selectedIndex == 0 ? null : document.getElementById("saveModelProjectList")[document.getElementById("saveModelProjectList").selectedIndex].text
+        var model_id = document.getElementById("saveModelModelId").value;
+        var initial_version_number = document.getElementById("saveModelInitialVersion").value;
+        var functionality = document.getElementById("saveModelFunctionality").value;
+        var vendor_name = document.getElementById("saveModelVendorName").value;
+        var comment = document.getElementById("saveModelComment").value;
+
+        const result = await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.href + 'sony/SaveCustomVisionModel',
+            data: {
+                project_name: project_name,
+                model_id: model_id,
+                initial_version_number: initial_version_number,
+                functionality: functionality,
+                vendor_name: vendor_name,
+                comment: comment
+            },
+        });
+
+        AddApiOutput("SaveCustomVisionModel", result.value);
+        resultElement.innerHTML = result.value;
+
+    } catch (err) {
+        alert("SaveCustomVisionModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+    }
+}
+
+async function ConvertModel() {
+
+    var resultElement = document.getElementById('btnConvertModelResult');
+
+    var model_id = document.getElementById("convertModelModelList").selectedIndex == 0 ? null : document.getElementById("convertModelModelList").value;
+    var device_id = document.getElementById("convertModelDeviceList").selectedIndex == 0 ? null : document.getElementById("convertModelDeviceList").value;
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.href + 'sony/ConvertModel',
+            data: {
+                model_id: model_id,
+                device_id: device_id
+            }
+        });
+
+        AddApiOutput("ConvertModel", result.value);
+        resultElement.innerHTML = result.value;
+    } catch (err) {
+        alert("ConvertModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
     }
 }
 
@@ -324,7 +414,7 @@ async function StopUploadRetrainingData() {
     }
 }
 
-async function GetDevices(listElement) {
+async function GetDevices(listElementId) {
 
     try {
         const result = await $.ajax({
@@ -336,7 +426,7 @@ async function GetDevices(listElement) {
 
         AddApiOutput("GetDevices", result.value);
 
-        if (listElement) {
+        if (listElementId) {
             var json = JSON.parse(result.value);
 
             var list = document.getElementById(listElementId);
@@ -401,47 +491,3 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
     }
 }
 
-async function SaveModel() {
-
-    var project_id = document.getElementById("newModelProjectList").selectedIndex == 0 ? null : document.getElementById("newModelProjectList").value;
-    var model_id = document.getElementById("newModelId").value;
-    var init_version = document.getElementById("newModelInitVersion").value;
-    var functionality = document.getElementById("newModelFunctionality").value;
-    var verdorName = document.getElementById("newModelVendorName").value;
-    var comment = document.getElementById("newModelComment").value;
-
-    try {
-        const result = await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.href + 'sony/GetModels',
-            data: {
-                model_id: model_id,
-                comment: comment,
-                project_name: project_name,
-                model_platform: model_platform,
-                project_type: project_type,
-                device_id: device_id,
-                latest_type: latest_type
-            }
-        });
-
-        AddApiOutput("GetModels", result.value);
-
-        if (listElement) {
-            var json = JSON.parse(result.value);
-
-            var list = document.getElementById(listElement);
-            list.innerText = null;
-            var option = new Option("Select from list", null);
-            option.disabled = true;
-            list.append(option);
-            for (var project in json.models[0].projects) {
-                list.append(new Option(json.models[0].projects[project].model_project_name, json.models[0].projects[project].model_project_name));
-            }
-            list.options[0].selected = true;
-        }
-    } catch (err) {
-        alert("SaveModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-    }
-}

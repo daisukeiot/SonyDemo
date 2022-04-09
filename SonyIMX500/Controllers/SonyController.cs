@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -37,11 +38,11 @@ namespace SonyIMX500.Controllers
             client.DefaultRequestHeaders.Host = baseUri.Host;
         }
 
-        public async Task<HttpResponseMessage> SendGet(string requestSegment)
+        private async Task<HttpResponseMessage> SendGet(string requestSegment)
         {
             if (string.IsNullOrEmpty(_token))
             {
-                throw new Exception("Need Token");
+                throw new ArgumentException(@"{'status':'Need Token'}");
             }
             using (HttpClient client = new HttpClient())
             {
@@ -53,11 +54,11 @@ namespace SonyIMX500.Controllers
                 return await client.GetAsync(requestUri.AbsoluteUri);
             }
         }
-        public async Task<HttpResponseMessage> SendPost(string requestSegment)
+        private async Task<HttpResponseMessage> SendPost(string requestSegment)
         {
             if (string.IsNullOrEmpty(_token))
             {
-                throw new Exception("Need Token");
+                throw new ArgumentException(@"{'status':'Need Token'}");
             }
             using (HttpClient client = new HttpClient())
             {
@@ -67,6 +68,23 @@ namespace SonyIMX500.Controllers
                 AddRequestHeader(client);
 
                 return await client.PostAsync(requestUri.AbsoluteUri, null);
+            }
+        }
+
+        private async Task<HttpResponseMessage> SendDelete(string requestSegment)
+        {
+            if (string.IsNullOrEmpty(_token))
+            {
+                throw new ArgumentException(@"{'status':'Need Token'}");
+            }
+            using (HttpClient client = new HttpClient())
+            {
+                Uri baseUri = new Uri(_appSettings.SonyApi.BaseUrl);
+                Uri requestUri = new Uri($"{baseUri.AbsoluteUri}/{requestSegment}");
+
+                AddRequestHeader(client);
+
+                return await client.DeleteAsync(requestUri.AbsoluteUri);
             }
         }
 
@@ -93,11 +111,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"models/{model_id}/base");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
@@ -115,11 +142,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet("deployconfigurations");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -138,11 +174,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"devices/{device_id}/deploy");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -160,11 +205,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"devices/{device_id}");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -183,11 +237,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"models/{model_id}/devices/{device_id}");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -205,11 +268,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet("devices");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -227,24 +299,34 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet("firmwares/?firmware_type=00");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+
                 SonyFirmwareResponse firmwareMcu = JsonConvert.DeserializeObject<SonyFirmwareResponse>(jsonString);
 
                 response = await SendGet("firmwares/?firmware_type=01");
+                jsonString = await response.Content.ReadAsStringAsync();
 
-                response.EnsureSuccessStatusCode();
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
 
                 jsonString = await response.Content.ReadAsStringAsync();
                 SonyFirmwareResponse firmwareSensor = JsonConvert.DeserializeObject<SonyFirmwareResponse>(jsonString);
 
                 response = await SendGet("firmwares/?firmware_type=02");
-
-                response.EnsureSuccessStatusCode();
-
                 jsonString = await response.Content.ReadAsStringAsync();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+
                 SonyFirmwareResponse firmwareSensorLoader = JsonConvert.DeserializeObject<SonyFirmwareResponse>(jsonString);
 
                 SonyFimwares firmwareData = new SonyFimwares();
@@ -255,6 +337,10 @@ namespace SonyIMX500.Controllers
 
                 return Ok(Json(JsonConvert.SerializeObject(firmwareData)));
 
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -272,11 +358,12 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"metadatanotificationcondns/{condition_id}");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -295,11 +382,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet("metadatanotificationcondns");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -379,7 +475,18 @@ namespace SonyIMX500.Controllers
 
                 var jsonString = await response.Content.ReadAsStringAsync();
 
-                return Ok(Json(jsonString));
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -397,11 +504,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet("provisioning/qrcod");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -419,11 +535,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"manage/users/{principal}");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -441,11 +566,20 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendGet($"manage/users/");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -461,9 +595,39 @@ namespace SonyIMX500.Controllers
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-convert-model?
         //
         [HttpPost]
-        public async Task<ActionResult> ConvertModel()
+        public async Task<ActionResult> ConvertModel(string model_id, string device_id)
         {
-            return Ok();
+            try
+            {
+                string urlSegment = $"models/{model_id}/convert";
+
+                if (!string.IsNullOrEmpty(device_id))
+                {
+                    urlSegment += $"&device_id={device_id}";
+                }
+
+                var response = await SendPost(urlSegment);
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
         }
 
         //
@@ -482,10 +646,21 @@ namespace SonyIMX500.Controllers
                 }
 
                 var response = await SendPost(urlSegment);
-                response.EnsureSuccessStatusCode();
 
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -533,10 +708,13 @@ namespace SonyIMX500.Controllers
                 string apiUrl = $"{url.AbsoluteUri}/model_projects/{project_name}/images/customvision_scbloburls";
                 var content = new StringContent(payload);
                 var response = await SendPost(apiUrl, content);
-                response.EnsureSuccessStatusCode();
-
+                
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -568,6 +746,10 @@ namespace SonyIMX500.Controllers
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
@@ -591,6 +773,10 @@ namespace SonyIMX500.Controllers
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -616,6 +802,10 @@ namespace SonyIMX500.Controllers
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
@@ -639,6 +829,10 @@ namespace SonyIMX500.Controllers
 
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -664,29 +858,9 @@ namespace SonyIMX500.Controllers
                 var jsonString = await response.Content.ReadAsStringAsync();
                 return Ok(Json(jsonString));
             }
-            catch (Exception ex)
+            catch (ArgumentException ex)
             {
-                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
-                return BadRequest(ex.Message);
-            }
-        }
-
-        //
-        // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-save-custom-vision-model?
-        //
-        [HttpPost]
-        public async Task<ActionResult> SaveCustomVisionModel(string project_name)
-        {
-            try
-            {
-                Uri url = new Uri(_appSettings.SonyApi.BaseUrl);
-                StringContent content = null;
-                var apiUrl = $"{url.AbsoluteUri}/model_projects/{project_name}/customvision_save";
-                var response = await SendPost(apiUrl, content);
-                response.EnsureSuccessStatusCode();
-
-                var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -695,6 +869,90 @@ namespace SonyIMX500.Controllers
             }
         }
 #endif
+        //
+        // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-save-custom-vision-model?
+        //
+        [HttpPost]
+        public async Task<ActionResult> SaveCustomVisionModel(string project_name,
+                                                              string model_id,
+                                                              string initial_version_number,
+                                                              string functionality,
+                                                              string vendor_name,
+                                                              string comment)
+        {
+            try
+            {
+
+                if (string.IsNullOrEmpty(project_name))
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, Json(@"{'status':'Need Token'}"));
+                }
+                string urlSegment = $"model_projects/{project_name}/customvision_save";
+                List<string> options = new List<string>();
+
+                if (!string.IsNullOrEmpty(model_id))
+                {
+                    options.Add($"model_id={model_id}");
+                }
+
+                if (!string.IsNullOrEmpty(initial_version_number))
+                {
+                    options.Add($"initial_version_number={initial_version_number}");
+                }
+
+                if (!string.IsNullOrEmpty(functionality))
+                {
+                    options.Add($"functionality={functionality}");
+                }
+
+                if (!string.IsNullOrEmpty(vendor_name))
+                {
+                    options.Add($"vendor_name={vendor_name}");
+                }
+
+                if (!string.IsNullOrEmpty(comment))
+                {
+                    options.Add($"comment={comment}");
+                }
+
+                if (options.Count > 0)
+                {
+                    for (int index = 0; index < options.Count; index++)
+                    {
+                        if (index == 0)
+                        {
+                            urlSegment += $"?{options[index]}";
+                        }
+                        else
+                        {
+                            urlSegment += $"&{options[index]}";
+                        }
+                    }
+                }
+
+                var response = await SendPost(urlSegment);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-start-upload-inference-result?
         //
@@ -771,8 +1029,19 @@ namespace SonyIMX500.Controllers
 
                 var response = await SendPost(urlSegment);
                 var jsonString = await response.Content.ReadAsStringAsync();
-                
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -876,10 +1145,19 @@ namespace SonyIMX500.Controllers
                 }
 
                 var response = await SendPost(urlSegment);
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -888,20 +1166,30 @@ namespace SonyIMX500.Controllers
             }
         }
 
-            //
-            // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-stop-upload-inference-result?
-            //
-            [HttpPost]
+        //
+        // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-stop-upload-inference-result?
+        //
+        [HttpPost]
         public async Task<ActionResult> StopUploadInferenceResult(string device_id)
         {
             try
             {
                 string urlSegment = $"devices/{device_id}/inferenceresults/collectstop";
                 var response = await SendPost(urlSegment);
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -920,10 +1208,20 @@ namespace SonyIMX500.Controllers
             {
                 string urlSegment = $"devices/{device_id}/images/collectstop";
                 var response = await SendPost(urlSegment);
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -932,6 +1230,40 @@ namespace SonyIMX500.Controllers
             }
         }
 
+        #endregion
+
+        #region DELETE
+        //
+        // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/delete-delete-project?
+        //
+        [HttpDelete]
+        public async Task<ActionResult> DeleteProject(string project_name)
+        {
+            try
+            {
+                string urlSegment = $"model_projects/{project_name}";
+                var response = await SendDelete(urlSegment);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
         #endregion
 
         public class SonyApiModel

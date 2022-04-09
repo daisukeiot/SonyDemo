@@ -152,3 +152,12 @@ label {
         transform: rotate(360deg);
     }
 }
+
+.vertical-center {
+    position:absolute;
+    top: 50%;
+    right:0;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    overflow-x:auto;
+}

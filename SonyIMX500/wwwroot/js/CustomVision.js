@@ -34,7 +34,9 @@
     }
 }
 
-async function DeleteCustomVisionProject(projectId) {
+async function DeleteCustomVisionProjectCV(project_name) {
+
+    var resultElement = document.getElementById('btnDeleteCustomVisionProjectResult');
 
     try {
 
@@ -42,24 +44,13 @@ async function DeleteCustomVisionProject(projectId) {
             async: true,
             type: "DELETE",
             url: window.location.href + 'customvision/DeleteProject',
-            data: {projectId:projectId},
+            data: { project_name: project_name},
         });
 
-        AddApiOutput(result.value);
+        resultElement.innerHTML = "Success";
 
-        var json = JSON.parse(result.value);
-
-        json.forEach(project => {
-            list.append(new Option(project.name, project.name));
-        });
-        console.log(json)
-        for (var project in json.project) {
-            console.log(project)
-            for (var project in json.models[model].projects) {
-                list.append(new Option(json.models[model].projects[project].model_project_name, json.models[model].projects[project].model_project_name));
-            }
-        }
     } catch (err) {
-        alert("GetModels() : Error (" + err.status + ") " + err.statusText);
+        alert("DeleteCustomVisionProject() : Error (" + err.status + ") " + err.statusText);
+        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
     }
 }

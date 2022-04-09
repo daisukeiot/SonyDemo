@@ -281,7 +281,7 @@
                                                                                             <textarea id="taToken" class="form-control" cols="30" rows="3"></textarea>
                                                                                         </span>
                                                                                         <div style="margin-top:0.5em">
-                                                                                            <button type="button" class="btn btn-outline-dark" id="btnCopyToken">
+                                                                                            <button type="button" class="btn btn-outline-dark" id="btnCopyToken" disabled>
                                                                                                 <i class="fas fa-copy"></i> Copy Token
                                                                                             </button>
                                                                                             <button type="button" class="btn btn-outline-dark" id="btnPasteToken">
@@ -300,12 +300,15 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="card-footer">
-                                                                                <button type="button" class="btn btn-success" id="btnLogin">
-                                                                                    <i class="fas fa-sign-in-alt"></i> Login
-                                                                                </button>
-                                                                                <div class="info-box-text" style="float:right">
-                                                                                    <label for="loginResult">Result</label>
-                                                                                    <span class="info-box-text" id='loginResult' style="display:contents; min-width:10em; width: 10em"></span>
+                                                                                <div class="row" style="position:relative">
+                                                                                    <div>
+                                                                                        <button type="button" class="btn btn-success" id="btnLogin">
+                                                                                            <i class="fas fa-sign-in-alt"></i> Login
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="vertical-center">
+                                                                                        <div class="info-box-text" id='btnLoginResult'></div>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
                                                                         </form>
@@ -325,37 +328,49 @@
                                                                                 <div class="info-box">
                                                                                     <div class="info-box-content">
                                                                                         <div class="info-box-text">
-                                                                                            <label for="newProjectDiv">Create a New Project</label>
+                                                                                            <label for="newProjectDiv">Create New Custom Vision Project</label>
                                                                                         </div>
                                                                                         <div id="newProjectDiv">
-                                                                                            <label for="newCustomVisionProjectName">Project Name</label>
-                                                                                            <input type="text" name="newCustomVisionProjectName" class="form-control" id="newCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
-                                                                                            <label for="newCustomVisionProjectComment">Comment (Optional)</label>
-                                                                                            <input type="text" name="newCustomVisionProjectComment" class="form-control" id="newCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
+                                                                                            <form id="newProjectForm">
+                                                                                                <div class="form-group">
+                                                                                                    <label for="newCustomVisionProjectName">Project Name</label>
+                                                                                                    <input type="text" name="newCustomVisionProjectName" class="form-control" id="newCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
+                                                                                                    <label for="newCustomVisionProjectComment">Comment (Optional)</label>
+                                                                                                    <input type="text" name="newCustomVisionProjectComment" class="form-control" id="newCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
+                                                                                                </div>
+                                                                                            </form>
                                                                                         </div>
-                                                                                        <div style="margin-top:0.5em">
-                                                                                            <button type="button" class="btn btn-success" id="btnNewCustomVisionProjectCreate" disabled>
-                                                                                                <i class="fas fa-plus"></i> Create
-                                                                                            </button>
+                                                                                        <div class="info-box-tex" style="position:relative">
+                                                                                            <div>
+                                                                                                <button type="button" class="btn btn-success" id="btnNewCustomVisionProjectCreate">
+                                                                                                    <i class="fas fa-plus"></i> Create
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div class="vertical-center">
+                                                                                                <div class="info-box-text" id='btnNewCustomVisionProjectCreateResult'>test</div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="info-box">
                                                                                     <div class="info-box-content">
                                                                                         <div class="info-box-text">
-                                                                                            <label for="projectListDiv">Project List</label>
+                                                                                            <label for="projectListDiv">Select Custom Vision Project</label>
                                                                                         </div>
                                                                                         <div id="projectListDiv">
                                                                                             <select id="customVisionList" class="form-control select2" style="width: 100%;">
                                                                                             </select>
                                                                                         </div>
-                                                                                        <div style="margin-top:0.5em">
+                                                                                        <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                             <button type="button" class="btn btn-danger" id="btnDeleteCustomVisionProjectCV" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
                                                                                             </button>
                                                                                             <button type="button" class="btn btn-danger" id="btnDeleteCustomVisionProject" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
+                                                                                            <div class="vertical-center">
+                                                                                                <div class="info-box-text" id='btnDeleteCustomVisionProjectResult'>test</div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -374,6 +389,10 @@
                                                                     <div id="accordionBuildCustomVisionBuildModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div class="info-box-text">
+                                                                                <select id="buildCustomVisionPrjectList" class="form-control select2" style="width: 100%;">
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="info-box-text" style="margin-top:0.5em">
                                                                                 Visit https://customvision.ai to Upload and Tag photos, and start training.
                                                                             </div>
                                                                         </div>
@@ -387,42 +406,51 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveAiModel">
-                                                                                Step 4 : Save AI Model
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveCustomVisionModel">
+                                                                                Step 4 : Save Custom Vision Model
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionSaveAiModel" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionSaveCustomVisionModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="saveModelDiv">
-                                                                                <div class="info-box-text">
-                                                                                    <label for="saveModelProjectList">Project List</label>
-                                                                                </div>
-                                                                                <div id="projectListDiv">
-                                                                                    <select id="saveModelProjectList" class="form-control select2" style="width: 100%;">
-                                                                                    </select>
-                                                                                </div>
+                                                                            <div id="saveCustomVisionDiv">
+                                                                                <form id="saveCustomVisionForm">
+                                                                                    <div class="form-group">
+                                                                                        <div class="info-box-text">
+                                                                                            <label for="saveModelProjectList">Project Name</label>
+                                                                                        </div>
+                                                                                        <div id="projectListDiv">
+                                                                                            <select id="saveModelProjectList" class="form-control select2" style="width: 100%;">
+                                                                                            </select>
+                                                                                        </div>
 
-                                                                                <label for="saveModelModelId">Model ID (Optional)</label>
-                                                                                <input type="text" name="saveModelModelId" class="form-control" id="saveModelModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                                        <label for="saveModelModelId">Model ID (Optional)</label>
+                                                                                        <input type="text" name="saveModelModelId" class="form-control" id="saveModelModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
 
-                                                                                <label for="saveModelInitialVersion">Initial Version Number (Optional)</label>
-                                                                                <input type="text" name="saveModelInitialVersion" class="form-control" id="saveModelInitialVersion" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="">
+                                                                                        <label for="saveModelInitialVersion">Initial Version Number (Optional)</label>
+                                                                                        <input type="number" name="saveModelInitialVersion" class="form-control" id="saveModelInitialVersion" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="" min="1" max="100">
 
-                                                                                <label for="saveModelFunctionality">Functionality (Optional)</label>
-                                                                                <input type="text" name="saveModelFunctionality" class="form-control" id="saveModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                                        <label for="saveModelFunctionality">Functionality (Optional)</label>
+                                                                                        <input type="text" name="saveModelFunctionality" class="form-control" id="saveModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
 
-                                                                                <label for="saveModelVendorName">Vendor Name (Optional)</label>
-                                                                                <input type="text" name="saveModelVendorName" class="form-control" id="saveModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                                        <label for="saveModelVendorName">Vendor Name (Optional)</label>
+                                                                                        <input type="text" name="saveModelVendorName" class="form-control" id="saveModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
 
-                                                                                <label for="saveModelComment">Comment (Optional)</label>
-                                                                                <input type="text" name="saveModelComment" class="form-control" id="saveModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                                        <label for="saveModelComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="saveModelComment" class="form-control" id="saveModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                                    </div>
+                                                                                </form>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnSaveModel" disabled>
-                                                                                <i class="fas fa-external-link-alt"></i> Save Custom Vision model.
-                                                                            </button>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnSaveModel" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Save Custom Vision model.
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='btnSaveModelResult'>test</div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -445,9 +473,14 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnConvertModel" disabled>
-                                                                                <i class="fas fa-external-link-alt"></i> Convert Model
-                                                                            </button>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnConvertModel" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Convert Model
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='btnConvertModelResult'>test</div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -901,11 +934,10 @@
         })
 
         $('#btnPasteToken').click(function () {
-
             navigator.clipboard.readText()
                 .then(clipText => {
                     document.getElementById('taToken').value = clipText;
-                    document.getElementById('taToken').dispatchEvent(new Event("change"));
+                    document.getElementById('btnCopyToken').dispatchEvent(new Event("click"));
                 })
                 .catch(err => {
                     console.log("Could not read clipboard", err);
@@ -913,38 +945,74 @@
         })
 
         $('#btnLogin').click(function () {
-            toggleLoader();
-            $('#loginForm').valid();
-            sonyApiAuth();
-            getToken();
-            toggleLoader();
+            if ($('#loginForm').valid()) {
+                toggleLoader();
+                sonyApiAuth();
+                getToken().then(() => {
+                    toggleLoader();
+                    console.log("Login End");
+                })
+            }
         })
 
         $('#btnNewCustomVisionProjectCreate').click(function () {
+            if ($('#newProjectForm').valid() == false) {
+                return;
+            }
+
             toggleLoader();
             console.debug("btnNewCustomVisionProjectCreate Click");
-            CreateCustomVisionProject();
 
-            GetCustomVisionProjects("customVisionList");
-            toggleLoader();
+            CreateCustomVisionProject()
+                .then(() => {
+                    GetCustomVisionProjects("customVisionList");
+                })
+                .catch((e) => {
+                    console.error("ErrorXX : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
         })
 
         $('#btnDeleteCustomVisionProjectCV').click(function () {
             console.debug("btnDeleteCustomVisionProjectCV Click");
             var projectList = document.getElementById('customVisionList');
             if (projectList[projectList.selectedIndex].value != 0) {
-                DeleteCustomVisionProject(projectList[projectList.selectedIndex].value);
+                toggleLoader();
+                DeleteCustomVisionProjectCV(projectList[projectList.selectedIndex].value)
+                    .then(() => {
+                        console.log("Custom Vision Project Deleted");
+                        GetCustomVisionProjects("customVisionList");
+                    })
+                    .finally(() => {
+                        toggleLoader();
+                    });
             }
         })
 
         $('#btnDeleteCustomVisionProject').click(function () {
-            console.debug("btnDeleteCustomVisionProject Click");
+            var projectList = document.getElementById('customVisionList');
+
+            console.debug("btnDeleteCustomVisionProject Click" + projectList[projectList.selectedIndex].text);
+
+            if (projectList[projectList.selectedIndex].value != 0) {
+                toggleLoader();
+                DeleteCustomVisionProject(projectList[projectList.selectedIndex].text)
+                    .then(() => {
+                        console.log("Custom Vision Project Deleted");
+                        GetCustomVisionProjects("customVisionList");
+                    })
+                    .finally(() => {
+                        toggleLoader();
+                    });
+            }
         })
 
         $('#btnVisitCustomVision').click(function () {
             toggleLoader();
-            console.debug("btnDeleteCustomVisionProject Click");
-            var projectList = document.getElementById('customVisionList');
+            console.debug("btnVisitCustomVision Click");
+            var projectList = document.getElementById('buildCustomVisionPrjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
                 window.open(url, "_blank");
@@ -957,11 +1025,41 @@
         })
 
         $('#btnSaveModel').click(function () {
+
+            if ($('#saveCustomVisionForm').valid() == false) {
+                return;
+            }
+
+            toggleLoader();
             console.debug("btnSaveModel Click");
+
+            SaveCustomVisionModel()
+                .then(() => {
+                    console.log("Model Saved");
+                })
+                .catch((e) => {
+                    console.error("ErrorXX : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
+
         })
 
         $('#btnConvertModel').click(function () {
+            toggleLoader();
             console.debug("btnConvertModel Click");
+
+            ConvertModel()
+                .then(() => {
+                    console.log("Model Saved");
+                })
+                .catch((e) => {
+                    console.error("ErrorXX : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
         })
 
         $('#btnPublishModel').click(function () {
@@ -1035,6 +1133,95 @@
             }
         });
 
+        $('#newProjectForm').validate({
+            rules: {
+                newCustomVisionProjectName: {
+                    required: true,
+                    maxlength: 100
+                },
+                newCustomVisionProjectComment: {
+                    required: false,
+                    maxlength: 100
+                },
+            },
+            messages: {
+                newCustomVisionProjectName: {
+                    required: "Enter project name of Custom vision. Within 100 characters.",
+                    maxlength: "Project Name must be up to 100 characters"
+                },
+                newCustomVisionProjectComment: {
+                    maxlength: "Project Comment must be up to 100 characters"
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#saveCustomVisionForm').validate({
+            rules: {
+                saveModelProjectList: {
+                    required: true
+                },
+                saveModelModelId: {
+                    required: false,
+                    maxlength: 100
+
+                },
+                saveModelInitialVersion: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+                saveModelFunctionality: {
+                    required: false,
+                    maxlength: 100
+                },
+                saveModelVendorName: {
+                    required: false,
+                    maxlength: 100
+                },
+                saveModelComment: {
+                    required: false,
+                    maxlength: 100
+                },
+            },
+            messages: {
+                saveModelProjectList: {
+                    required: "Select project name of Custom vision. Within 100 characters.",
+                },
+                saveModelModelId: {
+                    maxlength: "Model ID must be up to 100 characters"
+                },
+                saveModelInitialVersion: {
+                    min: "Initial version must be > 1",
+                    max: "Initial version must be <= 100"
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+
         //
         // Accordion
         //
@@ -1057,12 +1244,24 @@
 
         $('#accordionBuildCustomVisionBuildModel').on('show.bs.collapse', function () {
             console.log("accordionBuildCustomVisionBuildModel show");
+            toggleLoader();
+            GetCustomVisionProjects("buildCustomVisionPrjectList").then(() => {
+                select = document.getElementById('buildCustomVisionPrjectList');
+                select.value = document.getElementById('customVisionList').value;
+                toggleLoader();
+            })
+            
         })
 
-        $('#accordionSaveAiModel').on('show.bs.collapse', function () {
+        $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function () {
             toggleLoader();
-            console.log("accordionSaveAiModel show : " + currentCvProject);
+            console.log("accordionSaveCustomVisionModel show : " + currentCvProject);
             GetCustomVisionProjects("saveModelProjectList").then(() => {
+                select = document.getElementById('saveModelProjectList');
+                if (document.getElementById('customVisionList').selectedIndex > 0) {
+                    select.value = document.getElementById('customVisionList').value;
+                    document.getElementById('customVisionList').dispatchEvent(new Event("change"));
+                }
                 toggleLoader();
             })
         })
@@ -1149,7 +1348,13 @@
         //
         $('#taToken').on('change', function () {
             console.log("taToken Change");
-            PostToken(document.getElementById('taToken').value);
+            if (document.getElementById('taToken').value.length > 0) {
+                PostToken(document.getElementById('taToken').value);
+                $('#btnCopyToken').prop('disabled', false);
+            }
+            else {
+                $('#btnCopyToken').prop('disabled', false);
+            }
         })
 
         //
@@ -1174,15 +1379,37 @@
             }
         })
 
-        //$('#saveModelProjectList').on('change', function () {
-        //    var list = document.getElementById('saveModelProjectList');
-        //    console.log("saveModelProjectList change : " + list.selectedIndex);
-        //})
-
-        $('#saveModelProjectList').on('input', function () {
-            var list = document.getElementById('saveModelProjectList');
-            console.log("saveModelProjectList input : " + list.selectedIndex);
+        
+        $('#buildCustomVisionPrjectList').on('change', function () {
+            var projectList = document.getElementById('customVisionList');
+            console.log("customVisionList change : " + projectList[projectList.selectedIndex].value);
+            if (projectList[projectList.selectedIndex].value != 0) {
+                currentCvProject = projectList[projectList.selectedIndex].text;
+                $('#btnVisitCustomVision').prop('disabled', false);
+            }
+            else {
+                currentCvProject = '';
+                $('#btnVisitCustomVision').prop('disabled', true);
+            }
         })
+
+        $('#saveModelProjectList').on('change', function () {
+            var projectList = document.getElementById('saveModelProjectList');
+            console.log("saveModelProjectList change : " + projectList[projectList.selectedIndex].value);
+            if (projectList[projectList.selectedIndex].value != 0) {
+                currentCvProject = projectList[projectList.selectedIndex].text;
+                $('#btnSaveModel').prop('disabled', false);
+            }
+            else {
+                currentCvProject = '';
+                $('#btnSaveModel').prop('disabled', true);
+            }
+        })
+
+        //$('#saveModelProjectList').on('input', function () {
+        //    var list = document.getElementById('saveModelProjectList');
+        //    console.log("saveModelProjectList input : " + list.selectedIndex);
+        //})
 
         $('#convertModelModelList').on('change', function () {
             var list = document.getElementById('convertModelModelList');

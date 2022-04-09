@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SonyIMX500.Models;
@@ -86,16 +87,21 @@ namespace SonyIMX500.Controllers
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/delete-project/delete-project
         //
         [HttpDelete]
-        public async Task<ActionResult> DeleteProject(string projectId)
+        public async Task<ActionResult> DeleteProject(string project_name)
         {
             try
             {
-                var response = await SendDelete($"customvision/v3.3/training/projects/{projectId}");
+                var response = await SendDelete($"customvision/v3.3/training/projects/{project_name}");
 
-                response.EnsureSuccessStatusCode();
-
-                var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+                if (response.IsSuccessStatusCode)
+                {
+                    return StatusCode(StatusCodes.Status204NoContent);
+                }
+                else
+                {
+                    var jsonString = await response.Content.ReadAsStringAsync();
+                    return StatusCode((int)response.StatusCode, Json(jsonString));
+                }
             }
             catch (Exception ex)
             {
