@@ -16,7 +16,7 @@
 
             var list = document.getElementById(listElementId);
             list.innerText = null;
-            var option = new Option("Select from list", null);
+            var option = new Option("Select from list", "");
             option.disabled = true;
 
             list.append(option);
@@ -36,7 +36,7 @@
 
 async function DeleteCustomVisionProjectCV(project_name) {
 
-    var resultElement = document.getElementById('btnDeleteCustomVisionProjectResult');
+    var resultElement = document.getElementById('deleteCustomVisionProjectResult');
 
     try {
 

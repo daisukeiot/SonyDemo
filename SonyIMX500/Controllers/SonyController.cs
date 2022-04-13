@@ -88,6 +88,23 @@ namespace SonyIMX500.Controllers
             }
         }
 
+        private async Task<HttpResponseMessage> SendPut(string requestSegment)
+        {
+            if (string.IsNullOrEmpty(_token))
+            {
+                throw new ArgumentException(@"{'status':'Need Token'}");
+            }
+            using (HttpClient client = new HttpClient())
+            {
+                Uri baseUri = new Uri(_appSettings.SonyApi.BaseUrl);
+                Uri requestUri = new Uri($"{baseUri.AbsoluteUri}/{requestSegment}");
+
+                AddRequestHeader(client);
+
+                return await client.PutAsync(requestUri.AbsoluteUri, null);
+            }
+        }
+
         [HttpPost]
         public bool PostToken(string token)
         {
@@ -106,7 +123,7 @@ namespace SonyIMX500.Controllers
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/get-get-model-of-base?
         //
         [HttpGet]
-        public async Task<ActionResult> GetBaseModelStatus(string model_id)
+        public async Task<ActionResult> GetBaseModelStatus(string model_id, string latest_type)
         {
             try
             {
@@ -141,7 +158,7 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                var response = await SendGet("deployconfigurations");
+                var response = await SendGet($"deployconfigurations");
                 var jsonString = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
@@ -155,14 +172,13 @@ namespace SonyIMX500.Controllers
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
                 return BadRequest(ex.Message);
             }
-
         }
 
         //
@@ -232,11 +248,19 @@ namespace SonyIMX500.Controllers
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/get-get-model-of-device?
         //
         [HttpGet]
-        public async Task<ActionResult> GetDeviceModelStatus(string model_id, string device_id)
+        public async Task<ActionResult> GetDeviceModelStatus(string model_id, string latest_type)
         {
             try
             {
-                var response = await SendGet($"models/{model_id}/devices/{device_id}");
+                string urlSegment = $"models/{model_id}/base";
+
+                if (!string.IsNullOrEmpty(latest_type))
+                {
+                    urlSegment += $"?latest_type={latest_type}";
+                }
+
+                var response = await SendGet(urlSegment);
+
                 var jsonString = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
@@ -294,7 +318,46 @@ namespace SonyIMX500.Controllers
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/get-get-firmwares?
         //
         [HttpGet]
-        public async Task<ActionResult> GetFirmwares()
+        public async Task<ActionResult> GetFirmwares(string firmware_type, string ppl)
+        {
+            try
+            {
+                string urlSegment = $"firmwares?firmware_type={firmware_type}";
+                List<string> options = new List<string>();
+
+                if (!string.IsNullOrEmpty(ppl))
+                {
+                    urlSegment += $"?ppl={ppl}";
+                }
+
+                var response = await SendGet(urlSegment);
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+        //
+        // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/get-get-firmwares?
+        //
+        [HttpGet]
+        public async Task<ActionResult> GetAllFirmwares(string firmware_type, string ppl)
         {
             try
             {
@@ -603,7 +666,7 @@ namespace SonyIMX500.Controllers
 
                 if (!string.IsNullOrEmpty(device_id))
                 {
-                    urlSegment += $"&device_id={device_id}";
+                    urlSegment += $"?device_id={device_id}";
                 }
 
                 var response = await SendPost(urlSegment);
@@ -668,16 +731,133 @@ namespace SonyIMX500.Controllers
                 return BadRequest(ex.Message);
             }
         }
-#if POST
+
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-create-deploy-configuration?
         //
         [HttpPost]
-        public ActionResult CreateDeployConfiguration()
+        public async Task<ActionResult> CreateDeployConfiguration(string config_id,
+                                                      string sensor_loader_version_number,
+                                                      string sensor_version_number,
+                                                      string model_id,
+                                                      string ap_fw_version_number,
+                                                      string comment,
+                                                      string device_type,
+                                                      string model_version_number,
+                                                      string color_matrix_mode,
+                                                      string color_matrix_file_name,
+                                                      string gamma_mode,
+                                                      string gamma_file_name,
+                                                      string lsc_mode,
+                                                      string lsc_file_name,
+                                                      string prewb_mode,
+                                                      string prewb_file_name,
+                                                      string dewarp_mode,
+                                                      string dewarp_file_name)
         {
-            return Ok();
-        }
+            {
+                try
+                {
+                    string urlSegment = $"deployconfigurations?config_id={config_id}&sensor_loader_version_number={sensor_loader_version_number}&sensor_version_number={sensor_version_number}&model_id={model_id}&ap_fw_version_number={ap_fw_version_number}";
+                    List<string> options = new List<string>();
 
+                    if (!string.IsNullOrEmpty(comment))
+                    {
+                        options.Add($"comment={comment}");
+                    }
+
+                    if (!string.IsNullOrEmpty(device_type))
+                    {
+                        options.Add($"device_type={device_type}");
+                    }
+
+                    if (!string.IsNullOrEmpty(model_version_number))
+                    {
+                        options.Add($"model_version_number={model_version_number}");
+                    }
+
+                    if (!string.IsNullOrEmpty(color_matrix_mode))
+                    {
+                        options.Add($"color_matrix_mode={color_matrix_mode}");
+                    }
+
+                    if (!string.IsNullOrEmpty(color_matrix_file_name))
+                    {
+                        options.Add($"color_matrix_file_name={color_matrix_file_name}");
+                    }
+
+                    if (!string.IsNullOrEmpty(gamma_mode))
+                    {
+                        options.Add($"gamma_mode={gamma_mode}");
+                    }
+
+                    if (!string.IsNullOrEmpty(gamma_file_name))
+                    {
+                        options.Add($"gamma_file_name={gamma_file_name}");
+                    }
+
+                    if (!string.IsNullOrEmpty(lsc_mode))
+                    {
+                        options.Add($"lsc_mode={lsc_mode}");
+                    }
+
+                    if (!string.IsNullOrEmpty(lsc_file_name))
+                    {
+                        options.Add($"lsc_file_name={lsc_file_name}");
+                    }
+
+                    if (!string.IsNullOrEmpty(prewb_mode))
+                    {
+                        options.Add($"prewb_mode={prewb_mode}");
+                    }
+
+                    if (!string.IsNullOrEmpty(prewb_file_name))
+                    {
+                        options.Add($"prewb_file_name={prewb_file_name}");
+                    }
+
+                    if (!string.IsNullOrEmpty(dewarp_mode))
+                    {
+                        options.Add($"dewarp_mode={dewarp_mode}");
+                    }
+
+                    if (!string.IsNullOrEmpty(dewarp_file_name))
+                    {
+                        options.Add($"dewarp_file_name={dewarp_file_name}");
+                    }
+
+                    if (options.Count > 0)
+                    {
+                        for (int index = 0; index < options.Count; index++)
+                        {
+                            urlSegment += $"&{options[index]}";
+                        }
+                    }
+
+                    var response = await SendPost(urlSegment);
+                    var jsonString = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return Ok(Json(jsonString));
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                    }
+                }
+                catch (ArgumentException ex)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                    return BadRequest(ex.Message);
+                }
+            }
+        }
+#if POST
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-create-custom-vision-project-of-device?
         //
@@ -722,6 +902,8 @@ namespace SonyIMX500.Controllers
                 return BadRequest(ex.Message);
             }
         }
+#endif
+
 
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-publish-model?
@@ -731,20 +913,25 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                Uri url = new Uri(_appSettings.SonyApi.BaseUrl);
-                HttpContent content = null;
-                string apiUrl = $"{url.AbsoluteUri}/models/{model_id}";
+                string urlSegment = $"models/{model_id}";
 
                 if (!string.IsNullOrEmpty(device_id))
                 {
-                    apiUrl += $"?{device_id}";
+                    urlSegment += $"?device_id={device_id}";
                 }
 
-                var response = await SendPost(apiUrl, content);
-                response.EnsureSuccessStatusCode();
+                var response = await SendPost(urlSegment);
 
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
             }
             catch (ArgumentException ex)
             {
@@ -757,6 +944,7 @@ namespace SonyIMX500.Controllers
             }
         }
 
+#if POST
         //
         // https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/post-reboot?
         //
@@ -1266,6 +1454,62 @@ namespace SonyIMX500.Controllers
         }
         #endregion
 
+        //
+        //https://apim-labstaging01.portal.azure-api.net/docs/services/v1/operations/put-deploy-by-configuration?
+        //
+        [HttpPut]
+        public async Task<ActionResult> DeployByConfiguration(string config_id,
+                                                              string device_ids,
+                                                              string comment,
+                                                              string replace_model_id)
+        {
+            try
+            {
+                string urlSegment = $"deployconfigurations/{config_id}?device_ids={device_ids}";
+                List<string> options = new List<string>();
+
+                if (!string.IsNullOrEmpty(comment))
+                {
+                    options.Add($"comment={comment}");
+                }
+
+                if (!string.IsNullOrEmpty(replace_model_id))
+                {
+                    options.Add($"replace_model_id={replace_model_id}");
+                }
+
+
+                if (options.Count > 0)
+                {
+                    for (int index = 0; index < options.Count; index++)
+                    {
+                        urlSegment += $"&{options[index]}";
+                    }
+                }
+
+
+                var response = await SendPut(urlSegment);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
         public class SonyApiModel
         {
             public string model_version_id { get; set; }

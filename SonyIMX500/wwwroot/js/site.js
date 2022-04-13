@@ -125,34 +125,34 @@ function PostToken(token) {
     });
 }
 
-async function GetDevices() {
+//async function GetDevices() {
 
-    try {
-        const result = await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.href + 'sony/GetDevices',
-            data: {}
-        });
+//    try {
+//        const result = await $.ajax({
+//            async: true,
+//            type: "GET",
+//            url: window.location.href + 'sony/GetDevices',
+//            data: {}
+//        });
 
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
+//        if (result['success'] == false) {
+//            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+//        }
 
-        var json = JSON.parse(result.value);
+//        var json = JSON.parse(result.value);
 
-        var list = document.getElementById("idDevices");
-        list.innerText = null;
-        list.append(new Option("", 0));
+//        var list = document.getElementById("idDevices");
+//        list.innerText = null;
+//        list.append(new Option("", "none"));
 
-        for (var device in json.devices) {
-            list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
-        }
+//        for (var device in json.devices) {
+//            list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
+//        }
 
-    } catch (err) {
-        alert("GetDevices() : Error (" + err.status + ") " + err.statusText);
-    }
-}
+//    } catch (err) {
+//        alert("GetDevices() : Error (" + err.status + ") " + err.statusText);
+//    }
+//}
 
 async function GetDevice(deviceId) {
 
@@ -177,7 +177,7 @@ async function GetDevice(deviceId) {
 
         var list = document.getElementById("deviceModels");
         list.innerText = null;
-        list.append(new Option("", 0));
+        list.append(new Option("", "none"));
 
         for (var model in json.models) {
             list.append(new Option(json.models[model].model_version_id, json.models[model].model_version_id))
@@ -214,7 +214,7 @@ async function GetModels(model_id) {
 
             var list = document.getElementById("modelProjects");
             list.innerText = null;
-            list.append(new Option("", 0));
+            list.append(new Option("", "none"));
 
             for (var project in json.models[0].projects) {
                 list.append(new Option(json.models[0].projects[project].model_project_name, json.models[0].projects[project].model_project_name));
@@ -234,7 +234,7 @@ async function GetModelVersion(model_id, project_id, model_version) {
 
         if (model_version == null) {
             list.innerText = null;
-            list.append(new Option("", 0));
+            list.append(new Option("", "none"));
         }
 
         const result = await $.ajax({
@@ -330,7 +330,7 @@ async function GetCustomVisionProjects() {
     try {
         var list = document.getElementById("idProject");
         list.innerText = null;
-        list.append(new Option("", 0));
+        list.append(new Option("", "none"));
 
         const result = await $.ajax({
             async: true,

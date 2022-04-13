@@ -314,6 +314,7 @@
                                                                         </form>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Create Custom Vision -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -347,7 +348,7 @@
                                                                                                 </button>
                                                                                             </div>
                                                                                             <div class="vertical-center">
-                                                                                                <div class="info-box-text" id='btnNewCustomVisionProjectCreateResult'>test</div>
+                                                                                                <div class="info-box-text" id='newCustomVisionProjectCreateResult'>test</div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -369,7 +370,7 @@
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
                                                                                             <div class="vertical-center">
-                                                                                                <div class="info-box-text" id='btnDeleteCustomVisionProjectResult'>test</div>
+                                                                                                <div class="info-box-text" id='deleteCustomVisionProjectResult'>test</div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -378,6 +379,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Build Custom Vision -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -403,6 +405,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Save Custom Vision -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -445,15 +448,16 @@
                                                                         <div class="card-footer">
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                 <button type="button" class="btn btn-success" id="btnSaveModel" disabled>
-                                                                                    <i class="fas fa-external-link-alt"></i> Save Custom Vision model.
+                                                                                    <i class="fas fa-external-link-alt"></i> Save Custom Vision model
                                                                                 </button>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='btnSaveModelResult'>test</div>
+                                                                                    <div class="info-box-text" id='saveModelResult'>test</div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Convert Model -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -478,12 +482,30 @@
                                                                                     <i class="fas fa-external-link-alt"></i> Convert Model
                                                                                 </button>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='btnConvertModelResult'>test</div>
+                                                                                    <div class="info-box-text" id='convertModelResult'>test</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnConvertModelGetStatus" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Get Status
+                                                                                </button>
+                                                                                <label for="divConvertModelConversionID" style="margin-left:1em">Conversion ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='divConvertModelConversionID'></div>
+                                                                                </div>
+                                                                                <label for="divConvertModelGetStatusStage" style="margin-left:1em">Stage : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='divConvertModelGetStatusStage'></div>
+                                                                                </div>
+                                                                                <label for="divConvertModelGetStatusResult" style="margin-left:1em">Result : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='divConvertModelGetStatusResult'></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Publish Model -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -503,12 +525,37 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnPublishModel" disabled>
-                                                                                <i class="fas fa-external-link-alt"></i> Publish Model
-                                                                            </button>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnPublishModel" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Publish Model
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='convertModelResult'>test</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnPublishModelGetStatus" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Get Status
+                                                                                </button>
+                                                                                <label for="divPublishModelConversionID" style="margin-left:1em">Conversion ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='divPublishModelConversionID'></div>
+                                                                                </div>
+                                                                                <label for="divPublishModelGetStatusStage" style="margin-left:1em">Stage : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='divPublishModelGetStatusStage'></div>
+                                                                                </div>
+                                                                                <label for="divPublishModelGetStatusResult" style="margin-left:1em">Result : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='divPublishModelGetStatusResult'></div>
+                                                                                </div>
+                                                                            </div>
+
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Create Deployment -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -518,121 +565,140 @@
                                                                         </h4>
                                                                     </div>
                                                                     <div id="accordionCreatePeploy" class="collapse" data-parent="#accordion">
-                                                                        <form id="createDeploymentForm">
-                                                                            <div class="card-body">
-                                                                                <div id="createDeploymentDiv">
-                                                                                    <label for="createDeployConfigId">Config ID</label>
-                                                                                    <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
+                                                                        <div class="card-body">
+                                                                            <div id="createDeploymentDiv">
+                                                                                <form id="createDeployForm">
+                                                                                    <div class="form-group">
 
-                                                                                    <label for="createDeploySensorLoaderVer">SensorLoader version number</label>
-                                                                                    <select name="createDeploySensorLoaderVer" id="createDeploySensorLoaderVer" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeployConfigId">Config ID</label>
+                                                                                        <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
 
-                                                                                    <label for="createDeploySensorVer">Sensor version number</label>
-                                                                                    <select name="createDeploySensorVer" id="createDeploySensorVer" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeploySensorLoaderVer">SensorLoader version number</label>
+                                                                                        <select name="createDeploySensorLoaderVer" id="createDeploySensorLoaderVer" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                    <label for="createDeployModelId">Model ID</label>
-                                                                                    <select name="createDeployModelId" id="createDeployModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeploySensorVer">Sensor version number</label>
+                                                                                        <select name="createDeploySensorVer" id="createDeploySensorVer" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                    <label for="createDeployAppFwVer">ApFw version number</label>
-                                                                                    <select name="createDeployAppFwVer" id="createDeployAppFwVer" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeployModelId">Model ID</label>
+                                                                                        <select name="createDeployModelId" id="createDeployModelId" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                    <label for="createDeployComment">Comment (Optional)</label>
-                                                                                    <input type="text" name="createDeployComment" class="form-control" id="createDeployComment" placeholder="Description. Less than 100 characters." value="">
+                                                                                        <label for="createDeployApFwVer">ApFw version number</label>
+                                                                                        <select name="createDeployApFwVer" id="createDeployApFwVer" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                    <label for="createDeployDeviceType">Device Type (Optional)</label>
-                                                                                    <select name="createDeployDeviceType" id="createDeployDeviceType" class="form-control">
-                                                                                        <option disabled selected>Select Device Type</option>
-                                                                                        <option value="00">MPU Based (Type4)</option>
-                                                                                        <option value="01">MCU Bsed (Type3)</option>
-                                                                                    </select>
+                                                                                        <label for="createDeployComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="createDeployComment" class="form-control" id="createDeployComment" placeholder="Description. Less than 100 characters." value="">
 
-                                                                                    <label for="createDeployModelVer">Model Version Number (Optional)</label>
-                                                                                    <input type="text" name="createDeployModelVer" class="form-control" id="createDeployModelVer" placeholder="Model version number." value="">
+                                                                                        <label for="createDeployDeviceType">Device Type (Optional)</label>
+                                                                                        <select name="createDeployDeviceType" id="createDeployDeviceType" class="form-control">
+                                                                                            <option disabled selected>Select Device Type</option>
+                                                                                            <option value="00">MPU Based (Type4)</option>
+                                                                                            <option value="01">MCU Bsed (Type3)</option>
+                                                                                        </select>
 
-                                                                                    <label for="createDeployColorMatrixMode">Color Matrix Mode (Optional)</label>
-                                                                                    <select name="createDeployColorMatrixMode" id="createDeployColorMatrixMode" class="form-control">
-                                                                                        <option disabled selected>Select Matrix Mode</option>
-                                                                                        <option>none</option>
-                                                                                        <option>std</option>
-                                                                                        <option>custom</option>
-                                                                                    </select>
+                                                                                        <label for="createDeployModelVer">Model Version Number (Optional)</label>
+                                                                                        <input type="text" name="createDeployModelVer" class="form-control" id="createDeployModelVer" placeholder="Model version number." value="">
 
-                                                                                    <label for="createDeployColorMatrixFileName">Color Matrix File Name (Optional)</label>
-                                                                                    <div class="input-group">
-                                                                                        <div class="custom-file">
-                                                                                            <input type="file" name="createDeployColorMatrixFileName" class="custom-file-input" id="createDeployColorMatrixFileName">
-                                                                                            <label class="custom-file-label" for="createDeployColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                                        <label for="createDeployColorMatrixMode">Color Matrix Mode (Optional)</label>
+                                                                                        <select name="createDeployColorMatrixMode" id="createDeployColorMatrixMode" class="form-control">
+                                                                                            <option disabled selected>Select Matrix Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployColorMatrixFileName">Color Matrix File Name (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployColorMatrixFileName" class="custom-file-input" id="createDeployColorMatrixFileName">
+                                                                                                <label class="custom-file-label" for="createDeployColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
 
-                                                                                    <label for="createDeployGammaMode">Gamma Mode (Optional)</label>
-                                                                                    <select name="createDeployGammaMode" id="createDeployGammaMode" class="form-control">
-                                                                                        <option disabled selected>Select Gamma Mode</option>
-                                                                                        <option>none</option>
-                                                                                        <option>std</option>
-                                                                                        <option>custom</option>
-                                                                                    </select>
+                                                                                        <label for="createDeployGammaMode">Gamma Mode (Optional)</label>
+                                                                                        <select name="createDeployGammaMode" id="createDeployGammaMode" class="form-control">
+                                                                                            <option disabled selected>Select Gamma Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
 
-                                                                                    <label for="createDeployGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
-                                                                                    <div class="input-group">
-                                                                                        <div class="custom-file">
-                                                                                            <input type="file" name="createDeployGammaFileName" class="custom-file-input" id="createDeployGammaFileName">
-                                                                                            <label class="custom-file-label" for="createDeployGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                                        <label for="createDeployGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployGammaFileName" class="custom-file-input" id="createDeployGammaFileName">
+                                                                                                <label class="custom-file-label" for="createDeployGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
 
-                                                                                    <label for="createDeployLscMode">LSC Correction Camera Settings (Optional)</label>
-                                                                                    <select name="createDeployLscMode" id="createDeployLscMode" class="form-control">
-                                                                                        <option disabled selected>Select LSC Mode</option>
-                                                                                        <option>none</option>
-                                                                                        <option>std</option>
-                                                                                        <option>custom</option>
-                                                                                    </select>
+                                                                                        <label for="createDeployLscMode">LSC Correction Camera Settings (Optional)</label>
+                                                                                        <select name="createDeployLscMode" id="createDeployLscMode" class="form-control">
+                                                                                            <option disabled selected>Select LSC Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
 
-                                                                                    <label for="createDeployLscModeFile">LSC Correction Camera Settings File (bin) name (Optional)</label>
-                                                                                    <input type="text" name="createDeployLscModeFile" class="form-control" id="createDeployLscModeFile" placeholder="LSC Correction Camera Settings file (bin) name." value="">
+                                                                                        <label for="createDeployLscModeFile">LSC Correction Camera Settings File (bin) name (Optional)</label>
+                                                                                        <input type="text" name="createDeployLscModeFile" class="form-control" id="createDeployLscModeFile" placeholder="LSC Correction Camera Settings file (bin) name." value="">
 
-                                                                                    <label for="createDeployPrewbMode">PreWB adjustment value Camera settings. (Optional)</label>
-                                                                                    <select name="createDeployPrewbMode" id="createDeployPrewbMode" class="form-control">
-                                                                                        <option disabled selected>Select PreWB Mode</option>
-                                                                                        <option>none</option>
-                                                                                        <option>std</option>
-                                                                                        <option>custom</option>
-                                                                                    </select>
+                                                                                        <label for="createDeployPrewbMode">PreWB adjustment value Camera settings. (Optional)</label>
+                                                                                        <select name="createDeployPrewbMode" id="createDeployPrewbMode" class="form-control">
+                                                                                            <option disabled selected>Select PreWB Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
 
-                                                                                    <label for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) name (Optional)</label>
-                                                                                    <div class="input-group">
-                                                                                        <div class="custom-file">
-                                                                                            <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
-                                                                                            <label class="custom-file-label" for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                                        <label for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) name (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
+                                                                                                <label class="custom-file-label" for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                                            </div>
                                                                                         </div>
-                                                                                    </div>
 
-                                                                                    <label for="createDeployDewarpMode">Distortion correction Camera settings(bin)type. (Optional)</label>
-                                                                                    <select name="createDeployDewarpMode" id="createDeployDewarpMode" class="form-control">
-                                                                                        <option disabled selected>Select Distortion Correction Type</option>
-                                                                                        <option>none</option>
-                                                                                        <option>std</option>
-                                                                                        <option>custom</option>
-                                                                                    </select>
+                                                                                        <label for="createDeployDewarpMode">Distortion correction Camera settings(bin)type. (Optional)</label>
+                                                                                        <select name="createDeployDewarpMode" id="createDeployDewarpMode" class="form-control">
+                                                                                            <option disabled selected>Select Distortion Correction Type</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
 
-                                                                                    <label for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name. (Optional)</label>
-                                                                                    <div class="input-group">
-                                                                                        <div class="custom-file">
-                                                                                            <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
-                                                                                            <label class="custom-file-label" for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name.</label>
+                                                                                        <label for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name. (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
+                                                                                                <label class="custom-file-label" for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name.</label>
+                                                                                            </div>
                                                                                         </div>
+
                                                                                     </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnCreateDeployConfiguration" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Create Deploy Configuraion
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='createDeployConfigurationResult'>test</div>
                                                                                 </div>
                                                                             </div>
-                                                                        </form>
-                                                                        <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnCreateDeployConfiguration" disabled>
-                                                                                <i class="fas fa-external-link-alt"></i> Create Deploy Configuraion
-                                                                            </button>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="btnCreateDeployConfigurationGetDeployConfigurations">
+                                                                                    <i class="fas fa-external-link-alt"></i> Get Deploy Configurations
+                                                                                </button>
+                                                                                <label for="createDeployConfigurationGetDeployConfigurationsList" style="margin-left:1em">Configuration ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <select name="createDeployConfigurationGetDeployConfigurationsList" id="createDeployConfigurationGetDeployConfigurationsList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Deploy AI Model -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -644,27 +710,38 @@
                                                                     <div id="accordionPeploy" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="deployDiv">
-                                                                                <label for="deployConfigId">Config ID</label>
-                                                                                <input type="text" name="deployConfigId" class="form-control" id="deployConfigId" placeholder="configID. Less than 20 characters." value="">
+                                                                                <form id="deployByConfiguraionForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="deployByConfiguraionFormConfigId">Config ID</label>
+                                                                                        <select name="deployByConfiguraionFormConfigId" id="deployByConfiguraionFormConfigId" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="deployDeviceId">Device ID</label>
-                                                                                <select name="deployDeviceId" id="deployDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="deployByConfiguraionDeviceId">Device ID</label>
+                                                                                        <select name="deployByConfiguraionDeviceId" id="deployByConfiguraionDeviceId" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="deployComment">Comment (Optional)</label>
-                                                                                <input type="text" name="deployComment" class="form-control" id="deployComment" placeholder="Description. Less than 100 characters." value="">
+                                                                                        <label for="deployByConfiguraionComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="deployByConfiguraionComment" class="form-control" id="deployByConfiguraionComment" placeholder="Description. Less than 100 characters." value="">
 
-                                                                                <label for="deployReplaceModelID">Model ID to replace (Optional)</label>
-                                                                                <select name="deployReplaceModelID" id="deployReplaceModelID" class="form-control custom-select" style="min-width:10em"></select>
-
+                                                                                        <label for="deployByConfiguraionReplaceModelID">Model ID to replace (Optional)</label>
+                                                                                        <select name="deployByConfiguraionReplaceModelID" id="deployByConfiguraionReplaceModelID" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnDeployByConfiguration" disabled>
-                                                                                <i class="fas fa-external-link-alt"></i> Deploy by Configuraion
-                                                                            </button>
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="btnDeployByConfiguration" disabled>
+                                                                                        <i class="fas fa-external-link-alt"></i> Deploy by Configuraion
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='deployByConfigurationResult'>test</div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Start/Stop Inference -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -676,32 +753,40 @@
                                                                     <div id="accordionStartStopInference" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="startStopInferenceDiv">
-                                                                                <label for="startInferenceDeviceId">Device ID</label>
-                                                                                <select name="startInferenceDeviceId" id="startInferenceDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <!--<form id="startUploadInferenceForm">
+                                                                                    <div class="form-group">-->
+                                                                                <form id="stopUploadInferenceForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="startStopInferenceDeviceId">Device ID</label>
+                                                                                        <select name="startStopInferenceDeviceId" id="startStopInferenceDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                                <label for="startStopInferenceFrequency">Frequency of Inference (Optional)</label>
+                                                                                <input type="number" name="startStopInferenceFrequency" class="form-control" id="startStopInferenceFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="" min="1" , max="2592000">
 
-                                                                                <label for="startInferenceFrequency">Frequency of Inference (Optional)</label>
-                                                                                <input type="number" name="startInferenceFrequency" class="form-control" id="startInferenceFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="" min="1" , max="2592000">
-
-                                                                                <label for="startInferenceMaxDetection">Number of objects included in 1 frame (Optional)</label>
+                                                                                <label for="startStopInferenceMaxDetection">Number of objects included in 1 frame (Optional)</label>
                                                                                 <input type="number" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="64">
 
-                                                                                <label for="startInferenceCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropHOffset" class="form-control" id="startInferenceCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+                                                                                <label for="startStopInferenceCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                <input type="number" name="startStopInferenceCropHOffset" class="form-control" id="startStopInferenceCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
 
-                                                                                <label for="startInferenceCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropVOffset" class="form-control" id="startInferenceCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+                                                                                <label for="startStopInferenceCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                <input type="number" name="startStopInferenceCropVOffset" class="form-control" id="startStopInferenceCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
 
-                                                                                <label for="startInferenceCropHSize">Hsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropHSize" class="form-control" id="startInferenceCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+                                                                                <label for="startStopInferenceCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                <input type="number" name="startStopInferenceCropHSize" class="form-control" id="startStopInferenceCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
 
-                                                                                <label for="startInferenceCropVSize">Vsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startInferenceCropVSize" class="form-control" id="startInferenceCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+                                                                                <label for="startStopInferenceCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                <input type="number" name="startStopInferenceCropVSize" class="form-control" id="startStopInferenceCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
 
-                                                                                <label for="startInferenceNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="number" name="startInferenceNumberOfInferencesPerMessage" class="form-control" id="startInferenceNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="100">
+                                                                                <label for="startStopInferenceNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
+                                                                                <input type="number" name="startStopInferenceNumberOfInferencesPerMessage" class="form-control" id="startStopInferenceNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="100">
 
-                                                                                <label for="startInferenceModelId">Model ID (Optional)</label>
-                                                                                <select name="startInferenceModelId" id="startInferenceModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="startStopInferenceModelId">Model ID (Optional)</label>
+                                                                                <select name="startStopInferenceModelId" id="startStopInferenceModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <!--
+                                                                            </div>
+                                                                                </form> -->
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
@@ -714,6 +799,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Start/Stop Upload Retraining Data -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
@@ -787,6 +873,7 @@
                                             </div>
 
                                         </div>
+                                        <!-- Telemetry Tab -->
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
                                                 <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll" ">
@@ -809,15 +896,16 @@
                                                 </button>
                                             </div>
                                         </div>
+                                        <!-- AI Result Tab -->
                                         <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
                                                 <div>
                                                     <div class="mb-2 row">
                                                         <div class="float-right">
                                                             <!--<select class="custom-select" style="width: auto;" data-sortOrder>
-                                                    <option value="index"> Sort by Position </option>
-                                                    <option value="sortData"> Sort by Custom Data </option>
-                                                </select>-->
+                            <option value="index"> Sort by Position </option>
+                            <option value="sortData"> Sort by Custom Data </option>
+                        </select>-->
                                                             <div class="btn-group">
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
@@ -829,6 +917,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- API Output Tab -->
                                         <div class="tab-pane fade" id="tab-api-output" role="tabpanel" aria-labelledby="tab-apiOutput-label">
                                             <div class="card card-primary">
                                                 <div class="card-body">
@@ -848,6 +937,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <!-- Other Tab -->
                                         <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-label">
                                             placeholder for other (firmware info etc)
                                         </div>
@@ -894,7 +984,15 @@
 
         var hubConnection;
 
+        $.validator.addMethod("valueNotEquals", function (value, element, arg) {
+            if (value == arg ) { return false };
+            return true
+        });
+
         $(document).ready(function () {
+
+
+
             sonyApiInitialize();
 
             hubConnection = new signalR.HubConnectionBuilder()
@@ -990,6 +1088,11 @@
                     });
             }
         })
+        
+
+        //
+        // Button Click
+        //
 
         $('#btnDeleteCustomVisionProject').click(function () {
             var projectList = document.getElementById('customVisionList');
@@ -1043,7 +1146,6 @@
                 .finally(() => {
                     toggleLoader();
                 });
-
         })
 
         $('#btnConvertModel').click(function () {
@@ -1051,8 +1153,9 @@
             console.debug("btnConvertModel Click");
 
             ConvertModel()
-                .then(() => {
-                    console.log("Model Saved");
+                .then(function (conversion_id) {
+                    console.log("Conversion Started : " + conversion_id);
+                    document.getElementById('btnConvertModelConversionID').innerHTML = conversion_id;
                 })
                 .catch((e) => {
                     console.error("ErrorXX : " + e);
@@ -1062,26 +1165,133 @@
                 });
         })
 
+        $('#btnConvertModelGetStatus').click(function () {
+            toggleLoader();
+            console.debug("btnConvertModelGetStatus Click");
+
+            var model_id = document.getElementById("convertModelModelList").selectedIndex == 0 ? null : document.getElementById("convertModelModelList").value;
+
+            GetBaseModelStatus(model_id, "1")
+                .then(function (project) {
+                    console.log("Model Status : " + project);
+                    var json = JSON.parse(project);
+                    console.log("Model Status : " + json);
+                    document.getElementById('divConvertModelConversionID').innerHTML = json.versions[0].conv_id;
+                    document.getElementById('divConvertModelGetStatusStage').innerHTML = json.versions[0].stage;
+                    document.getElementById('divConvertModelGetStatusResult').innerHTML = json.versions[0].result;
+                })
+                .catch(function (e) {
+                    console.error("Error : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
+        })
+
         $('#btnPublishModel').click(function () {
+            toggleLoader();
             console.debug("btnPublishModel Click");
+
+            PublishModel()
+                .then(function (conversion_id) {
+                    console.log("Publish Started : " + conversion_id);
+                    document.getElementById('divPublishModelConversionID').innerHTML = conversion_id;
+                })
+                .catch(function (e) {
+                    console.error("Error : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
+        })
+
+        $('#btnPublishModelGetStatus').click(function () {
+            toggleLoader();
+            console.debug("btnPublishModelGetStatus Click");
+
+            var model_id = document.getElementById("publishModelModelList").selectedIndex == 0 ? null : document.getElementById("publishModelModelList").value;
+
+            GetBaseModelStatus(model_id, "1")
+                .then(function (project) {
+                    console.log("Model Status : " + project);
+                    var json = JSON.parse(project);
+                    console.log("Model Status : " + json);
+                    document.getElementById('divPublishModelConversionID').innerHTML = json.versions[0].conv_id;
+                    document.getElementById('divPublishModelGetStatusStage').innerHTML = json.versions[0].stage;
+                    document.getElementById('divPublishModelGetStatusResult').innerHTML = json.versions[0].result;
+                })
+                .catch(function (e) {
+                    console.error("Error : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
         })
 
         $('#btnCreateDeployConfiguration').click(function () {
+            if ($('#createDeployForm').valid() == false) {
+                return;
+            }
+
+            toggleLoader();
             console.debug("btnCreateDeployConfiguration Click");
+
+            CreateDeployConfiguration()
+                .then(() => {
+                    console.log("Model Saved");
+                })
+                .catch(function (e) {
+                    console.error("Error : " + e);
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
         })
 
         $('#btnDeployByConfiguration').click(function () {
             console.debug("btnDeployByConfiguration Click");
+            toggleLoader();
+            DeployByConfiguration()
+                .then(() => {
+                    console.log("Configuration Deployed");
+                    GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList');
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
         })
 
 
+        $('#btnCreateDeployConfigurationGetDeployConfigurations').click(function () {
+            console.debug("btnCreateDeployConfigurationGetDeployConfigurations Click");
+            toggleLoader();
+            GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
+                .then(() => {
+                    console.log("Configuration Acquired");
+                })
+                .finally(() => {
+                    toggleLoader();
+                });
+        })
+
         $('#btnStartUploadInferenceResult').click(function () {
             console.debug("btnStartUploadInferenceResult Click");
-            StartUploadInferenceResult();
+            if ($('#startUploadInferenceForm').valid()) {
+                toggleLoader();
+                StartUploadInferenceResult().then(() => {
+                    toggleLoader();
+                })
+            }
         })
 
         $('#btnStopUploadInferenceResult').click(function () {
             console.debug("btnStopUploadInferenceResult Click");
+            if ($('#stopUploadInferenceForm').valid()) {
+                toggleLoader();
+                StopUploadInferenceResult().then(() => {
+                    toggleLoader();
+                })
+            }
         })
 
         $('#btnStartUploadRetrainingData').click(function () {
@@ -1221,6 +1431,255 @@
             }
         });
 
+        $('#createDeployForm').validate({
+            rules: {
+                createDeployConfigId: {
+                    required: true,
+                    maxlength: 20
+                },
+                createDeploySensorLoaderVer: {
+                    required: true
+                },
+                createDeploySensorVer: {
+                    required: true
+                },
+                createDeployModelId: {
+                    required: true
+                },
+                createDeployApFwVer: {
+                    required: true
+                },
+                createDeployComment: {
+                    required: false,
+                    maxlength: 100
+                },
+                createDeployComment: {
+                    required: false,
+                    maxlength: 100
+                },
+                createDeployDeviceType: {
+                    required: false
+                },
+                createDeployModelVer: {
+                    required: false
+                },
+                createDeployColorMatrixMode: {
+                    required: false
+                },
+                createDeployColorMatrixFileName: {
+                    required: false
+                },
+                createDeployGammaMode: {
+                    required: false
+                },
+                createDeployGammaFileName: {
+                    required: false
+                },
+                createDeployLscMode: {
+                    required: false
+                },
+                createDeployLscModeFile: {
+                    required: false
+                },
+                createDeployPrewbMode: {
+                    required: false
+                },
+                createDeployPrewbModeFile: {
+                    required: false
+                },
+                createDeployDewarpMode: {
+                    required: false
+                },
+                createDeployPrewbModeFile: {
+                    required: false
+                }
+            },
+            messages: {
+                createDeployConfigId: {
+                    required: "Enter configID up to 20 characters.",
+                    maxlength: "configID must be up to 20 characters"
+                },
+                createDeploySensorLoaderVer: {
+                    required: "Select SensorLoader version.",
+                },
+                createDeploySensorVer: {
+                    required: "Select Sensor version.",
+                },
+                createDeployModelId: {
+                    required: "Select Model ID.",
+                },
+                createDeployApFwVer: {
+                    required: "Select ApFw version.",
+                },
+                createDeploySensorLoaderVer: {
+                    required: "Select SensorLoader version number.",
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#deployByConfiguraionForm').validate({
+            rules: {
+                deployByConfiguraionFormConfigId: {
+                    required: true
+                },
+                deployByConfiguraionDeviceId: {
+                    required: true
+                },
+                deployByConfiguraionComment: {
+                    required: false
+                },
+                deployByConfiguraionReplaceModelID: {
+                    required: false
+                },
+            },
+            messages: {
+                deployByConfiguraionFormConfigId: {
+                    required: "Select ConfigID from thelist",
+                },
+                deployByConfiguraionDeviceId: {
+                    required: "Select Device ID from the list."
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+
+        $('#startUploadInferenceForm').validate({
+            rules: {
+                startStopInferenceDeviceId: {
+                    required: true
+                },
+                startStopInferenceFrequency: {
+                    required: false,
+                    min: 1,
+                    max: 2592000
+                },
+                startStopInferenceMaxDetection: {
+                    required: false,
+                    min: 1,
+                    max: 64
+                },
+                startStopInferenceCropHOffset: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startStopInferenceCropVOffset: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startStopInferenceCropHSize: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startStopInferenceCropVSize: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startStopInferenceNumberOfInferencesPerMessage: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+                startStopInferenceModelId: {
+                    required: false
+                },
+            },
+            messages: {
+                startStopInferenceDeviceId: {
+                    required: "Please select an item!" 
+                },
+                startStopInferenceFrequency: {
+                    min: "Frequency of Inference must be > 1",
+                    max: "Frequency of Inference must be < 2,592,000"
+                },
+                startStopInferenceMaxDetection: {
+                    min: "No. of Objects included in 1 frame must be 1 or more",
+                    max: "No. of Objects included in 1 frame must be less than or equal to 64"
+                },
+                startStopInferenceCropHOffset: {
+                    min: "Hoffset for Image crop must be 0 or more",
+                    max: "Hoffset for Image crop must be less than or equal to 4,056"
+                },
+                startStopInferenceCropVOffset: {
+                    min: "Voffset for Image crop must be 0 or more",
+                    max: "Voffset for Image crop must be less than or equal to 3,040"
+                },
+                startStopInferenceCropHSize: {
+                    min: "Hsize for Image crop must be 0 or more",
+                    max: "Hsize for Image crop must be less than or equal to 4,056"
+                },
+                startStopInferenceCropVSize: {
+                    min: "Vsize for Image crop must be 0 or more",
+                    max: "Vsize for Image crop must be less than or equal to 4,056"
+                },
+                startStopInferenceNumberOfInferencesPerMessage: {
+                    min: "Number of inference results to include in one message must be 1 or more",
+                    max: "Number of inference results to include in one message must be less than or equal to 100"
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#stopUploadInferenceForm').validate({
+            rules: {
+                startStopInferenceDeviceId: {
+                    required: true,
+                },
+            },
+            messages: {
+                startStopInferenceDeviceId: {
+                    required: "Select Device ID from thelist",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
 
         //
         // Accordion
@@ -1257,7 +1716,7 @@
             toggleLoader();
             console.log("accordionSaveCustomVisionModel show : " + currentCvProject);
             GetCustomVisionProjects("saveModelProjectList").then(() => {
-                select = document.getElementById('saveModelProjectList');
+                var select = document.getElementById('saveModelProjectList');
                 if (document.getElementById('customVisionList').selectedIndex > 0) {
                     select.value = document.getElementById('customVisionList').value;
                     document.getElementById('customVisionList').dispatchEvent(new Event("change"));
@@ -1269,34 +1728,54 @@
         $('#accordionConvertAiModel').on('show.bs.collapse', function () {
             toggleLoader();
             console.log("accordionConvertAiModel show : " + currentCvProject);
-            GetAllModels("convertModelModelList");
-            GetDevices("convertModelDeviceList").then(() => {
-                toggleLoader();
-            })
+            GetAllModels("convertModelModelList").then(() => {
+
+                if (document.getElementById('convertModelModelList').selectedIndex == 0 && document.getElementById('saveModelModelId').value.length > 0) {
+                    document.getElementById('convertModelModelList').value = document.getElementById('saveModelModelId').value;
+                    document.getElementById('convertModelModelList').dispatchEvent(new Event("change"));
+                }
+
+                GetDevices("convertModelDeviceList", true).then(() => {
+                    toggleLoader();
+                });
+            });
         })
 
         $('#accordionPublishAiModel').on('show.bs.collapse', function () {
             toggleLoader();
             console.log("accordionPublishAiModel show : " + currentCvProject);
-            GetAllModels("publishModelModelList");
-            GetDevices("publishModelDeviceList").then(() => {
-                toggleLoader();
-            })
+            GetAllModels("publishModelModelList").then(() => {
+
+                if (document.getElementById('publishModelModelList').selectedIndex == 0 && document.getElementById('saveModelModelId').value.length > 0) {
+                    document.getElementById('publishModelModelList').value = document.getElementById('saveModelModelId').value;
+                    document.getElementById('publishModelModelList').dispatchEvent(new Event("change"));
+                }
+
+                GetDevices("publishModelDeviceList", true).then(() => {
+                    toggleLoader();
+                });
+            });
         })
 
         $('#accordionCreatePeploy').on('show.bs.collapse', function () {
             toggleLoader();
             console.log("accordionCreatePeploy show : " + currentCvProject);
-            GetAllModels("createDeployModelId").then(() => {
-                toggleLoader();
-            })
+            GetFirmwares('02', null, "createDeploySensorLoaderVer");
+            GetFirmwares('01', null, "createDeploySensorVer");
+            GetFirmwares('00', null, "createDeployApFwVer");
+            GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList").then(() => {
+                GetAllModels("createDeployModelId").then(() => {
+                    toggleLoader();
+                })
+            });
         })
 
         $('#accordionPeploy').on('show.bs.collapse', function () {
             toggleLoader();
             console.log("accordionPeploy show");
-            GetAllModels("deployReplaceModelID");
-            GetDevices("deployDeviceId").then(() => {
+            GetAllModels("deployByConfiguraionReplaceModelID");
+            GetDeployConfigurations("deployByConfiguraionFormConfigId");
+            GetDevices("deployByConfiguraionDeviceId", true).then(() => {
                 toggleLoader();
             })
         })
@@ -1304,8 +1783,8 @@
         $('#accordionStartStopInference').on('show.bs.collapse', function () {
             toggleLoader();
             console.log("accordionStartStopInference show : " + currentCvProject);
-            GetDevices("startInferenceDeviceId");
-            GetAllModels("startInferenceModelId").then(() => {
+            GetDevices("startStopInferenceDeviceId", true);
+            GetAllModels("startStopInferenceModelId").then(() => {
                 toggleLoader();
             })
         })
@@ -1313,7 +1792,7 @@
         $('#accordionStartStopUploadRetrainingData').on('show.bs.collapse', function () {
             toggleLoader();
             console.log("accordionStartStopUploadRetrainingData show : " + currentCvProject);
-            GetDevices("startUploadRetrainingDataDeviceId");
+            GetDevices("startUploadRetrainingDataDeviceId", true);
             GetAllModels("startUploadRetrainingDataModelId").then(() => {
                 toggleLoader();
             })
@@ -1415,10 +1894,16 @@
             var list = document.getElementById('convertModelModelList');
             console.log("convertModelModelList change : " + list[list.selectedIndex].value);
             if (list[list.selectedIndex].value != 0) {
+
+                if (document.getElementById('saveModelModelId').value.length == 0) {
+                    document.getElementById('saveModelModelId').value = list[list.selectedIndex].value;
+                }
                 $('#btnConvertModel').prop('disabled', false);
+                $('#btnConvertModelGetStatus').prop('disabled', false);
             }
             else {
                 $('#btnConvertModel').prop('disabled', true);
+                $('#btnConvertModelGetStatus').prop('disabled', false);
             }
         })
 
@@ -1426,13 +1911,41 @@
             var list = document.getElementById('publishModelModelList');
             if (list[list.selectedIndex].value != 0) {
                 $('#btnPublishModel').prop('disabled', false);
+                $('#btnPublishModelGetStatus').prop('disabled', false);
             }
             else {
                 $('#btnPublishModel').prop('disabled', true);
-
+                $('#btnPublishModelGetStatus').prop('disabled', true);
             }
         })
 
+        $('#createDeployConfigId').on('change', function () {
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeploySensorLoaderVer').on('change', function () {
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeploySensorVer').on('change', function () {
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeployModelId').on('change', function () {
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeployApFwVer').on('change', function () {
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#deployByConfiguraionFormConfigId').on('change', function () {
+            CheckDeployByConfigurationInputs();
+        })
+
+        $('#deployByConfiguraionDeviceId').on('change', function () {
+            CheckDeployByConfigurationInputs();
+        })
         // Input
         $('#newCustomVisionProjectName').on('input', function () {
             var inputField = document.getElementById('newCustomVisionProjectName');
