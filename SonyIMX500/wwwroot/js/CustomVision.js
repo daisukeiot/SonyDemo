@@ -9,12 +9,16 @@
             data: {},
         });
 
-        AddApiOutput('customvision/GetProjects', result.value);
+        //AddApiOutput('customvision/GetProjects', result.value);
 
         if (listElementId) {
             var json = JSON.parse(result.value);
-
             var list = document.getElementById(listElementId);
+            var currentSelection = null;
+
+            if (list.selectedIndex != -1) {
+                currentSelection = list.value;
+            }
             list.innerText = null;
             var option = new Option("Select from list", "");
             option.disabled = true;
@@ -25,7 +29,12 @@
                 list.append(new Option(project.name, project.id));
             });
 
-            list.selectedIndex = 0;
+            if (currentSelection) {
+                list.value = currentSelection;
+            }
+            else {
+                list.selectedIndex = 0;
+            }
             list.blur();
         }
 
@@ -34,9 +43,9 @@
     }
 }
 
-async function DeleteCustomVisionProjectCV(project_name) {
+async function DeleteProjectCV(project_name) {
 
-    var resultElement = document.getElementById('deleteCustomVisionProjectResult');
+    var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
 
     try {
 
@@ -50,7 +59,7 @@ async function DeleteCustomVisionProjectCV(project_name) {
         resultElement.innerHTML = "Success";
 
     } catch (err) {
-        alert("DeleteCustomVisionProject() : Error (" + err.status + ") " + err.statusText);
+        alert("DeleteProject() : Error (" + err.status + ") " + err.statusText);
         resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
     }
 }

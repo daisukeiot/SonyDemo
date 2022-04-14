@@ -12,6 +12,22 @@ loginRequest = {
     scopes: ["User.Read"]
 }
 
+function setResultElement(resultElement, msg) {
+
+    var json = JSON.parse(msg);
+
+    if (json.result && json.result == "ERROR") {
+        if (json.message) {
+            resultElement.innerHTML = json.message;
+        }
+        else {
+            resultElement.innerHTML = json.stringify();
+        }
+    }
+    else {
+        resultElement.innerHTML = msg;
+    }
+}
 
 function sonyApiInitialize() {
 
@@ -33,6 +49,24 @@ function sonyApiInitialize() {
             updateSetupUi(response);
         }
     });
+}
+
+function processError(funcName, err, bShowAlert) {
+
+    var msg;
+
+    if (err.responseJSON) {
+        msg = err.responseJSON.value;
+    }
+    else {
+        msg = err.statusText;
+    }
+
+    if (bShowAlert) {
+        alert(funcName + " : " + err.statusText + "(" + err.status + ") : " + msg);
+    }
+
+    return msg;
 }
 
 function sonyApiAuth() {
@@ -172,15 +206,17 @@ function AddApiOutput(apiName, result) {
 //    }
 //}
 
-async function CreateCustomVisionProject() {
+async function CreateBaseCustomVisionProject() {
 
-    var resultElement = document.getElementById('newCustomVisionProjectCreateResult');
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('createBaseCustomVisionProjectBtnResult');
 
     try {
-        var projectName = document.getElementById("newCustomVisionProjectName");
-        console.log("CreateCustomVisionProject() Name " + projectName.value)
+        var projectName = document.getElementById("createBaseCustomVisionProjectName");
+        console.log("CreateBaseCustomVisionProject() Name " + projectName.value)
 
-        var projectComment = document.getElementById("newCustomVisionProjectComment");
+        var projectComment = document.getElementById("createBaseCustomVisionProjectComment");
 
         if (projectComment.value.length > 0) {
             console.log("Comment " + projectComment.value)
@@ -196,22 +232,26 @@ async function CreateCustomVisionProject() {
             },
         });
 
-        AddApiOutput("CreateBaseCustomVisionProject", result.value);
-        resultElement.innerHTML = result.value;
+        msg = result.value;
 
     } catch (err) {
-        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
 }
 
-async function DeleteCustomVisionProject(project_name) {
-
-    var resultElement = document.getElementById('deleteCustomVisionProjectResult');
+async function DeleteProject(project_name) {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
 
     try {
-        var projectName = document.getElementById("newCustomVisionProjectName");
-        console.log("CreateCustomVisionProject() Name " + projectName.value)
+        var projectName = document.getElementById("createBaseCustomVisionProjectName");
+        console.log("CreateBaseCustomVisionProject() Name " + projectName.value)
 
         const result = await $.ajax({
             async: true,
@@ -222,26 +262,30 @@ async function DeleteCustomVisionProject(project_name) {
             },
         });
 
-        AddApiOutput("CreateBaseCustomVisionProject", result.value);
-        resultElement.innerHTML = result.value;
+        msg = result.value;
 
     } catch (err) {
-        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
 }
 
 async function SaveCustomVisionModel() {
-
-    var resultElement = document.getElementById('saveModelResult');
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('saveCustomVisionModelBtnResult');
 
     try {
-        var project_name = document.getElementById("saveModelProjectList").selectedIndex == 0 ? null : document.getElementById("saveModelProjectList")[document.getElementById("saveModelProjectList").selectedIndex].text
-        var model_id = document.getElementById("saveModelModelId").value;
-        var initial_version_number = document.getElementById("saveModelInitialVersion").value;
-        var functionality = document.getElementById("saveModelFunctionality").value;
-        var vendor_name = document.getElementById("saveModelVendorName").value;
-        var comment = document.getElementById("saveModelComment").value;
+        var project_name = document.getElementById("saveCustomVisionModelProjectNameList").selectedIndex == 0 ? null : document.getElementById("saveCustomVisionModelProjectNameList")[document.getElementById("saveCustomVisionModelProjectNameList").selectedIndex].text
+        var model_id = document.getElementById("saveCustomVisionModelProjectModelId").value;
+        var initial_version_number = document.getElementById("saveCustomVisionModelInitialVersionNumber").value;
+        var functionality = document.getElementById("saveCustomVisionModelFunctionality").value;
+        var vendor_name = document.getElementById("saveCustomVisionModelVendorName").value;
+        var comment = document.getElementById("saveCustomVisionModelComment").value;
 
         const result = await $.ajax({
             async: true,
@@ -257,21 +301,26 @@ async function SaveCustomVisionModel() {
             },
         });
 
-        AddApiOutput("SaveCustomVisionModel", result.value);
-        resultElement.innerHTML = result.value;
+        msg = result.value;
 
     } catch (err) {
-        alert("SaveCustomVisionModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
 }
 
 async function ConvertModel() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var json = null;
+    var resultElement = document.getElementById('convertModelBtnResult');
 
-    var resultElement = document.getElementById('convertModelResult');
-
-    var model_id = document.getElementById("convertModelModelList").selectedIndex == 0 ? null : document.getElementById("convertModelModelList").value;
-    var device_id = document.getElementById("convertModelDeviceList").selectedIndex == 0 ? null : document.getElementById("convertModelDeviceList").value;
+    var model_id = document.getElementById("convertModelModelIdList").selectedIndex == 0 ? null : document.getElementById("convertModelModelIdList").value;
+    var device_id = document.getElementById("convertModelDeviceIdList").selectedIndex == 0 ? null : document.getElementById("convertModelDeviceIdList").value;
 
     try {
         const result = await $.ajax({
@@ -284,25 +333,34 @@ async function ConvertModel() {
             }
         });
 
-        AddApiOutput("ConvertModel", result.value);
-        resultElement.innerHTML = result.value;
-
-        var json = JSON.parse(result.value);
-
-        return json.conv_id;
+        json = JSON.parse(result.value);
+        msg = result.value;
 
     } catch (err) {
-        alert("ConvertModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
+    }
+
+    if (json) {
+        return json.conv_id;
+    }
+    else {
+        return null;
     }
 }
 
 async function PublishModel() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('publishModelBtnResult');
+    var json = null;
 
-    var resultElement = document.getElementById('convertModelResult');
-
-    var model_id = document.getElementById("publishModelModelList").selectedIndex == 0 ? null : document.getElementById("publishModelModelList").value;
-    var device_id = document.getElementById("publishModelDeviceList").selectedIndex == 0 ? null : document.getElementById("publishModelDeviceList").value;
+    var model_id = document.getElementById("publishModelModelIdList").selectedIndex == 0 ? null : document.getElementById("publishModelModelIdList").value;
+    var device_id = document.getElementById("publishModelDeviceIdList").selectedIndex == 0 ? null : document.getElementById("publishModelDeviceIdList").value;
 
     try {
         const result = await $.ajax({
@@ -315,20 +373,31 @@ async function PublishModel() {
             }
         });
 
-        AddApiOutput("PublishModel(): ", result.value);
-        resultElement.innerHTML = result.value;
-
-        var json = JSON.parse(result.value);
-
-        return json.conv_id;
+        json = JSON.parse(result.value);
+        msg = result.value;
 
     } catch (err) {
-        alert("PublishModel() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
+    }
+
+    if (json) {
+        return json.conv_id;
+    }
+    else {
+        return null;
     }
 }
 
 async function GetBaseModelStatus(model_id, latest_type) {
+
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var json = null;
 
     try {
         const result = await $.ajax({
@@ -341,18 +410,37 @@ async function GetBaseModelStatus(model_id, latest_type) {
             }
         });
 
-        AddApiOutput("GetBaseModelStatus(): ", result.value);
+        msg = result.value;
 
-        var json = JSON.parse(result.value);
-
-        return JSON.stringify(json.projects[0]);
+        json = JSON.parse(result.value);
 
     } catch (err) {
-        alert("GetBaseModelStatus() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        if (err.responseJSON) {
+            msg = err.responseJSON.value;
+        }
+        else {
+            msg = err.statusText;
+        }
+        alert(funcName + " : " + err.statusText + "(" + err.status + ") : " + msg);
+    } finally {
+        if (msg) {
+            AddApiOutput(funcName, msg);
+        }
+    }
+
+    if (json) {
+        return JSON.stringify(json.projects[0]);
+    }
+    else {
+        return null;
     }
 }
 
 async function GetFirmwares(firmware_type, ppl, listElementId) {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var ret = true;
+
     try {
         const result = await $.ajax({
             async: true,
@@ -363,8 +451,6 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
                 ppl: ppl
             }
         });
-
-        AddApiOutput("GetFirmwares(): ", result.value);
 
         if (listElementId) {
             var json = JSON.parse(result.value);
@@ -385,37 +471,44 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
             else {
                 list.options[0].selected = true;
             }
-            return;
         }
-
     } catch (err) {
-        alert("GetFirmwares() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
+    } finally {
+        if (msg) {
+            AddApiOutput(funcName, msg);
+        }
     }
+
+    return ret;
 }
 
 async function CreateDeployConfiguration() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('createDeployConfigurationResult');
+    var ret = true;
 
     try {
-        var resultElement = document.getElementById('createDeployConfigurationResult');
-
-        var config_id = document.getElementById("createDeployConfigId").value;
-        var sensor_loader_version_number = document.getElementById("createDeploySensorLoaderVer").selectedIndex == 0 ? null : document.getElementById("createDeploySensorLoaderVer").value;
-        var sensor_version_number = document.getElementById("createDeploySensorVer").selectedIndex == 0 ? null : document.getElementById("createDeploySensorVer").value;
-        var model_id = document.getElementById("createDeployModelId").selectedIndex == 0 ? null : document.getElementById("createDeployModelId").value;
-        var ap_fw_version_number = document.getElementById("createDeployApFwVer").selectedIndex == 0 ? null : document.getElementById("createDeployApFwVer").value;
-        var comment = document.getElementById("createDeployComment").value;
-        var device_type = document.getElementById("createDeployDeviceType").selectedIndex == 0 ? null : document.getElementById("createDeployDeviceType").value;
-        var model_version_number = document.getElementById("createDeployModelVer").value;
-        var color_matrix_mode = document.getElementById("createDeployColorMatrixMode").selectedIndex == 0 ? null : document.getElementById("createDeployColorMatrixMode").value;
-        var color_matrix_file_name = document.getElementById("createDeployColorMatrixFileName").value;
-        var gamma_mode = document.getElementById("createDeployGammaMode").selectedIndex == 0 ? null : document.getElementById("createDeployGammaMode").value;
-        var gamma_file_name = document.getElementById("createDeployGammaFileName").value;
-        var lsc_mode = document.getElementById("createDeployLscMode").selectedIndex == 0 ? null : document.getElementById("createDeployLscMode").value;
-        var lsc_file_name = document.getElementById("createDeployLscModeFile").value;
-        var prewb_mode = document.getElementById("createDeployPrewbMode").selectedIndex == 0 ? null : document.getElementById("createDeployPrewbMode").value;
-        var prewb_file_name = document.getElementById("createDeployPrewbModeFile").value;
-        var dewarp_mode = document.getElementById("createDeployDewarpMode").selectedIndex == 0 ? null : document.getElementById("createDeployDewarpMode").value;
-        var prewb_file_name = document.getElementById("createDeployPrewbModeFile").value;
+        var config_id = document.getElementById("createDeployConfigurationConfigId").value;
+        var sensor_loader_version_number = document.getElementById("createDeployConfigurationSensorLoaderVersionNumber").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationSensorLoaderVersionNumber").value;
+        var sensor_version_number = document.getElementById("createDeployConfigurationSensorVersionNumber").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationSensorVersionNumber").value;
+        var model_id = document.getElementById("createDeployConfigurationModelId").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationModelId").value;
+        var ap_fw_version_number = document.getElementById("createDeployConfigurationApFwVersionNumber").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationApFwVersionNumber").value;
+        var comment = document.getElementById("createDeployConfigurationComment").value;
+        var device_type = document.getElementById("createDeployConfigurationDeviceTypeList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationDeviceTypeList").value;
+        var model_version_number = document.getElementById("createDeployConfigurationModelVersionNumber").value;
+        var color_matrix_mode = document.getElementById("createDeployConfigurationColorMatrixModelList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationColorMatrixModelList").value;
+        var color_matrix_file_name = document.getElementById("createDeployConfigurationColorMatrixFileName").value;
+        var gamma_mode = document.getElementById("createDeployConfigurationGammaModeList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationGammaModeList").value;
+        var gamma_file_name = document.getElementById("createDeployConfigurationGammaFileName").value;
+        var lsc_mode = document.getElementById("createDeployConfigurationLscModeList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationLscModeList").value;
+        var lsc_file_name = document.getElementById("createDeployConfigurationLscFileName").value;
+        var prewb_mode = document.getElementById("createDeployConfigurationPrewbModeList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationPrewbModeList").value;
+        var prewb_file_name = document.getElementById("createDeployConfigurationDewarpFileName").value;
+        var dewarp_mode = document.getElementById("createDeployConfigurationDewarpModeList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationDewarpModeList").value;
+        var prewb_file_name = document.getElementById("createDeployConfigurationDewarpFileName").value;
 
         const result = await $.ajax({
             async: true,
@@ -443,22 +536,27 @@ async function CreateDeployConfiguration() {
             },
         });
 
-        AddApiOutput("CreateDeployConfiguration", result.value);
-        resultElement.innerHTML = result.value;
-
+        msg = result.value;
     } catch (err) {
-        alert("CreateDeployConfiguration() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+        ret = false;
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
+
+    return ret;
 }
 
 function CheckCreateDeployConfigurationInputs() {
     var enable = true;
-    var configId = document.getElementById('createDeployConfigId').value;
-    var sensorLoaderVer = document.getElementById('createDeploySensorLoaderVer');
-    var sensorVer = document.getElementById('createDeploySensorVer');
-    var modelId = document.getElementById('createDeployModelId');
-    var apFwVer = document.getElementById('createDeployApFwVer');
+    var configId = document.getElementById('createDeployConfigurationConfigId').value;
+    var sensorLoaderVer = document.getElementById('createDeployConfigurationSensorLoaderVersionNumber');
+    var sensorVer = document.getElementById('createDeployConfigurationSensorVersionNumber');
+    var modelId = document.getElementById('createDeployConfigurationModelId');
+    var apFwVer = document.getElementById('createDeployConfigurationApFwVersionNumber');
 
     if (configId.length == 0) {
         enable = false;
@@ -485,6 +583,10 @@ function CheckCreateDeployConfigurationInputs() {
 }
 
 async function GetDeployConfigurations(listElementId) {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var ret = true;
+
     try {
 
         const result = await $.ajax({
@@ -495,7 +597,7 @@ async function GetDeployConfigurations(listElementId) {
             },
         });
 
-        AddApiOutput("GetDeployConfigurations(): ", result.value);
+        msg = result.value;
 
         if (listElementId) {
             var json = JSON.parse(result.value);
@@ -514,17 +616,23 @@ async function GetDeployConfigurations(listElementId) {
             else {
                 list.options[0].selected = true;
             }
-            return;
         }
     } catch (err) {
-        alert("GetDeployConfigurations() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
+    } finally {
+        if (msg) {
+            AddApiOutput(funcName, msg);
+        }
     }
+
+    return ret;
 }
 
 function CheckDeployByConfigurationInputs() {
     var enable = true;
-    var configId = document.getElementById('deployByConfiguraionFormConfigId');
-    var deviceId = document.getElementById('deployByConfiguraionDeviceId');
+    var configId = document.getElementById('deployByConfiguraionFormConfigIdList');
+    var deviceId = document.getElementById('deployByConfiguraionDeviceIdList');
 
     if (configId.selectedIndex == 0) {
         enable = false;
@@ -534,22 +642,24 @@ function CheckDeployByConfigurationInputs() {
     }
 
     if (enable) {
-        $('#btnDeployByConfiguration').prop('disabled', false);
+        $('#deployByConfiguratonBtn').prop('disabled', false);
     }
     else {
-        $('#btnDeployByConfiguration').prop('disabled', true);
+        $('#deployByConfiguratonBtn').prop('disabled', true);
     }
 }
 
 async function DeployByConfiguration() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('deployByConfiguratonBtnResult');
+    var ret = true;
 
     try {
-        var resultElement = document.getElementById('deployByConfigurationResult');
-
-        var config_id = document.getElementById("deployByConfiguraionFormConfigId").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionFormConfigId").value;
-        var device_ids = document.getElementById("deployByConfiguraionDeviceId").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionDeviceId").value;
+        var config_id = document.getElementById("deployByConfiguraionFormConfigIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionFormConfigIdList").value;
+        var device_ids = document.getElementById("deployByConfiguraionDeviceIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionDeviceIdList").value;
         var comment = document.getElementById("deployByConfiguraionComment").value;
-        var replace_model_id = document.getElementById("deployByConfiguraionReplaceModelID").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionReplaceModelID").value;
+        var replace_model_id = document.getElementById("deployByConfiguraionReplaceModelIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionReplaceModelIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -563,27 +673,36 @@ async function DeployByConfiguration() {
             },
         });
 
-        AddApiOutput("DeployByConfiguration(): ", result.value);
-        resultElement.innerHTML = result.value;
-
+        msg = result.value;
     } catch (err) {
-        alert("DeployByConfiguration() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
+        msg = processError(funcName, err, true);
+        ret = false;
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
+
+    return ret;
 }
 
 async function StartUploadInferenceResult() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
+    var ret = true;
 
     try {
-        var device_id = document.getElementById("startStopInferenceDeviceId").value;
-        var FrequencyOfInferences = document.getElementById("startStopInferenceFrequency").value;
-        var MaxDetectionsPerFrame = document.getElementById("startUploadRetrainingDataMaxDetection").value;
-        var CropHOffset = document.getElementById("startStopInferenceCropHOffset").value;
-        var CropVOffset = document.getElementById("startStopInferenceCropVOffset").value;
-        var CropHSize = document.getElementById("startStopInferenceCropHSize").value;
-        var CropVSize = document.getElementById("startStopInferenceCropVSize").value;
-        var NumberOfInferencesPerMessage = document.getElementById("startStopInferenceNumberOfInferencesPerMessage").value;
-        var model_id = document.getElementById("startStopInferenceModelId").value;
+        var device_id = document.getElementById("startUploadInferenceResultDeviceIdList").value;
+        var FrequencyOfInferences = document.getElementById("startUploadInferenceResultFrequencyOfInferences").value;
+        var MaxDetectionsPerFrame = document.getElementById("startUploadRetrainingDataMaxDetectionPerFrame").value;
+        var CropHOffset = document.getElementById("startUploadInferenceResultCropHOffset").value;
+        var CropVOffset = document.getElementById("startUploadInferenceResultCropVOffset").value;
+        var CropHSize = document.getElementById("startUploadInferenceResultCropHSize").value;
+        var CropVSize = document.getElementById("startUploadInferenceResultCropVSize").value;
+        var NumberOfInferencesPerMessage = document.getElementById("startUploadInferenceResultNumberOfInferencesPerMessage").value;
+        var model_id = document.getElementById("startUploadInferenceResultModelIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -602,17 +721,28 @@ async function StartUploadInferenceResult() {
             },
         });
 
-        AddApiOutput("StartUploadInferenceResult", result.value);
-
+        msg = result.value;
     } catch (err) {
-        alert("customvision_base() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
+
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
+    return ret;
 }
 
 async function StopUploadInferenceResult() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('StopUploadInferenceResultBtnResult');
+    var ret = true;
 
     try {
-        var device_id = document.getElementById("startStopInferenceDeviceId").value;
+        var device_id = document.getElementById("startUploadInferenceResultDeviceIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -623,28 +753,38 @@ async function StopUploadInferenceResult() {
             },
         });
 
-        AddApiOutput("StopUploadInferenceResult", result.value);
-
+        msg = result.value;
     } catch (err) {
-        alert("StopUploadInferenceResult() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
+    return ret;
 }
 
 async function StartUploadRetrainingData() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
+    var ret = true;
 
     try {
-        var device_id = document.getElementById("startUploadRetrainingDataDeviceId").value;
-        var Mode = document.getElementById("startUploadRetrainingDataMode").selectedIndex == 0 ? null : document.getElementById("startUploadRetrainingDataMode").value;
-        var FileFormat = document.getElementById("startUploadRetrainingDataFileFormat").selectedIndex == 0?null: document.getElementById("startUploadRetrainingDataFileFormat").value;
+        var device_id = document.getElementById("startUploadRetrainingDataDeviceIdList").value;
+        var Mode = document.getElementById("startUploadRetrainingDataModeList").selectedIndex == 0 ? null : document.getElementById("startUploadRetrainingDataModeList").value;
+        var FileFormat = document.getElementById("startUploadRetrainingDataFileFormatList").selectedIndex == 0?null: document.getElementById("startUploadRetrainingDataFileFormatList").value;
         var CropHOffset = document.getElementById("startUploadRetrainingDataCropHOffset").value;
         var CropVOffset = document.getElementById("startUploadRetrainingDataCropVOffset").value;
         var CropHSize = document.getElementById("startUploadRetrainingDataCropHSize").value;
         var CropVSize = document.getElementById("startUploadRetrainingDataCropVSize").value;
         var NumberOfImages = document.getElementById("startUploadRetrainingDataNumImages").value;
-        var FrequencyOfImages = document.getElementById("startUploadRetrainingDataFrequency").value;
-        var MaxDetectionsPerFrame = document.getElementById("startUploadRetrainingDataMaxDetection").value;
-        var NumberOfInferencesPerMessage = document.getElementById("startUploadRetrainingDataNumInference").value;
-        var model_id = document.getElementById("startUploadRetrainingDataModelId").value;
+        var FrequencyOfImages = document.getElementById("startUploadRetrainingDataFrequencyOfImages").value;
+        var MaxDetectionsPerFrame = document.getElementById("startUploadRetrainingDataMaxDetectionPerFrame").value;
+        var NumberOfInferencesPerMessage = document.getElementById("startUploadRetrainingDataNumInferencePerMessage").value;
+        var model_id = document.getElementById("startUploadRetrainingDataModelIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -666,17 +806,29 @@ async function StartUploadRetrainingData() {
             },
         });
 
-        AddApiOutput("StartUploadRetrainingData", result.value);
-
+        msg = result.value;
     } catch (err) {
-        alert("StartUploadRetrainingData() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
+
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
+    return ret;
 }
 
 async function StopUploadRetrainingData() {
 
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultElement = document.getElementById('stopUploadRetrainingDataBtnResult');
+    var ret = true;
+
     try {
-        var device_id = document.getElementById("startUploadRetrainingDataDeviceId").value;
+        var device_id = document.getElementById("startUploadRetrainingDataDeviceIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -686,15 +838,23 @@ async function StopUploadRetrainingData() {
                 device_id: device_id
             },
         });
-
-        AddApiOutput("StopUploadRetrainingData", result.value);
-
+        msg = result.value;
     } catch (err) {
-        alert("StopUploadRetrainingData() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
+    } finally {
+        if (msg) {
+            setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
     }
+    return ret;
 }
 
 async function GetDevices(listElementId, silent) {
+
+    var funcName = arguments.callee.name + "()";
+    var ret = true;
 
     try {
         const result = await $.ajax({
@@ -724,21 +884,20 @@ async function GetDevices(listElementId, silent) {
             return json.devices[0].device_id;
         }
     } catch (err) {
-        alert("GetDevices() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-        return err;
+        msg = processError(funcName, err, true);
+        ret = false;
     }
+    return ret;
 }
 
 async function GetAllModels(listElement) {
-
-    try {
-        resp = await GetModels(null, null, null, null, null, null, null, listElement);
-    } catch (err) {
-        alert("GetAllModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
-    }
+    return await GetModels(null, null, null, null, null, null, null, listElement);
 }
 
 async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement) {
+
+    var funcName = arguments.callee.name + "()";
+    var ret = true;
 
     try {
         const result = await $.ajax({
@@ -756,8 +915,6 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
             }
         });
 
-        AddApiOutput("GetModels", result.value);
-
         if (listElement) {
             var json = JSON.parse(result.value);
 
@@ -771,9 +928,11 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
             }
             list.options[0].selected = true;
         }
-
     } catch (err) {
-        alert("GetModels() : " + err.statusText + "(" + err.status + ") : " + err.responseText);
+        msg = processError(funcName, err, true);
+        ret = false;
     }
+
+    return ret;
 }
 

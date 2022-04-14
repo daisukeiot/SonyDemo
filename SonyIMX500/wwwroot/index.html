@@ -318,12 +318,12 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCustomVision">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCreateBaseCustomVisionProject">
                                                                                 Step 2 : Create or select Custom Vision project
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionCustomVision" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionCreateBaseCustomVisionProject" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div>
                                                                                 <div class="info-box">
@@ -331,24 +331,24 @@
                                                                                         <div class="info-box-text">
                                                                                             <label for="newProjectDiv">Create New Custom Vision Project</label>
                                                                                         </div>
-                                                                                        <div id="newProjectDiv">
-                                                                                            <form id="newProjectForm">
+                                                                                        <div id="createBaseCustomVisionProjectDiv">
+                                                                                            <form id="createBaseCustomVisionProjectForm">
                                                                                                 <div class="form-group">
-                                                                                                    <label for="newCustomVisionProjectName">Project Name</label>
-                                                                                                    <input type="text" name="newCustomVisionProjectName" class="form-control" id="newCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
-                                                                                                    <label for="newCustomVisionProjectComment">Comment (Optional)</label>
-                                                                                                    <input type="text" name="newCustomVisionProjectComment" class="form-control" id="newCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
+                                                                                                    <label for="createBaseCustomVisionProjectName">Project Name</label>
+                                                                                                    <input type="text" name="createBaseCustomVisionProjectName" class="form-control" id="createBaseCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
+                                                                                                    <label for="createBaseCustomVisionProjectComment">Comment (Optional)</label>
+                                                                                                    <input type="text" name="createBaseCustomVisionProjectComment" class="form-control" id="createBaseCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
                                                                                                 </div>
                                                                                             </form>
                                                                                         </div>
                                                                                         <div class="info-box-tex" style="position:relative">
                                                                                             <div>
-                                                                                                <button type="button" class="btn btn-success" id="btnNewCustomVisionProjectCreate">
+                                                                                                <button type="button" class="btn btn-success" id="createBaseCustomVisionProjectBtn">
                                                                                                     <i class="fas fa-plus"></i> Create
                                                                                                 </button>
                                                                                             </div>
                                                                                             <div class="vertical-center">
-                                                                                                <div class="info-box-text" id='newCustomVisionProjectCreateResult'>test</div>
+                                                                                                <div class="info-box-text" id='createBaseCustomVisionProjectBtnResult'>test</div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -356,21 +356,21 @@
                                                                                 <div class="info-box">
                                                                                     <div class="info-box-content">
                                                                                         <div class="info-box-text">
-                                                                                            <label for="projectListDiv">Select Custom Vision Project</label>
+                                                                                            <label for="selectCustomVisionProjectDiv">Select Custom Vision Project</label>
                                                                                         </div>
-                                                                                        <div id="projectListDiv">
-                                                                                            <select id="customVisionList" class="form-control select2" style="width: 100%;">
+                                                                                        <div id="selectCustomVisionProjectDiv">
+                                                                                            <select id="selectCustomVisionProjectList" class="form-control select2" style="width: 100%;">
                                                                                             </select>
                                                                                         </div>
                                                                                         <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                            <button type="button" class="btn btn-danger" id="btnDeleteCustomVisionProjectCV" disabled>
+                                                                                            <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
-                                                                                            </button>
-                                                                                            <button type="button" class="btn btn-danger" id="btnDeleteCustomVisionProject" disabled>
+                                                                                            </button>-->
+                                                                                            <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
                                                                                             <div class="vertical-center">
-                                                                                                <div class="info-box-text" id='deleteCustomVisionProjectResult'>test</div>
+                                                                                                <div class="info-box-text" style="overflow-x:auto" id='deleteCustomVisionProjectBtnResult'>test</div>
                                                                                             </div>
                                                                                         </div>
                                                                                     </div>
@@ -383,15 +383,15 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionBuildCustomVisionBuildModel">
-                                                                                Step 3 : Build Custom Vision Model
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionVisitCustomVision">
+                                                                                Step 3 : Build and Train Custom Vision Model
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionBuildCustomVisionBuildModel" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionVisitCustomVision" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div class="info-box-text">
-                                                                                <select id="buildCustomVisionPrjectList" class="form-control select2" style="width: 100%;">
+                                                                                <select id="visitCustomVisionProjectList" class="form-control select2" style="width: 100%;">
                                                                                 </select>
                                                                             </div>
                                                                             <div class="info-box-text" style="margin-top:0.5em">
@@ -399,7 +399,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnVisitCustomVision" disabled>
+                                                                            <button type="button" class="btn btn-success" id="visitCustomVisionBtn" disabled>
                                                                                 <i class="fas fa-external-link-alt"></i> Open a new tab.
                                                                             </button>
                                                                         </div>
@@ -417,41 +417,41 @@
                                                                     <div id="accordionSaveCustomVisionModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="saveCustomVisionDiv">
-                                                                                <form id="saveCustomVisionForm">
+                                                                                <form id="saveCustomVisionModelForm">
                                                                                     <div class="form-group">
                                                                                         <div class="info-box-text">
-                                                                                            <label for="saveModelProjectList">Project Name</label>
+                                                                                            <label for="saveCustomVisionModelProjectNameList">Project Name</label>
                                                                                         </div>
                                                                                         <div id="projectListDiv">
-                                                                                            <select id="saveModelProjectList" class="form-control select2" style="width: 100%;">
+                                                                                            <select id="saveCustomVisionModelProjectNameList" class="form-control select2" style="width: 100%;">
                                                                                             </select>
                                                                                         </div>
 
-                                                                                        <label for="saveModelModelId">Model ID (Optional)</label>
-                                                                                        <input type="text" name="saveModelModelId" class="form-control" id="saveModelModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                                        <label for="saveCustomVisionModelProjectModelId">Model ID (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelProjectModelId" class="form-control" id="saveCustomVisionModelProjectModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
 
-                                                                                        <label for="saveModelInitialVersion">Initial Version Number (Optional)</label>
-                                                                                        <input type="number" name="saveModelInitialVersion" class="form-control" id="saveModelInitialVersion" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="" min="1" max="100">
+                                                                                        <label for="saveCustomVisionModelInitialVersionNumber">Initial Version Number (Optional)</label>
+                                                                                        <input type="number" name="saveCustomVisionModelInitialVersionNumber" class="form-control" id="saveCustomVisionModelInitialVersionNumber" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="" min="1" max="100">
 
-                                                                                        <label for="saveModelFunctionality">Functionality (Optional)</label>
-                                                                                        <input type="text" name="saveModelFunctionality" class="form-control" id="saveModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                                        <label for="saveCustomVisionModelFunctionality">Functionality (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelFunctionality" class="form-control" id="saveCustomVisionModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
 
-                                                                                        <label for="saveModelVendorName">Vendor Name (Optional)</label>
-                                                                                        <input type="text" name="saveModelVendorName" class="form-control" id="saveModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                                        <label for="saveCustomVisionModelVendorName">Vendor Name (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelVendorName" class="form-control" id="saveCustomVisionModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
 
-                                                                                        <label for="saveModelComment">Comment (Optional)</label>
-                                                                                        <input type="text" name="saveModelComment" class="form-control" id="saveModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                                        <label for="saveCustomVisionModelComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelComment" class="form-control" id="saveCustomVisionModelComment" placeholder="Description. Within 100 characters." value="">
                                                                                     </div>
                                                                                 </form>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnSaveModel" disabled>
+                                                                                <button type="button" class="btn btn-success" id="saveCustomVisionModelBtn" disabled>
                                                                                     <i class="fas fa-external-link-alt"></i> Save Custom Vision model
                                                                                 </button>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='saveModelResult'>test</div>
+                                                                                    <div class="info-box-text" id='saveCustomVisionModelBtnResult'>test</div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -461,45 +461,45 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionConvertAiModel">
-                                                                                Step 5 : Convert AI Model
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionConvertModel">
+                                                                                Step 5 : Convert Model
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionConvertAiModel" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionConvertModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="convertModelDiv">
-                                                                                <label for="convertModelModelList">Model ID</label>
-                                                                                <select name="convertModelModelList" id="convertModelModelList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="convertModelModelIdList">Model ID</label>
+                                                                                <select name="convertModelModelIdList" id="convertModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="convertModelDeviceList">Device ID (Optional)</label>
-                                                                                <select name="convertModelDeviceList" id="convertModelDeviceList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="convertModelDeviceIdList">Device ID (Optional)</label>
+                                                                                <select name="convertModelDeviceIdList" id="convertModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnConvertModel" disabled>
+                                                                                <button type="button" class="btn btn-success" id="convertModelBtn" disabled>
                                                                                     <i class="fas fa-external-link-alt"></i> Convert Model
                                                                                 </button>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='convertModelResult'>test</div>
+                                                                                    <div class="info-box-text" id='convertModelBtnResult'>test</div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnConvertModelGetStatus" disabled>
-                                                                                    <i class="fas fa-external-link-alt"></i> Get Status
+                                                                                <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Get Base Model Status
                                                                                 </button>
-                                                                                <label for="divConvertModelConversionID" style="margin-left:1em">Conversion ID : </label>
+                                                                                <label for="convertModelGetBaseModelStatusConversionDiv" style="margin-left:1em">Conversion ID : </label>
                                                                                 <div style="display:inline-block">
-                                                                                    <div class="info-box-text" id='divConvertModelConversionID'></div>
+                                                                                    <div class="info-box-text" id='convertModelGetBaseModelStatusConversionDiv'></div>
                                                                                 </div>
-                                                                                <label for="divConvertModelGetStatusStage" style="margin-left:1em">Stage : </label>
+                                                                                <label for="convertModelGetBaseModelStatusStageDiv" style="margin-left:1em">Stage : </label>
                                                                                 <div style="display:inline-block">
-                                                                                    <div class="info-box-text" id='divConvertModelGetStatusStage'></div>
+                                                                                    <div class="info-box-text" id='convertModelGetBaseModelStatusStageDiv'></div>
                                                                                 </div>
-                                                                                <label for="divConvertModelGetStatusResult" style="margin-left:1em">Result : </label>
+                                                                                <label for="convertModelGetBaseModelStatusBtnResult" style="margin-left:1em">Result : </label>
                                                                                 <div style="display:inline-block">
-                                                                                    <div class="info-box-text" id='divConvertModelGetStatusResult'></div>
+                                                                                    <div class="info-box-text" id='convertModelGetBaseModelStatusBtnResult'></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -509,49 +509,47 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPublishAiModel">
-                                                                                Step 6 : Publish AI Model
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPublishModel">
+                                                                                Step 6 : Publish Model
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionPublishAiModel" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionPublishModel" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="publishModelDiv">
-                                                                                <label for="publishModelModelList">Model ID</label>
-                                                                                <select name="publishModelModelList" id="publishModelModelList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="publishModelModelIdList">Model ID</label>
+                                                                                <select name="publishModelModelIdList" id="publishModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                <label for="publishModelDeviceList">Device ID (Optional)</label>
-                                                                                <select name="publishModelDeviceList" id="publishModelDeviceList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                <label for="publishModelDeviceIdList">Device ID (Optional)</label>
+                                                                                <select name="publishModelDeviceIdList" id="publishModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnPublishModel" disabled>
+                                                                                <button type="button" class="btn btn-success" id="publishModelBtn" disabled>
                                                                                     <i class="fas fa-external-link-alt"></i> Publish Model
                                                                                 </button>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='convertModelResult'>test</div>
+                                                                                    <div class="info-box-text" id='publishModelBtnResult'>test</div>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnPublishModelGetStatus" disabled>
-                                                                                    <i class="fas fa-external-link-alt"></i> Get Status
+                                                                                <button type="button" class="btn btn-success" id="publishModelGetBaseModelStatusBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Get Base Model Status
                                                                                 </button>
-                                                                                <label for="divPublishModelConversionID" style="margin-left:1em">Conversion ID : </label>
+                                                                                <label for="publishModelGetBaseModelStatusConversionIdDiv" style="margin-left:1em">Conversion ID : </label>
                                                                                 <div style="display:inline-block">
-                                                                                    <div class="info-box-text" id='divPublishModelConversionID'></div>
+                                                                                    <div class="info-box-text" id='publishModelGetBaseModelStatusConversionIdDiv'></div>
                                                                                 </div>
-                                                                                <label for="divPublishModelGetStatusStage" style="margin-left:1em">Stage : </label>
+                                                                                <label for="publishModelGetBaseModelStatusStageDiv" style="margin-left:1em">Stage : </label>
                                                                                 <div style="display:inline-block">
-                                                                                    <div class="info-box-text" id='divPublishModelGetStatusStage'></div>
+                                                                                    <div class="info-box-text" id='publishModelGetBaseModelStatusStageDiv'></div>
                                                                                 </div>
-                                                                                <label for="divPublishModelGetStatusResult" style="margin-left:1em">Result : </label>
+                                                                                <label for="publishModelGetBaseModelStatusBtnResult" style="margin-left:1em">Result : </label>
                                                                                 <div style="display:inline-block">
-                                                                                    <div class="info-box-text" id='divPublishModelGetStatusResult'></div>
+                                                                                    <div class="info-box-text" id='publishModelGetBaseModelStatusBtnResult'></div>
                                                                                 </div>
                                                                             </div>
-
-
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -559,117 +557,117 @@
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCreatePeploy">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCreatePeployConfiguration">
                                                                                 Step 7 : Create Deployment
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionCreatePeploy" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionCreatePeployConfiguration" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="createDeploymentDiv">
-                                                                                <form id="createDeployForm">
+                                                                            <div id="createDeployConfigurationDiv">
+                                                                                <form id="createDeployConfigurationForm">
                                                                                     <div class="form-group">
 
-                                                                                        <label for="createDeployConfigId">Config ID</label>
-                                                                                        <input type="text" name="createDeployConfigId" class="form-control" id="createDeployConfigId" placeholder="configID. Less than 20 characters." value="">
+                                                                                        <label for="createDeployConfigurationConfigId">Config ID</label>
+                                                                                        <input type="text" name="createDeployConfigurationConfigId" class="form-control" id="createDeployConfigurationConfigId" placeholder="configID. Less than 20 characters." value="">
 
-                                                                                        <label for="createDeploySensorLoaderVer">SensorLoader version number</label>
-                                                                                        <select name="createDeploySensorLoaderVer" id="createDeploySensorLoaderVer" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeployConfigurationSensorLoaderVersionNumber">SensorLoader version number</label>
+                                                                                        <select name="createDeployConfigurationSensorLoaderVersionNumber" id="createDeployConfigurationSensorLoaderVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                        <label for="createDeploySensorVer">Sensor version number</label>
-                                                                                        <select name="createDeploySensorVer" id="createDeploySensorVer" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeployConfigurationSensorVersionNumber">Sensor version number</label>
+                                                                                        <select name="createDeployConfigurationSensorVersionNumber" id="createDeployConfigurationSensorVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                        <label for="createDeployModelId">Model ID</label>
-                                                                                        <select name="createDeployModelId" id="createDeployModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeployConfigurationModelId">Model ID</label>
+                                                                                        <select name="createDeployConfigurationModelId" id="createDeployConfigurationModelId" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                        <label for="createDeployApFwVer">ApFw version number</label>
-                                                                                        <select name="createDeployApFwVer" id="createDeployApFwVer" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="createDeployConfigurationApFwVersionNumber">ApFw version number</label>
+                                                                                        <select name="createDeployConfigurationApFwVersionNumber" id="createDeployConfigurationApFwVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                        <label for="createDeployComment">Comment (Optional)</label>
-                                                                                        <input type="text" name="createDeployComment" class="form-control" id="createDeployComment" placeholder="Description. Less than 100 characters." value="">
+                                                                                        <label for="createDeployConfigurationComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="createDeployConfigurationComment" class="form-control" id="createDeployConfigurationComment" placeholder="Description. Less than 100 characters." value="">
 
-                                                                                        <label for="createDeployDeviceType">Device Type (Optional)</label>
-                                                                                        <select name="createDeployDeviceType" id="createDeployDeviceType" class="form-control">
+                                                                                        <label for="createDeployConfigurationDeviceTypeList">Device Type (Optional)</label>
+                                                                                        <select name="createDeployConfigurationDeviceTypeList" id="createDeployConfigurationDeviceTypeList" class="form-control">
                                                                                             <option disabled selected>Select Device Type</option>
                                                                                             <option value="00">MPU Based (Type4)</option>
                                                                                             <option value="01">MCU Bsed (Type3)</option>
                                                                                         </select>
 
-                                                                                        <label for="createDeployModelVer">Model Version Number (Optional)</label>
-                                                                                        <input type="text" name="createDeployModelVer" class="form-control" id="createDeployModelVer" placeholder="Model version number." value="">
+                                                                                        <label for="createDeployConfigurationModelVersionNumber">Model Version Number (Optional)</label>
+                                                                                        <input type="text" name="createDeployConfigurationModelVersionNumber" class="form-control" id="createDeployConfigurationModelVersionNumber" placeholder="Model version number." value="">
 
-                                                                                        <label for="createDeployColorMatrixMode">Color Matrix Mode (Optional)</label>
-                                                                                        <select name="createDeployColorMatrixMode" id="createDeployColorMatrixMode" class="form-control">
+                                                                                        <label for="createDeployConfigurationColorMatrixModelList">Color Matrix Mode (Optional)</label>
+                                                                                        <select name="createDeployConfigurationColorMatrixModelList" id="createDeployConfigurationColorMatrixModelList" class="form-control">
                                                                                             <option disabled selected>Select Matrix Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
                                                                                         </select>
 
-                                                                                        <label for="createDeployColorMatrixFileName">Color Matrix File Name (Optional)</label>
+                                                                                        <label for="createDeployConfigurationColorMatrixFileName">Color Matrix File Name (Optional)</label>
                                                                                         <div class="input-group">
                                                                                             <div class="custom-file">
-                                                                                                <input type="file" name="createDeployColorMatrixFileName" class="custom-file-input" id="createDeployColorMatrixFileName">
-                                                                                                <label class="custom-file-label" for="createDeployColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                                                <input type="file" name="createDeployConfigurationColorMatrixFileName" class="custom-file-input" id="createDeployConfigurationColorMatrixFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <label for="createDeployGammaMode">Gamma Mode (Optional)</label>
-                                                                                        <select name="createDeployGammaMode" id="createDeployGammaMode" class="form-control">
+                                                                                        <label for="createDeployConfigurationGammaModeList">Gamma Mode (Optional)</label>
+                                                                                        <select name="createDeployConfigurationGammaModeList" id="createDeployConfigurationGammaModeList" class="form-control">
                                                                                             <option disabled selected>Select Gamma Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
                                                                                         </select>
 
-                                                                                        <label for="createDeployGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
+                                                                                        <label for="createDeployConfigurationGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
                                                                                         <div class="input-group">
                                                                                             <div class="custom-file">
-                                                                                                <input type="file" name="createDeployGammaFileName" class="custom-file-input" id="createDeployGammaFileName">
-                                                                                                <label class="custom-file-label" for="createDeployGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                                                <input type="file" name="createDeployConfigurationGammaFileName" class="custom-file-input" id="createDeployConfigurationGammaFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <label for="createDeployLscMode">LSC Correction Camera Settings (Optional)</label>
-                                                                                        <select name="createDeployLscMode" id="createDeployLscMode" class="form-control">
+                                                                                        <label for="createDeployConfigurationLscModeList">LSC Correction Camera Settings (Optional)</label>
+                                                                                        <select name="createDeployConfigurationLscModeList" id="createDeployConfigurationLscModeList" class="form-control">
                                                                                             <option disabled selected>Select LSC Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
                                                                                         </select>
 
-                                                                                        <label for="createDeployLscModeFile">LSC Correction Camera Settings File (bin) name (Optional)</label>
-                                                                                        <input type="text" name="createDeployLscModeFile" class="form-control" id="createDeployLscModeFile" placeholder="LSC Correction Camera Settings file (bin) name." value="">
+                                                                                        <label for="createDeployConfigurationLscFileName">LSC Correction Camera Settings File (bin) name (Optional)</label>
+                                                                                        <input type="text" name="createDeployConfigurationLscFileName" class="form-control" id="createDeployConfigurationLscFileName" placeholder="LSC Correction Camera Settings file (bin) name." value="">
 
-                                                                                        <label for="createDeployPrewbMode">PreWB adjustment value Camera settings. (Optional)</label>
-                                                                                        <select name="createDeployPrewbMode" id="createDeployPrewbMode" class="form-control">
+                                                                                        <label for="createDeployConfigurationPrewbModeList">PreWB adjustment value Camera settings. (Optional)</label>
+                                                                                        <select name="createDeployConfigurationPrewbModeList" id="createDeployConfigurationPrewbModeList" class="form-control">
                                                                                             <option disabled selected>Select PreWB Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
                                                                                         </select>
 
-                                                                                        <label for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) name (Optional)</label>
+                                                                                        <label for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) name (Optional)</label>
                                                                                         <div class="input-group">
                                                                                             <div class="custom-file">
-                                                                                                <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
-                                                                                                <label class="custom-file-label" for="createDeployPrewbModeFile">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                                                <input type="file" name="createDeployConfigurationPrewbFileName" class="custom-file-input" id="createDeployConfigurationPrewbFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) file.</label>
                                                                                             </div>
                                                                                         </div>
 
-                                                                                        <label for="createDeployDewarpMode">Distortion correction Camera settings(bin)type. (Optional)</label>
-                                                                                        <select name="createDeployDewarpMode" id="createDeployDewarpMode" class="form-control">
+                                                                                        <label for="createDeployConfigurationDewarpModeList">Distortion correction Camera settings(bin)type. (Optional)</label>
+                                                                                        <select name="createDeployConfigurationDewarpModeList" id="createDeployConfigurationDewarpModeList" class="form-control">
                                                                                             <option disabled selected>Select Distortion Correction Type</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
                                                                                         </select>
 
-                                                                                        <label for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name. (Optional)</label>
+                                                                                        <label for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name. (Optional)</label>
                                                                                         <div class="input-group">
                                                                                             <div class="custom-file">
-                                                                                                <input type="file" name="createDeployPrewbModeFile" class="custom-file-input" id="createDeployPrewbModeFile">
-                                                                                                <label class="custom-file-label" for="createDeployPrewbModeFile">Distortion correction Custom settings file(bin)name.</label>
+                                                                                                <input type="file" name="createDeployConfigurationDewarpFileName" class="custom-file-input" id="createDeployConfigurationDewarpFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name.</label>
                                                                                             </div>
                                                                                         </div>
 
@@ -698,31 +696,31 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Deploy AI Model -->
+                                                                <!-- Deploy Model -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPeploy">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionDeployByConfiguration">
                                                                                 Step 8 : Deploy AI Model
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionPeploy" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionDeployByConfiguration" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="deployDiv">
+                                                                            <div id="deployByConfiguratonDiv">
                                                                                 <form id="deployByConfiguraionForm">
                                                                                     <div class="form-group">
-                                                                                        <label for="deployByConfiguraionFormConfigId">Config ID</label>
-                                                                                        <select name="deployByConfiguraionFormConfigId" id="deployByConfiguraionFormConfigId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="deployByConfiguraionFormConfigIdList">Config ID</label>
+                                                                                        <select name="deployByConfiguraionFormConfigIdList" id="deployByConfiguraionFormConfigIdList" class="form-control custom-select" style="min-width:10em"></select>
 
-                                                                                        <label for="deployByConfiguraionDeviceId">Device ID</label>
-                                                                                        <select name="deployByConfiguraionDeviceId" id="deployByConfiguraionDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="deployByConfiguraionDeviceIdList">Device ID</label>
+                                                                                        <select name="deployByConfiguraionDeviceIdList" id="deployByConfiguraionDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                         <label for="deployByConfiguraionComment">Comment (Optional)</label>
                                                                                         <input type="text" name="deployByConfiguraionComment" class="form-control" id="deployByConfiguraionComment" placeholder="Description. Less than 100 characters." value="">
 
-                                                                                        <label for="deployByConfiguraionReplaceModelID">Model ID to replace (Optional)</label>
-                                                                                        <select name="deployByConfiguraionReplaceModelID" id="deployByConfiguraionReplaceModelID" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="deployByConfiguraionReplaceModelIdList">Model ID to replace (Optional)</label>
+                                                                                        <select name="deployByConfiguraionReplaceModelIdList" id="deployByConfiguraionReplaceModelIdList" class="form-control custom-select" style="min-width:10em"></select>
                                                                                     </div>
                                                                                 </form>
                                                                             </div>
@@ -730,142 +728,215 @@
                                                                         <div class="card-footer">
                                                                             <div class="row" style="position:relative">
                                                                                 <div>
-                                                                                    <button type="button" class="btn btn-success" id="btnDeployByConfiguration" disabled>
+                                                                                    <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
                                                                                         <i class="fas fa-external-link-alt"></i> Deploy by Configuraion
                                                                                     </button>
                                                                                 </div>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='deployByConfigurationResult'>test</div>
+                                                                                    <div class="info-box-text" id='deployByConfiguratonBtnResult'>test</div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Start/Stop Inference -->
+                                                                <!-- Start Upload Inference Result -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartStopInference">
-                                                                                Step 9 : Start/Stop Inference
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartUploadInferenceResult">
+                                                                                Step 9 : Start Upload Inference Result
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionStartStopInference" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionStartUploadInferenceResult" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="startStopInferenceDiv">
-                                                                                <!--<form id="startUploadInferenceForm">
-                                                                                    <div class="form-group">-->
-                                                                                <form id="stopUploadInferenceForm">
+                                                                            <div id="startUploadInferenceResultDiv">
+                                                                                <form id="startUploadInferenceResultForm">
                                                                                     <div class="form-group">
-                                                                                        <label for="startStopInferenceDeviceId">Device ID</label>
-                                                                                        <select name="startStopInferenceDeviceId" id="startStopInferenceDeviceId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                        <label for="startUploadInferenceResultDeviceIdList">Device ID</label>
+                                                                                        <select name="startUploadInferenceResultDeviceIdList" id="startUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="" min="1" , max="2592000">
+
+                                                                                        <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="64">
+
+                                                                                        <label for="startUploadInferenceResultCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropHOffset" class="form-control" id="startUploadInferenceResultCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+
+                                                                                        <label for="startUploadInferenceResultCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropVOffset" class="form-control" id="startUploadInferenceResultCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+
+                                                                                        <label for="startUploadInferenceResultCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropHSize" class="form-control" id="startUploadInferenceResultCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+
+                                                                                        <label for="startUploadInferenceResultCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropVSize" class="form-control" id="startUploadInferenceResultCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+
+                                                                                        <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultNumberOfInferencesPerMessage" class="form-control" id="startUploadInferenceResultNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="100">
+
+                                                                                        <label for="startUploadInferenceResultModelIdList">Model ID (Optional)</label>
+                                                                                        <select name="startUploadInferenceResultModelIdList" id="startUploadInferenceResultModelIdList" class="form-control custom-select" style="min-width:10em"></select>
                                                                                     </div>
                                                                                 </form>
-                                                                                <label for="startStopInferenceFrequency">Frequency of Inference (Optional)</label>
-                                                                                <input type="number" name="startStopInferenceFrequency" class="form-control" id="startStopInferenceFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" value="" min="1" , max="2592000">
-
-                                                                                <label for="startStopInferenceMaxDetection">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="64">
-
-                                                                                <label for="startStopInferenceCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startStopInferenceCropHOffset" class="form-control" id="startStopInferenceCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
-
-                                                                                <label for="startStopInferenceCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startStopInferenceCropVOffset" class="form-control" id="startStopInferenceCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
-
-                                                                                <label for="startStopInferenceCropHSize">Hsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startStopInferenceCropHSize" class="form-control" id="startStopInferenceCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
-
-                                                                                <label for="startStopInferenceCropVSize">Vsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startStopInferenceCropVSize" class="form-control" id="startStopInferenceCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
-
-                                                                                <label for="startStopInferenceNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="number" name="startStopInferenceNumberOfInferencesPerMessage" class="form-control" id="startStopInferenceNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" value="" min="1" , max="100">
-
-                                                                                <label for="startStopInferenceModelId">Model ID (Optional)</label>
-                                                                                <select name="startStopInferenceModelId" id="startStopInferenceModelId" class="form-control custom-select" style="min-width:10em"></select>
-                                                                                <!--
-                                                                            </div>
-                                                                                </form> -->
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnStartUploadInferenceResult">
-                                                                                <i class="fas fa-external-link-alt"></i> Start Inference
-                                                                            </button>
-                                                                            <button type="button" class="btn btn-warning" id="btnStopUploadInferenceResult">
-                                                                                <i class="fas fa-external-link-alt"></i> Stop Inference
-                                                                            </button>
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="StartUploadInferenceResultBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt"></i> Start Inference
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='btnStartUploadInferenceResultResult'>test</div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <!-- Start/Stop Upload Retraining Data -->
+                                                                <!-- Stop Upload Inference Result -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
-                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartStopUploadRetrainingData">
-                                                                                Step 10 : Start/Stop Uploading Retraining Data
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadInferenceResult">
+                                                                                Step 10 : Stop Upload Inference Result
                                                                             </a>
                                                                         </h4>
                                                                     </div>
-                                                                    <div id="accordionStartStopUploadRetrainingData" class="collapse" data-parent="#accordion">
+                                                                    <div id="accordionStopUploadInferenceResult" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
-                                                                            <div id="startUploadRetrainingDataDiv">
-                                                                                <label for="startUploadRetrainingDataDeviceId">Device ID</label>
-                                                                                <select name="startUploadRetrainingDataDeviceId" id="startUploadRetrainingDataDeviceId" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                                <label for="startUploadRetrainingDataMode">Collection mode (Optional)</label>
-                                                                                <select name="startUploadRetrainingDataMode" id="startUploadRetrainingDataMode" class="form-control">
-                                                                                    <option disabled selected>Select Collection Mode</option>
-                                                                                    <option value="0">Image</option>
-                                                                                    <option value="1">image & Inference results metadata</option>
-                                                                                </select>
-
-                                                                                <label for="startUploadRetrainingDataFileFormat">Image file format (Optional)</label>
-                                                                                <select name="startUploadRetrainingDataFileFormat" id="startUploadRetrainingDataFileFormat" class="form-control">
-                                                                                    <option disabled selected>Select Image File Format</option>
-                                                                                    <option value="JPG">JPEG</option>
-                                                                                    <option value="BMP">Bitmap (BMP)</option>
-                                                                                </select>
-
-                                                                                <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
-
-                                                                                <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" min="0" max="3040">
-
-                                                                                <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" min="0" max="4056">
-
-                                                                                <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
-
-                                                                                <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000" min="0" max="10000">
-
-                                                                                <label for="startUploadRetrainingDataFrequency">Frequency of fetching images (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataFrequency" class="form-control" id="startUploadRetrainingDataFrequency" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" min="1" max="2592000">
-
-                                                                                <label for="startUploadRetrainingDataMaxDetection">Number of objects included in 1 frame (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataMaxDetection" class="form-control" id="startUploadRetrainingDataMaxDetection" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" min="1" max="64">
-
-                                                                                <label for="startUploadRetrainingDataNumInference">Number of inference results to include in one message. (Optional)</label>
-                                                                                <input type="number" name="startUploadRetrainingDataNumInference" class="form-control" id="startUploadRetrainingDataNumInference" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100" min="1" max="100">
-
-                                                                                <label for="startUploadRetrainingDataModelId">Model ID (Optional)</label>
-                                                                                <select name="startUploadRetrainingDataModelId" id="startUploadRetrainingDataModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            <div id="stopUploadInferenceResultDiv">
+                                                                                <form id="stopUploadInferenceForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="stopUploadInferenceResultDeviceIdList">Device ID</label>
+                                                                                        <select name="stopUploadInferenceResultDeviceIdList" id="stopUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="card-footer">
-                                                                            <button type="button" class="btn btn-success" id="btnStartUploadRetrainingData">
-                                                                                <i class="fas fa-external-link-alt"></i> Start Upload Retraining Data
-                                                                            </button>
-                                                                            <button type="button" class="btn btn-warning" id="btnStopUploadRetrainingData">
-                                                                                <i class="fas fa-external-link-alt"></i> Stop Upload Retraining Data
-                                                                            </button>
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="StopUploadInferenceResultBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt"></i> Stop Upload Inference Result
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='StopUploadInferenceResultBtnResult'>test</div>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                                <!-- Start Upload Retraining Data -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartUploadRetrainingData">
+                                                                                Step 11 : Start Uploading Retraining Data
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStartUploadRetrainingData" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="startUploadRetrainingDataDiv">
+                                                                                <form id="startUploadRetrainingDataForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="startUploadRetrainingDataDeviceIdList">Device ID</label>
+                                                                                        <select name="startUploadRetrainingDataDeviceIdList" id="startUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
+                                                                                        <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
+                                                                                            <option disabled selected>Select Collection Mode</option>
+                                                                                            <option value="0">Image</option>
+                                                                                            <option value="1">image & Inference results metadata</option>
+                                                                                        </select>
+
+                                                                                        <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
+                                                                                        <select name="startUploadRetrainingDataFileFormatList" id="startUploadRetrainingDataFileFormatList" class="form-control">
+                                                                                            <option disabled selected>Select Image File Format</option>
+                                                                                            <option value="JPG">JPEG</option>
+                                                                                            <option value="BMP">Bitmap (BMP)</option>
+                                                                                        </select>
+
+                                                                                        <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
+
+                                                                                        <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" min="0" max="3040">
+
+                                                                                        <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" min="0" max="4056">
+
+                                                                                        <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
+
+                                                                                        <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000" min="0" max="10000">
+
+                                                                                        <label for="startUploadRetrainingDataFrequencyOfImages">Frequency of fetching images (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataFrequencyOfImages" class="form-control" id="startUploadRetrainingDataFrequencyOfImages" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000" min="1" max="2592000">
+
+                                                                                        <label for="startUploadRetrainingDataMaxDetectionPerFrame">Number of objects included in 1 frame (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64" min="1" max="64">
+
+                                                                                        <label for="startUploadRetrainingDataNumInferencePerMessage">Number of inference results to include in one message. (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataNumInferencePerMessage" class="form-control" id="startUploadRetrainingDataNumInferencePerMessage" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100" min="1" max="100">
+
+                                                                                        <label for="startUploadRetrainingDataModelIdList">Model ID (Optional)</label>
+                                                                                        <select name="startUploadRetrainingDataModelIdList" id="startUploadRetrainingDataModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="startUploadRetrainingDataBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt"></i> Start Upload Retraining Data
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='startUploadRetrainingDataBtnResult'>test</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Stop Upload Retraining Data -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadRetrainingData">
+                                                                                Step 12 : Stop Upload Retraining Data
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStopUploadRetrainingData" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="stopUploadInferenceResultDiv">
+                                                                                <form id="stopUploadRetrainingDataForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="stopUploadRetrainingDataDeviceIdList">Device ID</label>
+                                                                                        <select name="stopUploadRetrainingDataDeviceIdList" id="stopUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt"></i> Stop Upload Retraining Data
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='stopUploadRetrainingDataBtnResult'>test</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
                                                             </div> <!-- End of Accordion -->
                                                         </div>
                                                     </div>
@@ -980,18 +1051,39 @@
     <!--<script src="/js/site.js"></script>-->
     <script>
         var expiresOn = '';
-        var currentCvProject = '';
+        var currentProjectId = null;
+        var currentModel = null;
+        var currentDeviceId = null;
 
         var hubConnection;
 
-        $.validator.addMethod("valueNotEquals", function (value, element, arg) {
-            if (value == arg ) { return false };
-            return true
-        });
+        //$.validator.addMethod("valueNotEquals", function (value, element, arg) {
+        //    if (value == arg ) { return false };
+        //    return true
+        //});
+
+        function setSelectOption(selectElement, selectValue) {
+            console.log("Setting " + selectElement + " to " + selectValue);
+
+            document.getElementById(selectElement).value = selectValue;
+            document.getElementById(selectElement).dispatchEvent(new Event("change"));
+        }
+
+        function isItemSelected(selectElement, value) {
+            if (document.getElementById(selectElement).selectedIndex == 0) {
+                return false;
+            }
+            else if (document.getElementById(selectElement).selectedIndex == -1) {
+                return false;
+            }
+            else if (value && document.getElementById(selectElement).value != value) {
+                return false;
+            }
+
+            return true;
+        }
 
         $(document).ready(function () {
-
-
 
             sonyApiInitialize();
 
@@ -1011,16 +1103,19 @@
 
         })
 
-        function toggleLoader() {
+        function toggleLoader(bForceClear) {
             var loader = document.getElementById("loader");
 
-            if (loader.style.display == "none") {
-                console.log("Toggle block");
-                loader.style.display = "block";
+            if (bForceClear) {
+                loader.style.display = "none";
             }
             else {
-                loader.style.display = "none";
-                console.log("Toggle none");
+                if (loader.style.display == "none") {
+                    loader.style.display = "block";
+                }
+                else {
+                    loader.style.display = "none";
+                }
             }
         }
 
@@ -1044,47 +1139,51 @@
 
         $('#btnLogin').click(function () {
             if ($('#loginForm').valid()) {
-                toggleLoader();
+                toggleLoader(false);
                 sonyApiAuth();
-                getToken().then(() => {
-                    toggleLoader();
-                    console.log("Login End");
-                })
+                getToken()
+                    .then(() => {
+                        console.log("Login End");
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
             }
         })
 
-        $('#btnNewCustomVisionProjectCreate').click(function () {
-            if ($('#newProjectForm').valid() == false) {
+        $('#createBaseCustomVisionProjectBtn').click(function () {
+            if ($('#createBaseCustomVisionProjectForm').valid() == false) {
                 return;
             }
 
-            toggleLoader();
-            console.debug("btnNewCustomVisionProjectCreate Click");
+            toggleLoader(false);
+            console.debug("createBaseCustomVisionProjectBtn Click");
 
-            CreateCustomVisionProject()
+            CreateBaseCustomVisionProject()
                 .then(() => {
-                    GetCustomVisionProjects("customVisionList");
+                    GetCustomVisionProjects("visitCustomVisionProjectList");
                 })
-                .catch((e) => {
-                    console.error("ErrorXX : " + e);
+
+                .catch(err => {
+                    console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnDeleteCustomVisionProjectCV').click(function () {
-            console.debug("btnDeleteCustomVisionProjectCV Click");
-            var projectList = document.getElementById('customVisionList');
+        $('#deleteCustomVisionProjectCvBtn').click(function () {
+            console.debug("deleteCustomVisionProjectCvBtn Click");
+            var projectList = document.getElementById('selectCustomVisionProjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
-                toggleLoader();
-                DeleteCustomVisionProjectCV(projectList[projectList.selectedIndex].value)
+                toggleLoader(false);
+                DeleteProjectCV(projectList[projectList.selectedIndex].value)
                     .then(() => {
                         console.log("Custom Vision Project Deleted");
-                        GetCustomVisionProjects("customVisionList");
+                        GetCustomVisionProjects("selectCustomVisionProjectList");
                     })
                     .finally(() => {
-                        toggleLoader();
+                        toggleLoader(false);
                     });
             }
         })
@@ -1094,223 +1193,250 @@
         // Button Click
         //
 
-        $('#btnDeleteCustomVisionProject').click(function () {
-            var projectList = document.getElementById('customVisionList');
+        $('#deleteCustomVisionProjectBtn').click(function () {
 
-            console.debug("btnDeleteCustomVisionProject Click" + projectList[projectList.selectedIndex].text);
+            var projectList = document.getElementById('selectCustomVisionProjectList');
+
+            console.debug("deleteCustomVisionProjectBtn Click" + projectList[projectList.selectedIndex].text);
 
             if (projectList[projectList.selectedIndex].value != 0) {
-                toggleLoader();
-                DeleteCustomVisionProject(projectList[projectList.selectedIndex].text)
+                toggleLoader(false);
+                DeleteProject(projectList[projectList.selectedIndex].text)
                     .then(() => {
                         console.log("Custom Vision Project Deleted");
-                        GetCustomVisionProjects("customVisionList");
+                        GetCustomVisionProjects("selectCustomVisionProjectList");
                     })
                     .finally(() => {
-                        toggleLoader();
+                        toggleLoader(false);
                     });
             }
         })
 
-        $('#btnVisitCustomVision').click(function () {
-            toggleLoader();
-            console.debug("btnVisitCustomVision Click");
-            var projectList = document.getElementById('buildCustomVisionPrjectList');
+        $('#visitCustomVisionBtn').click(function () {
+            toggleLoader(false);
+            console.debug("visitCustomVisionBtn Click");
+            var projectList = document.getElementById('visitCustomVisionProjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
                 window.open(url, "_blank");
             }
-            toggleLoader();
+            toggleLoader(false);
         })
 
         $('#btnClearApiOutput').click(function () {
             document.getElementById('taApiOutput').value = null;
         })
 
-        $('#btnSaveModel').click(function () {
+        $('#saveCustomVisionModelBtn').click(function () {
 
-            if ($('#saveCustomVisionForm').valid() == false) {
-                return;
-            }
+            if ($('#saveCustomVisionModelForm').valid()) {
 
-            toggleLoader();
-            console.debug("btnSaveModel Click");
+            toggleLoader(false);
+            console.debug("saveCustomVisionModelBtn Click");
 
             SaveCustomVisionModel()
                 .then(() => {
                     console.log("Model Saved");
                 })
-                .catch((e) => {
-                    console.error("ErrorXX : " + e);
+                .catch(err => {
+                    console.error("ErrorXX : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
+            }
         })
 
-        $('#btnConvertModel').click(function () {
-            toggleLoader();
-            console.debug("btnConvertModel Click");
+        $('#convertModelBtn').click(function () {
+            toggleLoader(false);
+            console.debug("convertModelBtn Click");
 
             ConvertModel()
                 .then(function (conversion_id) {
-                    console.log("Conversion Started : " + conversion_id);
-                    document.getElementById('btnConvertModelConversionID').innerHTML = conversion_id;
+                    if (conversion_id) {
+                        console.log("Conversion Started : " + conversion_id);
+                        document.getElementById('convertModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
+                    }
                 })
-                .catch((e) => {
-                    console.error("ErrorXX : " + e);
+                .catch(err => {
+                    console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnConvertModelGetStatus').click(function () {
-            toggleLoader();
-            console.debug("btnConvertModelGetStatus Click");
+        $('#convertModelGetBaseModelStatusBtn').click(function () {
+            toggleLoader(false);
+            console.debug("convertModelGetBaseModelStatusBtn Click");
 
-            var model_id = document.getElementById("convertModelModelList").selectedIndex == 0 ? null : document.getElementById("convertModelModelList").value;
+            var model_id = document.getElementById("convertModelModelIdList").selectedIndex == 0 ? null : document.getElementById("convertModelModelIdList").value;
 
             GetBaseModelStatus(model_id, "1")
                 .then(function (project) {
                     console.log("Model Status : " + project);
                     var json = JSON.parse(project);
                     console.log("Model Status : " + json);
-                    document.getElementById('divConvertModelConversionID').innerHTML = json.versions[0].conv_id;
-                    document.getElementById('divConvertModelGetStatusStage').innerHTML = json.versions[0].stage;
-                    document.getElementById('divConvertModelGetStatusResult').innerHTML = json.versions[0].result;
+                    document.getElementById('convertModelGetBaseModelStatusConversionDiv').innerHTML = json.versions[0].conv_id;
+                    document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
+                    document.getElementById('convertModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
                 })
-                .catch(function (e) {
-                    console.error("Error : " + e);
+                .catch(function (err) {
+                    console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnPublishModel').click(function () {
-            toggleLoader();
-            console.debug("btnPublishModel Click");
+        $('#publishModelBtn').click(function (evt) {
+            toggleLoader(false);
+            console.debug("publishModelBtn Click");
 
             PublishModel()
                 .then(function (conversion_id) {
-                    console.log("Publish Started : " + conversion_id);
-                    document.getElementById('divPublishModelConversionID').innerHTML = conversion_id;
+                    if (conversion_id) {
+                        console.log("Publish Started : " + conversion_id);
+                        document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = conversion_id;
+                    }
                 })
-                .catch(function (e) {
-                    console.error("Error : " + e);
+                .catch(function (err) {
+                    console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnPublishModelGetStatus').click(function () {
-            toggleLoader();
-            console.debug("btnPublishModelGetStatus Click");
+        $('#publishModelGetBaseModelStatusBtn').click(function (evt) {
+            toggleLoader(false);
+            console.log(evt.target.id + "() " + evt.type);
 
-            var model_id = document.getElementById("publishModelModelList").selectedIndex == 0 ? null : document.getElementById("publishModelModelList").value;
+            var model_id = document.getElementById("publishModelModelIdList").selectedIndex == 0 ? null : document.getElementById("publishModelModelIdList").value;
 
             GetBaseModelStatus(model_id, "1")
                 .then(function (project) {
                     console.log("Model Status : " + project);
                     var json = JSON.parse(project);
                     console.log("Model Status : " + json);
-                    document.getElementById('divPublishModelConversionID').innerHTML = json.versions[0].conv_id;
-                    document.getElementById('divPublishModelGetStatusStage').innerHTML = json.versions[0].stage;
-                    document.getElementById('divPublishModelGetStatusResult').innerHTML = json.versions[0].result;
+                    document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = json.versions[0].conv_id;
+                    document.getElementById('publishModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
+                    document.getElementById('publishModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
                 })
-                .catch(function (e) {
-                    console.error("Error : " + e);
+                .catch(function (err) {
+                    console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnCreateDeployConfiguration').click(function () {
-            if ($('#createDeployForm').valid() == false) {
+        $('#btnCreateDeployConfiguration').click(function (evt) {
+            if ($('#createDeployConfigurationForm').valid() == false) {
                 return;
             }
 
-            toggleLoader();
+            toggleLoader(false);
             console.debug("btnCreateDeployConfiguration Click");
 
             CreateDeployConfiguration()
                 .then(() => {
                     console.log("Model Saved");
                 })
-                .catch(function (e) {
-                    console.error("Error : " + e);
+                .catch(function (err) {
+                    console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnDeployByConfiguration').click(function () {
-            console.debug("btnDeployByConfiguration Click");
-            toggleLoader();
+        $('#deployByConfiguratonBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
             DeployByConfiguration()
                 .then(() => {
                     console.log("Configuration Deployed");
                     GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList');
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
 
-        $('#btnCreateDeployConfigurationGetDeployConfigurations').click(function () {
-            console.debug("btnCreateDeployConfigurationGetDeployConfigurations Click");
-            toggleLoader();
+        $('#btnCreateDeployConfigurationGetDeployConfigurations').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
             GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
                 .then(() => {
                     console.log("Configuration Acquired");
                 })
                 .finally(() => {
-                    toggleLoader();
+                    toggleLoader(false);
                 });
         })
 
-        $('#btnStartUploadInferenceResult').click(function () {
-            console.debug("btnStartUploadInferenceResult Click");
-            if ($('#startUploadInferenceForm').valid()) {
-                toggleLoader();
-                StartUploadInferenceResult().then(() => {
-                    toggleLoader();
-                })
+        $('#StartUploadInferenceResultBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            if ($('#startUploadInferenceResultForm').valid()) {
+                toggleLoader(false);
+                StartUploadInferenceResult()
+                    .then(() => {
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
             }
         })
 
-        $('#btnStopUploadInferenceResult').click(function () {
-            console.debug("btnStopUploadInferenceResult Click");
-            if ($('#stopUploadInferenceForm').valid()) {
-                toggleLoader();
-                StopUploadInferenceResult().then(() => {
-                    toggleLoader();
-                })
+        $('#StopUploadInferenceResultBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            if ($('#stopUploadInferenceResultForm').valid()) {
+                toggleLoader(false);
+                StopUploadInferenceResult()
+                    .then(() => {
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
             }
         })
 
-        $('#btnStartUploadRetrainingData').click(function () {
-            console.debug("btnStartUploadRetrainingData Click");
-            StartUploadRetrainingData();
+        $('#startUploadRetrainingDataBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            if ($('#startUploadRetrainingDataForm').valid()) {
+                toggleLoader(false);
+                StartUploadRetrainingData()
+                    .then(() => {
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
         })
 
-        $('#btnStopUploadRetrainingData').click(function () {
-            console.debug("btnStopUploadRetrainingData Click");
+        $('#stopUploadRetrainingDataBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            if ($('#stopUploadRetrainingDataForm').valid()) {
+                toggleLoader(false);
+                StopUploadRetrainingData()
+                    .then(() => {
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
         })
 
-        $('#btnClearTelemetryTable').click(function () {
-            console.debug("btnClearTelemetryTable Click");
+        $('#btnClearTelemetryTable').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             $("#device-events").find("tr:gt(0)").remove();
             $("#device-events").hide();
         })
 
-        $('#btnClearApiOutput').click(function () {
-            console.debug("btnClearApiOutput Click");
+        $('#btnClearApiOutput').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
 
@@ -1343,23 +1469,23 @@
             }
         });
 
-        $('#newProjectForm').validate({
+        $('#createBaseCustomVisionProjectForm').validate({
             rules: {
-                newCustomVisionProjectName: {
+                createBaseCustomVisionProjectName: {
                     required: true,
                     maxlength: 100
                 },
-                newCustomVisionProjectComment: {
+                createBaseCustomVisionProjectComment: {
                     required: false,
                     maxlength: 100
                 },
             },
             messages: {
-                newCustomVisionProjectName: {
+                createBaseCustomVisionProjectName: {
                     required: "Enter project name of Custom vision. Within 100 characters.",
                     maxlength: "Project Name must be up to 100 characters"
                 },
-                newCustomVisionProjectComment: {
+                createBaseCustomVisionProjectComment: {
                     maxlength: "Project Comment must be up to 100 characters"
                 },
 
@@ -1377,42 +1503,42 @@
             }
         });
 
-        $('#saveCustomVisionForm').validate({
+        $('#saveCustomVisionModelForm').validate({
             rules: {
-                saveModelProjectList: {
+                saveCustomVisionModelProjectNameList: {
                     required: true
                 },
-                saveModelModelId: {
+                saveCustomVisionModelProjectModelId: {
                     required: false,
                     maxlength: 100
 
                 },
-                saveModelInitialVersion: {
+                saveCustomVisionModelInitialVersionNumber: {
                     required: false,
                     min: 1,
                     max: 100
                 },
-                saveModelFunctionality: {
+                saveCustomVisionModelFunctionality: {
                     required: false,
                     maxlength: 100
                 },
-                saveModelVendorName: {
+                saveCustomVisionModelVendorName: {
                     required: false,
                     maxlength: 100
                 },
-                saveModelComment: {
+                saveCustomVisionModelComment: {
                     required: false,
                     maxlength: 100
                 },
             },
             messages: {
-                saveModelProjectList: {
+                saveCustomVisionModelProjectNameList: {
                     required: "Select project name of Custom vision. Within 100 characters.",
                 },
-                saveModelModelId: {
+                saveCustomVisionModelProjectModelId: {
                     maxlength: "Model ID must be up to 100 characters"
                 },
-                saveModelInitialVersion: {
+                saveCustomVisionModelInitialVersionNumber: {
                     min: "Initial version must be > 1",
                     max: "Initial version must be <= 100"
                 },
@@ -1431,87 +1557,87 @@
             }
         });
 
-        $('#createDeployForm').validate({
+        $('#createDeployConfigurationForm').validate({
             rules: {
-                createDeployConfigId: {
+                createDeployConfigurationConfigId: {
                     required: true,
                     maxlength: 20
                 },
-                createDeploySensorLoaderVer: {
+                createDeployConfigurationSensorLoaderVersionNumber: {
                     required: true
                 },
-                createDeploySensorVer: {
+                createDeployConfigurationSensorVersionNumber: {
                     required: true
                 },
-                createDeployModelId: {
+                createDeployConfigurationModelId: {
                     required: true
                 },
-                createDeployApFwVer: {
+                createDeployConfigurationApFwVersionNumber: {
                     required: true
                 },
-                createDeployComment: {
+                createDeployConfigurationComment: {
                     required: false,
                     maxlength: 100
                 },
-                createDeployComment: {
+                createDeployConfigurationComment: {
                     required: false,
                     maxlength: 100
                 },
-                createDeployDeviceType: {
+                createDeployConfigurationDeviceTypeList: {
                     required: false
                 },
-                createDeployModelVer: {
+                createDeployConfigurationModelVersionNumber: {
                     required: false
                 },
-                createDeployColorMatrixMode: {
+                createDeployConfigurationColorMatrixModelList: {
                     required: false
                 },
-                createDeployColorMatrixFileName: {
+                createDeployConfigurationColorMatrixFileName: {
                     required: false
                 },
-                createDeployGammaMode: {
+                createDeployConfigurationGammaModeList: {
                     required: false
                 },
-                createDeployGammaFileName: {
+                createDeployConfigurationGammaFileName: {
                     required: false
                 },
-                createDeployLscMode: {
+                createDeployConfigurationLscModeList: {
                     required: false
                 },
-                createDeployLscModeFile: {
+                createDeployConfigurationLscFileName: {
                     required: false
                 },
-                createDeployPrewbMode: {
+                createDeployConfigurationPrewbModeList: {
                     required: false
                 },
-                createDeployPrewbModeFile: {
+                createDeployConfigurationDewarpFileName: {
                     required: false
                 },
-                createDeployDewarpMode: {
+                createDeployConfigurationDewarpModeList: {
                     required: false
                 },
-                createDeployPrewbModeFile: {
+                createDeployConfigurationDewarpFileName: {
                     required: false
                 }
             },
             messages: {
-                createDeployConfigId: {
+                createDeployConfigurationConfigId: {
                     required: "Enter configID up to 20 characters.",
                     maxlength: "configID must be up to 20 characters"
                 },
-                createDeploySensorLoaderVer: {
+                createDeployConfigurationSensorLoaderVersionNumber: {
                     required: "Select SensorLoader version.",
                 },
-                createDeploySensorVer: {
+                createDeployConfigurationSensorVersionNumber: {
                     required: "Select Sensor version.",
                 },
-                createDeployModelId: {
+                createDeployConfigurationModelId: {
                     required: "Select Model ID.",
                 },
-                createDeployApFwVer: {
+                createDeployConfigurationApFwVersionNumber: {
                     required: "Select ApFw version.",
                 },
-                createDeploySensorLoaderVer: {
+                createDeployConfigurationSensorLoaderVersionNumber: {
                     required: "Select SensorLoader version number.",
                 },
 
@@ -1531,24 +1657,24 @@
 
         $('#deployByConfiguraionForm').validate({
             rules: {
-                deployByConfiguraionFormConfigId: {
+                deployByConfiguraionFormConfigIdList: {
                     required: true
                 },
-                deployByConfiguraionDeviceId: {
+                deployByConfiguraionDeviceIdList: {
                     required: true
                 },
                 deployByConfiguraionComment: {
                     required: false
                 },
-                deployByConfiguraionReplaceModelID: {
+                deployByConfiguraionReplaceModelIdList: {
                     required: false
                 },
             },
             messages: {
-                deployByConfiguraionFormConfigId: {
+                deployByConfiguraionFormConfigIdList: {
                     required: "Select ConfigID from thelist",
                 },
-                deployByConfiguraionDeviceId: {
+                deployByConfiguraionDeviceIdList: {
                     required: "Select Device ID from the list."
                 },
 
@@ -1566,80 +1692,79 @@
             }
         });
 
-
-        $('#startUploadInferenceForm').validate({
+        $('#startUploadInferenceResultForm').validate({
             rules: {
-                startStopInferenceDeviceId: {
+                startUploadInferenceResultDeviceIdList: {
                     required: true
                 },
-                startStopInferenceFrequency: {
+                startUploadInferenceResultFrequencyOfInferences: {
                     required: false,
                     min: 1,
                     max: 2592000
                 },
-                startStopInferenceMaxDetection: {
+                startUploadInferenceResultMaxDetectionsPerFrame: {
                     required: false,
                     min: 1,
                     max: 64
                 },
-                startStopInferenceCropHOffset: {
+                startUploadInferenceResultCropHOffset: {
                     required: false,
                     min: 0,
                     max: 4056
                 },
-                startStopInferenceCropVOffset: {
+                startUploadInferenceResultCropVOffset: {
                     required: false,
                     min: 0,
                     max: 3040
                 },
-                startStopInferenceCropHSize: {
+                startUploadInferenceResultCropHSize: {
                     required: false,
                     min: 0,
                     max: 4056
                 },
-                startStopInferenceCropVSize: {
+                startUploadInferenceResultCropVSize: {
                     required: false,
                     min: 0,
                     max: 3040
                 },
-                startStopInferenceNumberOfInferencesPerMessage: {
+                startUploadInferenceResultNumberOfInferencesPerMessage: {
                     required: false,
                     min: 1,
                     max: 100
                 },
-                startStopInferenceModelId: {
+                startUploadInferenceResultModelIdList: {
                     required: false
                 },
             },
             messages: {
-                startStopInferenceDeviceId: {
-                    required: "Please select an item!" 
+                startUploadInferenceResultDeviceIdList: {
+                    required: "Select Device ID" 
                 },
-                startStopInferenceFrequency: {
+                startUploadInferenceResultFrequencyOfInferences: {
                     min: "Frequency of Inference must be > 1",
                     max: "Frequency of Inference must be < 2,592,000"
                 },
-                startStopInferenceMaxDetection: {
+                startUploadInferenceResultMaxDetectionsPerFrame: {
                     min: "No. of Objects included in 1 frame must be 1 or more",
                     max: "No. of Objects included in 1 frame must be less than or equal to 64"
                 },
-                startStopInferenceCropHOffset: {
+                startUploadInferenceResultCropHOffset: {
                     min: "Hoffset for Image crop must be 0 or more",
                     max: "Hoffset for Image crop must be less than or equal to 4,056"
                 },
-                startStopInferenceCropVOffset: {
+                startUploadInferenceResultCropVOffset: {
                     min: "Voffset for Image crop must be 0 or more",
                     max: "Voffset for Image crop must be less than or equal to 3,040"
                 },
-                startStopInferenceCropHSize: {
+                startUploadInferenceResultCropHSize: {
                     min: "Hsize for Image crop must be 0 or more",
                     max: "Hsize for Image crop must be less than or equal to 4,056"
                 },
-                startStopInferenceCropVSize: {
+                startUploadInferenceResultCropVSize: {
                     min: "Vsize for Image crop must be 0 or more",
                     max: "Vsize for Image crop must be less than or equal to 4,056"
                 },
-                startStopInferenceNumberOfInferencesPerMessage: {
+                startUploadInferenceResultNumberOfInferencesPerMessage: {
                     min: "Number of inference results to include in one message must be 1 or more",
                     max: "Number of inference results to include in one message must be less than or equal to 100"
                 },
@@ -1657,15 +1782,15 @@
             }
         });
 
-        $('#stopUploadInferenceForm').validate({
+        $('#stopUploadInferenceResultForm').validate({
             rules: {
-                startStopInferenceDeviceId: {
+                stopUploadInferenceResultDeviceIdList: {
                     required: true,
                 },
             },
             messages: {
-                startStopInferenceDeviceId: {
-                    required: "Select Device ID from thelist",
+                startUploadInferenceResultDeviceIdList: {
+                    required: "Select Device ID",
                 },
             },
             errorElement: 'span',
@@ -1681,145 +1806,466 @@
             }
         });
 
+        $('#startUploadRetrainingDataForm').validate({
+            rules: {
+                startUploadRetrainingDataDeviceIdList: {
+                    required: true
+                },
+                startUploadRetrainingDataModeList: {
+                    required: false
+                },
+                startUploadRetrainingDataCropHOffset: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startUploadRetrainingDataCropVOffset: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startUploadRetrainingDataCropHSize: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startUploadRetrainingDataCropVSize: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startUploadRetrainingDataNumImages: {
+                    required: false,
+                    min: 1,
+                    max: 10000
+                },
+                startUploadRetrainingDataFrequencyOfImages: {
+                    required: false,
+                    min: 1,
+                    max:259200
+                },
+                startUploadRetrainingDataMaxDetectionPerFrame: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+                startUploadRetrainingDataNumInferencePerMessage: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+            },
+            messages: {
+                startUploadRetrainingDataDeviceIdList: {
+                    required: "Select Device ID"
+                },
+                startUploadRetrainingDataCropHOffset: {
+                    min: "Hoffset for Image crop must be 0 or more",
+                    max: "Hoffset for Image crop must be less than or equal to 4,056"
+                },
+                startUploadRetrainingDataCropVOffset: {
+                    min: "Voffset for Image crop must be 0 or more",
+                    max: "Voffset for Image crop must be less than or equal to 3,040"
+                },
+                startUploadRetrainingDataCropHSize: {
+                    min: "Hsize for Image crop must be 0 or more",
+                    max: "Hsize for Image crop must be less than or equal to 4,056"
+                },
+                startUploadRetrainingDataCropVSize: {
+                    min: "Vsize for Image crop must be 0 or more",
+                    max: "Vsize for Image crop must be less than or equal to 4,056"
+                },
+                startUploadRetrainingDataNumImages: {
+                    min: "Number of images to be fetched(Input Tensor) must be 0 or more",
+                    max: "Number of images to be fetched(Input Tensor) must be less than or equal to 10,000"
+                },
+                startUploadRetrainingDataFrequencyOfImages: {
+                    min: "Frequency of fetching the images (Input Tensor) must be 1 or more",
+                    max: "Frequency of fetching the images (Input Tensor)must be less than or equal to 2,592,000"
+                },
+                startUploadRetrainingDataMaxDetectionPerFrame: {
+                    min: "No. of Objects included in 1 frame  must be 1 or more",
+                    max: "No. of Objects included in 1 frame  must be less than or equal to 64"
+                },
+                startUploadRetrainingDataNumInferencePerMessage: {
+                    min: "Number of inference results to include in one message (Output Tensor) must be 0 or more",
+                    max: "Number of inference results to include in one message (Output Tensor) must be less than or equal to 10,000"
+                }
+        },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#stopUploadRetrainingDataForm').validate({
+            rules: {
+                stopUploadInferenceResultDeviceIdList: {
+                    required: true,
+                },
+            },
+            messages: {
+                stopUploadInferenceResultDeviceIdList: {
+                    required: "Select Device ID",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
         //
         // Accordion
         //
 
-        $('#accordionSetup').on('show.bs.collapse', function () {
-            console.log("accordionSetup show")
+        $('#accordionSetup').on('show.bs.collapse', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
-        $('#accordionSetup').on('hide.bs.collapse', function () {
-            console.log("accordionSetup hidden")
+        $('#accordionSetup').on('hide.bs.collapse', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
-        $('#accordionCustomVision').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionCustomVision show");
-            GetCustomVisionProjects("customVisionList").then(() => {
-                toggleLoader();
-            })
-        })
+        $('#accordionCreateBaseCustomVisionProject').on('show.bs.collapse', function (evt) {
+            var targetListName = 'selectCustomVisionProjectList';
+            console.log(evt.target.id + "() " + evt.type);
 
-        $('#accordionBuildCustomVisionBuildModel').on('show.bs.collapse', function () {
-            console.log("accordionBuildCustomVisionBuildModel show");
-            toggleLoader();
-            GetCustomVisionProjects("buildCustomVisionPrjectList").then(() => {
-                select = document.getElementById('buildCustomVisionPrjectList');
-                select.value = document.getElementById('customVisionList').value;
-                toggleLoader();
-            })
-            
-        })
+            toggleLoader(false);
 
-        $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionSaveCustomVisionModel show : " + currentCvProject);
-            GetCustomVisionProjects("saveModelProjectList").then(() => {
-                var select = document.getElementById('saveModelProjectList');
-                if (document.getElementById('customVisionList').selectedIndex > 0) {
-                    select.value = document.getElementById('customVisionList').value;
-                    document.getElementById('customVisionList').dispatchEvent(new Event("change"));
-                }
-                toggleLoader();
-            })
-        })
-
-        $('#accordionConvertAiModel').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionConvertAiModel show : " + currentCvProject);
-            GetAllModels("convertModelModelList").then(() => {
-
-                if (document.getElementById('convertModelModelList').selectedIndex == 0 && document.getElementById('saveModelModelId').value.length > 0) {
-                    document.getElementById('convertModelModelList').value = document.getElementById('saveModelModelId').value;
-                    document.getElementById('convertModelModelList').dispatchEvent(new Event("change"));
-                }
-
-                GetDevices("convertModelDeviceList", true).then(() => {
-                    toggleLoader();
-                });
-            });
-        })
-
-        $('#accordionPublishAiModel').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionPublishAiModel show : " + currentCvProject);
-            GetAllModels("publishModelModelList").then(() => {
-
-                if (document.getElementById('publishModelModelList').selectedIndex == 0 && document.getElementById('saveModelModelId').value.length > 0) {
-                    document.getElementById('publishModelModelList').value = document.getElementById('saveModelModelId').value;
-                    document.getElementById('publishModelModelList').dispatchEvent(new Event("change"));
-                }
-
-                GetDevices("publishModelDeviceList", true).then(() => {
-                    toggleLoader();
-                });
-            });
-        })
-
-        $('#accordionCreatePeploy').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionCreatePeploy show : " + currentCvProject);
-            GetFirmwares('02', null, "createDeploySensorLoaderVer");
-            GetFirmwares('01', null, "createDeploySensorVer");
-            GetFirmwares('00', null, "createDeployApFwVer");
-            GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList").then(() => {
-                GetAllModels("createDeployModelId").then(() => {
-                    toggleLoader();
+            GetCustomVisionProjects(targetListName)
+                .then(() => {
                 })
-            });
+                .finally(() => {
+                    toggleLoader(false);
+                });
         })
 
-        $('#accordionPeploy').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionPeploy show");
-            GetAllModels("deployByConfiguraionReplaceModelID");
-            GetDeployConfigurations("deployByConfiguraionFormConfigId");
-            GetDevices("deployByConfiguraionDeviceId", true).then(() => {
-                toggleLoader();
-            })
+        $('#accordionVisitCustomVision').on('show.bs.collapse', function (evt) {
+            var targetListName = 'visitCustomVisionProjectList';
+            console.log(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            GetCustomVisionProjects(targetListName)
+                .then(() => {
+                    if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
+                        setSelectOption(targetListName, currentProjectId);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
         })
 
-        $('#accordionStartStopInference').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionStartStopInference show : " + currentCvProject);
-            GetDevices("startStopInferenceDeviceId", true);
-            GetAllModels("startStopInferenceModelId").then(() => {
-                toggleLoader();
-            })
+        $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function (evt) {
+            var targetListName = 'saveCustomVisionModelProjectNameList';
+            console.log(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            GetCustomVisionProjects(targetListName)
+                .then(() => {
+                    if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
+                        setSelectOption(targetListName, currentProjectId);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
         })
 
-        $('#accordionStartStopUploadRetrainingData').on('show.bs.collapse', function () {
-            toggleLoader();
-            console.log("accordionStartStopUploadRetrainingData show : " + currentCvProject);
-            GetDevices("startUploadRetrainingDataDeviceId", true);
-            GetAllModels("startUploadRetrainingDataModelId").then(() => {
-                toggleLoader();
-            })
+        $('#accordionConvertModel').on('show.bs.collapse', function (evt) {
+            var targetListName = 'convertModelModelIdList';
+            console.log(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            GetAllModels(targetListName)
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                            setSelectOption(targetListName, currentModel);
+                        }
+
+                        GetDevices("convertModelDeviceIdList", true)
+                            .then(() => {
+                            })
+                            .finally(() => {
+                                toggleLoader(true);
+                            })
+                    }
+                    else {
+                        toggleLoader(true);
+                    }
+                })
+                .catch(err => {
+                    msg = processError(err, true);
+                    toggleLoader(true);
+                })
+        })
+
+        $('#accordionPublishModel').on('show.bs.collapse', function (evt) {
+            var targetListName = 'publishModelModelIdList';
+            console.log(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            GetAllModels(targetListName)
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                            setSelectOption(targetListName, currentModel);
+                        }
+
+                        GetDevices("publishModelDeviceIdList", true)
+                            .then(() => {
+                            })
+                            .finally(() => {
+                                toggleLoader(true);
+                            })
+                    }
+                    else {
+                        toggleLoader(true);
+                    }
+                })
+                .catch(err => {
+                    msg = processError(err, true);
+                    toggleLoader(true);
+                })
+        })
+
+        $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+
+            try {
+                toggleLoader(false);
+                var targetListName = 'createDeployConfigurationModelId';
+                ret = await GetFirmwares('02', null, "createDeployConfigurationSensorLoaderVersionNumber");
+
+                if (!ret) {
+                    return;
+                }
+                ret = await GetFirmwares('01', null, "createDeployConfigurationSensorVersionNumber");
+                if (!ret) {
+                    return;
+                }
+                ret = await GetFirmwares('00', null, "createDeployConfigurationApFwVersionNumber");
+                if (!ret) {
+                    return;
+                }
+
+                GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList")
+                    .then((ret) => {
+
+                        if (ret) {
+                            GetAllModels(targetListName)
+                                .then((ret) => {
+                                    if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
+                                        setSelectOption(targetListName, currentModel);
+                                    }
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        }
+                        else {
+                            toggleLoader(true);
+                        }
+                    });
+            } catch (err) {
+                toggleLoader(true);
+            } finally {
+            }
+        })
+
+        $('#accordionDeployByConfiguration').on('show.bs.collapse', async function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListName = 'deployByConfiguraionReplaceModelIdList';
+
+            try {
+                toggleLoader(false);
+
+                GetAllModels(targetListName)
+                    .then((ret) => {
+
+                        if (ret) {
+                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                setSelectOption(targetListName, currentModel);
+                            }
+
+                            toggleLoader(false);
+                            GetDeployConfigurations("deployByConfiguraionFormConfigIdList")
+                                .then(() => {
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        }
+                        else {
+                            toggleLoader(true);
+                        }
+                    })
+                    .catch(err => {
+                        toggleLoader(true);
+                    })
+
+            } catch (err) {
+                toggleLoader(true);
+            } finally {
+            }
+        })
+
+        $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListName = 'startUploadInferenceResultModelIdList';
+
+            try {
+                toggleLoader(false);
+
+                GetAllModels(targetListName)
+                    .then((ret) => {
+
+                        if (ret) {
+                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                setSelectOption(targetListName, currentModel);
+                            }
+
+                            var targetDeviceListName = 'startUploadInferenceResultDeviceIdList';
+                            GetDevices(targetDeviceListName, true)
+                                .then((ret) => {
+                                    if (ret) {
+                                        if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
+                                            setSelectOption(targetDeviceListName, currentDeviceId);
+                                        }
+                                    }
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        }
+                        else {
+                            toggleLoader(true);
+                        }
+                    })
+                    .catch(err => {
+                        toggleLoader(true);
+                    })
+
+            } catch (err) {
+                toggleLoader(true);
+            } finally {
+            }
+        })
+
+        $('#accordionStopUploadInferenceResult').on('show.bs.collapse', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListName = 'stopUploadInferenceResultDeviceIdList';
+            toggleLoader(false);
+            GetDevices(targetListName, true)
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
+                            setSelectOption(targetListName, currentDeviceId);
+                        }
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                })
+        })
+
+        $('#accordionStartUploadRetrainingData').on('show.bs.collapse', function (evt) {
+
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListName = 'startUploadRetrainingDataModelIdList';
+
+            try {
+                toggleLoader(false);
+
+                GetAllModels(targetListName)
+                    .then((ret) => {
+                        if (ret) {
+                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                setSelectOption(targetListName, currentModel);
+                            }
+
+                            var targetDeviceListName = 'startUploadRetrainingDataDeviceIdList';
+                            GetDevices(targetDeviceListName, true)
+                                .then((ret) => {
+                                    if (ret) {
+                                        if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
+                                            setSelectOption(targetDeviceListName, currentDeviceId);
+                                        }
+                                    }
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        }
+                        else {
+                            toggleLoader(true);
+                        }
+                    })
+                    .catch(err => {
+                        toggleLoader(true);
+                    })
+
+            } catch (err) {
+                toggleLoader(true);
+            } finally {
+            }
+        })
+
+        $('#accordionStopUploadRetrainingData').on('show.bs.collapse', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListName = 'stopUploadRetrainingDataDeviceIdList';
+            toggleLoader(false);
+
+            GetDevices(targetListName, true)
+                .then((ret) => {
+                    if (ret && !isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
+                        setSelectOption(targetListName, currentDeviceId);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                })
         })
 
         //
         // Tab
         //
-        $('#tab-setup-label').on('show.bs.tab', function () {
-            console.log("tab-setup-label show : ");
+        $('#tab-setup-label').on('show.bs.tab', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-telemetry-label').on('show.bs.tab', function () {
-            console.log("tab-telemetry-label show : ");
+        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-telemetry-label').on('show.bs.tab', function () {
-            console.log("tab-telemetry-label show : ");
+        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             GetAllImages();
         })
 
-        $('#tab-apiOutput-label').on('show.bs.tab', function () {
-            console.log("tab-apiOutput-label show : ");
+        $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-other-label').on('show.bs.tab', function () {
-            console.log("tab-other-label show : ");
+        $('#tab-other-label').on('show.bs.tab', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
         })
 
         //
@@ -1840,121 +2286,206 @@
         // List Selected
         //
 
-        $('#customVisionList').on('change', function () {
-            var projectList = document.getElementById('customVisionList');
-            console.log("customVisionList change : " + projectList[projectList.selectedIndex].value);
-            if (projectList[projectList.selectedIndex].value != 0) {
-                currentCvProject = projectList[projectList.selectedIndex].text;
-                $('#btnVisitCustomVision').prop('disabled', false);
-                $('#btnDeleteCustomVisionProjectCV').prop('disabled', false);
-                $('#btnDeleteCustomVisionProject').prop('disabled', false);
+        $('#selectCustomVisionProjectList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentProjectId = projectList[projectList.selectedIndex].value;
+                $('#deleteCustomVisionProjectCvBtn').prop('disabled', false);
+                $('#deleteCustomVisionProjectBtn').prop('disabled', false);
             }
             else {
-                currentCvProject = '';
-                $('#btnVisitCustomVision').prop('disabled', true);
-                $('#btnDeleteCustomVisionProjectCV').prop('disabled', true);
-                $('#btnDeleteCustomVisionProject').prop('disabled', true);
+                currentProjectId = null;
+                $('#deleteCustomVisionProjectCvBtn').prop('disabled', true);
+                $('#deleteCustomVisionProjectBtn').prop('disabled', true);
 
             }
         })
 
-        
-        $('#buildCustomVisionPrjectList').on('change', function () {
-            var projectList = document.getElementById('customVisionList');
-            console.log("customVisionList change : " + projectList[projectList.selectedIndex].value);
-            if (projectList[projectList.selectedIndex].value != 0) {
-                currentCvProject = projectList[projectList.selectedIndex].text;
-                $('#btnVisitCustomVision').prop('disabled', false);
+        $('#visitCustomVisionProjectList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentProjectId = projectList[projectList.selectedIndex].value;
+                $('#visitCustomVisionBtn').prop('disabled', false);
             }
             else {
-                currentCvProject = '';
-                $('#btnVisitCustomVision').prop('disabled', true);
+                currentProjectId = null;
+                $('#visitCustomVisionBtn').prop('disabled', true);
             }
         })
 
-        $('#saveModelProjectList').on('change', function () {
-            var projectList = document.getElementById('saveModelProjectList');
-            console.log("saveModelProjectList change : " + projectList[projectList.selectedIndex].value);
-            if (projectList[projectList.selectedIndex].value != 0) {
-                currentCvProject = projectList[projectList.selectedIndex].text;
-                $('#btnSaveModel').prop('disabled', false);
+        $('#saveCustomVisionModelProjectNameList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = projectList[projectList.selectedIndex].text;
+                $('#saveCustomVisionModelBtn').prop('disabled', false);
             }
             else {
-                currentCvProject = '';
-                $('#btnSaveModel').prop('disabled', true);
+                currentModel = '';
+                $('#saveCustomVisionModelBtn').prop('disabled', true);
             }
         })
 
-        //$('#saveModelProjectList').on('input', function () {
-        //    var list = document.getElementById('saveModelProjectList');
-        //    console.log("saveModelProjectList input : " + list.selectedIndex);
+        //$('#saveCustomVisionModelProjectNameList').on('input', function () {
+        //    var list = document.getElementById('saveCustomVisionModelProjectNameList');
+        //    console.log("saveCustomVisionModelProjectNameList input : " + list.selectedIndex);
         //})
 
-        $('#convertModelModelList').on('change', function () {
-            var list = document.getElementById('convertModelModelList');
-            console.log("convertModelModelList change : " + list[list.selectedIndex].value);
-            if (list[list.selectedIndex].value != 0) {
+        $('#convertModelModelIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
 
-                if (document.getElementById('saveModelModelId').value.length == 0) {
-                    document.getElementById('saveModelModelId').value = list[list.selectedIndex].value;
+            if (isItemSelected(targetListId, null)) {
+                if (document.getElementById('saveCustomVisionModelProjectModelId').value.length == 0) {
+                    document.getElementById('saveCustomVisionModelProjectModelId').value = modelList[modelList.selectedIndex].value;
                 }
-                $('#btnConvertModel').prop('disabled', false);
-                $('#btnConvertModelGetStatus').prop('disabled', false);
+
+                currentModel = modelList[modelList.selectedIndex].text;
+                $('#convertModelBtn').prop('disabled', false);
+                $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
+                document.getElementById('convertModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
             }
             else {
-                $('#btnConvertModel').prop('disabled', true);
-                $('#btnConvertModelGetStatus').prop('disabled', false);
+                currentModel = '';
+                $('#convertModelBtn').prop('disabled', true);
+                $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
             }
         })
 
-        $('#publishModelModelList').on('change', function () {
-            var list = document.getElementById('publishModelModelList');
-            if (list[list.selectedIndex].value != 0) {
-                $('#btnPublishModel').prop('disabled', false);
-                $('#btnPublishModelGetStatus').prop('disabled', false);
+        $('#publishModelModelIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = modelList[modelList.selectedIndex].text;
+                $('#publishModelBtn').prop('disabled', false);
+                $('#publishModelGetBaseModelStatusBtn').prop('disabled', false);
+                document.getElementById('publishModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
+
             }
             else {
-                $('#btnPublishModel').prop('disabled', true);
-                $('#btnPublishModelGetStatus').prop('disabled', true);
+                currentModel = '';
+                $('#publishModelBtn').prop('disabled', true);
+                $('#publishModelGetBaseModelStatusBtn').prop('disabled', true);
             }
         })
 
-        $('#createDeployConfigId').on('change', function () {
+        $('#createDeployConfigurationConfigId').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeploySensorLoaderVer').on('change', function () {
+        $('#createDeployConfigurationSensorLoaderVersionNumber').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeploySensorVer').on('change', function () {
+        $('#createDeployConfigurationSensorVersionNumber').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployModelId').on('change', function () {
+        $('#createDeployConfigurationModelId').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployApFwVer').on('change', function () {
+        $('#createDeployConfigurationApFwVersionNumber').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#deployByConfiguraionFormConfigId').on('change', function () {
+        $('#deployByConfiguraionFormConfigIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
         })
 
-        $('#deployByConfiguraionDeviceId').on('change', function () {
+        $('#deployByConfiguraionDeviceIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
         })
+
+        $('#startUploadInferenceResultDeviceIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#StartUploadInferenceResultBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            }
+            else {
+                $('#StartUploadInferenceResultBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#stopUploadInferenceResultDeviceIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#StopUploadInferenceResultBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            }
+            else {
+                $('#StopUploadInferenceResultBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#startUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#startUploadRetrainingDataBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            }
+            else {
+                $('#startUploadRetrainingDataBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#stopUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#stopUploadRetrainingDataBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            }
+            else {
+                $('#stopUploadRetrainingDataBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+
         // Input
-        $('#newCustomVisionProjectName').on('input', function () {
-            var inputField = document.getElementById('newCustomVisionProjectName');
+        $('#createBaseCustomVisionProjectName').on('input', function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var inputField = document.getElementById('createBaseCustomVisionProjectName');
 
             if (inputField.value.length > 0) {
-                $('#btnNewCustomVisionProjectCreate').prop('disabled', false);
+                $('#createBaseCustomVisionProjectBtn').prop('disabled', false);
             }
             else {
-                $('#btnNewCustomVisionProjectCreate').prop('disabled', true);
+                $('#createBaseCustomVisionProjectBtn').prop('disabled', true);
             }
         })
 
