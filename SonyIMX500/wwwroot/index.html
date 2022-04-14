@@ -31,7 +31,7 @@
     <div class="wrapper">
 
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="images/azure.png" alt="Azure Logo" height="120" width="120">
+            <img class="animation__shake" src="images/azure.png" alt="Azure Logo" height="240" width="240" style="">
         </div>
 
         <!-- Top Navbar -->
@@ -210,6 +210,9 @@
                                             <a class="nav-link" id="tab-imageGallery-label" data-toggle="pill" href="#tab-imageGallery" role="tab" aria-controls="tab-imageGallery" aria-selected="false">Images from IMX500</a>
                                         </li>
                                         <li class="nav-item">
+                                            <a class="nav-link" id="tab-cosmosDb-label" data-toggle="pill" href="#tab-cosmosDb" role="tab" aria-controls="tab-cosmosDb" aria-selected="false">AI Inference History</a>
+                                        </li>
+                                        <li class="nav-item">
                                             <a class="nav-link" id="tab-apiOutput-label" data-toggle="pill" href="#tab-api-output" role="tab" aria-controls="tab-api-output" aria-selected="false">API Output</a>
                                         </li>
                                         <li class="nav-item">
@@ -219,6 +222,7 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="tab-content" id="tab-main">
+                                        <!--Set up Tab-->
                                         <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
                                             <!-- Summary -->
                                             <div class="row">
@@ -364,8 +368,8 @@
                                                                                         </div>
                                                                                         <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                             <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
-                                                                                                <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
-                                                                                            </button>-->
+                                                            <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
+                                                        </button>-->
                                                                                             <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
@@ -967,8 +971,8 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <!-- AI Result Tab -->
-                                        <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-telemetry-label">
+                                        <!-- Image Gallery Tab -->
+                                        <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-imageGallery-label">
                                             <div class="card-body">
                                                 <div>
                                                     <div class="mb-2 row">
@@ -986,6 +990,15 @@
                                                     <div class="wrapper">
                                                         <div class="filter-container p-0 row" id="image_gallery">
                                                         </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- History Tab -->
+                                        <div class="tab-pane fade" id="tab-cosmosDb" role="tabpanel" aria-labelledby="tab-cosmosDb-label">
+                                            <div class="card-body">
+                                                <div>
+                                                    <div class="mb-2 row">
                                                     </div>
                                                 </div>
                                             </div>
