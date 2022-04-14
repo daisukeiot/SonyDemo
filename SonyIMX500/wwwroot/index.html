@@ -207,7 +207,7 @@
                                             <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-ai-result" role="tab" aria-controls="tab-ai-result" aria-selected="false">AI Result</a>
+                                            <a class="nav-link" id="tab-imageGallery-label" data-toggle="pill" href="#tab-imageGallery" role="tab" aria-controls="tab-imageGallery" aria-selected="false">Images from IMX500</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="tab-apiOutput-label" data-toggle="pill" href="#tab-api-output" role="tab" aria-controls="tab-api-output" aria-selected="false">API Output</a>
@@ -968,22 +968,24 @@
                                             </div>
                                         </div>
                                         <!-- AI Result Tab -->
-                                        <div class="tab-pane fade" id="tab-ai-result" role="tabpanel" aria-labelledby="tab-telemetry-label">
+                                        <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
                                                 <div>
                                                     <div class="mb-2 row">
                                                         <div class="float-right">
-                                                            <!--<select class="custom-select" style="width: auto;" data-sortOrder>
-                            <option value="index"> Sort by Position </option>
-                            <option value="sortData"> Sort by Custom Data </option>
-                        </select>-->
+                                                            <div>
+                                                                <label for="imageGalleryDeviceIdList">Device ID</label>
+                                                                <select name="imageGalleryDeviceIdList" id="imageGalleryDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                            </div>
                                                             <div class="btn-group">
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="filter-container p-0 row" id="image_gallery">
+                                                    <div class="wrapper">
+                                                        <div class="filter-container p-0 row" id="image_gallery">
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1032,7 +1034,8 @@
 
     <!-- JS -->
     <!-- jquery -->
-    <script src="lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/filterizr/1.3.4/jquery.filterizr.min.js"></script>
     <script src="lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="lib/jquery-validation/dist/additional-methods.min.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -1049,6 +1052,13 @@
     <script src="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.min.js"></script>
     <script src="/js/SignalR.js"></script>
     <!--<script src="/js/site.js"></script>-->
+
+    <!--<script>
+        $(function () {
+            $('.filter').filterizr();
+        });
+    </script>-->
+
     <script>
         var expiresOn = '';
         var currentProjectId = null;
@@ -1187,7 +1197,7 @@
                     });
             }
         })
-        
+
 
         //
         // Button Click
@@ -1231,19 +1241,19 @@
 
             if ($('#saveCustomVisionModelForm').valid()) {
 
-            toggleLoader(false);
-            console.debug("saveCustomVisionModelBtn Click");
+                toggleLoader(false);
+                console.debug("saveCustomVisionModelBtn Click");
 
-            SaveCustomVisionModel()
-                .then(() => {
-                    console.log("Model Saved");
-                })
-                .catch(err => {
-                    console.error("ErrorXX : " + err);
-                })
-                .finally(() => {
-                    toggleLoader(false);
-                });
+                SaveCustomVisionModel()
+                    .then(() => {
+                        console.log("Model Saved");
+                    })
+                    .catch(err => {
+                        console.error("ErrorXX : " + err);
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
             }
         })
 
@@ -1738,7 +1748,7 @@
             },
             messages: {
                 startUploadInferenceResultDeviceIdList: {
-                    required: "Select Device ID" 
+                    required: "Select Device ID"
                 },
                 startUploadInferenceResultFrequencyOfInferences: {
                     min: "Frequency of Inference must be > 1",
@@ -1842,7 +1852,7 @@
                 startUploadRetrainingDataFrequencyOfImages: {
                     required: false,
                     min: 1,
-                    max:259200
+                    max: 259200
                 },
                 startUploadRetrainingDataMaxDetectionPerFrame: {
                     required: false,
@@ -1891,7 +1901,7 @@
                     min: "Number of inference results to include in one message (Output Tensor) must be 0 or more",
                     max: "Number of inference results to include in one message (Output Tensor) must be less than or equal to 10,000"
                 }
-        },
+            },
             errorElement: 'span',
             errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
@@ -2255,9 +2265,37 @@
             console.log(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+        $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
             console.log(evt.target.id + "() " + evt.type);
-            GetAllImages();
+            var targetListName = 'imageGalleryDeviceIdList';
+
+            try {
+                toggleLoader(false);
+
+                GetDevicesForImageGallery(targetListName, true)
+                    .then((ret) => {
+                        if (ret) {
+                            GetAllImages()
+                                .then(() => {
+                                    // ToDo: add summary to header..
+                                })
+                                .finally(() => {
+                                    toggleLoader(false);
+                                });
+                        }
+                        else {
+                            toggleLoader(true);
+                        }
+                    })
+                    .catch(err => {
+                        toggleLoader(true);
+                    })
+
+            } catch (err) {
+                toggleLoader(true);
+            } finally {
+            }
+
         })
 
         $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {

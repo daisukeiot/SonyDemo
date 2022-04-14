@@ -14,6 +14,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage;
 
 namespace SonyIMX500.Controllers
 {
@@ -24,6 +26,7 @@ namespace SonyIMX500.Controllers
         private readonly AppSettings _appSettings;
         const string blobContainerName = "iothub-link";
         static BlobContainerClient blobContainer;
+        static string userSasToken = string.Empty;
         public HomeController(IOptions<AppSettings> optionsAccessor, ILogger<HomeController> logger)
         {
             _appSettings = optionsAccessor.Value;
@@ -54,18 +57,60 @@ namespace SonyIMX500.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        #region BLOB
-        [HttpGet]
-        public ActionResult GetAllImagesFromBlob()
+        public async Task<string> GetSasToken()
         {
             try
             {
-                List<Uri> allBlobs = new List<Uri>();
+                CloudStorageAccount storageAccount = CloudStorageAccount.Parse(_appSettings.Blob.ConnectionString);
+                CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+                CloudBlobContainer container = blobClient.GetContainerReference(blobContainerName);
+                var blob = container.GetBlockBlobReference(blobContainerName);
+
+                BlobContainerPermissions blobPermissions = new BlobContainerPermissions();
+
+                blobPermissions.SharedAccessPolicies.Add("accesspolicy", new SharedAccessBlobPolicy()
+                {
+                    // To ensure SAS is valid immediately, don’t set start time.
+                    // This way, you can avoid failures caused by small clock differences.
+                    SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(5),
+                    Permissions = SharedAccessBlobPermissions.Read
+                });
+
+                blobPermissions.PublicAccess = BlobContainerPublicAccessType.Off;
+
+                await container.SetPermissionsAsync(blobPermissions);
+
+                string sasToken =
+                    container.GetSharedAccessSignature(new SharedAccessBlobPolicy(), "accesspolicy");
+
+                return sasToken;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+            }
+
+            return string.Empty;
+        }
+
+        #region BLOB
+        [HttpGet]
+        public async Task<ActionResult> GetAllImagesFromBlob()
+        {
+            string sas = await GetSasToken();
+
+            try
+            {
+                List<string> allBlobs = new List<string>();
 
                 foreach (BlobItem blob in blobContainer.GetBlobs())
                 {
-                    if (blob.Properties.BlobType == BlobType.Block)
-                        allBlobs.Add(blobContainer.GetBlobClient(blob.Name).Uri);
+                    if (blob.Properties.BlobType == Azure.Storage.Blobs.Models.BlobType.Block)
+                    {
+                        var blobClient = blobContainer.GetBlobClient(blob.Name);
+
+                        allBlobs.Add($"{blobClient.Uri.AbsoluteUri}{sas}");
+                    }
                 }
 
                 return Ok(Json(allBlobs));

@@ -881,7 +881,46 @@ async function GetDevices(listElementId, silent) {
               list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
             }
             list.options[0].selected = true;
-            return json.devices[0].device_id;
+        }
+    } catch (err) {
+        msg = processError(funcName, err, true);
+        ret = false;
+    }
+    return ret;
+}
+
+async function GetDevicesForImageGallery(listElementId, silent) {
+
+    var funcName = arguments.callee.name + "()";
+    var ret = true;
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetDevices',
+            data: {}
+        });
+
+        if (!silent) {
+            AddApiOutput("GetDevices", result.value);
+        }
+
+        if (listElementId) {
+            var json = JSON.parse(result.value);
+
+            var list = document.getElementById(listElementId);
+
+            list.innerText = null;
+            var option = new Option('All', 'All');
+            option.setAttribute('data-filter', 'all');
+            list.append(option);
+            for (var device in json.devices) {
+                var option = new Option(json.devices[device].device_id, json.devices[device].device_id);
+                option.setAttribute('data-filter', json.devices[device].device_id);
+                list.append(option);
+            }
+            list.options[0].selected = true;
         }
     } catch (err) {
         msg = processError(funcName, err, true);
