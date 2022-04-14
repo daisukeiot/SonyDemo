@@ -350,3 +350,5 @@ MigrationBackup/
 .ionide/
 appsettings.json
 SonyIMX500/appsettings.json
+SonyIMX500/appsettings.json
+SonyIMX500/appsettings.Development.json
