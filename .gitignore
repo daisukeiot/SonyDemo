@@ -348,7 +348,5 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-appsettings.json
-SonyIMX500/appsettings.json
-SonyIMX500/appsettings.json
-SonyIMX500/appsettings.Development.json
+**/appsettings.json
+**/appsettings.Development.json
