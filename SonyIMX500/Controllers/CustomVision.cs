@@ -13,7 +13,6 @@ namespace SonyIMX500.Controllers
     public class CustomVision : Controller
     {
         private readonly ILogger<CustomVision> _logger;
-        private static string _token = "test";
         private readonly AppSettings _appSettings;
 
         public IActionResult Index()
@@ -62,7 +61,7 @@ namespace SonyIMX500.Controllers
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
         //
         [AllowAnonymous]
-        [HttpGet]
+        [HttpGet("customvision/GetProjects")]
         public async Task<IActionResult> GetProjects(string model_id)
         {
             try
