@@ -74,10 +74,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
         #endregion
 
@@ -105,10 +104,9 @@ namespace SonyIMX500.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Excetion in GetDevices() {ex.Message}");
-                //return StatusCode(StatusCodes.Status500InternalServerError);
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
             }
-            return BadRequest();
         }
         #endregion
     }
