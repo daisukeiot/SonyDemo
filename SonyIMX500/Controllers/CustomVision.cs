@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
 {
+    [AllowAnonymous]
     public class CustomVision : Controller
     {
         private readonly ILogger<CustomVision> _logger;
