@@ -75,6 +75,7 @@ namespace SonyIMX500.Controllers
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
                 return BadRequest(ex.Message);
             }
         }

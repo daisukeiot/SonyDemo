@@ -1487,7 +1487,6 @@ namespace SonyIMX500.Controllers
                     }
                 }
 
-
                 var response = await SendPut(urlSegment);
                 var jsonString = await response.Content.ReadAsStringAsync();
 
