@@ -170,8 +170,8 @@ function AddApiOutput(apiName, result) {
     }
     
     document.getElementById('apiOutputLabel').innerHTML = apiName;
-    document.getElementById('taApiOutput').value = null;
-    document.getElementById('taApiOutput').value = JSON.stringify(json, null, 2);
+    document.getElementById('tabApiOutput').value = null;
+    document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
 }
 
 //async function GetCustomVisionProjects() {
