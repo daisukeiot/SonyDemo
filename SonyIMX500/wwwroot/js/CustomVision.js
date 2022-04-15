@@ -43,7 +43,8 @@
         msg = processError(funcName, err, true);
     } finally {
         if (msg) {
-            AddApiOutput(funcName, msg);
+            document.getElementById('tabApiOutput').value = null;
+            document.getElementById('tabApiOutput').value = msg;
         }
     }
 }
