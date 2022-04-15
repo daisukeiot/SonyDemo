@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -60,6 +61,7 @@ namespace SonyIMX500.Controllers
         //
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
         //
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> GetProjects(string model_id)
         {
