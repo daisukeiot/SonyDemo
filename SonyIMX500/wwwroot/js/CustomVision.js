@@ -1,4 +1,6 @@
 ﻿async function GetCustomVisionProjects(listElementId) {
+    var funcName = arguments.callee.name + "()";
+    var msg;
 
     try {
 
@@ -9,7 +11,7 @@
             data: {},
         });
 
-        //AddApiOutput('customvision/GetProjects', result.value);
+        msg = result.value;
 
         if (listElementId) {
             var json = JSON.parse(result.value);
@@ -37,9 +39,12 @@
             }
             list.blur();
         }
-
     } catch (err) {
-        alert("GetCustomVisionProjects() : Error (" + err.status + ") " + err.statusText);
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            AddApiOutput(funcName, msg);
+        }
     }
 }
 
