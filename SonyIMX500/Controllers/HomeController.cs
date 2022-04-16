@@ -151,11 +151,16 @@ namespace SonyIMX500.Controllers
             try
             {
                 var response = await SendCVGet($"customvision/v3.3/training/projects");
-
-                response.EnsureSuccessStatusCode();
-
                 var jsonString = await response.Content.ReadAsStringAsync();
-                return Ok(Json(jsonString));
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
             }
             catch (Exception ex)
             {
