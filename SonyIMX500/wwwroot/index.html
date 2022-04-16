@@ -744,6 +744,10 @@
                                                                                 <button type="button" class="btn btn-success" id="getDeployHistoryBtn" disabled>
                                                                                     <i class="fas fa-external-link-alt"></i> Get Deploy History
                                                                                 </button>
+                                                                                <label for="deployByConfiguratonGetDeployHistoryDeployModelIdDiv" style="margin-left:1em">Deploy Status : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployModelIdDiv'></div>
+                                                                                </div>
                                                                                 <label for="deployByConfiguratonGetDeployHistoryDeployStatusDiv" style="margin-left:1em">Deploy Status : </label>
                                                                                 <div style="display:inline-block">
                                                                                     <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployStatusDiv'></div>
@@ -1426,6 +1430,9 @@
                             deploy_status_msg = "2 : Fail";
                         }
                         document.getElementById('deployByConfiguratonGetDeployHistoryDeployStatusDiv').innerHTML = deploy_status_msg;
+
+                        document.getElementById('deployByConfiguratonGetDeployHistoryDeployModelIdDiv').innerHTML = json.deploys[0].model.model_id;
+
                     }
                 })
                 .finally(() => {
