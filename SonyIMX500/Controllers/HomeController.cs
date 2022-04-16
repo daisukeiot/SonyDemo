@@ -122,5 +122,31 @@ namespace SonyIMX500.Controllers
             }
         }
         #endregion // blob
+
+        #region CUSTOMVISIONGET
+        //
+        // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
+        //
+        [AllowAnonymous]
+        [HttpGet("customvision/GetProjects")]
+        public async Task<IActionResult> GetProjects(string model_id)
+        {
+            try
+            {
+                var response = await SendGet($"customvision/v3.3/training/projects");
+
+                response.EnsureSuccessStatusCode();
+
+                var jsonString = await response.Content.ReadAsStringAsync();
+                return Ok(Json(jsonString));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
     }
 }
