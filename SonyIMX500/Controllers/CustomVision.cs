@@ -65,7 +65,7 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                var response = await SendCVGet($"customvision/v3.3/training/projects");
+                var response = await SendGet($"customvision/v3.3/training/projects");
                 var jsonString = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)

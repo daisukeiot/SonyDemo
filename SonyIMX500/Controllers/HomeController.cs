@@ -142,4 +142,3 @@ namespace SonyIMX500.Controllers
         #endregion // blob
     }
 }
-`
