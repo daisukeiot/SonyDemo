@@ -22,7 +22,7 @@
                 <span>Id Token</span>
             </td>
             <td colspan="2">
-                <textarea id="idToken" cols="30" rows="10" style="display: block; overflow-y: scroll; width:50em; height:5em;" readonly></textarea>
+                <textarea id="tokenTa" cols="30" rows="10" style="display: block; overflow-y: scroll; width:50em; height:5em;" readonly></textarea>
             </td>
         </tr>
         <tr>
@@ -228,7 +228,7 @@
             initialize();
             auth();
             getTokens();
-            var currentId = document.getElementById('idToken').value;
+            var currentId = document.getElementById('tokenTa').value;
 
             if (currentId === '' || currentId === undefined) {
                 document.getElementById('clientId').value = defaultClientId;
@@ -247,7 +247,7 @@
         }
 
         $('#btnCopyToken').click(function () {
-            navigator.clipboard.writeText(document.getElementById('idToken').value);
+            navigator.clipboard.writeText(document.getElementById('tokenTa').value);
         })
 
         $('#btnGetFirmware').click(function () {

@@ -57,10 +57,10 @@ function getLoginToken() {
     myMsal.acquireTokenSilent(renewTokenRequest)
         .then(function (response) {
             console.log("acquireTokenSilent succeed.");
-            console.log(response.idToken);
+            console.log(response.tokenTa);
 
             if (response != undefined) {
-                document.getElementById('idToken').value = response.idToken.rawIdToken;
+                document.getElementById('tokenTa').value = response.idToken.rawIdToken;
                 console.log('id Record time:' + String(expiresOn));
                 console.log('id Expire time:' + String(response.expiresOn));
 
@@ -77,7 +77,7 @@ function getLoginToken() {
             return response.idToken.rawIdToken;
         })
         .catch((error) => {
-            document.getElementById('idToken').value = error.errorMessage;
+            document.getElementById('tokenTa').value = error.errorMessage;
             console.log(error.errorMessage);
 
             if (error.errorMessage.indexOf("User login is required") !== -1) {

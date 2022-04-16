@@ -4,7 +4,7 @@
 <h1>@ViewData["Title"]</h1>
 
     <span>Id Token</span>
-    <textarea id="idToken" cols="30" rows="10" style="display: block; overflow-y: scroll; width:700px; height:246px;" readonly></textarea>
+    <textarea id="tokenTa" cols="30" rows="10" style="display: block; overflow-y: scroll; width:700px; height:246px;" readonly></textarea>
     <span>Expire time: </span>
     <span id='idExpire'></span>
 
@@ -13,7 +13,7 @@
     window.onload = function () {
         console.log("Test " + '@ViewData["Token"]')
         console.log(window.location.href);
-        document.getElementById('idToken').value = '@ViewData["Token"]';
+        document.getElementById('tokenTa').value = '@ViewData["Token"]';
                     initialize();
             auth();
             getTokens();
