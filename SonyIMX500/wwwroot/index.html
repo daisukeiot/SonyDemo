@@ -1153,7 +1153,7 @@
             navigator.clipboard.readText()
                 .then(clipText => {
                     document.getElementById('taToken').value = clipText;
-                    document.getElementById('btnCopyToken').dispatchEvent(new Event("click"));
+                    document.getElementById('taToken').dispatchEvent(new Event("change"));
                 })
                 .catch(err => {
                     console.log("Could not read clipboard", err);
