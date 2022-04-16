@@ -91,7 +91,7 @@ namespace SonyIMX500.Controllers
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/delete-project/delete-project
         //
         [HttpDelete]
-        public async Task<ActionResult> DeleteProject(string project_name)
+        public async Task<ActionResult> DeleteProjectCv(string project_name)
         {
             try
             {
