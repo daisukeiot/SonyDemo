@@ -141,7 +141,7 @@ namespace SonyIMX500.Controllers
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {
@@ -172,7 +172,7 @@ namespace SonyIMX500.Controllers
             }
             catch (ArgumentException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
             }
             catch (Exception ex)
             {

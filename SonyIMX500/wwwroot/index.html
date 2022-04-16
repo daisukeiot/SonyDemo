@@ -2119,35 +2119,35 @@
 
             try {
                 toggleLoader(false);
-
-                GetAllModels(targetListName)
+                GetDeployConfigurations("deployByConfiguraionFormConfigIdList")
                     .then((ret) => {
 
                         if (ret) {
-                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                                setSelectOption(targetListName, currentModel);
-                            }
+                            GetDevices("deployByConfiguraionDeviceIdList", true)
+                                .then((ret) => {
+                                    if (ret) {
+                                        GetAllModels(targetListName)
+                                            .then((ret) => {
 
-                            toggleLoader(false);
-                            GetDeployConfigurations("deployByConfiguraionFormConfigIdList")
-                                .then(() => {
-                                    GetDevices("deployByConfiguraionDeviceIdList", true)
-                                        .then(() => {
-                                        })
-                                        .finally(() => {
-                                            toggleLoader(true);
-                                        })
+                                                if (ret) {
+                                                    if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                                        setSelectOption(targetListName, currentModel);
+                                                    }
+                                                }
+                                            })
+                                            .finally(err => {
+                                                toggleLoader(true);
+                                            })
+                                    }
                                 })
-                                .finally(() => {
+                                .catch(() => {
+                                    toggleLoader(true);
                                 })
-                        }
-                        else {
                         }
                     })
-                    .catch(err => {
+                    .catch(() => {
                         toggleLoader(true);
                     })
-
             } catch (err) {
                 toggleLoader(true);
             } finally {
@@ -2156,29 +2156,22 @@
 
         $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function (evt) {
             console.log(evt.target.id + "() " + evt.type);
-            var targetListName = 'startUploadInferenceResultModelIdList';
+            var targetListName = 'startUploadInferenceResultDeviceIdList';
 
             try {
                 toggleLoader(false);
 
-                GetAllModels(targetListName)
+                GetDevices(targetListName, true)
                     .then((ret) => {
-
                         if (ret) {
-                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                                setSelectOption(targetListName, currentModel);
-                            }
-
-                            var targetDeviceListName = 'startUploadInferenceResultDeviceIdList';
-                            GetDevices(targetDeviceListName, true)
+                            var targetListName = 'startUploadInferenceResultModelIdList';
+                            GetAllModels(targetListName)
                                 .then((ret) => {
+
                                     if (ret) {
-                                        if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
-                                            setSelectOption(targetDeviceListName, currentDeviceId);
+                                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                            setSelectOption(targetListName, currentModel);
                                         }
-                                    }
-                                    else {
-                                        toggleLoader(true);
                                     }
                                 })
                                 .finally(() => {
@@ -2192,7 +2185,6 @@
                     .catch(err => {
                         toggleLoader(true);
                     })
-
             } catch (err) {
                 toggleLoader(true);
             } finally {
