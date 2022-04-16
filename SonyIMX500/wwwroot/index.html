@@ -2131,13 +2131,17 @@
                             toggleLoader(false);
                             GetDeployConfigurations("deployByConfiguraionFormConfigIdList")
                                 .then(() => {
+                                    GetDevices("deployByConfiguraionDeviceIdList", true)
+                                        .then(() => {
+                                        })
+                                        .finally(() => {
+                                            toggleLoader(true);
+                                        })
                                 })
                                 .finally(() => {
-                                    toggleLoader(true);
                                 })
                         }
                         else {
-                            toggleLoader(true);
                         }
                     })
                     .catch(err => {
@@ -2172,6 +2176,9 @@
                                         if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
                                             setSelectOption(targetDeviceListName, currentDeviceId);
                                         }
+                                    }
+                                    else {
+                                        toggleLoader(true);
                                     }
                                 })
                                 .finally(() => {
