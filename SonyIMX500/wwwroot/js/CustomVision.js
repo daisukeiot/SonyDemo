@@ -28,14 +28,22 @@
             list.append(option);
 
             json.forEach(project => {
-                list.append(new Option(project.name, project.id));
+                list.append(new Option(project.name, project.name));
+                //list.append(new Option(project.name, project.id));
             });
 
+            list.selectedIndex = 0;
+
             if (currentSelection) {
-                list.value = currentSelection;
-            }
-            else {
-                list.selectedIndex = 0;
+                for (var i = 0, len = list.options.length; i < len; i++) {
+                    var opt = list.options[i];
+
+                    if (opt.value == currentSelection) {
+                        list.value = currentSelection;
+                        break;
+                    }
+                }
+
             }
             list.blur();
         }

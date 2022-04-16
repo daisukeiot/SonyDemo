@@ -1184,9 +1184,8 @@
 
             CreateBaseCustomVisionProject()
                 .then(() => {
-                    GetCustomVisionProjects("visitCustomVisionProjectList");
+                    // GetCustomVisionProjects("selectCustomVisionProjectList");
                 })
-
                 .catch(err => {
                     console.error("Error : " + err);
                 })
@@ -1224,6 +1223,7 @@
 
             if (projectList[projectList.selectedIndex].value != 0) {
                 toggleLoader(false);
+
                 DeleteProject(projectList[projectList.selectedIndex].text)
                     .then(() => {
                         console.log("Custom Vision Project Deleted");

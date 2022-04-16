@@ -236,6 +236,10 @@ async function CreateBaseCustomVisionProject() {
 
         msg = result.value;
 
+        var project_list = document.getElementById('selectCustomVisionProjectList');
+        project_list.append(new Option(projectName.value, projectName.value, true, true));
+        project_list.dispatchEvent(new Event('change'));
+
     } catch (err) {
         msg = processError(funcName, err, true);
     } finally {
@@ -250,21 +254,50 @@ async function DeleteProject(project_name) {
     var funcName = arguments.callee.name + "()";
     var msg;
     var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
+    var ret = true;
 
     try {
         var projectName = document.getElementById("createBaseCustomVisionProjectName");
         console.log("CreateBaseCustomVisionProject() Name " + projectName.value)
 
+        //Delete Models first
         const result = await $.ajax({
             async: true,
-            type: "DELETE",
-            url: window.location.href + 'sony/DeleteProject',
+            type: "GET",
+            url: window.location.href + 'sony/GetModels',
             data: {
-                project_name: project_name
-            },
+                model_id: null,
+                comment: null,
+                project_name: project_name,
+                model_platform: null,
+                project_type: null,
+                device_id: null,
+                latest_type: null
+            }
         });
 
-        msg = result.value;
+        var json = JSON.parse(result.value);
+
+        for (var model in json.models) {
+            await DeleteModel(json.models[model].model_id)
+                .catch(err => {
+                    console.error(funcName + " Error : " + err);
+                    return false;
+                })
+        }
+
+        if (ret != false) {
+            const result_proj = await $.ajax({
+                async: true,
+                type: "DELETE",
+                url: window.location.href + 'sony/DeleteProject',
+                data: {
+                    project_name: project_name
+                },
+            });
+
+            msg = result_proj.value;
+        }
 
     } catch (err) {
         msg = processError(funcName, err, true);
@@ -977,3 +1010,25 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
     return ret;
 }
 
+async function DeleteModel(model_id) {
+
+    var funcName = arguments.callee.name + "()";
+    var ret = true;
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "DELETE",
+            url: window.location.href + 'sony/DeleteModel',
+            data: {
+                model_id: model_id
+            }
+        });
+
+    } catch (err) {
+        msg = processError(funcName, err, true);
+        ret = false;
+    }
+
+    return ret;
+}

@@ -1452,6 +1452,34 @@ namespace SonyIMX500.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        public async Task<ActionResult> DeleteModel(string model_id)
+        {
+            try
+            {
+                string urlSegment = $"models/{model_id}";
+                var response = await SendDelete(urlSegment);
+                var jsonString = await response.Content.ReadAsStringAsync();
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
         #endregion
 
         //
