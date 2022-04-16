@@ -61,7 +61,7 @@ namespace SonyIMX500.Controllers
             using (HttpClient client = new HttpClient())
             {
                 Uri baseUri = new Uri(_appSettings.CustomVision.Endpoint);
-                Uri requestUri = new Uri($"{baseUri.AbsoluteUri}/{requestSegment}");
+                Uri requestUri = new Uri($"{baseUri.AbsoluteUri}{requestSegment}");
 
                 AddRequestHeader(client);
 
