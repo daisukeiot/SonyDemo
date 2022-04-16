@@ -10,7 +10,6 @@ using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
 {
-    [AllowAnonymous]
     public class CustomVision : Controller
     {
         private readonly ILogger<CustomVision> _logger;
@@ -57,8 +56,35 @@ namespace SonyIMX500.Controllers
             }
         }
 
+        #region CUSTOMVISIONGET
+        //
+        // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
+        //
+        [HttpGet]
+        public async Task<IActionResult> GetProjects(string model_id)
+        {
+            try
+            {
+                var response = await SendCVGet($"customvision/v3.3/training/projects");
+                var jsonString = await response.Content.ReadAsStringAsync();
 
-
+                if (response.IsSuccessStatusCode)
+                {
+                    return Ok(Json(jsonString));
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+        #endregion
 
         #region CUSTOMVISIONDELETE
         //

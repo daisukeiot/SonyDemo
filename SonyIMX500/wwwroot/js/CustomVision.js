@@ -7,7 +7,7 @@
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'home/GetProjects',
+            url: window.location.href + 'customvision/GetProjects',
             data: {},
         });
 
