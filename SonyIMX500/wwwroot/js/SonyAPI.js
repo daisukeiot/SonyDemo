@@ -14,18 +14,20 @@ loginRequest = {
 
 function setResultElement(resultElement, msg) {
 
-    var json = JSON.parse(msg);
+    if (msg) {
+        var json = JSON.parse(msg);
 
-    if (json.result && json.result == "ERROR") {
-        if (json.message) {
-            resultElement.innerHTML = json.message;
+        if (json.result && json.result == "ERROR") {
+            if (json.message) {
+                resultElement.innerHTML = json.message;
+            }
+            else {
+                resultElement.innerHTML = json.stringify();
+            }
         }
         else {
-            resultElement.innerHTML = json.stringify();
+            resultElement.innerHTML = msg;
         }
-    }
-    else {
-        resultElement.innerHTML = msg;
     }
 }
 
