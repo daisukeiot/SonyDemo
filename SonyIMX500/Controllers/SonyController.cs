@@ -189,7 +189,11 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                var response = await SendGet($"devices/{device_id}/deploy");
+                if (device_id == null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, @"{'status':'Specify device_id'}");
+                }
+                var response = await SendGet($"devices/{device_id}/deploys");
                 var jsonString = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)

@@ -705,7 +705,7 @@
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
                                                                             <a class="d-block w-100" data-toggle="collapse" href="#accordionDeployByConfiguration">
-                                                                                Step 8 : Deploy AI Model
+                                                                                Step 8 : Deploy by Configuration
                                                                             </a>
                                                                         </h4>
                                                                     </div>
@@ -730,7 +730,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
-                                                                            <div class="row" style="position:relative">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                 <div>
                                                                                     <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
                                                                                         <i class="fas fa-external-link-alt"></i> Deploy by Configuraion
@@ -738,6 +738,19 @@
                                                                                 </div>
                                                                                 <div class="vertical-center">
                                                                                     <div class="info-box-text" id='deployByConfiguratonBtnResult'>test</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="getDeployHistoryBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt"></i> Get Deploy History
+                                                                                </button>
+                                                                                <label for="deployByConfiguratonGetDeployHistoryDeployStatusDiv" style="margin-left:1em">Deploy Status : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployStatusDiv'></div>
+                                                                                </div>
+                                                                                <label for="getDeployHistoryBtnResult" style="margin-left:1em">Result : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='getDeployHistoryBtnResult'></div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -813,7 +826,7 @@
                                                                     <div id="accordionStopUploadInferenceResult" class="collapse" data-parent="#accordion">
                                                                         <div class="card-body">
                                                                             <div id="stopUploadInferenceResultDiv">
-                                                                                <form id="stopUploadInferenceForm">
+                                                                                <form id="stopUploadInferenceResultForm">
                                                                                     <div class="form-group">
                                                                                         <label for="stopUploadInferenceResultDeviceIdList">Device ID</label>
                                                                                         <select name="stopUploadInferenceResultDeviceIdList" id="stopUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
@@ -1077,6 +1090,7 @@
         var currentProjectId = null;
         var currentModel = null;
         var currentDeviceId = null;
+        var currentConfigId = null;
 
         var hubConnection;
 
@@ -1085,11 +1099,11 @@
         //    return true
         //});
 
-        function setSelectOption(selectElement, selectValue) {
-            console.log("Setting " + selectElement + " to " + selectValue);
+        function setSelectOption(selectElementId, selectValue) {
+            console.log("Setting " + selectElementId + " to " + selectValue);
 
-            document.getElementById(selectElement).value = selectValue;
-            document.getElementById(selectElement).dispatchEvent(new Event("change"));
+            document.getElementById(selectElementId).value = selectValue;
+            document.getElementById(selectElementId).dispatchEvent(new Event("change"));
         }
 
         function isItemSelected(selectElement, value) {
@@ -1364,7 +1378,9 @@
 
             CreateDeployConfiguration()
                 .then(() => {
-                    console.log("Model Saved");
+                    console.log("Deployment Created");
+                    currentConfigId = document.getElementById("createDeployConfigurationConfigId").value;;
+
                 })
                 .catch(function (err) {
                     console.error("Error : " + err);
@@ -1380,13 +1396,42 @@
             DeployByConfiguration()
                 .then(() => {
                     console.log("Configuration Deployed");
-                    GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList');
+                    GetDeployConfigurations('deployByConfiguratonGetDeployHistoryConfigIdList');
+                    setSelectOption('deployByConfiguratonGetDeployHistoryConfigIdList', currentConfigId);
+                    document.getElementById('deployByConfiguratonGetDeployHistoryConfigIdList').dispatchEvent(new Event("change"));
+
                 })
                 .finally(() => {
                     toggleLoader(false);
                 });
         })
 
+        $('#getDeployHistoryBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+            GetDeployHistory()
+                .then(function (deploys) {
+                    var json = JSON.parse(deploys);
+
+                    if (json.deploys) {
+                        var deploy_status = json.deploys[0].deploy_status;
+                        var deploy_status_msg;
+                        if (deploy_status == "0") {
+                            deploy_status_msg = "0 : Processing";
+                        }
+                        else if (deploy_status == "1") {
+                            deploy_status_msg = "1 : Done(Success)";
+                        }
+                        else if (deploy_status == "1") {
+                            deploy_status_msg = "2 : Fail";
+                        }
+                        document.getElementById('deployByConfiguratonGetDeployHistoryDeployStatusDiv').innerHTML = deploy_status_msg;
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
 
         $('#btnCreateDeployConfigurationGetDeployConfigurations').click(function (evt) {
             console.log(evt.target.id + "() " + evt.type);
@@ -2463,6 +2508,17 @@
         $('#deployByConfiguraionDeviceIdList').on('change', function (evt) {
             console.log(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
+
+            var targetListId = evt.target.id;
+
+            if (isItemSelected(targetListId, null)) {
+                $('#getDeployHistoryBtn').prop('disabled', false);
+                currentDeviceId = document.getElementById(targetListId).value;
+            }
+            else {
+                $('#getDeployHistoryBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
         })
 
         $('#startUploadInferenceResultDeviceIdList').on('change', function (evt) {

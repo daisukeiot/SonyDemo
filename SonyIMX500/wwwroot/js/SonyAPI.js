@@ -492,7 +492,7 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
 
             var list = document.getElementById(listElementId);
             list.innerText = null;
-            var option = new Option("Select from list", null);
+            var option = new Option("Select from list", "");
             option.disabled = true;
             list.append(option);
             for (var firmware in json.firmwares) {
@@ -639,7 +639,7 @@ async function GetDeployConfigurations(listElementId) {
 
             var list = document.getElementById(listElementId);
             list.innerText = null;
-            var option = new Option("Select from list", null);
+            var option = new Option("Select from list", "");
             option.disabled = true;
             list.append(option);
             for (var deploy_configuration in json.deploy_configurations) {
@@ -722,6 +722,42 @@ async function DeployByConfiguration() {
     return ret;
 }
 
+async function GetDeployHistory() {
+    var funcName = arguments.callee.name + "()";
+    var msg;
+    var resultMsg;
+    var resultElement = document.getElementById('getDeployHistoryBtnResult');
+
+    try {
+        var device_id = document.getElementById("deployByConfiguraionDeviceIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionDeviceIdList").value;
+
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetDeployHistory',
+            data: {
+                device_id: device_id
+            },
+        });
+
+        msg = result.value;
+        resultMsg = '{"result" : "Success"}';
+    } catch (err) {
+        msg = processError(funcName, err, true);
+        resultMsg = msg;
+    } finally {
+        if (msg) {
+            AddApiOutput(funcName, msg);
+        }
+
+        if (resultMsg) {
+            setResultElement(resultElement, resultMsg);
+        }
+    }
+
+    return msg;
+}
+
 async function StartUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
     var msg;
@@ -777,7 +813,7 @@ async function StopUploadInferenceResult() {
     var ret = true;
 
     try {
-        var device_id = document.getElementById("startUploadInferenceResultDeviceIdList").value;
+        var device_id = document.getElementById("stopUploadInferenceResultDeviceIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -994,7 +1030,7 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
 
             var list = document.getElementById(listElement);
             list.innerText = null;
-            var option = new Option("Select from list", null);
+            var option = new Option("Select from list", "");
             option.disabled = true;
             list.append(option);
             for (var model in json.models) {
