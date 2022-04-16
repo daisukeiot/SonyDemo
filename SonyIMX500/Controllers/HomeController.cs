@@ -51,6 +51,24 @@ namespace SonyIMX500.Controllers
             return View();
         }
 
+        private void AddRequestHeader(HttpClient client)
+        {
+            client.DefaultRequestHeaders.Add("Training-Key", _appSettings.CustomVision.AccessKey);
+        }
+
+        private async Task<HttpResponseMessage> SendCVGet(string requestSegment)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                Uri baseUri = new Uri(_appSettings.CustomVision.Endpoint);
+                Uri requestUri = new Uri($"{baseUri.AbsoluteUri}/{requestSegment}");
+
+                AddRequestHeader(client);
+
+                return await client.GetAsync(requestUri.AbsoluteUri);
+            }
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
@@ -127,13 +145,12 @@ namespace SonyIMX500.Controllers
         //
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
         //
-        [AllowAnonymous]
-        [HttpGet("customvision/GetProjects")]
+        [HttpGet]
         public async Task<IActionResult> GetProjects(string model_id)
         {
             try
             {
-                var response = await SendGet($"customvision/v3.3/training/projects");
+                var response = await SendCVGet($"customvision/v3.3/training/projects");
 
                 response.EnsureSuccessStatusCode();
 
