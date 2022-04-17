@@ -2339,13 +2339,13 @@
                 GetDevicesForImageGallery(targetListName, true)
                     .then((ret) => {
                         if (ret) {
-                            GetAllImages()
-                                .then(() => {
-                                    // ToDo: add summary to header..
-                                })
-                                .finally(() => {
-                                    toggleLoader(false);
-                                });
+                            // GetAllImages()
+                            //     .then(() => {
+                            //         // ToDo: add summary to header..
+                            //     })
+                            //     .finally(() => {
+                            //         toggleLoader(false);
+                            //     });
                         }
                         else {
                             toggleLoader(true);
@@ -2358,6 +2358,13 @@
             } catch (err) {
                 toggleLoader(true);
             } finally {
+                GetAllImages()
+                                .then(() => {
+                                    // ToDo: add summary to header..
+                                })
+                                .finally(() => {
+                                    toggleLoader(false);
+                                });
             }
 
         })
