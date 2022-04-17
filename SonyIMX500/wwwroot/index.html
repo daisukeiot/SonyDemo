@@ -2359,12 +2359,12 @@
                 toggleLoader(true);
             } finally {
                 GetAllImages()
-                                .then(() => {
-                                    // ToDo: add summary to header..
-                                })
-                                .finally(() => {
-                                    toggleLoader(false);
-                                });
+                    .then(() => {
+                        // ToDo: add summary to header..
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
             }
 
         })
