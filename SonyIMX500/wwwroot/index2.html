@@ -28,7 +28,7 @@
         <tr>
             <td></td>
             <td colspan="2">
-                <button type="button" id="btnCopyToken">Copy Token</button>
+                <button type="button" id="copyTokenBtn">Copy Token</button>
             </td>
         </tr>
         <tr>
@@ -209,7 +209,7 @@
 
     </table>
     <button type="button" id="btnStartUploadRetainingData">Start Upload Retaining Data</button>
-    <button type="button" id="StartUploadInferenceResultBtn">Start Upload Inference Result</button>
+    <button type="button" id="startUploadInferenceResultBtn">Start Upload Inference Result</button>
 
     <textarea id="txtOutput" cols="30" rows="10" style="display: block; overflow-y: scroll; width: 50em; height: 10em;" readonly></textarea>
 
@@ -246,7 +246,7 @@
             GetCustomVisionProjects();
         }
 
-        $('#btnCopyToken').click(function () {
+        $('#copyTokenBtn').click(function () {
             navigator.clipboard.writeText(document.getElementById('tokenTa').value);
         })
 

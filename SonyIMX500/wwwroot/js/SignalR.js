@@ -12,6 +12,6 @@
     var source = document.getElementById('event-template').innerHTML;
     var template = Handlebars.compile(source);
     var html = template(context);
-    $("#device-events").show();
-    $('#device-event-details').prepend(html);
+    $("#deviceEventsTbl").show();
+    $('#deviceListDetails').prepend(html);
 }

@@ -285,10 +285,10 @@
                                                                                             <textarea id="taToken" class="form-control" cols="30" rows="3"></textarea>
                                                                                         </span>
                                                                                         <div style="margin-top:0.5em">
-                                                                                            <button type="button" class="btn btn-outline-dark" id="btnCopyToken" disabled>
+                                                                                            <button type="button" class="btn btn-outline-dark" id="copyTokenBtn" disabled>
                                                                                                 <i class="fas fa-copy"></i> Copy Token
                                                                                             </button>
-                                                                                            <button type="button" class="btn btn-outline-dark" id="btnPasteToken">
+                                                                                            <button type="button" class="btn btn-outline-dark" id="pasteTokenBtn">
                                                                                                 <i class="fas fa-copy"></i> Paste Token
                                                                                             </button>
                                                                                         </div>
@@ -306,7 +306,7 @@
                                                                             <div class="card-footer">
                                                                                 <div class="row" style="position:relative">
                                                                                     <div>
-                                                                                        <button type="button" class="btn btn-success" id="btnLogin">
+                                                                                        <button type="button" class="btn btn-success" id="loginBtn">
                                                                                             <i class="fas fa-sign-in-alt"></i> Login
                                                                                         </button>
                                                                                     </div>
@@ -368,8 +368,8 @@
                                                                                         </div>
                                                                                         <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                             <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
-                                                            <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
-                                                        </button>-->
+                                                                                                <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
+                                                                                            </button>-->
                                                                                             <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
@@ -681,7 +681,7 @@
                                                                         </div>
                                                                         <div class="card-footer">
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnCreateDeployConfiguration" disabled>
+                                                                                <button type="button" class="btn btn-success" id="createDeployConfigurationBtn" disabled>
                                                                                     <i class="fas fa-external-link-alt"></i> Create Deploy Configuraion
                                                                                 </button>
                                                                                 <div class="vertical-center">
@@ -689,7 +689,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="btnCreateDeployConfigurationGetDeployConfigurations">
+                                                                                <button type="button" class="btn btn-success" id="createDeployConfigurationGetDeployConfigurationsBtn">
                                                                                     <i class="fas fa-external-link-alt"></i> Get Deploy Configurations
                                                                                 </button>
                                                                                 <label for="createDeployConfigurationGetDeployConfigurationsList" style="margin-left:1em">Configuration ID : </label>
@@ -807,7 +807,7 @@
                                                                         <div class="card-footer">
                                                                             <div class="row" style="position:relative">
                                                                                 <div>
-                                                                                    <button type="button" class="btn btn-success" id="StartUploadInferenceResultBtn" disabled>
+                                                                                    <button type="button" class="btn btn-success" id="startUploadInferenceResultBtn" disabled>
                                                                                         <i class="fas fa-external-link-alt"></i> Start Inference
                                                                                     </button>
                                                                                 </div>
@@ -839,12 +839,12 @@
                                                                             </div>
                                                                             <div class="row" style="position:relative">
                                                                                 <div>
-                                                                                    <button type="button" class="btn btn-success" id="StopUploadInferenceResultBtn" disabled>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
                                                                                         <i class="fas fa-external-link-alt"></i> Stop Upload Inference Result
                                                                                     </button>
                                                                                 </div>
                                                                                 <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='StopUploadInferenceResultBtnResult'>test</div>
+                                                                                    <div class="info-box-text" id='stopUploadInferenceResultBtnResult'>test</div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
@@ -969,21 +969,21 @@
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
                                                 <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
-                                                    <table id="device-events" class="table table-striped" style="max-height: 100%">
+                                                    <table id="deviceEventsTbl" class="table table-striped" style="max-height: 100%">
                                                         <thead>
-                                                            <th>&nbsp;</th>
-                                                            <th>Event Time(UTC)</th>
-                                                            <th>Device ID</th>
-                                                            <th>Model ID</th>
-                                                            <th>Event Type</th>
-                                                            <th>Event Source</th>
+                                                        <th>&nbsp;</th>
+                                                        <th>Event Time(UTC)</th>
+                                                        <th>Device ID</th>
+                                                        <th>Model ID</th>
+                                                        <th>Event Type</th>
+                                                        <th>Event Source</th>
                                                         </thead>
-                                                        <tbody id="device-event-details"></tbody>
+                                                        <tbody id="deviceEventsDetails"></tbody>
                                                     </table>
                                                 </div>
                                             </div>
                                             <div class="card-footer">
-                                                <button type="button" class="btn btn-danger" id="btnClearTelemetryTable">
+                                                <button type="button" class="btn btn-danger" id="clearTelemetryTableBtn">
                                                     <i class="far fa-trash-alt"></i>Clear Events
                                                 </button>
                                             </div>
@@ -1025,7 +1025,7 @@
                                             <div class="card card-primary">
                                                 <div class="card-body">
                                                     <div>
-                                                        <button type="button" class="btn btn-danger" id="btnClearApiOutput">
+                                                        <button type="button" class="btn btn-danger" id="clearApiOutputBtn">
                                                             <i class="fas fa-trash-alt"></i> Clear
                                                         </button>
                                                     </div>
@@ -1042,7 +1042,53 @@
                                         </div>
                                         <!-- Other Tab -->
                                         <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-label">
-                                            placeholder for other (firmware info etc)
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100">
+                                                            Devices
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="info-box-text">
+                                                            <table id="deviceListTbl" class="table table-striped" style="max-height: 100%">
+                                                                <thead>
+                                                                <th>&nbsp;</th>
+                                                                <th>Device ID</th>
+                                                                <th>Status</th>
+                                                                <th>Connection State</th>
+                                                                </thead>
+                                                                <tbody id="deviceListDetails"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="button" class="btn btn-success" id="getDevicesBtn">
+                                                            <i class="fas fa-sync"></i> Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="info-box-text">
+                                                            <table id="modelListTbl" class="table table-striped" style="max-height: 100%">
+                                                                <thead>
+                                                                <th>&nbsp;</th>
+                                                                <th>Model ID</th>
+                                                                </thead>
+                                                                <tbody id="modelListDetails"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="button" class="btn btn-success" id="getModelsBtn">
+                                                            <i class="fas fa-sync"></i> Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1082,7 +1128,6 @@
     <script src="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.min.js"></script>
     <script src="/js/SignalR.js"></script>
     <!--<script src="/js/site.js"></script>-->
-
     <!--<script>
         $(function () {
             $('.filter').filterizr();
@@ -1163,11 +1208,11 @@
         //
         // button clicks
         //
-        $('#btnCopyToken').click(function () {
+        $('#copyTokenBtn').click(function () {
             navigator.clipboard.writeText(document.getElementById('taToken').value);
         })
 
-        $('#btnPasteToken').click(function () {
+        $('#pasteTokenBtn').click(function () {
             navigator.clipboard.readText()
                 .then(clipText => {
                     document.getElementById('taToken').value = clipText;
@@ -1178,7 +1223,7 @@
                 });
         })
 
-        $('#btnLogin').click(function () {
+        $('#loginBtn').click(function () {
             if ($('#loginForm').valid()) {
                 toggleLoader(false);
                 sonyApiAuth();
@@ -1264,7 +1309,7 @@
             toggleLoader(false);
         })
 
-        $('#btnClearApiOutput').click(function () {
+        $('#clearApiOutputBtn').click(function () {
             document.getElementById('tabApiOutput').value = null;
         })
 
@@ -1372,13 +1417,13 @@
                 });
         })
 
-        $('#btnCreateDeployConfiguration').click(function (evt) {
+        $('#createDeployConfigurationBtn').click(function (evt) {
             if ($('#createDeployConfigurationForm').valid() == false) {
                 return;
             }
 
             toggleLoader(false);
-            console.debug("btnCreateDeployConfiguration Click");
+            console.debug("createDeployConfigurationBtn Click");
 
             CreateDeployConfiguration()
                 .then(() => {
@@ -1440,7 +1485,7 @@
                 });
         })
 
-        $('#btnCreateDeployConfigurationGetDeployConfigurations').click(function (evt) {
+        $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function (evt) {
             console.log(evt.target.id + "() " + evt.type);
             toggleLoader(false);
             GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
@@ -1452,7 +1497,7 @@
                 });
         })
 
-        $('#StartUploadInferenceResultBtn').click(function (evt) {
+        $('#startUploadInferenceResultBtn').click(function (evt) {
             console.log(evt.target.id + "() " + evt.type);
             if ($('#startUploadInferenceResultForm').valid()) {
                 toggleLoader(false);
@@ -1465,7 +1510,7 @@
             }
         })
 
-        $('#StopUploadInferenceResultBtn').click(function (evt) {
+        $('#stopUploadInferenceResultBtn').click(function (evt) {
             console.log(evt.target.id + "() " + evt.type);
             if ($('#stopUploadInferenceResultForm').valid()) {
                 toggleLoader(false);
@@ -1504,17 +1549,29 @@
             }
         })
 
-        $('#btnClearTelemetryTable').click(function (evt) {
+        $('#clearTelemetryTableBtn').click(function (evt) {
             console.log(evt.target.id + "() " + evt.type);
-            $("#device-events").find("tr:gt(0)").remove();
-            $("#device-events").hide();
+            $("#deviceEventsTbl").find("tr:gt(0)").remove();
+            $("#deviceEventsTbl").hide();
         })
 
-        $('#btnClearApiOutput').click(function (evt) {
+        $('#clearApiOutputBtn').click(function (evt) {
             console.log(evt.target.id + "() " + evt.type);
         })
 
+        $('#getDevicesBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
 
+
+            toggleLoader(false);
+            GetDevicesPayload()
+                .then(() => {
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
         //
         //form validations
         //
@@ -2384,10 +2441,10 @@
             console.log("taToken Change");
             if (document.getElementById('taToken').value.length > 0) {
                 PostToken(document.getElementById('taToken').value);
-                $('#btnCopyToken').prop('disabled', false);
+                $('#copyTokenBtn').prop('disabled', false);
             }
             else {
-                $('#btnCopyToken').prop('disabled', false);
+                $('#copyTokenBtn').prop('disabled', false);
             }
         })
 
@@ -2541,11 +2598,11 @@
             var deviceList = document.getElementById(targetListId);
 
             if (isItemSelected(targetListId, null)) {
-                $('#StartUploadInferenceResultBtn').prop('disabled', false);
+                $('#startUploadInferenceResultBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
             }
             else {
-                $('#StartUploadInferenceResultBtn').prop('disabled', true);
+                $('#startUploadInferenceResultBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
         })
@@ -2556,11 +2613,11 @@
             var deviceList = document.getElementById(targetListId);
 
             if (isItemSelected(targetListId, null)) {
-                $('#StopUploadInferenceResultBtn').prop('disabled', false);
+                $('#stopUploadInferenceResultBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
             }
             else {
-                $('#StopUploadInferenceResultBtn').prop('disabled', true);
+                $('#stopUploadInferenceResultBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
         })
@@ -2609,13 +2666,43 @@
             }
         })
 
+        function toggleEvent(item) {
+
+            var expanded = $(item).closest('.accordian-toggle').attr('aria-expanded');
+
+            console.log("Expanded " + expanded);
+            if (expanded == 'false' || expanded == undefined) {
+                $(item).removeClass('fa-angle-double-down');
+                $(item).addClass('fa-angle-double-up');
+            }
+            else {
+                $(item).removeClass('fa-angle-double-up');
+                $(item).addClass('fa-angle-double-down');
+            }
+        }
+
+        function toggleDeviceDetail(item) {
+
+            var expanded = $(item).closest('.accordian-toggle').attr('aria-expanded');
+
+            console.log("Expanded " + expanded);
+            if (expanded == 'false' || expanded == undefined) {
+                $(item).removeClass('fa-angle-double-down');
+                $(item).addClass('fa-angle-double-up');
+            }
+            else {
+                $(item).removeClass('fa-angle-double-up');
+                $(item).addClass('fa-angle-double-down');
+            }
+        }
+
     </script>
 
     <script id="event-template" type="text/x-handlebars-template">
         <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
             <td>
                 <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down"></i>
+                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleEvent(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
             </td>
             <td>{{eventTime}}</td>
@@ -2639,6 +2726,44 @@
                 <img src={{image_url}} class="img-fluid mb-1" alt={{image_file_name}} />
             </a>
         </div>
+    </script>
+
+    <script id="deviceList-template" type="text/x-handlebars-template">
+        <tr data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
+            <td>
+                <button class="btn btn-primary btn-xs">
+                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleDeviceDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
+                </button>
+            </td>
+            <td>{{deviceId}}</td>
+            <td>{{deviceStatus}}</td>
+            <td>{{deviceConnectionStatus}}</td>
+        </tr>
+        <tr class="hiddenRow collapse" id="deviceDetail-{{deviceId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{dataPayload}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="modelList-template" type="text/x-handlebars-template">
+        <tr data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
+            <td>
+                <button class="btn btn-primary btn-xs">
+                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleDeviceDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
+                </button>
+            </td>
+            <td>{{modelId}}</td>
+        </tr>
+        <tr class="hiddenRow collapse" id="modelDetail-{{modelId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{dataPayload}}</code></pre>
+                </div>
+            </td>
+        </tr>
     </script>
 </body>
 </html>

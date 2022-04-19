@@ -127,7 +127,7 @@ function requiresInteraction(errorCode) {
         errorCode === "login_required";
 }
 
-function getToken() {
+async function getToken() {
     var token = getLoginToken();
     console.log("getLoginToken : " + token);
     document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
@@ -610,10 +610,10 @@ function CheckCreateDeployConfigurationInputs() {
     }
 
     if (enable) {
-        $('#btnCreateDeployConfiguration').prop('disabled', false);
+        $('#createDeployConfigurationBtn').prop('disabled', false);
     }
     else {
-        $('#btnCreateDeployConfiguration').prop('disabled', true);
+        $('#createDeployConfigurationBtn').prop('disabled', true);
     }
 }
 
@@ -809,7 +809,7 @@ async function StartUploadInferenceResult() {
 async function StopUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
     var msg;
-    var resultElement = document.getElementById('StopUploadInferenceResultBtnResult');
+    var resultElement = document.getElementById('stopUploadInferenceResultBtnResult');
     var ret = true;
 
     try {
@@ -960,6 +960,32 @@ async function GetDevices(listElementId, silent) {
     return ret;
 }
 
+async function GetDevicesPayload() {
+
+    var funcName = arguments.callee.name + "()";
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetDevices',
+            data: {}
+        });
+
+        AddApiOutput(funcName, result.value);
+
+        $("#deviceListTbl").find("tr:gt(0)").remove();
+        //$("#deviceListDetails").hide();
+        var json = JSON.parse(result.value);
+        for (var device in json.devices) {
+            addDevice(json.devices[device].device_id, json.devices[device].status, json.devices[device].connectionState, json.devices[device]);
+        }
+    } catch (err) {
+        processError(funcName, err, true);
+    }
+    return;
+}
+
 async function GetDevicesForImageGallery(listElementId, silent) {
 
     var funcName = arguments.callee.name + "()";
@@ -1067,4 +1093,18 @@ async function DeleteModel(model_id) {
     }
 
     return ret;
+}
+
+function addDevice(deviceId, status, connectionStatus, payload) {
+    var context = {
+        deviceId: deviceId,
+        deviceStatus: status,
+        deviceConnectionStatus: connectionStatus,
+        dataPayload: JSON.stringify(payload, undefined, 2)
+    };
+    var source = document.getElementById('deviceList-template').innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template(context);
+    $("#deviceListTbl").show();
+    $('#deviceListDetails').prepend(html);
 }
