@@ -960,7 +960,7 @@ async function GetDevices(listElementId, silent) {
     return ret;
 }
 
-async function GetDevicesPayload() {
+async function RefreshDevicesList() {
 
     var funcName = arguments.callee.name + "()";
 
@@ -979,6 +979,40 @@ async function GetDevicesPayload() {
         var json = JSON.parse(result.value);
         for (var device in json.devices) {
             addDevice(json.devices[device].device_id, json.devices[device].status, json.devices[device].connectionState, json.devices[device]);
+        }
+    } catch (err) {
+        processError(funcName, err, true);
+    }
+    return;
+}
+
+async function RefreshModelsList() {
+
+    var funcName = arguments.callee.name + "()";
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetModels',
+            data: {
+                model_id : null,
+                comment: null,
+                project_name: null,
+                model_platform: null,
+                project_type: null,
+                device_id: null,
+                latest_type: null
+            }
+        });
+
+        AddApiOutput(funcName, result.value);
+
+        $("#modelListTbl").find("tr:gt(0)").remove();
+        //$("#deviceListDetails").hide();
+        var json = JSON.parse(result.value);
+        for (var model in json.models) {
+            addModel(json.models[model].model_id, json.models[model].model_comment, json.models[model]);
         }
     } catch (err) {
         processError(funcName, err, true);
@@ -1107,4 +1141,17 @@ function addDevice(deviceId, status, connectionStatus, payload) {
     var html = template(context);
     $("#deviceListTbl").show();
     $('#deviceListDetails').prepend(html);
+}
+
+function addModel(modelId, comment, payload) {
+    var context = {
+        modelId: modelId,
+        comment: comment,
+        dataPayload: JSON.stringify(payload, undefined, 2)
+    };
+    var source = document.getElementById('modelList-template').innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template(context);
+    $("#modelListTbl").show();
+    $('#modelListDetails').prepend(html);
 }

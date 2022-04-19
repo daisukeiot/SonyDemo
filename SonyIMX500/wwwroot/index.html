@@ -1070,6 +1070,15 @@
                                                         </button>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100">
+                                                            Models
+                                                        </a>
+                                                    </h4>
+                                                </div>
                                                 <div>
                                                     <div class="card-body">
                                                         <div class="info-box-text">
@@ -1077,6 +1086,7 @@
                                                                 <thead>
                                                                 <th>&nbsp;</th>
                                                                 <th>Model ID</th>
+                                                                <th>Comment</th>
                                                                 </thead>
                                                                 <tbody id="modelListDetails"></tbody>
                                                             </table>
@@ -1564,7 +1574,21 @@
 
 
             toggleLoader(false);
-            GetDevicesPayload()
+            RefreshDevicesList()
+                .then(() => {
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#getModelsBtn').click(function (evt) {
+            console.log(evt.target.id + "() " + evt.type);
+
+
+            toggleLoader(false);
+            RefreshModelsList()
                 .then(() => {
 
                 })
@@ -2756,6 +2780,7 @@
                 </button>
             </td>
             <td>{{modelId}}</td>
+            <td>{{comment}}</td>
         </tr>
         <tr class="hiddenRow collapse" id="modelDetail-{{modelId}}">
             <td colspan="12">
