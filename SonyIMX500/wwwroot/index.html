@@ -1095,6 +1095,7 @@
                                                                     <th>&nbsp;</th>
                                                                     <th>Model ID</th>
                                                                     <th>Comment</th>
+                                                                    <th></th>
                                                                 </thead>
                                                                 <tbody id="modelListDetails"></tbody>
                                                             </table>
@@ -2680,7 +2681,7 @@
             }
         }
 
-        function toggleDeviceDetail(item) {
+        function toggleTableDetail(item) {
 
             var expanded = $(item).closest('.accordian-toggle').attr('aria-expanded');
 
@@ -2692,6 +2693,13 @@
                 $(item).removeClass('fa-angle-double-up');
                 $(item).addClass('fa-angle-double-down');
             }
+        }
+
+        function deleteModel(item) {
+            var modelName = item.attributes.getNamedItem('targetmodel').nodeValue;
+            console.log("delete Model " + modelName);
+
+            DeleteModel(modelName);
         }
     </script>
 
@@ -2729,7 +2737,7 @@
         <tr data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
             <td>
                 <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleDeviceDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
+                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleTableDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
                 </button>
             </td>
             <td>{{deviceId}}</td>
@@ -2749,11 +2757,17 @@
         <tr data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
             <td>
                 <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleDeviceDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
+                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleTableDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
                 </button>
             </td>
             <td>{{modelId}}</td>
             <td>{{comment}}</td>
+            <td>
+                <button class="btn btn-warning btn-xs">
+                   <i class="fas fa-trash-alt" onclick="deleteModel(this)" targetModel="{{modelId}}"></i>
+                </button>
+            </td>
+
         </tr>
         <tr class="hiddenRow collapse" id="modelDetail-{{modelId}}">
             <td colspan="12">
