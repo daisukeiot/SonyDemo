@@ -2251,7 +2251,6 @@
                                     if (ret) {
                                         GetAllModels(targetListName)
                                             .then((ret) => {
-
                                                 if (ret) {
                                                     //    if (!isItemSelected(targetListName, currentModel) && currentModel) {
                                                     //        setSelectOption(targetListName, currentModel);
@@ -2278,10 +2277,10 @@
 
         $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function(evt) {
             console.log(evt.target.id + "() " + evt.type);
-            var targetListName = 'startUploadInferenceResultDeviceIdList';
 
             try {
                 toggleLoader(false);
+                var targetListName = 'startUploadInferenceResultDeviceIdList';
 
                 GetDevices(targetListName, true)
                     .then((ret) => {
@@ -2291,11 +2290,10 @@
                                 setSelectOption(targetListName, currentDeviceId);
                             }
 
-                            var targetListName = 'startUploadInferenceResultModelIdList';
+                            targetListName = 'startUploadInferenceResultModelIdList';
 
                             GetAllModels(targetListName)
                                 .then((ret) => {
-
                                     if (ret) {
                                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
                                             setSelectOption(targetListName, currentModel);

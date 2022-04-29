@@ -13,5 +13,5 @@
     var template = Handlebars.compile(source);
     var html = template(context);
     $("#deviceEventsTbl").show();
-    $('#deviceListDetails').prepend(html);
+    $('#deviceEventsDetails').prepend(html);
 }
