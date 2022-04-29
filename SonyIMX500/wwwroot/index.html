@@ -1401,6 +1401,13 @@
                     document.getElementById('convertModelGetBaseModelStatusConversionDiv').innerHTML = json.versions[0].conv_id;
                     document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
                     document.getElementById('convertModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
+
+                    if (json.versions[0].result == "completed") {
+                        $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
+                    }
+                    else {
+                        $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
+                    }
                 })
                 .catch(function(err) {
                     console.error("Error : " + err);
@@ -1443,6 +1450,13 @@
                     document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = json.versions[0].conv_id;
                     document.getElementById('publishModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
                     document.getElementById('publishModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
+
+                    if (json.versions[0].result == "completed") {
+                        $('#publishModelBtn').prop('disabled', false);
+                    }
+                    else {
+                        $('#publishModelBtn').prop('disabled', true);
+                    }
                 })
                 .catch(function(err) {
                     console.error("Error : " + err);
