@@ -32,9 +32,46 @@ async function GetAllImages() {
         if (msg) {
             //setResultElement(resultElement, msg);
             AddApiOutput(funcName, msg);
-            console.log("Finish")
         }
     }
+}
+
+async function GetImage(deviceId, timeStamp) {
+
+    var funcName = arguments.callee.name + "()";
+    var msg = null;
+    var image = null;
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'home/FindImagesFromBlob',
+            data: {
+                deviceId: deviceId,
+                timeStamp : timeStamp
+            }
+        });
+
+        if (result['success'] == false) {
+            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
+        }
+                
+        if (result != null) {
+            msg = result.value;
+            image = result.value;
+        }
+
+    } catch (err) {
+        msg = processError(funcName, err, true);
+    } finally {
+        if (msg) {
+            //setResultElement(resultElement, msg);
+            AddApiOutput(funcName, msg);
+        }
+    }
+
+    return image;
 }
 
 function addImage(deviceId, image_url, image_file_name) {

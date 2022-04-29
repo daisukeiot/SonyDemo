@@ -1155,3 +1155,62 @@ function addModel(modelId, comment, payload) {
     $("#modelListTbl").show();
     $('#modelListDetails').prepend(html);
 }
+
+function viewPhoto(item) {
+    var eventId = item.attributes.getNamedItem('eventId').nodeValue;
+    console.log("viewPhoto " + eventId);
+    var funcName = arguments.callee.name + "()";
+    var preElementId = "pre-" + eventId;
+    var preElement = document.getElementById(preElementId);
+    var dataObj = JSON.parse(preElement.textContent);
+
+    try {
+        toggleLoader(false);
+
+        GetImage(dataObj.DeviceID, dataObj.Inferences[0].T)
+            .then((result) => {
+
+                if (result) {
+
+                    var json = JSON.parse(result);
+                    var canvas = document.getElementById("photoCanvas");
+                    var ctx = canvas.getContext('2d');
+                    var img = new Image();
+                    img.src = json.uri;
+                    img.onload = function () {
+                        ctx.drawImage(img, 0, 0)
+                        ctx.lineWidth = 3
+                        ctx.strokeStyle = "rgb(255, 255, 0)"
+                        ctx.font = '15px serif';
+                        ctx.fillStyle = "rgb(255, 255, 0)"
+                        ctx.textBaseline = "top";
+
+                        var preJson = JSON.parse(preElement.innerText);
+                        console.log(preJson);
+                        for (var inference in preJson.Inferences) {
+                            for (var inferenceItem in preJson.Inferences[inference]) {
+                                var item = preJson.Inferences[inference][inferenceItem];
+
+                                console.log(item);
+                                ctx.strokeRect(item.X, item.Y, item.x - item.X, item.y - item.Y);
+
+                                var p_String = Number(item.P).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 });
+                                ctx.fillText(p_String, item.X + 5, item.Y + 5);
+                            }
+                        }
+                    }
+                    console.log(result)
+                }
+            })
+            .finally(() => {
+                toggleLoader(false);
+                var modal = document.getElementById("modalPhoto");
+                modal.style.display = "block";
+            });
+
+    } catch (err) {
+        msg = processError(funcName, err, true);
+        ret = false;
+    }
+}
+

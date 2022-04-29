@@ -368,8 +368,8 @@
                                                                                         </div>
                                                                                         <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                             <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
-                                                                                                <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
-                                                                                            </button>-->
+                                                                                    <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
+                                                                                </button>-->
                                                                                             <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
@@ -779,11 +779,11 @@
 
                                                                                         <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
                                                                                         <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
-                                                                                            value="" min="1" , max="2592000">
+                                                                                               value="" min="1" , max="2592000">
 
                                                                                         <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
                                                                                         <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
-                                                                                            value="" min="1" , max="64">
+                                                                                               value="" min="1" , max="64">
 
                                                                                         <label for="startUploadInferenceResultCropHOffset">Hoffset for Image crop (Optional)</label>
                                                                                         <input type="number" name="startUploadInferenceResultCropHOffset" class="form-control" id="startUploadInferenceResultCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
@@ -799,7 +799,7 @@
 
                                                                                         <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
                                                                                         <input type="number" name="startUploadInferenceResultNumberOfInferencesPerMessage" class="form-control" id="startUploadInferenceResultNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
-                                                                                            value="" min="1" , max="100">
+                                                                                               value="" min="1" , max="100">
 
                                                                                         <label for="startUploadInferenceResultModelIdList">Model ID (Optional)</label>
                                                                                         <select name="startUploadInferenceResultModelIdList" id="startUploadInferenceResultModelIdList" class="form-control custom-select" style="min-width:10em"></select>
@@ -872,9 +872,9 @@
 
                                                                                         <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
                                                                                         <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
-                                                                                            <option disabled selected>Select Collection Mode</option>
+                                                                                            <option disabled>Select Collection Mode</option>
                                                                                             <option value="0">Image</option>
-                                                                                            <option value="1">image & Inference results metadata</option>
+                                                                                            <option value="1" selected>image & Inference results metadata</option>
                                                                                         </select>
 
                                                                                         <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
@@ -897,20 +897,20 @@
                                                                                         <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
 
                                                                                         <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
-                                                                                        <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000"
-                                                                                            min="0" max="10000">
+                                                                                        <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" value="3" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000"
+                                                                                               min="0" max="10000">
 
                                                                                         <label for="startUploadRetrainingDataFrequencyOfImages">Frequency of fetching images (Optional)</label>
-                                                                                        <input type="number" name="startUploadRetrainingDataFrequencyOfImages" class="form-control" id="startUploadRetrainingDataFrequencyOfImages" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
-                                                                                            min="1" max="2592000">
+                                                                                        <input type="number" name="startUploadRetrainingDataFrequencyOfImages" class="form-control" id="startUploadRetrainingDataFrequencyOfImages" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
+                                                                                               min="1" max="2592000">
 
                                                                                         <label for="startUploadRetrainingDataMaxDetectionPerFrame">Number of objects included in 1 frame (Optional)</label>
                                                                                         <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
-                                                                                            min="1" max="64">
+                                                                                               min="1" max="64">
 
                                                                                         <label for="startUploadRetrainingDataNumInferencePerMessage">Number of inference results to include in one message. (Optional)</label>
                                                                                         <input type="number" name="startUploadRetrainingDataNumInferencePerMessage" class="form-control" id="startUploadRetrainingDataNumInferencePerMessage" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100"
-                                                                                            min="1" max="100">
+                                                                                               min="1" max="100">
 
                                                                                         <label for="startUploadRetrainingDataModelIdList">Model ID (Optional)</label>
                                                                                         <select name="startUploadRetrainingDataModelIdList" id="startUploadRetrainingDataModelIdList" class="form-control custom-select" style="min-width:10em"></select>
@@ -976,15 +976,18 @@
                                         <!-- Telemetry Tab -->
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
+                                                <button class="btn btn-primary" id="btn-test">
+                                                    <i class="fas fa-eye" onclick="viewPhoto2(this)" eventId="testId"></i>
+                                                </button>
                                                 <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
                                                     <table id="deviceEventsTbl" class="table table-striped" style="max-height: 100%">
                                                         <thead>
-                                                            <th>&nbsp;</th>
-                                                            <th>Event Time(UTC)</th>
-                                                            <th>Device ID</th>
-                                                            <th>Model ID</th>
-                                                            <th>Event Type</th>
-                                                            <th>Event Source</th>
+                                                        <th>&nbsp;</th>
+                                                        <th>Event Time(UTC)</th>
+                                                        <th>Device ID</th>
+                                                        <th>Model ID</th>
+                                                        <th>Event Type</th>
+                                                        <th>Event Source</th>
                                                         </thead>
                                                         <tbody id="deviceEventsDetails"></tbody>
                                                     </table>
@@ -1063,10 +1066,10 @@
                                                         <div class="info-box-text">
                                                             <table id="deviceListTbl" class="table table-striped" style="max-height: 100%">
                                                                 <thead>
-                                                                    <th>&nbsp;</th>
-                                                                    <th>Device ID</th>
-                                                                    <th>Status</th>
-                                                                    <th>Connection State</th>
+                                                                <th>&nbsp;</th>
+                                                                <th>Device ID</th>
+                                                                <th>Status</th>
+                                                                <th>Connection State</th>
                                                                 </thead>
                                                                 <tbody id="deviceListDetails"></tbody>
                                                             </table>
@@ -1092,10 +1095,10 @@
                                                         <div class="info-box-text">
                                                             <table id="modelListTbl" class="table table-striped" style="max-height: 100%">
                                                                 <thead>
-                                                                    <th>&nbsp;</th>
-                                                                    <th>Model ID</th>
-                                                                    <th>Comment</th>
-                                                                    <th></th>
+                                                                <th>&nbsp;</th>
+                                                                <th>Model ID</th>
+                                                                <th>Comment</th>
+                                                                <th></th>
                                                                 </thead>
                                                                 <tbody id="modelListDetails"></tbody>
                                                             </table>
@@ -1116,7 +1119,25 @@
                         </div>
                     </div>
                 </div>
+                <div class="modal" id="modalPhoto">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Inference Result</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnModalClose">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <canvas id="photoCanvas" height="320" width="320"></canvas>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
+
         </div>
     </div>
     <footer class="main-footer">
@@ -2612,6 +2633,18 @@
             }
         })
 
+        $('#startUploadInferenceResultModelIdList').on('change', function(evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = modelList[modelList.selectedIndex].value;
+            } else {
+                currentModel = null;
+            }
+        })
+
         $('#stopUploadInferenceResultDeviceIdList').on('change', function(evt) {
             console.log(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
@@ -2637,6 +2670,18 @@
             } else {
                 $('#startUploadRetrainingDataBtn').prop('disabled', true);
                 currentDeviceId = null;
+            }
+        })
+
+        $('#startUploadRetrainingDataModelIdList').on('change', function(evt) {
+            console.log(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = modelList[modelList.selectedIndex].value;
+            } else {
+                currentModel = null;
             }
         })
 
@@ -2667,20 +2712,6 @@
             }
         })
 
-        function toggleEvent(item) {
-
-            var expanded = $(item).closest('.accordian-toggle').attr('aria-expanded');
-
-            console.log("Expanded " + expanded);
-            if (expanded == 'false' || expanded == undefined) {
-                $(item).removeClass('fa-angle-double-down');
-                $(item).addClass('fa-angle-double-up');
-            } else {
-                $(item).removeClass('fa-angle-double-up');
-                $(item).addClass('fa-angle-double-down');
-            }
-        }
-
         function toggleTableDetail(item) {
 
             var expanded = $(item).closest('.accordian-toggle').attr('aria-expanded');
@@ -2701,13 +2732,18 @@
 
             DeleteModel(modelName);
         }
+
+        $("#btnModalClose").on("click", function (evt) {
+            var modal = document.getElementById("modalPhoto");
+            modal.style.display = "none";
+        });
     </script>
 
     <script id="event-template" type="text/x-handlebars-template">
         <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
             <td>
                 <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleEvent(this)" data-targetId="#event-{{eventId}}"></i>
+                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
             </td>
             <td>{{eventTime}}</td>
@@ -2715,11 +2751,16 @@
             <td>{{eventModelId}}</td>
             <td>{{eventSource}}</td>
             <td>{{eventType}}</td>
+            <td>
+                <button class="btn btn-primary" id="btn-{{eventId}}" disabled>
+                    <i class="fas fa-eye" onclick="viewPhoto(this)" eventId="{{eventId}}"></i>
+                </button>
+            </td>
         </tr>
         <tr class="hiddenRow collapse" id="event-{{eventId}}">
             <td colspan="12">
                 <div class="accordian-body">
-                    <pre><code class="nohighlight">{{eventData}}</code></pre>
+                    <pre id="pre-{{eventId}}"><code class="nohighlight">{{eventData}}</code></pre>
                 </div>
             </td>
         </tr>
@@ -2764,7 +2805,7 @@
             <td>{{comment}}</td>
             <td>
                 <button class="btn btn-warning btn-xs">
-                   <i class="fas fa-trash-alt" onclick="deleteModel(this)" targetModel="{{modelId}}"></i>
+                    <i class="fas fa-trash-alt" onclick="deleteModel(this)" targetModel="{{modelId}}"></i>
                 </button>
             </td>
 

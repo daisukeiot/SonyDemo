@@ -139,6 +139,66 @@ namespace SonyIMX500.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        private async Task<IListBlobItem> RecursiveFindFile(IListBlobItem blobItem, string deviceId, string timeStamp)
+        {
+            switch (blobItem)
+            {
+                case CloudBlockBlob blob:
+                    return blob;
+
+                case CloudBlobDirectory directory:
+                    BlobContinuationToken continuationToken = null;
+
+                    do
+                    {
+                        var response = await directory.ListBlobsSegmentedAsync(continuationToken);
+                        continuationToken = response.ContinuationToken;
+                        foreach (var result in response.Results)
+                        {
+                            var item = await RecursiveFindFile(result, deviceId, timeStamp);
+                            if (item != null && item.Uri.Segments[item.Uri.Segments.Length - 1].StartsWith(timeStamp))
+                            {
+
+                                return item;
+                            }
+                        }
+                    } while (continuationToken != null);
+                    return null;
+                default:
+                    return null;
+
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> FindImagesFromBlob(string deviceId, string timeStamp)
+        {
+            try
+            {
+
+                CloudBlobContainer blobContainer = CloudStorageAccount
+                                                    .Parse(_appSettings.Blob.ConnectionString)
+                                                    .CreateCloudBlobClient()
+                                                    .GetContainerReference("iothub-link");
+
+                var directory = blobContainer.GetDirectoryReference(deviceId);
+                var item = await RecursiveFindFile(directory, deviceId, timeStamp);
+
+                if (item != null)
+                {
+                    string sas = await GetSasToken();
+                    return Ok(Json($"{{\"uri\":\"{item.Uri.AbsoluteUri}{sas}\"}}"));
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
         #endregion // blob
     }
 }

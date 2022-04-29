@@ -14,4 +14,9 @@
     var html = template(context);
     $("#deviceEventsTbl").show();
     $('#deviceEventsDetails').prepend(html);
+
+    if (dataObj.Image == true) {
+        var btn_id = "btn-" + id;
+        document.getElementById(btn_id).disabled = false;
+    }
 }
