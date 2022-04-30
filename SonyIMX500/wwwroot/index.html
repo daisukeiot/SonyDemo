@@ -765,7 +765,7 @@
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
                                                                             <a class="d-block w-100" data-toggle="collapse" href="#accordionStartUploadInferenceResult">
-                                                                                Step 9 : Start Upload Inference Result
+                                                                                Step 9 : Start/Stop UploadInferenceResult
                                                                             </a>
                                                                         </h4>
                                                                     </div>
@@ -778,7 +778,7 @@
                                                                                         <select name="startUploadInferenceResultDeviceIdList" id="startUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                                         <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
-                                                                                        <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
+                                                                                        <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
                                                                                                value="" min="1" , max="2592000">
 
                                                                                         <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
@@ -797,7 +797,7 @@
                                                                                         <label for="startUploadInferenceResultCropVSize">Vsize for Image crop (Optional)</label>
                                                                                         <input type="number" name="startUploadInferenceResultCropVSize" class="form-control" id="startUploadInferenceResultCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
 
-                                                                                        <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 frame (Optional)</label>
+                                                                                        <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 message (Optional)</label>
                                                                                         <input type="number" name="startUploadInferenceResultNumberOfInferencesPerMessage" class="form-control" id="startUploadInferenceResultNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
                                                                                                value="" min="1" , max="100">
 
@@ -862,7 +862,7 @@
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
                                                                             <a class="d-block w-100" data-toggle="collapse" href="#accordionStartUploadRetrainingData">
-                                                                                Step 11 : Start Uploading Retraining Data
+                                                                                Step 10 : Start/Stop UploadingRetrainingData
                                                                             </a>
                                                                         </h4>
                                                                     </div>
@@ -983,9 +983,6 @@
                                         <!-- Telemetry Tab -->
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
-                                                <button class="btn btn-primary btn-fa-icon" id="btn-test">
-                                                    <i class="fas fa-eye" onclick="viewPhoto2(this)" eventId="testId"></i>
-                                                </button>
                                                 <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
                                                     <table id="deviceEventsTbl" class="table table-striped" style="max-height: 100%">
                                                         <thead>
@@ -1118,6 +1115,36 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100">
+                                                            Deployments
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="info-box-text">
+                                                            <table id="getDeployConfiguraionTbl" class="table table-striped" style="max-height: 100%">
+                                                                <thead>
+                                                                <th>&nbsp;</th>
+                                                                <th>Config_ID</th>
+                                                                <th>Comment</th>
+                                                                <th></th>
+                                                                </thead>
+                                                                <tbody id="getDeloyConfigurationsListDetails"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="button" class="btn btn-success" id="getDeployConfigurationsBtn">
+                                                            <i class="fas fa-sync btn-fa"></i> Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -1680,6 +1707,19 @@
 
             toggleLoader(false);
             RefreshModelsList()
+                .then(() => {
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#getDeployConfigurationsBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            RefreshDeployConfiguraions()
                 .then(() => {
 
                 })
@@ -2823,6 +2863,13 @@
             DeleteModel(modelName);
         }
 
+        function deleteDeloyConfiguraions(item) {
+            var config_id = item.attributes.getNamedItem('target_config_id').nodeValue;
+            console.log("delete Deploy Configuration " + config_id);
+
+            DeleteDeployConfiguration(config_id);
+        }
+
         $("#btnModalClose").on("click", function (evt) {
             var modal = document.getElementById("modalPhoto");
             modal.style.display = "none";
@@ -2830,8 +2877,8 @@
     </script>
 
     <script id="telemetry-template" type="text/x-handlebars-template">
-        <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
-            <td>
+        <tr>
+            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
                 <button class="btn btn-primary btn-fa-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
@@ -2857,8 +2904,8 @@
     </script>
 
     <script id="cosmosdb-template" type="text/x-handlebars-template">
-        <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
-            <td>
+        <tr>
+            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
                 <button class="btn btn-primary btn-fa-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
@@ -2892,8 +2939,8 @@
     </script>
 
     <script id="deviceList-template" type="text/x-handlebars-template">
-        <tr data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
-            <td>
+        <tr>
+            <td data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
                 <button class="btn btn-primary btn-fa-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
                 </button>
@@ -2912,8 +2959,8 @@
     </script>
 
     <script id="modelList-template" type="text/x-handlebars-template">
-        <tr data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
-            <td>
+        <tr>
+            <td data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
                 <button class="btn btn-primary btn-fa-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
                 </button>
@@ -2928,6 +2975,31 @@
 
         </tr>
         <tr class="hiddenRow collapse" id="modelDetail-{{modelId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{dataPayload}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="deployConfiguraions-template" type="text/x-handlebars-template">
+        <tr >
+            <td data-toggle="collapse" data-target="#deployConfigurationDetail-{{config_id}}" class="accordian-toggle">
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deployConfigurationDetail-{{config_id}}"></i>
+                </button>
+            </td>
+            <td>{{config_id}}</td>
+            <td>{{config_comment}}</td>
+            <td>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-trash-alt" onclick="deleteDeloyConfiguraions(this)" target_config_id="{{config_id}}"></i>
+                </button>
+            </td>
+
+        </tr>
+        <tr class="hiddenRow collapse" id="deployConfigurationDetail-{{config_id}}">
             <td colspan="12">
                 <div class="accordian-body">
                     <pre><code class="nohighlight">{{dataPayload}}</code></pre>

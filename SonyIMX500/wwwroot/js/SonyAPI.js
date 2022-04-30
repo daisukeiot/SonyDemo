@@ -809,11 +809,12 @@ async function StartUploadInferenceResult() {
 async function StopUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
     var msg;
-    var resultElement = document.getElementById('stopUploadInferenceResultBtnResult');
+    var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
+    //var resultElement = document.getElementById('stopUploadInferenceResultBtnResult');
     var ret = true;
 
     try {
-        var device_id = document.getElementById("stopUploadInferenceResultDeviceIdList").value;
+        var device_id = document.getElementById("startUploadInferenceResultDeviceIdList").value;
 
         const result = await $.ajax({
             async: true,
@@ -1051,6 +1052,32 @@ async function RefreshModelsList() {
     return;
 }
 
+async function RefreshDeployConfiguraions() {
+
+    var funcName = arguments.callee.name + "()";
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.href + 'sony/GetDeployConfigurations',
+            data: {
+            }
+        });
+
+        AddApiOutput(funcName, result.value);
+
+        $("#getDeployConfiguraionTbl").find("tr:gt(0)").remove();
+        var json = JSON.parse(result.value);
+        for (var deployConfiguration in json.deploy_configurations) {
+            addDeployConfiguration(json.deploy_configurations[deployConfiguration].config_id, json.deploy_configurations[deployConfiguration].config_comment, json.deploy_configurations[deployConfiguration]);
+        }
+    } catch (err) {
+        processError(funcName, err, true);
+    }
+    return;
+}
+
 async function GetDevicesForImageGallery(listElementId, silent) {
 
     var funcName = arguments.callee.name + "()";
@@ -1160,6 +1187,29 @@ async function DeleteModel(model_id) {
     return ret;
 }
 
+async function DeleteDeployConfiguration(config_id) {
+
+    var funcName = arguments.callee.name + "()";
+    var ret = true;
+
+    try {
+        const result = await $.ajax({
+            async: true,
+            type: "DELETE",
+            url: window.location.href + 'sony/DeleteDeployConfiguration',
+            data: {
+                config_id: config_id
+            }
+        });
+
+    } catch (err) {
+        msg = processError(funcName, err, true);
+        ret = false;
+    }
+
+    return ret;
+}
+
 function addDevice(deviceId, status, connectionStatus, payload) {
     var context = {
         deviceId: deviceId,
@@ -1185,6 +1235,20 @@ function addModel(modelId, comment, payload) {
     var html = template(context);
     $("#modelListTbl").show();
     $('#modelListDetails').prepend(html);
+}
+
+
+function addDeployConfiguration(config_id, config_comment, payload) {
+    var context = {
+        config_id: config_id,
+        config_comment: config_comment,
+        dataPayload: JSON.stringify(payload, undefined, 2)
+    };
+    var source = document.getElementById('deployConfiguraions-template').innerHTML;
+    var template = Handlebars.compile(source);
+    var html = template(context);
+    $("#getDeployConfiguraionTbl").show();
+    $('#getDeloyConfigurationsListDetails').prepend(html);
 }
 
 function viewPhoto(item) {
