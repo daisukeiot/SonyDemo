@@ -205,7 +205,7 @@
                                             <a class="nav-link active" id="tab-setup-label" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry</a>
+                                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry/Events</a>
                                         </li>
                                         <li class="nav-item">
                                             <a class="nav-link" id="tab-imageGallery-label" data-toggle="pill" href="#tab-imageGallery" role="tab" aria-controls="tab-imageGallery" aria-selected="false">Images from IMX500</a>
@@ -368,8 +368,8 @@
                                                                                         </div>
                                                                                         <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                             <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
-                                                                                    <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
-                                                                                </button>-->
+                                                                                                <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
+                                                                                            </button>-->
                                                                                             <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
                                                                                                 <i class="fas fa-trash-alt"></i> Delete (Sony API)
                                                                                             </button>
@@ -811,8 +811,12 @@
                                                                             <div class="row" style="position:relative">
                                                                                 <div>
                                                                                     <button type="button" class="btn btn-success" id="startUploadInferenceResultBtn" disabled>
-                                                                                        <i class="fas fa-external-link-alt"></i> Start Inference
+                                                                                        <i class="fas fa-play btn-fa"></i>  Start UploadInferenceResult
                                                                                     </button>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
+                                                                                        <i class="fas fa-stop btn-fa"></i>  Stop UploadInferenceResult
+                                                                                    </button>
+
                                                                                 </div>
                                                                                 <div class="vertical-center">
                                                                                     <div class="info-box-text" id='btnStartUploadInferenceResultResult'>Place Holder : To be deleted</div>
@@ -822,7 +826,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <!-- Stop Upload Inference Result -->
-                                                                <div class="card card-primary">
+                                                                <!--<div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
                                                                             <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadInferenceResult">
@@ -852,7 +856,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div>-->
                                                                 <!-- Start Upload Retraining Data -->
                                                                 <div class="card card-primary">
                                                                     <div class="card-header">
@@ -922,8 +926,12 @@
                                                                             <div class="row" style="position:relative">
                                                                                 <div>
                                                                                     <button type="button" class="btn btn-success" id="startUploadRetrainingDataBtn" disabled>
-                                                                                        <i class="fas fa-external-link-alt"></i> Start Upload Retraining Data
+                                                                                        <i class="fas fa-play btn-fa"></i>  Start UploadRetrainingData
                                                                                     </button>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
+                                                                                        <i class="fas fa-stop btn-fa"></i>  Stop UploadRetrainingData
+                                                                                    </button>
+
                                                                                 </div>
                                                                                 <div class="vertical-center">
                                                                                     <div class="info-box-text" id='startUploadRetrainingDataBtnResult'>Place Holder : To be deleted</div>
@@ -933,7 +941,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <!-- Stop Upload Retraining Data -->
-                                                                <div class="card card-primary">
+                                                                <!--<div class="card card-primary">
                                                                     <div class="card-header">
                                                                         <h4 class="card-title w-100">
                                                                             <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadRetrainingData">
@@ -963,8 +971,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </div>
-                                                                </div>
-
+                                                                </div>-->
                                                             </div>
                                                             <!-- End of Accordion -->
                                                         </div>
@@ -976,7 +983,7 @@
                                         <!-- Telemetry Tab -->
                                         <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                             <div class="card-body">
-                                                <button class="btn btn-primary" id="btn-test">
+                                                <button class="btn btn-primary btn-fa-icon" id="btn-test">
                                                     <i class="fas fa-eye" onclick="viewPhoto2(this)" eventId="testId"></i>
                                                 </button>
                                                 <div id="startUploadRetrainingDataDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
@@ -1036,7 +1043,7 @@
                                             <div class="card card-primary">
                                                 <div class="card-body">
                                                     <div>
-                                                        <button type="button" class="btn btn-danger" id="clearApiOutputBtn">
+                                                        <button type="button" class="btn btn-danger btn-fa-icon" id="clearApiOutputBtn">
                                                             <i class="fas fa-trash-alt"></i> Clear
                                                         </button>
                                                     </div>
@@ -1077,7 +1084,7 @@
                                                     </div>
                                                     <div class="card-footer">
                                                         <button type="button" class="btn btn-success" id="getDevicesBtn">
-                                                            <i class="fas fa-sync"></i> Refresh
+                                                            <i class="fas fa-sync btn-fa"></i> Refresh
                                                         </button>
                                                     </div>
                                                 </div>
@@ -1106,7 +1113,7 @@
                                                     </div>
                                                     <div class="card-footer">
                                                         <button type="button" class="btn btn-success" id="getModelsBtn">
-                                                            <i class="fas fa-sync"></i> Refresh
+                                                            <i class="fas fa-sync btn-fa"></i> Refresh
                                                         </button>
                                                     </div>
                                                 </div>
@@ -1206,7 +1213,7 @@
             return true;
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             sonyApiInitialize();
 
@@ -1215,9 +1222,15 @@
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 
-            hubConnection.on('DeviceTelemetry', function(payload) {
+            hubConnection.on('DeviceTelemetry', function (payload) {
                 var jsonData = JSON.parse(payload);
                 addEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.data);
+            });
+
+
+            hubConnection.on('CosmosDb', function (payload) {
+                var jsonData = JSON.parse(payload);
+                addCosmosDbEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.hasImage, jsonData.inferenceResults);
             });
 
             hubConnection.start()
@@ -1243,11 +1256,11 @@
         //
         // button clicks
         //
-        $('#copyTokenBtn').click(function() {
+        $('#copyTokenBtn').click(function () {
             navigator.clipboard.writeText(document.getElementById('taToken').value);
         })
 
-        $('#pasteTokenBtn').click(function() {
+        $('#pasteTokenBtn').click(function () {
             navigator.clipboard.readText()
                 .then(clipText => {
                     document.getElementById('taToken').value = clipText;
@@ -1258,7 +1271,7 @@
                 });
         })
 
-        $('#loginBtn').click(function() {
+        $('#loginBtn').click(function () {
             if ($('#loginForm').valid()) {
                 toggleLoader(false);
                 sonyApiAuth();
@@ -1272,7 +1285,9 @@
             }
         })
 
-        $('#createBaseCustomVisionProjectBtn').click(function() {
+        $('#createBaseCustomVisionProjectBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             if ($('#createBaseCustomVisionProjectForm').valid() == false) {
                 return;
             }
@@ -1292,8 +1307,9 @@
                 });
         })
 
-        $('#deleteCustomVisionProjectCvBtn').click(function() {
-            console.debug("deleteCustomVisionProjectCvBtn Click");
+        $('#deleteCustomVisionProjectCvBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var projectList = document.getElementById('selectCustomVisionProjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 toggleLoader(false);
@@ -1313,7 +1329,8 @@
         // Button Click
         //
 
-        $('#deleteCustomVisionProjectBtn').click(function() {
+        $('#deleteCustomVisionProjectBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
             var projectList = document.getElementById('selectCustomVisionProjectList');
 
@@ -1333,7 +1350,9 @@
             }
         })
 
-        $('#visitCustomVisionBtn').click(function() {
+        $('#visitCustomVisionBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
             console.debug("visitCustomVisionBtn Click");
             var projectList = document.getElementById('visitCustomVisionProjectList');
@@ -1344,11 +1363,14 @@
             toggleLoader(false);
         })
 
-        $('#clearApiOutputBtn').click(function() {
+        $('#clearApiOutputBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             document.getElementById('tabApiOutput').value = null;
         })
 
-        $('#saveCustomVisionModelBtn').click(function() {
+        $('#saveCustomVisionModelBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#saveCustomVisionModelForm').valid()) {
 
@@ -1368,12 +1390,13 @@
             }
         })
 
-        $('#convertModelBtn').click(function() {
+        $('#convertModelBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
-            console.debug("convertModelBtn Click");
 
             ConvertModel()
-                .then(function(conversion_id) {
+                .then(function (conversion_id) {
                     if (conversion_id) {
                         console.log("Conversion Started : " + conversion_id);
                         document.getElementById('convertModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
@@ -1387,14 +1410,15 @@
                 });
         })
 
-        $('#convertModelGetBaseModelStatusBtn').click(function() {
+        $('#convertModelGetBaseModelStatusBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
-            console.debug("convertModelGetBaseModelStatusBtn Click");
 
             var model_id = document.getElementById("convertModelModelIdList").selectedIndex == 0 ? null : document.getElementById("convertModelModelIdList").value;
 
             GetBaseModelStatus(model_id, "1")
-                .then(function(project) {
+                .then(function (project) {
                     console.log("Model Status : " + project);
                     var json = JSON.parse(project);
                     console.log("Model Status : " + json);
@@ -1409,7 +1433,7 @@
                         $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
                     }
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.error("Error : " + err);
                 })
                 .finally(() => {
@@ -1417,18 +1441,19 @@
                 });
         })
 
-        $('#publishModelBtn').click(function(evt) {
+        $('#publishModelBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
-            console.debug("publishModelBtn Click");
 
             PublishModel()
-                .then(function(conversion_id) {
+                .then(function (conversion_id) {
                     if (conversion_id) {
                         console.log("Publish Started : " + conversion_id);
                         document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = conversion_id;
                     }
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.error("Error : " + err);
                 })
                 .finally(() => {
@@ -1436,14 +1461,15 @@
                 });
         })
 
-        $('#publishModelGetBaseModelStatusBtn').click(function(evt) {
+        $('#publishModelGetBaseModelStatusBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
-            console.log(evt.target.id + "() " + evt.type);
 
             var model_id = document.getElementById("publishModelModelIdList").selectedIndex == 0 ? null : document.getElementById("publishModelModelIdList").value;
 
             GetBaseModelStatus(model_id, "1")
-                .then(function(project) {
+                .then(function (project) {
                     console.log("Model Status : " + project);
                     var json = JSON.parse(project);
                     console.log("Model Status : " + json);
@@ -1458,7 +1484,7 @@
                         $('#publishModelBtn').prop('disabled', true);
                     }
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.error("Error : " + err);
                 })
                 .finally(() => {
@@ -1466,7 +1492,9 @@
                 });
         })
 
-        $('#createDeployConfigurationBtn').click(function(evt) {
+        $('#createDeployConfigurationBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             if ($('#createDeployConfigurationForm').valid() == false) {
                 return;
             }
@@ -1480,7 +1508,7 @@
                     currentConfigId = document.getElementById("createDeployConfigurationConfigId").value;;
 
                 })
-                .catch(function(err) {
+                .catch(function (err) {
                     console.error("Error : " + err);
                 })
                 .finally(() => {
@@ -1488,9 +1516,11 @@
                 });
         })
 
-        $('#deployByConfiguratonBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#deployByConfiguratonBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
+
             DeployByConfiguration()
                 .then(() => {
                     console.log("Configuration Deployed");
@@ -1504,11 +1534,13 @@
                 });
         })
 
-        $('#getDeployHistoryBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#getDeployHistoryBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
+
             GetDeployHistory()
-                .then(function(deploys) {
+                .then(function (deploys) {
                     var json = JSON.parse(deploys);
 
                     if (json.deploys) {
@@ -1532,8 +1564,9 @@
                 });
         })
 
-        $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             toggleLoader(false);
             GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
                 .then(() => {
@@ -1544,67 +1577,93 @@
                 });
         })
 
-        $('#startUploadInferenceResultBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#startUploadInferenceResultBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             if ($('#startUploadInferenceResultForm').valid()) {
                 toggleLoader(false);
                 StartUploadInferenceResult()
-                    .then(() => {})
+                    .then(() => { })
                     .finally(() => {
                         toggleLoader(false);
                     });
             }
         })
 
-        $('#stopUploadInferenceResultBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
-            if ($('#stopUploadInferenceResultForm').valid()) {
-                toggleLoader(false);
-                StopUploadInferenceResult()
-                    .then(() => {})
-                    .finally(() => {
-                        toggleLoader(false);
-                    });
-            }
+        $('#stopUploadInferenceResultBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            StopUploadInferenceResult()
+                .then(() => { })
+                .finally(() => {
+                    toggleLoader(false);
+                });
         })
 
-        $('#startUploadRetrainingDataBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        //$('#stopUploadInferenceResultBtn').click(function (evt) {
+        //    console.debug(evt.target.id + "() " + evt.type);
+
+        //    if ($('#stopUploadInferenceResultForm').valid()) {
+        //        toggleLoader(false);
+        //        StopUploadInferenceResult()
+        //            .then(() => { })
+        //            .finally(() => {
+        //                toggleLoader(false);
+        //            });
+        //    }
+        //})
+
+        $('#startUploadRetrainingDataBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             if ($('#startUploadRetrainingDataForm').valid()) {
                 toggleLoader(false);
                 StartUploadRetrainingData()
-                    .then(() => {})
+                    .then(() => { })
                     .finally(() => {
                         toggleLoader(false);
                     });
             }
         })
 
-        $('#stopUploadRetrainingDataBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
-            if ($('#stopUploadRetrainingDataForm').valid()) {
-                toggleLoader(false);
-                StopUploadRetrainingData()
-                    .then(() => {})
-                    .finally(() => {
-                        toggleLoader(false);
-                    });
-            }
+        $('#stopUploadRetrainingDataBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            StopUploadRetrainingData()
+                .then(() => { })
+                .finally(() => {
+                    toggleLoader(false);
+                });
         })
 
-        $('#clearTelemetryTableBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        //$('#stopUploadRetrainingDataBtn').click(function (evt) {
+        //    console.debug(evt.target.id + "() " + evt.type);
+
+        //    if ($('#stopUploadRetrainingDataForm').valid()) {
+        //        toggleLoader(false);
+        //        StopUploadRetrainingData()
+        //            .then(() => { })
+        //            .finally(() => {
+        //                toggleLoader(false);
+        //            });
+        //    }
+        //})
+
+        $('#clearTelemetryTableBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             $("#deviceEventsTbl").find("tr:gt(0)").remove();
             $("#deviceEventsTbl").hide();
         })
 
-        $('#clearApiOutputBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#clearApiOutputBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#getDevicesBtn').click(function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
-
+        $('#getDevicesBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             RefreshDevicesList()
@@ -1616,22 +1675,21 @@
                 });
         })
 
-        $('#getModelsBtn').click(function(evt) {
-                console.log(evt.target.id + "() " + evt.type);
+        $('#getModelsBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
+            toggleLoader(false);
+            RefreshModelsList()
+                .then(() => {
 
-                toggleLoader(false);
-                RefreshModelsList()
-                    .then(() => {
-
-                    })
-                    .finally(() => {
-                        toggleLoader(false);
-                    });
-            })
-            //
-            //form validations
-            //
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+        //
+        //form validations
+        //
         $('#loginForm').validate({
             rules: {
                 clientId: {
@@ -1646,14 +1704,14 @@
                 }
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -1680,14 +1738,14 @@
 
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -1734,14 +1792,14 @@
 
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -1832,14 +1890,14 @@
 
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -1869,14 +1927,14 @@
 
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -1959,14 +2017,14 @@
                 },
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -1983,14 +2041,14 @@
                 },
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -2082,14 +2140,14 @@
                 }
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -2106,14 +2164,14 @@
                 },
             },
             errorElement: 'span',
-            errorPlacement: function(error, element) {
+            errorPlacement: function (error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function(element, errorClass, validClass) {
+            highlight: function (element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function(element, errorClass, validClass) {
+            unhighlight: function (element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });
@@ -2121,30 +2179,32 @@
         // Accordion
         //
 
-        $('#accordionSetup').on('show.bs.collapse', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionSetup').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#accordionSetup').on('hide.bs.collapse', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionSetup').on('hide.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#accordionCreateBaseCustomVisionProject').on('show.bs.collapse', function(evt) {
+        $('#accordionCreateBaseCustomVisionProject').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'selectCustomVisionProjectList';
-            console.log(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
 
             GetCustomVisionProjects(targetListName)
-                .then(() => {})
+                .then(() => { })
                 .finally(() => {
                     toggleLoader(false);
                 });
         })
 
-        $('#accordionVisitCustomVision').on('show.bs.collapse', function(evt) {
+        $('#accordionVisitCustomVision').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'visitCustomVisionProjectList';
-            console.log(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             GetCustomVisionProjects(targetListName)
@@ -2158,9 +2218,10 @@
                 });
         })
 
-        $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function(evt) {
+        $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'saveCustomVisionModelProjectNameList';
-            console.log(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
 
@@ -2175,11 +2236,13 @@
                 });
         })
 
-        $('#accordionConvertModel').on('show.bs.collapse', function(evt) {
+        $('#accordionConvertModel').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'convertModelModelIdList';
-            console.log(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
+
             GetAllModels(targetListName)
                 .then((ret) => {
                     if (ret) {
@@ -2188,7 +2251,7 @@
                         }
 
                         GetDevices("convertModelDeviceIdList", true)
-                            .then(() => {})
+                            .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
                             })
@@ -2202,9 +2265,10 @@
                 })
         })
 
-        $('#accordionPublishModel').on('show.bs.collapse', function(evt) {
+        $('#accordionPublishModel').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'publishModelModelIdList';
-            console.log(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
 
@@ -2216,7 +2280,7 @@
                         }
 
                         GetDevices("publishModelDeviceIdList", true)
-                            .then(() => {})
+                            .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
                             })
@@ -2230,8 +2294,8 @@
                 })
         })
 
-        $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
             try {
                 toggleLoader(false);
@@ -2269,11 +2333,12 @@
                     });
             } catch (err) {
                 toggleLoader(true);
-            } finally {}
+            } finally { }
         })
 
-        $('#accordionDeployByConfiguration').on('show.bs.collapse', async function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionDeployByConfiguration').on('show.bs.collapse', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'deployByConfiguraionReplaceModelIdList';
 
             try {
@@ -2308,11 +2373,11 @@
                     })
             } catch (err) {
                 toggleLoader(true);
-            } finally {}
+            } finally { }
         })
 
-        $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
             try {
                 toggleLoader(false);
@@ -2348,13 +2413,16 @@
                     })
             } catch (err) {
                 toggleLoader(true);
-            } finally {}
+            } finally { }
         })
 
-        $('#accordionStopUploadInferenceResult').on('show.bs.collapse', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionStopUploadInferenceResult').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'stopUploadInferenceResultDeviceIdList';
+
             toggleLoader(false);
+
             GetDevices(targetListName, true)
                 .then((ret) => {
                     if (ret) {
@@ -2368,9 +2436,9 @@
                 })
         })
 
-        $('#accordionStartUploadRetrainingData').on('show.bs.collapse', function(evt) {
+        $('#accordionStartUploadRetrainingData').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
 
-            console.log(evt.target.id + "() " + evt.type);
             var targetListName = 'startUploadRetrainingDataModelIdList';
 
             try {
@@ -2405,12 +2473,15 @@
 
             } catch (err) {
                 toggleLoader(true);
-            } finally {}
+            } finally { }
         })
 
-        $('#accordionStopUploadRetrainingData').on('show.bs.collapse', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#accordionStopUploadRetrainingData').on('show.bs.collapse', function (evt) {
+
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'stopUploadRetrainingDataDeviceIdList';
+
             toggleLoader(false);
 
             GetDevices(targetListName, true)
@@ -2427,16 +2498,17 @@
         //
         // Tab
         //
-        $('#tab-setup-label').on('show.bs.tab', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#tab-setup-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-telemetry-label').on('show.bs.tab', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-imageGallery-label').on('show.bs.tab', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListName = 'imageGalleryDeviceIdList';
 
             try {
@@ -2474,19 +2546,20 @@
 
         })
 
-        $('#tab-apiOutput-label').on('show.bs.tab', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-other-label').on('show.bs.tab', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#tab-other-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
         })
 
         //
         // Change event
         //
-        $('#taToken').on('change', function() {
-            console.log("taToken Change");
+        $('#taToken').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             if (document.getElementById('taToken').value.length > 0) {
                 PostToken(document.getElementById('taToken').value);
                 $('#copyTokenBtn').prop('disabled', false);
@@ -2499,8 +2572,9 @@
         // List Selected
         //
 
-        $('#selectCustomVisionProjectList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#selectCustomVisionProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
 
@@ -2516,8 +2590,9 @@
             }
         })
 
-        $('#visitCustomVisionProjectList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#visitCustomVisionProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
 
@@ -2530,8 +2605,9 @@
             }
         })
 
-        $('#saveCustomVisionModelProjectNameList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#saveCustomVisionModelProjectNameList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
 
@@ -2544,13 +2620,10 @@
             }
         })
 
-        //$('#saveCustomVisionModelProjectNameList').on('input', function () {
-        //    var list = document.getElementById('saveCustomVisionModelProjectNameList');
-        //    console.log("saveCustomVisionModelProjectNameList input : " + list.selectedIndex);
-        //})
 
-        $('#convertModelModelIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#convertModelModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
 
@@ -2570,8 +2643,9 @@
             }
         })
 
-        $('#publishModelModelIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#publishModelModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
 
@@ -2588,38 +2662,38 @@
             }
         })
 
-        $('#createDeployConfigurationConfigId').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createDeployConfigurationConfigId').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployConfigurationSensorLoaderVersionNumber').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createDeployConfigurationSensorLoaderVersionNumber').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployConfigurationSensorVersionNumber').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createDeployConfigurationSensorVersionNumber').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployConfigurationModelId').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createDeployConfigurationModelId').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployConfigurationApFwVersionNumber').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createDeployConfigurationApFwVersionNumber').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#deployByConfiguraionFormConfigIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#deployByConfiguraionFormConfigIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
         })
 
-        $('#deployByConfiguraionDeviceIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#deployByConfiguraionDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
 
             var targetListId = evt.target.id;
@@ -2633,22 +2707,24 @@
             }
         })
 
-        $('#startUploadInferenceResultDeviceIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#startUploadInferenceResultDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
             if (isItemSelected(targetListId, null)) {
                 $('#startUploadInferenceResultBtn').prop('disabled', false);
+                $('#stopUploadInferenceResultBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
             } else {
                 $('#startUploadInferenceResultBtn').prop('disabled', true);
+                $('#stopUploadInferenceResultBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
         })
 
-        $('#startUploadInferenceResultModelIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#startUploadInferenceResultModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
 
@@ -2659,8 +2735,8 @@
             }
         })
 
-        $('#stopUploadInferenceResultDeviceIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#stopUploadInferenceResultDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
@@ -2673,22 +2749,24 @@
             }
         })
 
-        $('#startUploadRetrainingDataDeviceIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#startUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
             if (isItemSelected(targetListId, null)) {
                 $('#startUploadRetrainingDataBtn').prop('disabled', false);
+                $('#stopUploadRetrainingDataBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
             } else {
                 $('#startUploadRetrainingDataBtn').prop('disabled', true);
+                $('#stopUploadRetrainingDataBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
         })
 
-        $('#startUploadRetrainingDataModelIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#startUploadRetrainingDataModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
 
@@ -2699,8 +2777,8 @@
             }
         })
 
-        $('#stopUploadRetrainingDataDeviceIdList').on('change', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#stopUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
@@ -2713,10 +2791,8 @@
             }
         })
 
-
-        // Input
-        $('#createBaseCustomVisionProjectName').on('input', function(evt) {
-            console.log(evt.target.id + "() " + evt.type);
+        $('#createBaseCustomVisionProjectName').on('input', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
             var inputField = document.getElementById('createBaseCustomVisionProjectName');
 
             if (inputField.value.length > 0) {
@@ -2753,11 +2829,11 @@
         });
     </script>
 
-    <script id="event-template" type="text/x-handlebars-template">
+    <script id="telemetry-template" type="text/x-handlebars-template">
         <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
             <td>
-                <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
             </td>
             <td>{{eventTime}}</td>
@@ -2766,8 +2842,35 @@
             <td>{{eventSource}}</td>
             <td>{{eventType}}</td>
             <td>
-                <button class="btn btn-primary" id="btn-{{eventId}}" disabled>
+                <button class="btn btn-primary btn-fa-icon" id="btn-{{eventId}}" disabled>
                     <i class="fas fa-eye" onclick="viewPhoto(this)" eventId="{{eventId}}"></i>
+                </button>
+            </td>
+        </tr>
+        <tr class="hiddenRow collapse" id="event-{{eventId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre id="pre-{{eventId}}"><code class="nohighlight">{{eventData}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="cosmosdb-template" type="text/x-handlebars-template">
+        <tr data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
+            <td>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
+                </button>
+            </td>
+            <td>{{eventTime}}</td>
+            <td>{{deviceId}}</td>
+            <td>{{eventModelId}}</td>
+            <td>{{eventSource}}</td>
+            <td>{{eventType}}</td>
+            <td>
+                <button class="btn btn-primary btn-fa-icon" id="btn-{{eventId}}" disabled>
+                    <i class="fas fa-eye" onclick="viewPhotoWithCosmosDb(this)" eventId="{{eventId}}" deviceId="{{deviceId}}"></i>
                 </button>
             </td>
         </tr>
@@ -2791,8 +2894,8 @@
     <script id="deviceList-template" type="text/x-handlebars-template">
         <tr data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
             <td>
-                <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleTableDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
                 </button>
             </td>
             <td>{{deviceId}}</td>
@@ -2811,14 +2914,14 @@
     <script id="modelList-template" type="text/x-handlebars-template">
         <tr data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
             <td>
-                <button class="btn btn-primary btn-xs">
-                    <i class="fas fa-angle-double-down eventFasNoMargin" onclick="toggleTableDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
                 </button>
             </td>
             <td>{{modelId}}</td>
             <td>{{comment}}</td>
             <td>
-                <button class="btn btn-warning btn-xs">
+                <button class="btn btn-primary btn-fa-icon">
                     <i class="fas fa-trash-alt" onclick="deleteModel(this)" targetModel="{{modelId}}"></i>
                 </button>
             </td>

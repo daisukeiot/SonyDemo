@@ -86,7 +86,7 @@ function PostToken(token) {
         url: window.location.href + 'sony/PostToken',
         data: { token: token },
         success: function (response) {
-            console.log(response)
+            //console.log(response)
         },
         error: function (req, status, error) {
             alert("PostToken Error " + status);
@@ -895,7 +895,7 @@ async function StopUploadRetrainingData() {
 
     var funcName = arguments.callee.name + "()";
     var msg;
-    var resultElement = document.getElementById('stopUploadRetrainingDataBtnResult');
+    var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
     var ret = true;
 
     try {
@@ -921,6 +921,37 @@ async function StopUploadRetrainingData() {
     }
     return ret;
 }
+
+//async function StopUploadRetrainingData() {
+
+//    var funcName = arguments.callee.name + "()";
+//    var msg;
+//    var resultElement = document.getElementById('stopUploadRetrainingDataBtnResult');
+//    var ret = true;
+
+//    try {
+//        var device_id = document.getElementById("stopUploadRetrainingDataDeviceIdList").value;
+
+//        const result = await $.ajax({
+//            async: true,
+//            type: "POST",
+//            url: window.location.href + 'sony/StopUploadRetrainingData',
+//            data: {
+//                device_id: device_id
+//            },
+//        });
+//        msg = result.value;
+//    } catch (err) {
+//        msg = processError(funcName, err, true);
+//        ret = false;
+//    } finally {
+//        if (msg) {
+//            setResultElement(resultElement, msg);
+//            AddApiOutput(funcName, msg);
+//        }
+//    }
+//    return ret;
+//}
 
 async function GetDevices(listElementId, silent) {
 
@@ -1199,7 +1230,7 @@ function viewPhoto(item) {
                             }
                         }
                     }
-                    console.log(result)
+                    //console.log(result)
                 }
             })
             .finally(() => {
@@ -1211,6 +1242,63 @@ function viewPhoto(item) {
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
+        toggleLoader(true);
     }
 }
 
+function viewPhotoWithCosmosDb(item) {
+    var eventId = item.attributes.getNamedItem('eventId').nodeValue;
+    var deviceId = item.attributes.getNamedItem('deviceId').nodeValue;
+    console.log("viewPhotoWithCosmosDb " + eventId);
+    var funcName = arguments.callee.name + "()";
+    var preElementId = "pre-" + eventId;
+    var preElement = document.getElementById(preElementId);
+    var dataObj = JSON.parse(preElement.textContent);
+
+    try {
+        toggleLoader(false);
+
+        for (var data in dataObj) {
+            
+            GetImage(deviceId, dataObj[data].T)
+                .then((result) => {
+
+                    if (result) {
+                        var json = JSON.parse(result);
+                        var canvas = document.getElementById("photoCanvas");
+                        var ctx = canvas.getContext('2d');
+                        var img = new Image();
+                        img.src = json.uri;
+                        img.onload = function () {
+                            ctx.drawImage(img, 0, 0)
+                            ctx.lineWidth = 3
+                            ctx.strokeStyle = "rgb(255, 255, 0)"
+                            ctx.font = '15px serif';
+                            ctx.fillStyle = "rgb(255, 255, 0)"
+                            ctx.textBaseline = "top";
+
+                            var preJson = JSON.parse(preElement.innerText);
+                            console.log(preJson);
+
+                            for (var inference in dataObj[data].inferenceResults) {
+                                var inferenceData = dataObj[data].inferenceResults[inference];
+                                ctx.strokeRect(inferenceData.X, inferenceData.Y, inferenceData.x - inferenceData.X, inferenceData.y - inferenceData.Y);
+                                var p_String = Number(inferenceData.P).toLocaleString(undefined, { style: 'percent', minimumFractionDigits: 1 });
+                                ctx.fillText(p_String, inferenceData.X + 5, inferenceData.Y + 5);
+                            }
+                        }
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                    var modal = document.getElementById("modalPhoto");
+                    modal.style.display = "block";
+                });
+
+        }
+    } catch (err) {
+        msg = processError(funcName, err, true);
+        ret = false;
+        toggleLoader(true);
+    }
+}

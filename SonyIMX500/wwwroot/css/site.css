@@ -26,6 +26,14 @@ label {
     display:block;
 }
 
+.btn-fa {
+    margin-right: 0.1em;
+}
+
+.btn-fa-icon {
+    font-size: 1em;
+    padding: 0.2em 0.7em;
+}
 /* Absolute Center Spinner */
 .loading {
     position: fixed;
