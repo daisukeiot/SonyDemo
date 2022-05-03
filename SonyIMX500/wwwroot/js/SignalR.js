@@ -12,8 +12,8 @@
     var source = document.getElementById('telemetry-template').innerHTML;
     var template = Handlebars.compile(source);
     var html = template(context);
-    $("#deviceEventsTbl").show();
-    $('#deviceEventsDetails').prepend(html);
+    $("#telemetryTbl").show();
+    $('#telemetryTblDetails').prepend(html);
 
     if (dataObj.Image == true) {
         var btn_id = "btn-" + id;
@@ -34,8 +34,8 @@ function addCosmosDbEvent(id, type, deviceId, modelId, source, time, hasImage, d
     var source = document.getElementById('cosmosdb-template').innerHTML;
     var template = Handlebars.compile(source);
     var html = template(context);
-    $("#deviceEventsTbl").show();
-    $('#deviceEventsDetails').prepend(html);
+    $("#telemetryTbl").show();
+    $('#telemetryTblDetails').prepend(html);
 
     if (hasImage == true) {
         var btn_id = "btn-" + id;

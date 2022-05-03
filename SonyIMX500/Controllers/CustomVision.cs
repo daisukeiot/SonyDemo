@@ -24,6 +24,7 @@ namespace SonyIMX500.Controllers
         {
             _appSettings = optionsAccessor.Value;
             _logger = logger;
+
         }
 
         private void AddRequestHeader(HttpClient client)
