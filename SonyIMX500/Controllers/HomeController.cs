@@ -104,58 +104,35 @@ namespace SonyIMX500.Controllers
         [HttpGet]
         public async Task<ActionResult> GetAllImagesFromBlob()
         {
+            var responses = new List<BLOB_IMAGE_DATA>();
+
             string sas = GetSasToken();
 
             try
             {
-                List<string> allBlobs = new List<string>();
-
                 await foreach (BlobItem item in blobContainerClient.GetBlobsAsync())
                 {
-                    Console.WriteLine(item.Name);
                     var blobClient = blobContainerClient.GetBlobClient(item.Name);
-                    allBlobs.Add($"{blobClient.Uri.AbsoluteUri}{sas}");
-                }
+                    var response = new BLOB_IMAGE_DATA();
 
-                return Ok(Json(allBlobs));
+                    var fileName = item.Name.Split("/");
+
+                    response.DeviceId = fileName[0];
+                    response.FileName = fileName[fileName.Length - 1];
+                    response.CreateDate = item.Properties.CreatedOn.ToString();
+                    response.Image = $"{blobClient.Uri.AbsoluteUri}{sas}";
+
+                    responses.Add(response);
+                }
             }
             catch (Exception ex)
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
                 return BadRequest(ex.Message);
             }
+
+            return Ok(Json(JsonConvert.SerializeObject(responses)));
         }
-
-        //private async Task<IListBlobItem> RecursiveFindFile(IListBlobItem blobItem, string deviceId, string timeStamp)
-        //{
-        //    switch (blobItem)
-        //    {
-        //        case CloudBlockBlob blob:
-        //            return blob;
-
-        //        case CloudBlobDirectory directory:
-        //            BlobContinuationToken continuationToken = null;
-
-        //            do
-        //            {
-        //                var response = await directory.ListBlobsSegmentedAsync(continuationToken);
-        //                continuationToken = response.ContinuationToken;
-        //                foreach (var result in response.Results)
-        //                {
-        //                    var item = await RecursiveFindFile(result, deviceId, timeStamp);
-        //                    if (item != null && item.Uri.Segments[item.Uri.Segments.Length - 1].StartsWith(timeStamp))
-        //                    {
-
-        //                        return item;
-        //                    }
-        //                }
-        //            } while (continuationToken != null);
-        //            return null;
-        //        default:
-        //            return null;
-
-        //    }
-        //}
 
         [HttpGet]
         public async Task<ActionResult> FindImagesFromBlob(string deviceId, string timeStamp)
@@ -213,6 +190,13 @@ namespace SonyIMX500.Controllers
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
                 return BadRequest(ex.Message);
             }
+        }
+        public class BLOB_IMAGE_DATA
+        {
+            public string Image { get; set; }
+            public string DeviceId { get; set; }
+            public string FileName { get; set; }
+            public string CreateDate { get; set; }
         }
         #endregion // blob
     }

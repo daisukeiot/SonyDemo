@@ -159,7 +159,6 @@ namespace SonyIMX500.Controllers
             public string P { get; set; }
             public string Coord { get; set; }
         }
-
         public class INFERENCE_RESULT
         {
             public string DeviceID { get; set; }

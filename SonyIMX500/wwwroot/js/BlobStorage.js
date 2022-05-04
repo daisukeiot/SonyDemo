@@ -1,42 +1,4 @@
-﻿
-async function GetAllImages() {
-
-    var funcName = arguments.callee.name + "()";
-    var msg;
-
-    try {
-        const result = await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.href + 'home/GetAllImagesFromBlob',
-            data: {
-            }
-        });
-
-        if (result['success'] == false) {
-            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-        }
-
-        var images  = result.value;
-        msg = result.value;
-
-        $('#image_gallery').empty();
-        for (var image in images) {
-            var url = new URL(images[image]);
-            var pathArray = url.pathname.split('/');
-            addImage(pathArray[2], images[image], pathArray[5]);
-        }
-    } catch (err) {
-        msg = processError(funcName, err, true);
-    } finally {
-        if (msg) {
-            //setResultElement(resultElement, msg);
-            AddApiOutput(funcName, msg);
-        }
-    }
-}
-
-async function GetImage(deviceId, timeStamp) {
+﻿async function GetImage(deviceId, timeStamp) {
 
     var funcName = arguments.callee.name + "()";
     var msg = null;
@@ -86,3 +48,69 @@ function addImage(deviceId, image_url, image_file_name) {
     var html = template(context);
     $('#image_gallery').prepend(html);
 }
+
+$("#blogStorJsGrid").jsGrid({
+    width: "100%",
+    height: "auto",
+
+    loadIndication: false,
+    inserting: false,
+    editing: false,
+    sorting: true,
+    paging: true,
+    autoload: false,
+    //filtering: true,
+
+    controller: {
+        loadData: function (filter) {
+
+            toggleLoader(false);
+            var d = $.Deferred();
+
+            $.ajax({
+                type: "GET",
+                url: window.location.href + 'home/GetAllImagesFromBlob',
+                data: {
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            }).done(function (response) {
+                d.resolve(JSON.parse(response.value));
+                $("#blogStorJsGrid").jsGrid("sort", { field: "CreateDate", order: "desc" });
+                toggleLoader(true);
+            });
+
+            return d.promise();
+        }
+    },
+
+    fields: [
+        {
+            name: "Image",
+            text: "Image",
+            itemTemplate: function (val, item) {
+                return $("<img>").attr("src", val).css({ height: 120, width: 120 }).on("click", function () {
+                    $("#imagePreview").attr("src", item.Image);
+                    console.log(item.Image)
+                });
+            },
+            align: "center",
+            width: 120
+        },
+        {
+            name: "CreateDate", type: "text", width: 100
+        },
+        {
+            name: "DeviceId", type: "text"
+        },
+        {
+            name: "FileName", type : "text"
+        }
+    ]
+});
+
+var imagerenderer = function (item, value) {
+    console.log(value)
+    return '<img src=value.Image />';
+}
+

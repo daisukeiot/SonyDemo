@@ -1,15 +1,4 @@
-﻿var clients = [
-    { "Device ID": "Otto Clay", "Model ID": "25", "Image": false, "T": "20211027044940287", "C": "0", "P": 0.9921875, "Coord": "14,12,309,307"}
-];
-
-var countries = [
-    { Name: "", Id: 0 },
-    { Name: "United States", Id: 1 },
-    { Name: "Canada", Id: 2 },
-    { Name: "United Kingdom", Id: 3 }
-];
-
-$("#cosmosDbJsGrid").jsGrid({
+﻿$("#cosmosDbJsGrid").jsGrid({
     width: "100%",
     height: "auto",
 
