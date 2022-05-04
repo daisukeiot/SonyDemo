@@ -1016,36 +1016,49 @@
                                         <!-- Image Gallery Tab -->
                                         <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-imageGallery-label">
                                             <div class="card-header">
-                                                <h4 class="card-title w-100">
-                                                    <a class="d-block w-100">
-                                                        Images stored in Azure Blob Storage
-                                                    </a>
-                                                </h4>
-                                                <div id="dialog" title="Image Full Size View">
+                                                <h3 class="card-title">
+                                                    Images stored in Azure Blob Storage
+                                                </h3>
+
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
+                                                        <i class="fas fa-sync btn-fa"></i>Refresh
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-header">
+                                                <div id="imagePreviewDiv" style="margin: 1em 0;">
                                                     <img id="imagePreview" />
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <div>
-                                                    <div id="blogStorJsGrid"></div>
+                                                <div class="jsgridDiv">
+                                                    <div id="blobStorJsGrid" style="overflow-y:auto"></div>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- History Tab -->
                                         <div class="tab-pane fade" id="tab-cosmosDb" role="tabpanel" aria-labelledby="tab-cosmosDb-label">
                                             <div class="card-header">
-                                                <h4 class="card-title w-100">
-                                                    <a class="d-block w-100">
-                                                        AI Inference History stored in Cosmos DB
-                                                    </a>
-                                                </h4>
-                                                <span>Threshold: <span id="cosmosDbThreshold"></span><span>%</span></span>
-                                                <div class="slider-blue">
-                                                    <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange">
+                                                <h3 class="card-title">
+                                                    AI Inference History stored in Cosmos DB
+                                                </h3>
+
+                                                <div class="card-tools">
+                                                    <span>Threshold: <span id="cosmosDbThreshold"></span><span>%</span></span>
+                                                    <span class="slider-blue">
+                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange">
+                                                    </span>
+                                                    <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
+                                                        <i class="fas fa-sync btn-fa"></i>Refresh
+                                                    </button>
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <div id="cosmosDbJsGrid"></div>
+                                                <div style="overflow:auto">
+                                                    <div id="cosmosDbJsGrid"></div>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- API Output Tab -->
@@ -1743,6 +1756,11 @@
                 .finally(() => {
                     toggleLoader(false);
                 });
+        })
+
+        $('#refreshImageGalleryBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $("#blobStorJsGrid").jsGrid("loadData");
         })
         //
         //form validations
@@ -2565,8 +2583,7 @@
 
         $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-
-            $("#blogStorJsGrid").jsGrid("loadData");
+            $("#blobStorJsGrid").jsGrid("loadData");
         })
 
         $('#tab-cosmosDb-label').on('show.bs.tab', function (evt) {

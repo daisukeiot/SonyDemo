@@ -26,6 +26,7 @@
                 dataType: "json"
             }).done(function (response) {
                 d.resolve(JSON.parse(response.value));
+                $("#cosmosDbJsGrid").jsGrid("sort", { field: "Ts", order: "desc" });
                 toggleLoader(true);
             });
 
@@ -34,14 +35,14 @@
     },
 
     fields: [
-        { name: "Id", type: "text" },
-        { name: "Ts", type: "number" },
-        { name: "Device_ID", type: "text" },
-        { name: "Model_ID", type: "text"},
-        { name: "Image", type: "checkbox"},
-        { name: "T", type: "text"},
-        { name: "C", type: "text"},
-        { name: "P", type: "text" },
-        { name: "Coord", type: "text", title: "X Y x y" }
+        { name: "Id", type: "text", align: "left", width:200 },
+        { name: "Ts", type: "number", align: "left"},
+        { name: "Device_ID", type: "text", align: "left" },
+        { name: "Model_ID", type: "text", align: "left"},
+        { name: "Image", type: "checkbox", align: "left", width: 50},
+        { name: "T", type: "text", align: "left"},
+        { name: "C", type: "text", align: "left", width: 50},
+        { name: "P", type: "text", align: "left", width: 50 },
+        { name: "Coord", type: "text", title: "(X,Y)-(x,y)", align: "left" }
     ]
 });

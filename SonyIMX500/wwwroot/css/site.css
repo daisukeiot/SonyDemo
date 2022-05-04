@@ -534,3 +534,30 @@ label {
     background: #007bff;
     cursor: pointer;
 }
+
+.jsgridDiv {
+    min-height: calc(40vh);
+    max-height: calc(60vh);
+}
+
+.jsgrid-header-cell {
+    font-size: 0.85em;
+    padding: 0.3em !important;
+    line-height: 1;
+    text-align: left;
+}
+
+.jsgrid-cell {
+    font-size: 0.85em;
+    padding: 0.3em !important;
+    line-height: 1;
+}
+
+.ui-jqgrid-view {
+    max-height: 400px;
+}
+
+.ui-jqgrid-bdiv {
+    overflow-y: scroll !important;
+    max-height: 400px !important;
+}

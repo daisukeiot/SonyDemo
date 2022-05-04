@@ -49,9 +49,9 @@ function addImage(deviceId, image_url, image_file_name) {
     $('#image_gallery').prepend(html);
 }
 
-$("#blogStorJsGrid").jsGrid({
+$("#blobStorJsGrid").jsGrid({
     width: "100%",
-    height: "auto",
+    height: "400",
 
     loadIndication: false,
     inserting: false,
@@ -76,7 +76,7 @@ $("#blogStorJsGrid").jsGrid({
                 dataType: "json"
             }).done(function (response) {
                 d.resolve(JSON.parse(response.value));
-                $("#blogStorJsGrid").jsGrid("sort", { field: "CreateDate", order: "desc" });
+                $("#blobStorJsGrid").jsGrid("sort", { field: "CreateDate", order: "desc" });
                 toggleLoader(true);
             });
 
@@ -94,17 +94,17 @@ $("#blogStorJsGrid").jsGrid({
                     console.log(item.Image)
                 });
             },
-            align: "center",
-            width: 120
+            align: "left",
+            width: 20
         },
         {
-            name: "CreateDate", type: "text", width: 100
+            name: "CreateDate", type: "text", align: "left", width: 50
         },
         {
-            name: "DeviceId", type: "text"
+            name: "DeviceId", type: "text", align: "left", width: 50
         },
         {
-            name: "FileName", type : "text"
+            name: "FileName", type: "text", align: "left"
         }
     ]
 });
