@@ -115,7 +115,7 @@ namespace SonyIMX500.Controllers
                                         response.P = string.Format("{0:P1}", p);
                                         response.C = item.Value["C"].ToString();
                                         response.T = T;
-                                        response.Coord = $"{item.Value["X"]} {item.Value["Y"]} {item.Value["x"]} {item.Value["y"]}";
+                                        response.Coord = $"({item.Value["X"]},{item.Value["Y"]}) - ({item.Value["x"]}, {item.Value["y"]})";
 
                                         responses.Add(response);
                                     }

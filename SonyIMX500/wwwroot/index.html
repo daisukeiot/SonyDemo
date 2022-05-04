@@ -1019,14 +1019,14 @@
                                                 <div>
                                                     <div class="mb-2 row">
                                                         <div class="float-right">
-                                                            <div>
+                                                            <!--<div>
                                                                 <label for="imageGalleryDeviceIdList">Device ID</label>
                                                                 <select name="imageGalleryDeviceIdList" id="imageGalleryDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
-                                                            </div>
-                                                            <div class="btn-group">
+                                                            </div>-->
+                                                            <!--<div class="btn-group">
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortAsc> Ascending </a>
                                                                 <a class="btn btn-default" href="javascript:void(0)" data-sortDesc> Descending </a>
-                                                            </div>
+                                                            </div>-->
                                                         </div>
                                                     </div>
                                                     <div class="wrapper">
@@ -2582,23 +2582,23 @@
             try {
                 toggleLoader(false);
 
-                GetDevicesForImageGallery(targetListName, true)
-                    .then((ret) => {
-                        if (ret) {
-                            // GetAllImages()
-                            //     .then(() => {
-                            //         // ToDo: add summary to header..
-                            //     })
-                            //     .finally(() => {
-                            //         toggleLoader(false);
-                            //     });
-                        } else {
-                            toggleLoader(true);
-                        }
-                    })
-                    .catch(err => {
-                        toggleLoader(true);
-                    })
+                //GetDevicesForImageGallery(targetListName, true)
+                //    .then((ret) => {
+                //        if (ret) {
+                //            // GetAllImages()
+                //            //     .then(() => {
+                //            //         // ToDo: add summary to header..
+                //            //     })
+                //            //     .finally(() => {
+                //            //         toggleLoader(false);
+                //            //     });
+                //        } else {
+                //            toggleLoader(true);
+                //        }
+                //    })
+                //    .catch(err => {
+                //        toggleLoader(true);
+                //    })
 
             } catch (err) {
                 toggleLoader(true);
@@ -2612,6 +2612,11 @@
                     });
             }
 
+        })
+
+        $('#tab-cosmosDb-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $("#cosmosDbJsGrid").jsGrid("loadData");
         })
 
         $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
