@@ -56,7 +56,6 @@
     ],
 
     rowClick: function (args) {
-        var $row = this.rowByItem(args.item);
         viewPhotoWithCosmosDbTable(args.item);
         $row.toggleClass("highlight");
     },

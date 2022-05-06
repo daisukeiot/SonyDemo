@@ -106,7 +106,11 @@ $("#blobStorJsGrid").jsGrid({
         {
             name: "FileName", type: "text", align: "left"
         }
-    ]
+    ],
+
+    rowClick: function (args) {
+        $("#imagePreview").attr("src", args.item.Image);
+    },
 });
 
 var imagerenderer = function (item, value) {
