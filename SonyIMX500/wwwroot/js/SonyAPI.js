@@ -1351,12 +1351,12 @@ function viewPhotoWithCosmosDb(item) {
                                 ctx.fillText(p_String, inferenceData.X + 5, inferenceData.Y + 5);
                             }
                         }
+                        var modal = document.getElementById("modalPhoto");
+                        modal.style.display = "block";
                     }
                 })
                 .finally(() => {
                     toggleLoader(false);
-                    var modal = document.getElementById("modalPhoto");
-                    modal.style.display = "block";
                 });
 
         }

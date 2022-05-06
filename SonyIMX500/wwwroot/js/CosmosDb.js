@@ -74,14 +74,14 @@ function viewPhotoWithCosmosDbTable(item) {
 
     try {
         toggleLoader(false);
+        var canvas = document.getElementById("photoCanvas");
+        var ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         GetImage(deviceId, item.T)
             .then((result) => {
-
                 if (result) {
                     var json = JSON.parse(result);
-                    var canvas = document.getElementById("photoCanvas");
-                    var ctx = canvas.getContext('2d');
                     var img = new Image();
                     img.src = json.uri;
                     img.onload = function () {
@@ -108,13 +108,14 @@ function viewPhotoWithCosmosDbTable(item) {
 
                         ctx.strokeRect(X, Y, x - X, y - Y);
                         ctx.fillText(item.P, X + 5, Y + 5);
+
+                        var modal = document.getElementById("modalPhoto");
+                        modal.style.display = "block";
                     }
                 }
             })
             .finally(() => {
                 toggleLoader(false);
-                var modal = document.getElementById("modalPhoto");
-                modal.style.display = "block";
             });
 
     } catch (err) {
