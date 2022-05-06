@@ -92,16 +92,16 @@ function viewPhotoWithCosmosDbTable(item) {
                         ctx.fillStyle = "rgb(255, 255, 0)"
                         ctx.textBaseline = "top";
 
-                        var coord_text = item.Coord;
+                        var coord_text = item.Coord.replace(/\s+/g, '');
 
                         var coord_text_split = coord_text.split('-');
 
-                        var coord_text_slice = coord_text_split[0].replace(/\s+/g, '').slice(1, -1).split(",");
+                        var coord_text_slice = coord_text_split[0].slice(1, -1).split(",");
 
                         var X = parseInt(coord_text_slice[0]);
                         var Y = parseInt(coord_text_slice[1]);
 
-                        var coord_text_slice = coord_text_split[1].replace(/\s+/g, '').slice(1, -1).split(",");
+                        var coord_text_slice = coord_text_split[1].slice(1, -1).split(",");
                         var x = parseInt(coord_text_slice[0]);
                         var y = parseInt(coord_text_slice[1]);
 
