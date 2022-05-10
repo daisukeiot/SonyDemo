@@ -1,0 +1,116 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json",
+    "view": {
+        "kind": "Form",
+        "properties": {
+            "title": "Sony IMX500 Lab deployment wizard",
+            "steps": [{
+                    "name": "basics",
+                    "label": "Deployment location",
+                    "elements": [{
+                        "name": "resourceScope",
+                        "type": "Microsoft.Common.ResourceScope"
+                    }]
+                },
+                {
+                    "name": "webApp",
+                    "label": "WebApp properties",
+                    "elements": [{
+                            "name": "webAppInfobox",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "None",
+                                "text": "This wizard will guide through customizing and deploying a web app with all of it's components."
+                            }
+                        },
+                        {
+                            "name": "webAppName",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Web App Name",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "location",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Location",
+                            "defaultValue": "[[resourceGroup().location]",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": false,
+                                "regex": "",
+                                "validationMessage": ""
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "skuName",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Sku Name",
+                            "defaultValue": "S1",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": false,
+                                "allowedValues": [{
+                                        "label": "S1",
+                                        "value": "S1"
+                                    },
+                                    {
+                                        "label": "S2",
+                                        "value": "S2"
+                                    },
+                                    {
+                                        "label": "S3",
+                                        "value": "S3"
+                                    },
+                                    {
+                                        "label": "B1",
+                                        "value": "B1"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        },
+                        {
+                            "name": "runtime",
+                            "type": "Microsoft.Common.DropDown",
+                            "label": "Runtime",
+                            "defaultValue": "NODE|16-lts",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": false,
+                                "allowedValues": [{
+                                        "label": "NODE|16-lts",
+                                        "value": "NODE|16-lts"
+                                    },
+                                    {
+                                        "label": "DOTNETCORE|3.0",
+                                        "value": "DOTNETCORE|3.0"
+                                    }
+                                ]
+                            },
+                            "visible": true
+                        }
+                    ]
+                }
+            ]
+        },
+        "outputs": {
+            "parameters": {
+                "webAppName": "[steps('webApp').webAppName]",
+                "skuName": "[steps('webApp').skuName]",
+                "runtime": "[steps('webApp').runtime]"
+            },
+            "kind": "ResourceGroup",
+            "location": "[steps('basics').resourceScope.location.name]",
+            "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
+        }
+    }
+}
