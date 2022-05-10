@@ -1,12 +1,12 @@
 ﻿let myMsal;
 let accessTokenRequest;
 
-authConfig = {
-    auth: {
-        clientId: document.getElementById('clientId').value,
-        redirectUri: window.location.href + "index.html"
-    }
-}
+//authConfig = {
+//    auth: {
+//        clientId: document.getElementById('clientId').value,
+//        redirectUri: window.location.href + "index.html"
+//    }
+//}
 
 loginRequest = {
     scopes: ["User.Read"]
@@ -34,6 +34,20 @@ function setResultElement(resultElement, msg) {
 function sonyApiInitialize() {
 
     console.debug("sonyApiInitialize()");
+
+    var url = window.location.href;
+    var redirectUrl;
+
+    if (url.includes("localhost")) {
+        url = url + "index.html"
+    }
+
+    authConfig = {
+        auth: {
+            clientId: document.getElementById('clientId').value,
+            redirectUri: url
+        }
+    }
 
     myMsal = new Msal.UserAgentApplication(authConfig);
 
