@@ -4,7 +4,7 @@
 	"parameters": {
 		"UniqueId":{
 			"type": "string",
-			"defaultValue": "[uniqueString(resourceGroup().id]",
+			"defaultValue": "[take(uniqueString(resourceGroup().id), 5)]",
 		    "minLength": 3,
 			"maxLength": 5
 		},
