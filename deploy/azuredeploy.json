@@ -72,7 +72,7 @@
 			"apiVersion": "2021-09-01",
 			"sku": "Standard_LRS",
 			"tier": "Standard",
-			"name": "[toLower(format('{0}-{1}', parameters('SignalR_Name'),parameters('UniqueID')))]"
+			"name": "[toLower(format('{0}{1}', parameters('SignalR_Name'),parameters('UniqueID')))]"
 		},
 
 		"githubrepo": {
