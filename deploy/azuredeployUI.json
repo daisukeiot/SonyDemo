@@ -52,14 +52,17 @@
 				"type": "Microsoft.Common.TextBox",
 				"label": "Unique ID",
 				"toolTip": "String to make service names unique",
-				"placeholder": "test",
+				"placeholder": "Enter unique ID, or leave blank to automatically generate unique string.",
 				"multiLine": false,
 				"constraints": {
 				  "required": false,
 				  "validations": [
 					{
-					  "regex": "^[a-z0-9A-Z]{1,30}$",
-					  "message": "Only alphanumeric characters are allowed, and the value must be 1-30 characters long."
+						"regex": "^[a-z0-9A-Z]{4,15}$",
+					  "message": "Only alphanumeric characters are allowed, and the value must be 3-5 characters long."
+					},
+					{
+
 					}
 				  ]
 				},
