@@ -29,7 +29,7 @@ namespace SonyIMX500.Controllers
         {
             _appSettings = optionsAccessor.Value;
             _logger = logger;
-            _cosmosClient = new CosmosClient(_appSettings.CosmosDb.Uri, _appSettings.CosmosDb.AccessKey);
+            _cosmosClient = new CosmosClient(_appSettings.CosmosDb.ConnectionString);
             _cosmosContainer = _cosmosClient.GetContainer(_dbname, _containerName);
         }
 

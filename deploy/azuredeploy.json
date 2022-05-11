@@ -2,10 +2,10 @@
 	"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
 	"contentVersion": "1.0.0.0",
 	"parameters": {
-		"UniqueId":{
+		"UniqueId": {
 			"type": "string",
 			"defaultValue": "[take(uniqueString(resourceGroup().id), 5)]",
-		    "minLength": 3,
+			"minLength": 3,
 			"maxLength": 5
 		},
 		"location": {
@@ -42,10 +42,10 @@
 		"Custom_Vision_AccessKey": {
 			"type": "string"
 		},
-		"AITRIOS_URL" : {
+		"AITRIOS_URL": {
 			"type": "string"
 		},
-		"APP_GW_VALIDATION_KEY" : {
+		"APP_GW_VALIDATION_KEY": {
 			"type": "string"
 		}
 	},
@@ -85,45 +85,12 @@
 			"apiVersion": "2021-04-01"
 		}
 	},
-	"resources": [
-		{
-			"type": "Microsoft.SignalRService/SignalR",
-			"apiVersion": "[variables('signalr').apiVersion]",
-			"name": "[variables('signalr').name]",
-			"location": "[parameters('location')]",
-			"tags": {},
-			"sku": {
-				"name": "[variables('signalr').sku]",
-				"tier": "[variables('signalr').skuTier]",
-				"capacity": 1
-			},
-			"kind": "SignalR",
-			"properties": {
-				"tls": {
-					"clientCertEnabled": false
-				},
-				"features": [
-					{
-						"flag": "ServiceMode",
-						"value": "Classic",
-						"properties": {}
-					}
-				],
-				"cors": {
-					"allowedOrigins": [
-						"[toLower(concat(variables('apps').webappUrl, '.azurewebsites.net'))]",
-						"http://localhost:8000"
-					]
-				}
-			}
-		},
-		{
+	"resources": [{
 			"type": "Microsoft.Storage/storageAccounts",
 			"apiVersion": "[variables('storageAcct').apiVersion]",
 			"name": "[variables('storageAcct').name]",
 			"location": "[parameters('location')]",
-			"tags": {
-			},
+			"tags": {},
 			"sku": {
 				"name": "[variables('storageAcct').sku]"
 			},
@@ -165,60 +132,54 @@
 					"contentVersion": "1.0.0.0",
 					"parameters": {},
 					"variables": {},
-					"resources": [
-						{
-							"type": "Microsoft.Web/sites",
-							"apiVersion": "[variables('apps').apiVersion]",
+					"resources": [{
+						"type": "Microsoft.Web/sites",
+						"apiVersion": "[variables('apps').apiVersion]",
+						"name": "[variables('apps').functionsName]",
+						"location": "[parameters('location')]",
+						"dependsOn": [],
+						"tags": {},
+						"kind": "functionapp",
+						"identity": {
+							"type": "SystemAssigned"
+						},
+						"properties": {
 							"name": "[variables('apps').functionsName]",
-							"location": "[parameters('location')]",
-							"dependsOn": [
-							],
-							"tags": {},
-							"kind": "functionapp",
-							"identity": {
-								"type": "SystemAssigned"
-							},
-							"properties": {
-								"name": "[variables('apps').functionsName]",
-								"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]",
-								"clientAffinityEnabled": false,
-								"enabled": true,
-								"siteConfig": {
-									"alwaysOn": false,
-									"cors": {
-										"allowedOrigins": [
-											"*"
-										]
-									},
-									"appSettings": [
-										{
-											"name": "FUNCTIONS_EXTENSION_VERSION",
-											"value": "~4"
-										},
-										{
-											"name": "AzureWebJobsSecretStorageType",
-											"value": "Files"
-										}
+							"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]",
+							"clientAffinityEnabled": false,
+							"enabled": true,
+							"siteConfig": {
+								"alwaysOn": false,
+								"cors": {
+									"allowedOrigins": [
+										"*"
 									]
-								}
-							},
-							"resources": [
-								{
-									"type": "sourcecontrols",
-									"name": "web",
-									"apiVersion": "[variables('apps').apiVersion]",
-									"dependsOn": [
-										"[resourceId('Microsoft.Web/Sites', variables('apps').functionsName)]"
-									],
-									"properties": {
-										"RepoUrl": "[variables('githubrepo').functions]",
-										"branch": "[variables('githubrepo').functionsBranch]",
-										"IsManualIntegration": true
+								},
+								"appSettings": [{
+										"name": "FUNCTIONS_EXTENSION_VERSION",
+										"value": "~4"
+									},
+									{
+										"name": "AzureWebJobsSecretStorageType",
+										"value": "Files"
 									}
-								}
-							]
-						}
-					]
+								]
+							}
+						},
+						"resources": [{
+							"type": "sourcecontrols",
+							"name": "web",
+							"apiVersion": "[variables('apps').apiVersion]",
+							"dependsOn": [
+								"[resourceId('Microsoft.Web/Sites', variables('apps').functionsName)]"
+							],
+							"properties": {
+								"RepoUrl": "[variables('githubrepo').functions]",
+								"branch": "[variables('githubrepo').functionsBranch]",
+								"IsManualIntegration": true
+							}
+						}]
+					}]
 				}
 			}
 		},
@@ -259,39 +220,67 @@
 					"contentVersion": "1.0.0.0",
 					"parameters": {},
 					"variables": {},
-					"resources": [
-						{
-							"type": "Microsoft.Web/sites",
+					"resources": [{
+						"type": "Microsoft.Web/sites",
+						"apiVersion": "[variables('apps').apiVersion]",
+						"name": "[variables('apps').webappName]",
+						"location": "[parameters('location')]",
+						"dependsOn": [],
+						"tags": {},
+						"kind": "app",
+						"properties": {
+							"enabled": true,
+							"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
+						},
+						"resources": [{
+							"type": "sourcecontrols",
+							"name": "web",
 							"apiVersion": "[variables('apps').apiVersion]",
-							"name": "[variables('apps').webappName]",
-							"location": "[parameters('location')]",
 							"dependsOn": [
+								"[resourceId('Microsoft.Web/Sites', variables('apps').webappName)]"
 							],
-							"tags": {},
-							"kind": "app",
 							"properties": {
-								"enabled": true,
-								"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
-							},
-							"resources": [
-								{
-									"type": "sourcecontrols",
-									"name": "web",
-									"apiVersion": "[variables('apps').apiVersion]",
-									"dependsOn": [
-										"[resourceId('Microsoft.Web/Sites', variables('apps').webappName)]"
-									],
-									"properties": {
-										"RepoUrl": "[variables('githubrepo').webApp]",
-										"branch": "[variables('githubrepo').webAppBranch]",
-										"IsManualIntegration": true
-									}
-								}
-							]
-						}
+								"RepoUrl": "[variables('githubrepo').webApp]",
+								"branch": "[variables('githubrepo').webAppBranch]",
+								"IsManualIntegration": true
+							}
+						}]
+					}]
+				}
+			}
+		},
+		{
+			"type": "Microsoft.SignalRService/SignalR",
+			"apiVersion": "[variables('signalr').apiVersion]",
+			"name": "[variables('signalr').name]",
+			"location": "[parameters('location')]",
+			"tags": {},
+			"sku": {
+				"name": "[variables('signalr').sku]",
+				"tier": "[variables('signalr').skuTier]",
+				"capacity": 1
+			},
+			"kind": "SignalR",
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Webapp')]"
+			],
+			"properties": {
+				"tls": {
+					"clientCertEnabled": false
+				},
+				"features": [{
+					"flag": "ServiceMode",
+					"value": "Classic",
+					"properties": {}
+				}],
+				"cors": {
+					"allowedOrigins": [
+						"[toLower(concat(variables('apps').webappUrl, '.azurewebsites.net'))]",
+						"http://localhost:8000"
 					]
 				}
 			}
+
 		},
 		{
 			"type": "Microsoft.Web/sites/config",
@@ -302,13 +291,13 @@
 				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Webapp')]"
 			],
 			"properties": {
-				"Azure__Blob__ConnectionString": "",
-				"Azure__CosmosDb__AccessKey": "",
+				"Azure__Blob__ConnectionString": "[parameters('Blob_Storage_Connection_String')]",
+				"Azure__CosmosDb__AccessKey": "[parameters('Blob_Storage_Connection_String')]",
 				"Azure__CosmosDb__Uri": "https://cosmos-labstaging05.documents.azure.com:443/",
-				"Azure__CustomVision__AccessKey": "",
-				"Azure__CustomVision__EndPoint": "https://japaneast.api.cognitive.microsoft.com",
-				"Azure__SonyAPI__AppGwValidation": "",
-				"Azure__SonyAPI__BaseUrl": "https://apim-labstaging05.azure-api.net/v09_m/v1",
+				"Azure__CustomVision__EndPoint": "[parameters('Custom_Vision_Endpoint')]",
+				"Azure__CustomVision__AccessKey": "[parameters('Custom_Vision_AccessKey')]",
+				"Azure__SonyAPI__AppGwValidation": "[parameters('APP_GW_VALIDATION_KEY')]",
+				"Azure__SonyAPI__BaseUrl": "[parameters('AITRIOS_URL')]",
 				"Azure__SignalR__ConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]"
 			}
 		}
