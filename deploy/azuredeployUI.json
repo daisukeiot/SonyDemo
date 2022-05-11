@@ -51,9 +51,9 @@
 				"name": "uniqueId",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Unique ID",
-				"defaultValue": "[uniqueString(resourceGroup().id)]",
+				"defaultValue": "[format('{0}', uniqueString(resourceGroup().id))]",
 				"toolTip": "String to make service names unique",
-				"placeholder": "",
+				"placeholder": "test",
 				"multiLine": false,
 				"constraints": {
 				  "required": true,
