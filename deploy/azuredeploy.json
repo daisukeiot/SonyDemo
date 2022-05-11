@@ -59,7 +59,7 @@
 			"hostingPlan": "[format('{0}-AppHost-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
 			"functionsName": "[format('{0}-{1}', parameters('Function_App_Name'),parameters('UniqueID'))]",
 			"webappName": "[format('{0}-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
-			"webappUrl": "[toLower(format('{0}-{1}.azurewebsites.net', parameters('Web_App_Name'),parameters('UniqueID')))]"
+			"webappUrl": "[toLower(format('https://{0}-{1}.azurewebsites.net', parameters('Web_App_Name'),parameters('UniqueID')))]"
 		},
 		"signalr": {
 			"apiVersion": "2022-02-01",
@@ -184,25 +184,6 @@
 			}
 		},
 		{
-			"type": "Microsoft.Web/sites/config",
-			"apiVersion": "[variables('apps').apiVersion]",
-			"name": "[concat(variables('apps').functionsName, '/appsettings')]",
-			"dependsOn": [
-				"[resourceId('Microsoft.SignalRService/SignalR', variables('signalr').name)]",
-				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Functions')]"
-			],
-			"properties": {
-				"FUNCTIONS_WORKER_RUNTIME": "dotnet",
-				"FUNCTIONS_EXTENSION_VERSION": "~4",
-				"AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
-				"AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
-				"AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]",
-				"CosmosDbConnectionString": "[parameters('Cosmos_Db_Connection_String')]",
-				"EventHubConnectionString": "[parameters('Event_Hub_Connection_String')]"
-
-			}
-		},
-		{
 			"type": "Microsoft.Resources/deployments",
 			"apiVersion": "[variables('deployment').apiVersion]",
 			"name": "Deploy-Webapp",
@@ -275,12 +256,31 @@
 				}],
 				"cors": {
 					"allowedOrigins": [
-						"[toLower(concat(variables('apps').webappUrl, '.azurewebsites.net'))]",
+						"[variables('apps').webappUrl]",
 						"http://localhost:8000"
 					]
 				}
 			}
 
+		},
+		{
+			"type": "Microsoft.Web/sites/config",
+			"apiVersion": "[variables('apps').apiVersion]",
+			"name": "[concat(variables('apps').functionsName, '/appsettings')]",
+			"dependsOn": [
+				"[resourceId('Microsoft.SignalRService/SignalR', variables('signalr').name)]",
+				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Functions')]"
+			],
+			"properties": {
+				"FUNCTIONS_WORKER_RUNTIME": "dotnet",
+				"FUNCTIONS_EXTENSION_VERSION": "~4",
+				"AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
+				"AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
+				"AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]",
+				"CosmosDbConnectionString": "[parameters('Cosmos_Db_Connection_String')]",
+				"EventHubConnectionString": "[parameters('Event_Hub_Connection_String')]"
+
+			}
 		},
 		{
 			"type": "Microsoft.Web/sites/config",
