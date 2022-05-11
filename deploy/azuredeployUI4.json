@@ -221,18 +221,18 @@
         ]
       },
       "outputs": {
-        "location": "[basics('location')]",
-        "parameters": {
-          "storageAccountNamePrefix": "[steps('storageConfig').storageAccounts.prefix]",
-          "storageAccountType": "[steps('storageConfig').storageAccounts.type]",
-          "Event_Hub_Connection_String": "[steps('aitriosConfig').eventHubsConnectionString]",
-          "Cosmos_Db_Connection_String": "[steps('aitriosConfig').cosmosDbConnectionString]",
-          "Blob_Storage_Connection_String": "[steps('aitriosConfig').blobStorageConnectionString]",
-          "Custom_Vision_Endpoint": "[steps('aitriosConfig').customVisionEndPoint]",
-          "Custom_Vision_AccessKey": "[steps('aitriosConfig').customVisionAccessKey]",
-          "AITRIOS_URL": "[steps('aitriosConfig').aitriosUrl]",
-          "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]"
-        }
+        "kind": "ResourceGroup",
+        "location": "[steps('basics').resourceScope.location.name]",
+        "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]",
+        "storageAccountNamePrefix": "[steps('storageConfig').storageAccounts.prefix]",
+        "storageAccountType": "[steps('storageConfig').storageAccounts.type]",
+        "Event_Hub_Connection_String": "[steps('aitriosConfig').eventHubsConnectionString]",
+        "Cosmos_Db_Connection_String": "[steps('aitriosConfig').cosmosDbConnectionString]",
+        "Blob_Storage_Connection_String": "[steps('aitriosConfig').blobStorageConnectionString]",
+        "Custom_Vision_Endpoint": "[steps('aitriosConfig').customVisionEndPoint]",
+        "Custom_Vision_AccessKey": "[steps('aitriosConfig').customVisionAccessKey]",
+        "AITRIOS_URL": "[steps('aitriosConfig').aitriosUrl]",
+        "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]"
       }
     }
   }
