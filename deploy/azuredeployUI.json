@@ -234,7 +234,7 @@
           "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]"
         },
         "kind": "ResourceGroup",
-        "location": "[steps('basics').location.name]",
+        "location": "[steps('basics').resourceScope.location]",
         "resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
       }
     }
