@@ -1,0 +1,3021 @@
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard Prototype</title>
+    <!-- for responsive -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/alt/adminlte.light.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+    <!--
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.light.min.css" />
+    -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/site.css" />
+    <style>
+        @keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
+    <div class="wrapper">
+
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="images/azure.png" alt="Azure Logo" height="240" width="240" style="">
+        </div>
+
+        <!-- Top Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Top Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">API Portal</a>
+                </li>
+            </ul>
+
+            <!-- Top Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Navbar Search -->
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="navbar-search-block">
+                        <form class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-envelope mr-2"></i> 4 new messages
+                            <span class="float-right text-muted text-sm">3 mins</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file mr-2"></i> 3 new reports
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Side Bar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+                <img src="images/azure.png" alt="Brand Logo" class="brand-image img-circle" style=".img-circle.border-circle:10%">
+                <span class="brand-text font-weight-light">Dashboard Sample</span>
+            </a>
+            <div class="sidebar">
+                <!-- SidebarSearch Form -->
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                                <i class="fas fa-search fa-fw"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <span class="badge badge-info right">3</span>
+                                <p>
+                                    Drop Down Menu
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./index.html" class="nav-link active">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 1</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./index.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 2</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 3</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Link
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-md-10">
+                            <h1>Sony IMX500 Hands-on Lab</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div id="loader" class="loading" style="display:none"></div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12 col-sm-12">
+                            <div class="card card-primary card-tabs">
+                                <div class="card-header p-0 pt-1">
+                                    <ul class="nav nav-tabs" id="tab-main" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="tab-setup-label" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry/Events</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-imageGallery-label" data-toggle="pill" href="#tab-imageGallery" role="tab" aria-controls="tab-imageGallery" aria-selected="false">Images from IMX500</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-cosmosDb-label" data-toggle="pill" href="#tab-cosmosDb" role="tab" aria-controls="tab-cosmosDb" aria-selected="false">AI Inference History</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-apiOutput-label" data-toggle="pill" href="#tab-api-output" role="tab" aria-controls="tab-api-output" aria-selected="false">API Output</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="tab-other-label" data-toggle="pill" href="#tab-other" role="tab" aria-controls="tab-other" aria-selected="false">Other</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="card-body">
+                                    <div class="tab-content" id="tab-main">
+                                        <!--Set up Tab-->
+                                        <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
+                                            <!-- Summary -->
+                                            <div class="row">
+                                            </div>
+
+                                            <!-- Progress Bar -->
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h3 class="card-title">Overall Progress</h3>
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <div class="progress mb-3">
+                                                                <div class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- End of Progress Bar row -->
+
+                                            <div class="row">
+                                                <div class="col-md-10">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div id="accordion">
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionSetup">
+                                                                                Step 1 : Login to acquire "Access Token" to Sony API.
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionSetup" class="collapse show" data-parent="#accordion">
+                                                                        <form id="loginForm">
+                                                                            <div class="card-body">
+                                                                                <div class="card card-widget widget-user-2">
+                                                                                    <div class="widget-user-header bg-warning">
+                                                                                        <div class="widget-user-image">
+                                                                                            <i class="fas fa-user" style="float:left;font-size:4em"></i>
+                                                                                        </div>
+                                                                                        <h3 id="userName" class="widget-user-username">User Name</h3>
+                                                                                        <h5 id="userDesc" class="widget-user-desc">User Desc</h5>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="form-group">
+                                                                                    <label for="clientId">Client ID</label>
+                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="43132861-898d-4c85-9b7f-6f0552f5360b">
+                                                                                </div>
+
+                                                                                <div class="info-box">
+                                                                                    <div class="info-box-content">
+                                                                                        <span class="info-box-text">
+                                                                                            <label for="taToken">Token</label>
+                                                                                            <textarea id="taToken" class="form-control" cols="30" rows="3"></textarea>
+                                                                                        </span>
+                                                                                        <div style="margin-top:0.5em">
+                                                                                            <button type="button" class="btn btn-outline-dark" id="copyTokenBtn" disabled>
+                                                                                                <i class="fas fa-copy"></i> Copy Token
+                                                                                            </button>
+                                                                                            <button type="button" class="btn btn-outline-dark" id="pasteTokenBtn">
+                                                                                                <i class="fas fa-copy"></i> Paste Token
+                                                                                            </button>
+                                                                                        </div>
+                                                                                        <span class="info-box-text" style="margin-top:0.5em">
+                                                                                            <label for="spanTokenExpire" class="label-right">Expiration:</label>
+                                                                                            <span class="info-box-text" style="display:contents" id='spanTokenExpire'></span>
+                                                                                        </span>
+                                                                                        <span class="info-box-text" style="margin-top:0.5em">
+                                                                                            <label for="spanTokenLastUpdate" class="label-right">Last Update:</label>
+                                                                                            <span class="info-box-text" id='spanTokenLastUpdate' style="display:contents"></span>
+                                                                                        </span>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="card-footer">
+                                                                                <div class="row" style="position:relative">
+                                                                                    <div>
+                                                                                        <button type="button" class="btn btn-success" id="loginBtn">
+                                                                                            <i class="fas fa-sign-in-alt btn-fa"></i>Login
+                                                                                        </button>
+                                                                                    </div>
+                                                                                    <div class="vertical-center">
+                                                                                        <div class="info-box-text" id='btnLoginResult'></div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Create Custom Vision -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCreateBaseCustomVisionProject">
+                                                                                Step 2 : Create or Select Custom Vision project
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionCreateBaseCustomVisionProject" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div>
+                                                                                <div class="info-box">
+                                                                                    <div class="info-box-content">
+                                                                                        <div class="info-box-text">
+                                                                                            <label for="newProjectDiv">Create New Custom Vision Project</label>
+                                                                                        </div>
+                                                                                        <div id="createBaseCustomVisionProjectDiv">
+                                                                                            <form id="createBaseCustomVisionProjectForm">
+                                                                                                <div class="form-group">
+                                                                                                    <label for="createBaseCustomVisionProjectName">Project Name</label>
+                                                                                                    <input type="text" name="createBaseCustomVisionProjectName" class="form-control" id="createBaseCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
+                                                                                                    <label for="createBaseCustomVisionProjectComment">Comment (Optional)</label>
+                                                                                                    <input type="text" name="createBaseCustomVisionProjectComment" class="form-control" id="createBaseCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
+                                                                                                </div>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                        <div class="info-box-tex" style="position:relative">
+                                                                                            <div>
+                                                                                                <button type="button" class="btn btn-success" id="createBaseCustomVisionProjectBtn">
+                                                                                                    <i class="fas fa-plus btn-fa"></i>Create
+                                                                                                </button>
+                                                                                            </div>
+                                                                                            <div class="vertical-center">
+                                                                                                <div class="info-box-text" id='createBaseCustomVisionProjectBtnResult'>Place Holder : To be deleted</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="info-box">
+                                                                                    <div class="info-box-content">
+                                                                                        <div class="info-box-text">
+                                                                                            <label for="selectCustomVisionProjectDiv">Select Custom Vision Project</label>
+                                                                                        </div>
+                                                                                        <div id="selectCustomVisionProjectDiv">
+                                                                                            <select id="selectCustomVisionProjectList" class="form-control select2" style="width: 100%;">
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                            <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
+                                                                                                <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
+                                                                                            </button>-->
+                                                                                            <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
+                                                                                                <i class="fas fa-trash-alt btn-fa"></i>Delete (Sony API)
+                                                                                            </button>
+                                                                                            <div class="vertical-center">
+                                                                                                <div class="info-box-text" style="overflow-x:auto" id='deleteCustomVisionProjectBtnResult'>Place Holder : To be deleted</div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Build Custom Vision -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionVisitCustomVision">
+                                                                                Step 3 : Build and Train Custom Vision Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionVisitCustomVision" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div class="info-box-text">
+                                                                                <select id="visitCustomVisionProjectList" class="form-control select2" style="width: 100%;">
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="info-box-text" style="margin-top:0.5em">
+                                                                                Visit https://customvision.ai to Upload and Tag photos, and start training.
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <button type="button" class="btn btn-success" id="visitCustomVisionBtn" disabled>
+                                                                                <i class="fas fa-external-link-alt btn-fa"></i>Open a new tab.
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Save Custom Vision -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveCustomVisionModel">
+                                                                                Step 4 : Save Custom Vision Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionSaveCustomVisionModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="saveCustomVisionDiv">
+                                                                                <form id="saveCustomVisionModelForm">
+                                                                                    <div class="form-group">
+                                                                                        <div class="info-box-text">
+                                                                                            <label for="saveCustomVisionModelProjectNameList">Project Name</label>
+                                                                                        </div>
+                                                                                        <div id="projectListDiv">
+                                                                                            <select id="saveCustomVisionModelProjectNameList" class="form-control select2" style="width: 100%;">
+                                                                                            </select>
+                                                                                        </div>
+
+                                                                                        <label for="saveCustomVisionModelProjectModelId">Model ID (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelProjectModelId" class="form-control" id="saveCustomVisionModelProjectModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+
+                                                                                        <label for="saveCustomVisionModelInitialVersionNumber">Initial Version Number (Optional)</label>
+                                                                                        <input type="number" name="saveCustomVisionModelInitialVersionNumber" class="form-control" id="saveCustomVisionModelInitialVersionNumber" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="" min="1" max="100">
+
+                                                                                        <label for="saveCustomVisionModelFunctionality">Functionality (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelFunctionality" class="form-control" id="saveCustomVisionModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
+
+                                                                                        <label for="saveCustomVisionModelVendorName">Vendor Name (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelVendorName" class="form-control" id="saveCustomVisionModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
+
+                                                                                        <label for="saveCustomVisionModelComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="saveCustomVisionModelComment" class="form-control" id="saveCustomVisionModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="saveCustomVisionModelBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Save Custom Vision model
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='saveCustomVisionModelBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Convert Model -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionConvertModel">
+                                                                                Step 5 : Convert Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionConvertModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="convertModelDiv">
+                                                                                <label for="convertModelModelIdList">Model ID</label>
+                                                                                <select name="convertModelModelIdList" id="convertModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                <label for="convertModelDeviceIdList">Device ID (Optional)</label>
+                                                                                <select name="convertModelDeviceIdList" id="convertModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="convertModelBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Convert Model
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='convertModelBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
+                                                                                </button>
+                                                                                <label for="convertModelGetBaseModelStatusConversionDiv" style="margin-left:1em">Conversion ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='convertModelGetBaseModelStatusConversionDiv'></div>
+                                                                                </div>
+                                                                                <label for="convertModelGetBaseModelStatusStageDiv" style="margin-left:1em">Stage : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='convertModelGetBaseModelStatusStageDiv'></div>
+                                                                                </div>
+                                                                                <label for="convertModelGetBaseModelStatusBtnResult" style="margin-left:1em">Result : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='convertModelGetBaseModelStatusBtnResult'></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Publish Model -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionPublishModel">
+                                                                                Step 6 : Publish Model
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionPublishModel" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="publishModelDiv">
+                                                                                <label for="publishModelModelIdList">Model ID</label>
+                                                                                <select name="publishModelModelIdList" id="publishModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                <label for="publishModelDeviceIdList">Device ID (Optional)</label>
+                                                                                <select name="publishModelDeviceIdList" id="publishModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="publishModelBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Publish Model
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='publishModelBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="publishModelGetBaseModelStatusBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
+                                                                                </button>
+                                                                                <label for="publishModelGetBaseModelStatusConversionIdDiv" style="margin-left:1em">Conversion ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='publishModelGetBaseModelStatusConversionIdDiv'></div>
+                                                                                </div>
+                                                                                <label for="publishModelGetBaseModelStatusStageDiv" style="margin-left:1em">Stage : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='publishModelGetBaseModelStatusStageDiv'></div>
+                                                                                </div>
+                                                                                <label for="publishModelGetBaseModelStatusBtnResult" style="margin-left:1em">Result : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='publishModelGetBaseModelStatusBtnResult'></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Create Deployment -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionCreatePeployConfiguration">
+                                                                                Step 7 : Create Deployment
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionCreatePeployConfiguration" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="createDeployConfigurationDiv">
+                                                                                <form id="createDeployConfigurationForm">
+                                                                                    <div class="form-group">
+
+                                                                                        <label for="createDeployConfigurationConfigId">Config ID</label>
+                                                                                        <input type="text" name="createDeployConfigurationConfigId" class="form-control" id="createDeployConfigurationConfigId" placeholder="configID. Less than 20 characters." value="">
+
+                                                                                        <label for="createDeployConfigurationSensorLoaderVersionNumber">SensorLoader version number</label>
+                                                                                        <select name="createDeployConfigurationSensorLoaderVersionNumber" id="createDeployConfigurationSensorLoaderVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="createDeployConfigurationSensorVersionNumber">Sensor version number</label>
+                                                                                        <select name="createDeployConfigurationSensorVersionNumber" id="createDeployConfigurationSensorVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="createDeployConfigurationModelId">Model ID</label>
+                                                                                        <select name="createDeployConfigurationModelId" id="createDeployConfigurationModelId" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="createDeployConfigurationApFwVersionNumber">ApFw version number</label>
+                                                                                        <select name="createDeployConfigurationApFwVersionNumber" id="createDeployConfigurationApFwVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="createDeployConfigurationComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="createDeployConfigurationComment" class="form-control" id="createDeployConfigurationComment" placeholder="Description. Less than 100 characters." value="">
+
+                                                                                        <label for="createDeployConfigurationDeviceTypeList">Device Type (Optional)</label>
+                                                                                        <select name="createDeployConfigurationDeviceTypeList" id="createDeployConfigurationDeviceTypeList" class="form-control">
+                                                                                            <option disabled selected>Select Device Type</option>
+                                                                                            <option value="00">MPU Based (Type4)</option>
+                                                                                            <option value="01">MCU Bsed (Type3)</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployConfigurationModelVersionNumber">Model Version Number (Optional)</label>
+                                                                                        <input type="text" name="createDeployConfigurationModelVersionNumber" class="form-control" id="createDeployConfigurationModelVersionNumber" placeholder="Model version number." value="">
+
+                                                                                        <label for="createDeployConfigurationColorMatrixModelList">Color Matrix Mode (Optional)</label>
+                                                                                        <select name="createDeployConfigurationColorMatrixModelList" id="createDeployConfigurationColorMatrixModelList" class="form-control">
+                                                                                            <option disabled selected>Select Matrix Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployConfigurationColorMatrixFileName">Color Matrix File Name (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployConfigurationColorMatrixFileName" class="custom-file-input" id="createDeployConfigurationColorMatrixFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <label for="createDeployConfigurationGammaModeList">Gamma Mode (Optional)</label>
+                                                                                        <select name="createDeployConfigurationGammaModeList" id="createDeployConfigurationGammaModeList" class="form-control">
+                                                                                            <option disabled selected>Select Gamma Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployConfigurationGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployConfigurationGammaFileName" class="custom-file-input" id="createDeployConfigurationGammaFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <label for="createDeployConfigurationLscModeList">LSC Correction Camera Settings (Optional)</label>
+                                                                                        <select name="createDeployConfigurationLscModeList" id="createDeployConfigurationLscModeList" class="form-control">
+                                                                                            <option disabled selected>Select LSC Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployConfigurationLscFileName">LSC Correction Camera Settings File (bin) name (Optional)</label>
+                                                                                        <input type="text" name="createDeployConfigurationLscFileName" class="form-control" id="createDeployConfigurationLscFileName" placeholder="LSC Correction Camera Settings file (bin) name." value="">
+
+                                                                                        <label for="createDeployConfigurationPrewbModeList">PreWB adjustment value Camera settings. (Optional)</label>
+                                                                                        <select name="createDeployConfigurationPrewbModeList" id="createDeployConfigurationPrewbModeList" class="form-control">
+                                                                                            <option disabled selected>Select PreWB Mode</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) name (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployConfigurationPrewbFileName" class="custom-file-input" id="createDeployConfigurationPrewbFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <label for="createDeployConfigurationDewarpModeList">Distortion correction Camera settings(bin)type. (Optional)</label>
+                                                                                        <select name="createDeployConfigurationDewarpModeList" id="createDeployConfigurationDewarpModeList" class="form-control">
+                                                                                            <option disabled selected>Select Distortion Correction Type</option>
+                                                                                            <option>none</option>
+                                                                                            <option>std</option>
+                                                                                            <option>custom</option>
+                                                                                        </select>
+
+                                                                                        <label for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name. (Optional)</label>
+                                                                                        <div class="input-group">
+                                                                                            <div class="custom-file">
+                                                                                                <input type="file" name="createDeployConfigurationDewarpFileName" class="custom-file-input" id="createDeployConfigurationDewarpFileName">
+                                                                                                <label class="custom-file-label" for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name.</label>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="createDeployConfigurationBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Create Deploy Configuraion
+                                                                                </button>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='createDeployConfigurationResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="createDeployConfigurationGetDeployConfigurationsBtn">
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy Configurations
+                                                                                </button>
+                                                                                <label for="createDeployConfigurationGetDeployConfigurationsList" style="margin-left:1em">Configuration ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <select name="createDeployConfigurationGetDeployConfigurationsList" id="createDeployConfigurationGetDeployConfigurationsList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Deploy Model -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionDeployByConfiguration">
+                                                                                Step 8 : Deploy by Configuration
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionDeployByConfiguration" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="deployByConfiguratonDiv">
+                                                                                <form id="deployByConfiguraionForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="deployByConfiguraionFormConfigIdList">Config ID</label>
+                                                                                        <select name="deployByConfiguraionFormConfigIdList" id="deployByConfiguraionFormConfigIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="deployByConfiguraionDeviceIdList">Device ID</label>
+                                                                                        <select name="deployByConfiguraionDeviceIdList" id="deployByConfiguraionDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="deployByConfiguraionComment">Comment (Optional)</label>
+                                                                                        <input type="text" name="deployByConfiguraionComment" class="form-control" id="deployByConfiguraionComment" placeholder="Description. Less than 100 characters." value="">
+
+                                                                                        <label for="deployByConfiguraionReplaceModelIdList">Model ID to replace (Optional)</label>
+                                                                                        <select name="deployByConfiguraionReplaceModelIdList" id="deployByConfiguraionReplaceModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Deploy by Configuraion
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='deployByConfiguratonBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" id="getDeployHistoryBtn" disabled>
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy History
+                                                                                </button>
+                                                                                <label for="deployByConfiguratonGetDeployHistoryDeployModelIdDiv" style="margin-left:1em">Model ID : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployModelIdDiv'></div>
+                                                                                </div>
+                                                                                <label for="deployByConfiguratonGetDeployHistoryDeployStatusDiv" style="margin-left:1em">Deploy Status : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployStatusDiv'></div>
+                                                                                </div>
+                                                                                <label for="getDeployHistoryBtnResult" style="margin-left:1em">Result : </label>
+                                                                                <div style="display:inline-block">
+                                                                                    <div class="info-box-text" id='getDeployHistoryBtnResult'></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Start Upload Inference Result -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartUploadInferenceResult">
+                                                                                Step 9 : Start/Stop UploadInferenceResult
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStartUploadInferenceResult" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="startUploadInferenceResultDiv">
+                                                                                <form id="startUploadInferenceResultForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="startUploadInferenceResultDeviceIdList">Device ID</label>
+                                                                                        <select name="startUploadInferenceResultDeviceIdList" id="startUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
+                                                                                               value="" min="1" , max="2592000">
+
+                                                                                        <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
+                                                                                               value="" min="1" , max="64">
+
+                                                                                        <label for="startUploadInferenceResultCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropHOffset" class="form-control" id="startUploadInferenceResultCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+
+                                                                                        <label for="startUploadInferenceResultCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropVOffset" class="form-control" id="startUploadInferenceResultCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+
+                                                                                        <label for="startUploadInferenceResultCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropHSize" class="form-control" id="startUploadInferenceResultCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+
+                                                                                        <label for="startUploadInferenceResultCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultCropVSize" class="form-control" id="startUploadInferenceResultCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+
+                                                                                        <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 message (Optional)</label>
+                                                                                        <input type="number" name="startUploadInferenceResultNumberOfInferencesPerMessage" class="form-control" id="startUploadInferenceResultNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
+                                                                                               value="" min="1" , max="100">
+
+                                                                                        <label for="startUploadInferenceResultModelIdList">Model ID (Optional)</label>
+                                                                                        <select name="startUploadInferenceResultModelIdList" id="startUploadInferenceResultModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="startUploadInferenceResultBtn" disabled>
+                                                                                        <i class="fas fa-play btn-fa"></i>Start UploadInferenceResult
+                                                                                    </button>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
+                                                                                        <i class="fas fa-stop btn-fa"></i>Stop UploadInferenceResult
+                                                                                    </button>
+
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='btnStartUploadInferenceResultResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Stop Upload Inference Result -->
+                                                                <!--<div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadInferenceResult">
+                                                                                Step 10 : Stop Upload Inference Result
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStopUploadInferenceResult" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="stopUploadInferenceResultDiv">
+                                                                                <form id="stopUploadInferenceResultForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="stopUploadInferenceResultDeviceIdList">Device ID</label>
+                                                                                        <select name="stopUploadInferenceResultDeviceIdList" id="stopUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Stop Upload Inference Result
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='stopUploadInferenceResultBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>-->
+                                                                <!-- Start Upload Retraining Data -->
+                                                                <div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStartUploadRetrainingData">
+                                                                                Step 10 : Start/Stop UploadingRetrainingData
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStartUploadRetrainingData" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="startUploadRetrainingDataDiv">
+                                                                                <form id="startUploadRetrainingDataForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="startUploadRetrainingDataDeviceIdList">Device ID</label>
+                                                                                        <select name="startUploadRetrainingDataDeviceIdList" id="startUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                                                                        <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
+                                                                                        <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
+                                                                                            <option disabled>Select Collection Mode</option>
+                                                                                            <option value="0">Image</option>
+                                                                                            <option value="1" selected>image & Inference results metadata</option>
+                                                                                        </select>
+
+                                                                                        <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
+                                                                                        <select name="startUploadRetrainingDataFileFormatList" id="startUploadRetrainingDataFileFormatList" class="form-control">
+                                                                                            <option disabled selected>Select Image File Format</option>
+                                                                                            <option value="JPG">JPEG</option>
+                                                                                            <option value="BMP">Bitmap (BMP)</option>
+                                                                                        </select>
+
+                                                                                        <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
+
+                                                                                        <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" min="0" max="3040">
+
+                                                                                        <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" min="0" max="4056">
+
+                                                                                        <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
+
+                                                                                        <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" value="3" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000"
+                                                                                               min="0" max="10000">
+
+                                                                                        <label for="startUploadRetrainingDataFrequencyOfImages">Frequency of fetching images (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataFrequencyOfImages" class="form-control" id="startUploadRetrainingDataFrequencyOfImages" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
+                                                                                               min="1" max="2592000">
+
+                                                                                        <label for="startUploadRetrainingDataMaxDetectionPerFrame">Number of objects included in 1 frame (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
+                                                                                               min="1" max="64">
+
+                                                                                        <label for="startUploadRetrainingDataNumInferencePerMessage">Number of inference results to include in one message. (Optional)</label>
+                                                                                        <input type="number" name="startUploadRetrainingDataNumInferencePerMessage" class="form-control" id="startUploadRetrainingDataNumInferencePerMessage" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100"
+                                                                                               min="1" max="100">
+
+                                                                                        <label for="startUploadRetrainingDataModelIdList">Model ID (Optional)</label>
+                                                                                        <select name="startUploadRetrainingDataModelIdList" id="startUploadRetrainingDataModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="card-footer">
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="startUploadRetrainingDataBtn" disabled>
+                                                                                        <i class="fas fa-play btn-fa"></i>Start UploadRetrainingData
+                                                                                    </button>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
+                                                                                        <i class="fas fa-stop btn-fa"></i>Stop UploadRetrainingData
+                                                                                    </button>
+
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='startUploadRetrainingDataBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- Stop Upload Retraining Data -->
+                                                                <!--<div class="card card-primary">
+                                                                    <div class="card-header">
+                                                                        <h4 class="card-title w-100">
+                                                                            <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadRetrainingData">
+                                                                                Step 12 : Stop Upload Retraining Data
+                                                                            </a>
+                                                                        </h4>
+                                                                    </div>
+                                                                    <div id="accordionStopUploadRetrainingData" class="collapse" data-parent="#accordion">
+                                                                        <div class="card-body">
+                                                                            <div id="stopUploadInferenceResultDiv">
+                                                                                <form id="stopUploadRetrainingDataForm">
+                                                                                    <div class="form-group">
+                                                                                        <label for="stopUploadRetrainingDataDeviceIdList">Device ID</label>
+                                                                                        <select name="stopUploadRetrainingDataDeviceIdList" id="stopUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="position:relative">
+                                                                                <div>
+                                                                                    <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Stop Upload Retraining Data
+                                                                                    </button>
+                                                                                </div>
+                                                                                <div class="vertical-center">
+                                                                                    <div class="info-box-text" id='stopUploadRetrainingDataBtnResult'>Place Holder : To be deleted</div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>-->
+                                                            </div>
+                                                            <!-- End of Accordion -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <!-- Telemetry Tab -->
+                                        <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100">
+                                                        Telemetry Ingestion from Event Hubs
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div id="telemetryTableDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
+                                                    <table id="telemetryTbl" class="table table-striped" style="max-height: 100%">
+                                                        <thead>
+                                                        <th>&nbsp;</th>
+                                                        <th>Event Time(UTC)</th>
+                                                        <th>Device ID</th>
+                                                        <th>Model ID</th>
+                                                        <th>Event Type</th>
+                                                        <th>Event Source</th>
+                                                        </thead>
+                                                        <tbody id="telemetryTblDetails"></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-danger" id="clearTelemetryTableBtn">
+                                                    <i class="far fa-trash-alt btn-fa"></i>Clear Events
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Image Gallery Tab -->
+                                        <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-imageGallery-label">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    Images stored in Azure Blob Storage
+                                                </h3>
+
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
+                                                        <i class="fas fa-sync btn-fa"></i>Refresh
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                            <div class="card-header">
+                                                <div id="imagePreviewDiv" style="margin: 1em 0;">
+                                                    <img id="imagePreview" />
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="jsgridDiv">
+                                                    <div id="blobStorJsGrid" style="overflow-y:auto"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- History Tab -->
+                                        <div class="tab-pane fade" id="tab-cosmosDb" role="tabpanel" aria-labelledby="tab-cosmosDb-label">
+                                            <div class="card-header">
+                                                <h3 class="card-title">
+                                                    AI Inference History stored in Cosmos DB
+                                                </h3>
+
+                                                <div class="card-tools">
+                                                    <span>Threshold: <span id="cosmosDbThreshold"></span><span>%</span></span>
+                                                    <span class="slider-blue">
+                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange">
+                                                    </span>
+                                                    <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
+                                                        <i class="fas fa-sync btn-fa"></i>Refresh
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <div style="overflow:auto">
+                                                    <div id="cosmosDbJsGrid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- API Output Tab -->
+                                        <div class="tab-pane fade" id="tab-api-output" role="tabpanel" aria-labelledby="tab-apiOutput-label">
+                                            <div class="card card-primary">
+                                                <div class="card-body">
+                                                    <div>
+                                                        <button type="button" class="btn btn-danger btn-fa-icon" id="clearApiOutputBtn">
+                                                            <i class="fas fa-trash-alt btn-fa"></i>Clear
+                                                        </button>
+                                                    </div>
+                                                    <div class="info-box-text">
+                                                        <label for="apiOutputLabel" class="label-right">API:</label>
+                                                        <span class="info-box-text" id='apiOutputLabel' style="display:contents"></span>
+                                                    </div>
+                                                    <div class="info-box-text">
+                                                        <textarea id="tabApiOutput" class="p-3" readonly rows="10" style="width:100%;height:100%;font-family:Consolas">
+                                                        </textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Other Tab -->
+                                        <div class="tab-pane fade" id="tab-other" role="tabpanel" aria-labelledby="tab-other-label">
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100">
+                                                            Devices
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="info-box-text">
+                                                            <table id="deviceListTbl" class="table table-striped" style="max-height: 100%">
+                                                                <thead>
+                                                                <th>&nbsp;</th>
+                                                                <th>Device ID</th>
+                                                                <th>Status</th>
+                                                                <th>Connection State</th>
+                                                                </thead>
+                                                                <tbody id="deviceListDetails"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="button" class="btn btn-success" id="getDevicesBtn">
+                                                            <i class="fas fa-sync btn-fa"></i>Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100">
+                                                            Models
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="info-box-text">
+                                                            <table id="modelListTbl" class="table table-striped" style="max-height: 100%">
+                                                                <thead>
+                                                                <th>&nbsp;</th>
+                                                                <th>Model ID</th>
+                                                                <th>Comment</th>
+                                                                <th></th>
+                                                                </thead>
+                                                                <tbody id="modelListDetails"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="button" class="btn btn-success" id="getModelsBtn">
+                                                            <i class="fas fa-sync btn-fa"></i>Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100">
+                                                            Deployments
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div>
+                                                    <div class="card-body">
+                                                        <div class="info-box-text">
+                                                            <table id="getDeployConfiguraionTbl" class="table table-striped" style="max-height: 100%">
+                                                                <thead>
+                                                                <th>&nbsp;</th>
+                                                                <th>Config_ID</th>
+                                                                <th>Comment</th>
+                                                                <th></th>
+                                                                </thead>
+                                                                <tbody id="getDeloyConfigurationsListDetails"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <button type="button" class="btn btn-success" id="getDeployConfigurationsBtn">
+                                                            <i class="fas fa-sync btn-fa"></i>Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /setup -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal" id="modalPhoto">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title">Inference Result</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnModalClose">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" style="display:flex;justify-content:center">
+                                <canvas id="photoCanvas" height="320" width="320"></canvas>
+                            </div>
+                            <div class="modal-footer justify-content-between">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2014-2021 <a href="">Hooter</a>.</strong> All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 0.0.0
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <!-- jquery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/filterizr/1.3.4/jquery.filterizr.min.js"></script>
+    <script src="lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- adminLTE -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <!-- MSAL -->
+    <script src="/js/azure/msal/dist/msal.js"></script>
+    <script src="lib/signalr/dist/browser/signalr.js"></script>
+    <!-- Local -->
+    <script src="/js/SonyAPI.js"></script>
+    <script src="/js/CustomVision.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script src="/js/SignalR.js"></script>
+    <script src="/js/BlobStorage.js"></script>
+    <script src="/js/CosmosDb.js"></script>
+    <!--<script src="/js/site.js"></script>-->
+    <!--<script>
+        $(function () {
+            $('.filter').filterizr();
+        });
+    </script>-->
+
+    <script>
+        var expiresOn = '';
+        var currentProjectId = null;
+        var currentModel = null;
+        var currentDeviceId = null;
+        var currentConfigId = null;
+        var hubConnection;
+        var cosmosDbThresholdSlider = document.getElementById("cosmosDbThresholdRange");
+        var cosmosDbThreshold = document.getElementById("cosmosDbThreshold");
+
+        cosmosDbThreshold.innerHTML = cosmosDbThresholdSlider.value;
+        cosmosDbThresholdSlider.onchange = function () {
+            cosmosDbThreshold.innerHTML = this.value;
+            $("#cosmosDbJsGrid").jsGrid("loadData");
+        }
+
+        function setSelectOption(selectElementId, selectValue) {
+            console.log("Setting " + selectElementId + " to " + selectValue);
+
+            document.getElementById(selectElementId).value = selectValue;
+            document.getElementById(selectElementId).dispatchEvent(new Event("change"));
+        }
+
+        function isItemSelected(selectElement, value) {
+            if (document.getElementById(selectElement).selectedIndex == 0) {
+                return false;
+            } else if (document.getElementById(selectElement).selectedIndex == -1) {
+                return false;
+            } else if (value && document.getElementById(selectElement).value != value) {
+                return false;
+            }
+
+            return true;
+        }
+
+        $(document).ready(function () {
+
+            sonyApiInitialize();
+
+            hubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("telemetryHub")
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
+
+            hubConnection.on('DeviceTelemetry', function (payload) {
+                var jsonData = JSON.parse(payload);
+                addEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.data);
+            });
+
+
+            hubConnection.on('CosmosDb', function (payload) {
+                var jsonData = JSON.parse(payload);
+                addCosmosDbEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.hasImage, jsonData.inferenceResults);
+            });
+
+            hubConnection.start()
+                .then(() => console.log('SignalR connected!'))
+                .catch(console.error);
+
+        })
+
+        function toggleLoader(bForceClear) {
+            var loader = document.getElementById("loader");
+
+            if (bForceClear) {
+                loader.style.display = "none";
+            } else {
+                if (loader.style.display == "none") {
+                    loader.style.display = "block";
+                } else {
+                    loader.style.display = "none";
+                }
+            }
+        }
+
+        //
+        // button clicks
+        //
+        $('#copyTokenBtn').click(function () {
+            navigator.clipboard.writeText(document.getElementById('taToken').value);
+        })
+
+        $('#pasteTokenBtn').click(function () {
+            navigator.clipboard.readText()
+                .then(clipText => {
+                    document.getElementById('taToken').value = clipText;
+                    document.getElementById('taToken').dispatchEvent(new Event("change"));
+                })
+                .catch(err => {
+                    console.log("Could not read clipboard", err);
+                });
+        })
+
+        $('#loginBtn').click(function () {
+            if ($('#loginForm').valid()) {
+                toggleLoader(false);
+                sonyApiAuth();
+                getToken()
+                    .then(() => {
+                        console.log("Login End");
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+        })
+
+        $('#createBaseCustomVisionProjectBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if ($('#createBaseCustomVisionProjectForm').valid() == false) {
+                return;
+            }
+
+            toggleLoader(false);
+            console.debug("createBaseCustomVisionProjectBtn Click");
+
+            CreateBaseCustomVisionProject()
+                .then(() => {
+                    // GetCustomVisionProjects("selectCustomVisionProjectList");
+                })
+                .catch(err => {
+                    console.error("Error : " + err);
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#deleteCustomVisionProjectCvBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var projectList = document.getElementById('selectCustomVisionProjectList');
+            if (projectList[projectList.selectedIndex].value != 0) {
+                toggleLoader(false);
+                DeleteProjectCV(projectList[projectList.selectedIndex].value)
+                    .then(() => {
+                        console.log("Custom Vision Project Deleted");
+                        GetCustomVisionProjects("selectCustomVisionProjectList");
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+        })
+
+
+        //
+        // Button Click
+        //
+
+        $('#deleteCustomVisionProjectBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var projectList = document.getElementById('selectCustomVisionProjectList');
+
+            console.debug("deleteCustomVisionProjectBtn Click" + projectList[projectList.selectedIndex].text);
+
+            if (projectList[projectList.selectedIndex].value != 0) {
+                toggleLoader(false);
+
+                DeleteProject(projectList[projectList.selectedIndex].text)
+                    .then(() => {
+                        console.log("Custom Vision Project Deleted");
+                        GetCustomVisionProjects("selectCustomVisionProjectList");
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+        })
+
+        $('#visitCustomVisionBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            console.debug("visitCustomVisionBtn Click");
+            var projectList = document.getElementById('visitCustomVisionProjectList');
+            if (projectList[projectList.selectedIndex].value != 0) {
+                var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
+                window.open(url, "_blank");
+            }
+            toggleLoader(false);
+        })
+
+        $('#clearApiOutputBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            document.getElementById('tabApiOutput').value = null;
+        })
+
+        $('#saveCustomVisionModelBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if ($('#saveCustomVisionModelForm').valid()) {
+
+                toggleLoader(false);
+                console.debug("saveCustomVisionModelBtn Click");
+
+                SaveCustomVisionModel()
+                    .then(() => {
+                        console.log("Model Saved");
+                    })
+                    .catch(err => {
+                        console.error("ErrorXX : " + err);
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+        })
+
+        $('#convertModelBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            ConvertModel()
+                .then(function (conversion_id) {
+                    if (conversion_id) {
+                        console.log("Conversion Started : " + conversion_id);
+                        document.getElementById('convertModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
+                    }
+                })
+                .catch(err => {
+                    console.error("Error : " + err);
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#convertModelGetBaseModelStatusBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            var model_id = document.getElementById("convertModelModelIdList").selectedIndex == 0 ? null : document.getElementById("convertModelModelIdList").value;
+
+            GetBaseModelStatus(model_id, "1")
+                .then(function (project) {
+                    console.log("Model Status : " + project);
+                    var json = JSON.parse(project);
+                    console.log("Model Status : " + json);
+                    document.getElementById('convertModelGetBaseModelStatusConversionDiv').innerHTML = json.versions[0].conv_id;
+                    document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
+                    document.getElementById('convertModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
+
+                    if (json.versions[0].result == "completed") {
+                        $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
+                    }
+                    else {
+                        $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
+                    }
+                })
+                .catch(function (err) {
+                    console.error("Error : " + err);
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#publishModelBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            PublishModel()
+                .then(function (conversion_id) {
+                    if (conversion_id) {
+                        console.log("Publish Started : " + conversion_id);
+                        document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = conversion_id;
+                    }
+                })
+                .catch(function (err) {
+                    console.error("Error : " + err);
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#publishModelGetBaseModelStatusBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            var model_id = document.getElementById("publishModelModelIdList").selectedIndex == 0 ? null : document.getElementById("publishModelModelIdList").value;
+
+            GetBaseModelStatus(model_id, "1")
+                .then(function (project) {
+                    console.log("Model Status : " + project);
+                    var json = JSON.parse(project);
+                    console.log("Model Status : " + json);
+                    document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = json.versions[0].conv_id;
+                    document.getElementById('publishModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
+                    document.getElementById('publishModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
+
+                    if (json.versions[0].result == "completed") {
+                        $('#publishModelBtn').prop('disabled', false);
+                    }
+                    else {
+                        $('#publishModelBtn').prop('disabled', true);
+                    }
+                })
+                .catch(function (err) {
+                    console.error("Error : " + err);
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#createDeployConfigurationBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if ($('#createDeployConfigurationForm').valid() == false) {
+                return;
+            }
+
+            toggleLoader(false);
+            console.debug("createDeployConfigurationBtn Click");
+
+            CreateDeployConfiguration()
+                .then(() => {
+                    console.log("Deployment Created");
+                    currentConfigId = document.getElementById("createDeployConfigurationConfigId").value;;
+
+                })
+                .catch(function (err) {
+                    console.error("Error : " + err);
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#deployByConfiguratonBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            DeployByConfiguration()
+                .then(() => {
+                    console.log("Configuration Deployed");
+                    GetDeployConfigurations('deployByConfiguratonGetDeployHistoryConfigIdList');
+                    setSelectOption('deployByConfiguratonGetDeployHistoryConfigIdList', currentConfigId);
+                    document.getElementById('deployByConfiguratonGetDeployHistoryConfigIdList').dispatchEvent(new Event("change"));
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#getDeployHistoryBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            GetDeployHistory()
+                .then(function (deploys) {
+                    var json = JSON.parse(deploys);
+
+                    if (json.deploys) {
+                        var deploy_status = json.deploys[0].deploy_status;
+                        var deploy_status_msg;
+                        if (deploy_status == "0") {
+                            deploy_status_msg = "0 (Processing)";
+                        } else if (deploy_status == "1") {
+                            deploy_status_msg = "1 (Done : Success)";
+                        } else if (deploy_status == "1") {
+                            deploy_status_msg = "2 (Fail)";
+                        }
+                        document.getElementById('deployByConfiguratonGetDeployHistoryDeployStatusDiv').innerHTML = deploy_status_msg;
+
+                        document.getElementById('deployByConfiguratonGetDeployHistoryDeployModelIdDiv').innerHTML = json.deploys[0].model.model_id;
+
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
+                .then(() => {
+                    console.log("Configuration Acquired");
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#startUploadInferenceResultBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if ($('#startUploadInferenceResultForm').valid()) {
+                toggleLoader(false);
+                StartUploadInferenceResult()
+                    .then(() => { })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+        })
+
+        $('#stopUploadInferenceResultBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            StopUploadInferenceResult()
+                .then(() => { })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        //$('#stopUploadInferenceResultBtn').click(function (evt) {
+        //    console.debug(evt.target.id + "() " + evt.type);
+
+        //    if ($('#stopUploadInferenceResultForm').valid()) {
+        //        toggleLoader(false);
+        //        StopUploadInferenceResult()
+        //            .then(() => { })
+        //            .finally(() => {
+        //                toggleLoader(false);
+        //            });
+        //    }
+        //})
+
+        $('#startUploadRetrainingDataBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if ($('#startUploadRetrainingDataForm').valid()) {
+                toggleLoader(false);
+                StartUploadRetrainingData()
+                    .then(() => { })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+        })
+
+        $('#stopUploadRetrainingDataBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            StopUploadRetrainingData()
+                .then(() => { })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        //$('#stopUploadRetrainingDataBtn').click(function (evt) {
+        //    console.debug(evt.target.id + "() " + evt.type);
+
+        //    if ($('#stopUploadRetrainingDataForm').valid()) {
+        //        toggleLoader(false);
+        //        StopUploadRetrainingData()
+        //            .then(() => { })
+        //            .finally(() => {
+        //                toggleLoader(false);
+        //            });
+        //    }
+        //})
+
+        $('#clearTelemetryTableBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            $("#telemetryTbl").find("tr:gt(0)").remove();
+            $("#telemetryTbl").hide();
+        })
+
+        $('#clearApiOutputBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#getDevicesBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            RefreshDevicesList()
+                .then(() => {
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#getModelsBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            RefreshModelsList()
+                .then(() => {
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#getDeployConfigurationsBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+            RefreshDeployConfiguraions()
+                .then(() => {
+
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#refreshImageGalleryBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $("#blobStorJsGrid").jsGrid("loadData");
+        })
+        //
+        //form validations
+        //
+        $('#loginForm').validate({
+            rules: {
+                clientId: {
+                    required: true,
+                    minlength: 35
+                },
+            },
+            messages: {
+                clientId: {
+                    required: "Please enter a Client ID",
+                    minlength: "Please enter a valid Client ID"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#createBaseCustomVisionProjectForm').validate({
+            rules: {
+                createBaseCustomVisionProjectName: {
+                    required: true,
+                    maxlength: 100
+                },
+                createBaseCustomVisionProjectComment: {
+                    required: false,
+                    maxlength: 100
+                },
+            },
+            messages: {
+                createBaseCustomVisionProjectName: {
+                    required: "Enter project name of Custom vision. Within 100 characters.",
+                    maxlength: "Project Name must be up to 100 characters"
+                },
+                createBaseCustomVisionProjectComment: {
+                    maxlength: "Project Comment must be up to 100 characters"
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#saveCustomVisionModelForm').validate({
+            rules: {
+                saveCustomVisionModelProjectNameList: {
+                    required: true
+                },
+                saveCustomVisionModelProjectModelId: {
+                    required: false,
+                    maxlength: 100
+
+                },
+                saveCustomVisionModelInitialVersionNumber: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+                saveCustomVisionModelFunctionality: {
+                    required: false,
+                    maxlength: 100
+                },
+                saveCustomVisionModelVendorName: {
+                    required: false,
+                    maxlength: 100
+                },
+                saveCustomVisionModelComment: {
+                    required: false,
+                    maxlength: 100
+                },
+            },
+            messages: {
+                saveCustomVisionModelProjectNameList: {
+                    required: "Select project name of Custom vision. Within 100 characters.",
+                },
+                saveCustomVisionModelProjectModelId: {
+                    maxlength: "Model ID must be up to 100 characters"
+                },
+                saveCustomVisionModelInitialVersionNumber: {
+                    min: "Initial version must be > 1",
+                    max: "Initial version must be <= 100"
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#createDeployConfigurationForm').validate({
+            rules: {
+                createDeployConfigurationConfigId: {
+                    required: true,
+                    maxlength: 20
+                },
+                createDeployConfigurationSensorLoaderVersionNumber: {
+                    required: true
+                },
+                createDeployConfigurationSensorVersionNumber: {
+                    required: true
+                },
+                createDeployConfigurationModelId: {
+                    required: true
+                },
+                createDeployConfigurationApFwVersionNumber: {
+                    required: true
+                },
+                createDeployConfigurationComment: {
+                    required: false,
+                    maxlength: 100
+                },
+                createDeployConfigurationComment: {
+                    required: false,
+                    maxlength: 100
+                },
+                createDeployConfigurationDeviceTypeList: {
+                    required: false
+                },
+                createDeployConfigurationModelVersionNumber: {
+                    required: false
+                },
+                createDeployConfigurationColorMatrixModelList: {
+                    required: false
+                },
+                createDeployConfigurationColorMatrixFileName: {
+                    required: false
+                },
+                createDeployConfigurationGammaModeList: {
+                    required: false
+                },
+                createDeployConfigurationGammaFileName: {
+                    required: false
+                },
+                createDeployConfigurationLscModeList: {
+                    required: false
+                },
+                createDeployConfigurationLscFileName: {
+                    required: false
+                },
+                createDeployConfigurationPrewbModeList: {
+                    required: false
+                },
+                createDeployConfigurationDewarpFileName: {
+                    required: false
+                },
+                createDeployConfigurationDewarpModeList: {
+                    required: false
+                },
+                createDeployConfigurationDewarpFileName: {
+                    required: false
+                }
+            },
+            messages: {
+                createDeployConfigurationConfigId: {
+                    required: "Enter configID up to 20 characters.",
+                    maxlength: "configID must be up to 20 characters"
+                },
+                createDeployConfigurationSensorLoaderVersionNumber: {
+                    required: "Select SensorLoader version.",
+                },
+                createDeployConfigurationSensorVersionNumber: {
+                    required: "Select Sensor version.",
+                },
+                createDeployConfigurationModelId: {
+                    required: "Select Model ID.",
+                },
+                createDeployConfigurationApFwVersionNumber: {
+                    required: "Select ApFw version.",
+                },
+                createDeployConfigurationSensorLoaderVersionNumber: {
+                    required: "Select SensorLoader version number.",
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#deployByConfiguraionForm').validate({
+            rules: {
+                deployByConfiguraionFormConfigIdList: {
+                    required: true
+                },
+                deployByConfiguraionDeviceIdList: {
+                    required: true
+                },
+                deployByConfiguraionComment: {
+                    required: false
+                },
+                deployByConfiguraionReplaceModelIdList: {
+                    required: false
+                },
+            },
+            messages: {
+                deployByConfiguraionFormConfigIdList: {
+                    required: "Select ConfigID from thelist",
+                },
+                deployByConfiguraionDeviceIdList: {
+                    required: "Select Device ID from the list."
+                },
+
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#startUploadInferenceResultForm').validate({
+            rules: {
+                startUploadInferenceResultDeviceIdList: {
+                    required: true
+                },
+                startUploadInferenceResultFrequencyOfInferences: {
+                    required: false,
+                    min: 1,
+                    max: 2592000
+                },
+                startUploadInferenceResultMaxDetectionsPerFrame: {
+                    required: false,
+                    min: 1,
+                    max: 64
+                },
+                startUploadInferenceResultCropHOffset: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startUploadInferenceResultCropVOffset: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startUploadInferenceResultCropHSize: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startUploadInferenceResultCropVSize: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startUploadInferenceResultNumberOfInferencesPerMessage: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+                startUploadInferenceResultModelIdList: {
+                    required: false
+                },
+            },
+            messages: {
+                startUploadInferenceResultDeviceIdList: {
+                    required: "Select Device ID"
+                },
+                startUploadInferenceResultFrequencyOfInferences: {
+                    min: "Frequency of Inference must be > 1",
+                    max: "Frequency of Inference must be < 2,592,000"
+                },
+                startUploadInferenceResultMaxDetectionsPerFrame: {
+                    min: "No. of Objects included in 1 frame must be 1 or more",
+                    max: "No. of Objects included in 1 frame must be less than or equal to 64"
+                },
+                startUploadInferenceResultCropHOffset: {
+                    min: "Hoffset for Image crop must be 0 or more",
+                    max: "Hoffset for Image crop must be less than or equal to 4,056"
+                },
+                startUploadInferenceResultCropVOffset: {
+                    min: "Voffset for Image crop must be 0 or more",
+                    max: "Voffset for Image crop must be less than or equal to 3,040"
+                },
+                startUploadInferenceResultCropHSize: {
+                    min: "Hsize for Image crop must be 0 or more",
+                    max: "Hsize for Image crop must be less than or equal to 4,056"
+                },
+                startUploadInferenceResultCropVSize: {
+                    min: "Vsize for Image crop must be 0 or more",
+                    max: "Vsize for Image crop must be less than or equal to 4,056"
+                },
+                startUploadInferenceResultNumberOfInferencesPerMessage: {
+                    min: "Number of inference results to include in one message must be 1 or more",
+                    max: "Number of inference results to include in one message must be less than or equal to 100"
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#stopUploadInferenceResultForm').validate({
+            rules: {
+                stopUploadInferenceResultDeviceIdList: {
+                    required: true,
+                },
+            },
+            messages: {
+                startUploadInferenceResultDeviceIdList: {
+                    required: "Select Device ID",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#startUploadRetrainingDataForm').validate({
+            rules: {
+                startUploadRetrainingDataDeviceIdList: {
+                    required: true
+                },
+                startUploadRetrainingDataModeList: {
+                    required: false
+                },
+                startUploadRetrainingDataCropHOffset: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startUploadRetrainingDataCropVOffset: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startUploadRetrainingDataCropHSize: {
+                    required: false,
+                    min: 0,
+                    max: 4056
+                },
+                startUploadRetrainingDataCropVSize: {
+                    required: false,
+                    min: 0,
+                    max: 3040
+                },
+                startUploadRetrainingDataNumImages: {
+                    required: false,
+                    min: 1,
+                    max: 10000
+                },
+                startUploadRetrainingDataFrequencyOfImages: {
+                    required: false,
+                    min: 1,
+                    max: 259200
+                },
+                startUploadRetrainingDataMaxDetectionPerFrame: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+                startUploadRetrainingDataNumInferencePerMessage: {
+                    required: false,
+                    min: 1,
+                    max: 100
+                },
+            },
+            messages: {
+                startUploadRetrainingDataDeviceIdList: {
+                    required: "Select Device ID"
+                },
+                startUploadRetrainingDataCropHOffset: {
+                    min: "Hoffset for Image crop must be 0 or more",
+                    max: "Hoffset for Image crop must be less than or equal to 4,056"
+                },
+                startUploadRetrainingDataCropVOffset: {
+                    min: "Voffset for Image crop must be 0 or more",
+                    max: "Voffset for Image crop must be less than or equal to 3,040"
+                },
+                startUploadRetrainingDataCropHSize: {
+                    min: "Hsize for Image crop must be 0 or more",
+                    max: "Hsize for Image crop must be less than or equal to 4,056"
+                },
+                startUploadRetrainingDataCropVSize: {
+                    min: "Vsize for Image crop must be 0 or more",
+                    max: "Vsize for Image crop must be less than or equal to 4,056"
+                },
+                startUploadRetrainingDataNumImages: {
+                    min: "Number of images to be fetched(Input Tensor) must be 0 or more",
+                    max: "Number of images to be fetched(Input Tensor) must be less than or equal to 10,000"
+                },
+                startUploadRetrainingDataFrequencyOfImages: {
+                    min: "Frequency of fetching the images (Input Tensor) must be 1 or more",
+                    max: "Frequency of fetching the images (Input Tensor)must be less than or equal to 2,592,000"
+                },
+                startUploadRetrainingDataMaxDetectionPerFrame: {
+                    min: "No. of Objects included in 1 frame  must be 1 or more",
+                    max: "No. of Objects included in 1 frame  must be less than or equal to 64"
+                },
+                startUploadRetrainingDataNumInferencePerMessage: {
+                    min: "Number of inference results to include in one message (Output Tensor) must be 0 or more",
+                    max: "Number of inference results to include in one message (Output Tensor) must be less than or equal to 10,000"
+                }
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+
+        $('#stopUploadRetrainingDataForm').validate({
+            rules: {
+                stopUploadInferenceResultDeviceIdList: {
+                    required: true,
+                },
+            },
+            messages: {
+                stopUploadInferenceResultDeviceIdList: {
+                    required: "Select Device ID",
+                },
+            },
+            errorElement: 'span',
+            errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+        //
+        // Accordion
+        //
+
+        $('#accordionSetup').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#accordionSetup').on('hide.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#accordionCreateBaseCustomVisionProject').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'selectCustomVisionProjectList';
+
+            toggleLoader(false);
+
+            GetCustomVisionProjects(targetListName)
+                .then(() => { })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#accordionVisitCustomVision').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'visitCustomVisionProjectList';
+
+            toggleLoader(false);
+            GetCustomVisionProjects(targetListName)
+                .then(() => {
+                    if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
+                        setSelectOption(targetListName, currentProjectId);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'saveCustomVisionModelProjectNameList';
+
+            toggleLoader(false);
+
+            GetCustomVisionProjects(targetListName)
+                .then(() => {
+                    if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
+                        setSelectOption(targetListName, currentProjectId);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                });
+        })
+
+        $('#accordionConvertModel').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'convertModelModelIdList';
+
+            toggleLoader(false);
+
+            GetAllModels(targetListName)
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                            setSelectOption(targetListName, currentModel);
+                        }
+
+                        GetDevices("convertModelDeviceIdList", true)
+                            .then(() => { })
+                            .finally(() => {
+                                toggleLoader(true);
+                            })
+                    } else {
+                        toggleLoader(true);
+                    }
+                })
+                .catch(err => {
+                    msg = processError(err, true);
+                    toggleLoader(true);
+                })
+        })
+
+        $('#accordionPublishModel').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'publishModelModelIdList';
+
+            toggleLoader(false);
+
+            GetAllModels(targetListName)
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                            setSelectOption(targetListName, currentModel);
+                        }
+
+                        GetDevices("publishModelDeviceIdList", true)
+                            .then(() => { })
+                            .finally(() => {
+                                toggleLoader(true);
+                            })
+                    } else {
+                        toggleLoader(true);
+                    }
+                })
+                .catch(err => {
+                    msg = processError(err, true);
+                    toggleLoader(true);
+                })
+        })
+
+        $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            try {
+                toggleLoader(false);
+                var targetListName = 'createDeployConfigurationModelId';
+                ret = await GetFirmwares('02', null, "createDeployConfigurationSensorLoaderVersionNumber");
+
+                if (!ret) {
+                    return;
+                }
+                ret = await GetFirmwares('01', null, "createDeployConfigurationSensorVersionNumber");
+                if (!ret) {
+                    return;
+                }
+                ret = await GetFirmwares('00', null, "createDeployConfigurationApFwVersionNumber");
+                if (!ret) {
+                    return;
+                }
+
+                GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList")
+                    .then((ret) => {
+
+                        if (ret) {
+                            GetAllModels(targetListName)
+                                .then((ret) => {
+                                    if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
+                                        setSelectOption(targetListName, currentModel);
+                                    }
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        } else {
+                            toggleLoader(true);
+                        }
+                    });
+            } catch (err) {
+                toggleLoader(true);
+            } finally { }
+        })
+
+        $('#accordionDeployByConfiguration').on('show.bs.collapse', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'deployByConfiguraionReplaceModelIdList';
+
+            try {
+                toggleLoader(false);
+                GetDeployConfigurations("deployByConfiguraionFormConfigIdList")
+                    .then((ret) => {
+
+                        if (ret) {
+                            GetDevices("deployByConfiguraionDeviceIdList", true)
+                                .then((ret) => {
+                                    if (ret) {
+                                        GetAllModels(targetListName)
+                                            .then((ret) => {
+                                                if (ret) {
+                                                    //    if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                                    //        setSelectOption(targetListName, currentModel);
+                                                    //    }
+                                                }
+                                            })
+                                            .finally(err => {
+                                                toggleLoader(true);
+                                            })
+                                    }
+                                })
+                                .catch(() => {
+                                    toggleLoader(true);
+                                })
+                        }
+                    })
+                    .catch(() => {
+                        toggleLoader(true);
+                    })
+            } catch (err) {
+                toggleLoader(true);
+            } finally { }
+        })
+
+        $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            try {
+                toggleLoader(false);
+                var targetListName = 'startUploadInferenceResultDeviceIdList';
+
+                GetDevices(targetListName, true)
+                    .then((ret) => {
+                        if (ret) {
+
+                            if (currentDeviceId) {
+                                setSelectOption(targetListName, currentDeviceId);
+                            }
+
+                            targetListName = 'startUploadInferenceResultModelIdList';
+
+                            GetAllModels(targetListName)
+                                .then((ret) => {
+                                    if (ret) {
+                                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                            setSelectOption(targetListName, currentModel);
+                                        }
+                                    }
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        } else {
+                            toggleLoader(true);
+                        }
+                    })
+                    .catch(err => {
+                        toggleLoader(true);
+                    })
+            } catch (err) {
+                toggleLoader(true);
+            } finally { }
+        })
+
+        $('#accordionStopUploadInferenceResult').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'stopUploadInferenceResultDeviceIdList';
+
+            toggleLoader(false);
+
+            GetDevices(targetListName, true)
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
+                            setSelectOption(targetListName, currentDeviceId);
+                        }
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                })
+        })
+
+        $('#accordionStartUploadRetrainingData').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'startUploadRetrainingDataModelIdList';
+
+            try {
+                toggleLoader(false);
+
+                GetAllModels(targetListName)
+                    .then((ret) => {
+                        if (ret) {
+                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                setSelectOption(targetListName, currentModel);
+                            }
+
+                            var targetDeviceListName = 'startUploadRetrainingDataDeviceIdList';
+                            GetDevices(targetDeviceListName, true)
+                                .then((ret) => {
+                                    if (ret) {
+                                        if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
+                                            setSelectOption(targetDeviceListName, currentDeviceId);
+                                        }
+                                    }
+                                })
+                                .finally(() => {
+                                    toggleLoader(true);
+                                })
+                        } else {
+                            toggleLoader(true);
+                        }
+                    })
+                    .catch(err => {
+                        toggleLoader(true);
+                    })
+
+            } catch (err) {
+                toggleLoader(true);
+            } finally { }
+        })
+
+        $('#accordionStopUploadRetrainingData').on('show.bs.collapse', function (evt) {
+
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListName = 'stopUploadRetrainingDataDeviceIdList';
+
+            toggleLoader(false);
+
+            GetDevices(targetListName, true)
+                .then((ret) => {
+                    if (ret && !isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
+                        setSelectOption(targetListName, currentDeviceId);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(false);
+                })
+        })
+
+        //
+        // Tab
+        //
+        $('#tab-setup-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $("#blobStorJsGrid").jsGrid("loadData");
+        })
+
+        $('#tab-cosmosDb-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $("#cosmosDbJsGrid").jsGrid("loadData");
+        })
+
+        $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#tab-other-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        //
+        // Change event
+        //
+        $('#taToken').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if (document.getElementById('taToken').value.length > 0) {
+                PostToken(document.getElementById('taToken').value);
+                $('#copyTokenBtn').prop('disabled', false);
+            } else {
+                $('#copyTokenBtn').prop('disabled', false);
+            }
+        })
+
+        //
+        // List Selected
+        //
+
+        $('#selectCustomVisionProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentProjectId = projectList[projectList.selectedIndex].value;
+                $('#deleteCustomVisionProjectCvBtn').prop('disabled', false);
+                $('#deleteCustomVisionProjectBtn').prop('disabled', false);
+            } else {
+                currentProjectId = null;
+                $('#deleteCustomVisionProjectCvBtn').prop('disabled', true);
+                $('#deleteCustomVisionProjectBtn').prop('disabled', true);
+
+            }
+        })
+
+        $('#visitCustomVisionProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentProjectId = projectList[projectList.selectedIndex].value;
+                $('#visitCustomVisionBtn').prop('disabled', false);
+            } else {
+                currentProjectId = null;
+                $('#visitCustomVisionBtn').prop('disabled', true);
+            }
+        })
+
+        $('#saveCustomVisionModelProjectNameList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = projectList[projectList.selectedIndex].text;
+                $('#saveCustomVisionModelBtn').prop('disabled', false);
+            } else {
+                currentModel = '';
+                $('#saveCustomVisionModelBtn').prop('disabled', true);
+            }
+        })
+
+
+        $('#convertModelModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                if (document.getElementById('saveCustomVisionModelProjectModelId').value.length == 0) {
+                    document.getElementById('saveCustomVisionModelProjectModelId').value = modelList[modelList.selectedIndex].value;
+                }
+
+                currentModel = modelList[modelList.selectedIndex].text;
+                $('#convertModelBtn').prop('disabled', false);
+                $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
+                document.getElementById('convertModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
+            } else {
+                currentModel = '';
+                $('#convertModelBtn').prop('disabled', true);
+                $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
+            }
+        })
+
+        $('#publishModelModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = modelList[modelList.selectedIndex].text;
+                $('#publishModelBtn').prop('disabled', false);
+                $('#publishModelGetBaseModelStatusBtn').prop('disabled', false);
+                document.getElementById('publishModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
+
+            } else {
+                currentModel = '';
+                $('#publishModelBtn').prop('disabled', true);
+                $('#publishModelGetBaseModelStatusBtn').prop('disabled', true);
+            }
+        })
+
+        $('#createDeployConfigurationConfigId').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeployConfigurationSensorLoaderVersionNumber').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeployConfigurationSensorVersionNumber').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeployConfigurationModelId').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#createDeployConfigurationApFwVersionNumber').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckCreateDeployConfigurationInputs();
+        })
+
+        $('#deployByConfiguraionFormConfigIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckDeployByConfigurationInputs();
+        })
+
+        $('#deployByConfiguraionDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            CheckDeployByConfigurationInputs();
+
+            var targetListId = evt.target.id;
+
+            if (isItemSelected(targetListId, null)) {
+                $('#getDeployHistoryBtn').prop('disabled', false);
+                currentDeviceId = document.getElementById(targetListId).value;
+            } else {
+                $('#getDeployHistoryBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#startUploadInferenceResultDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#startUploadInferenceResultBtn').prop('disabled', false);
+                $('#stopUploadInferenceResultBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            } else {
+                $('#startUploadInferenceResultBtn').prop('disabled', true);
+                $('#stopUploadInferenceResultBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#startUploadInferenceResultModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = modelList[modelList.selectedIndex].value;
+            } else {
+                currentModel = null;
+            }
+        })
+
+        $('#stopUploadInferenceResultDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#stopUploadInferenceResultBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            } else {
+                $('#stopUploadInferenceResultBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#startUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#startUploadRetrainingDataBtn').prop('disabled', false);
+                $('#stopUploadRetrainingDataBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            } else {
+                $('#startUploadRetrainingDataBtn').prop('disabled', true);
+                $('#stopUploadRetrainingDataBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#startUploadRetrainingDataModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentModel = modelList[modelList.selectedIndex].value;
+            } else {
+                currentModel = null;
+            }
+        })
+
+        $('#stopUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#stopUploadRetrainingDataBtn').prop('disabled', false);
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            } else {
+                $('#stopUploadRetrainingDataBtn').prop('disabled', true);
+                currentDeviceId = null;
+            }
+        })
+
+        $('#createBaseCustomVisionProjectName').on('input', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var inputField = document.getElementById('createBaseCustomVisionProjectName');
+
+            if (inputField.value.length > 0) {
+                $('#createBaseCustomVisionProjectBtn').prop('disabled', false);
+            } else {
+                $('#createBaseCustomVisionProjectBtn').prop('disabled', true);
+            }
+        })
+
+        function toggleTableDetail(item) {
+
+            var expanded = $(item).closest('.accordian-toggle').attr('aria-expanded');
+
+            console.log("Expanded " + expanded);
+            if (expanded == 'false' || expanded == undefined) {
+                $(item).removeClass('fa-angle-double-down');
+                $(item).addClass('fa-angle-double-up');
+            } else {
+                $(item).removeClass('fa-angle-double-up');
+                $(item).addClass('fa-angle-double-down');
+            }
+        }
+
+        function deleteModel(item) {
+            var modelName = item.attributes.getNamedItem('targetmodel').nodeValue;
+            console.log("delete Model " + modelName);
+
+            DeleteModel(modelName);
+        }
+
+        function deleteDeloyConfiguraions(item) {
+            var config_id = item.attributes.getNamedItem('target_config_id').nodeValue;
+            console.log("delete Deploy Configuration " + config_id);
+
+            DeleteDeployConfiguration(config_id);
+        }
+
+        $("#btnModalClose").on("click", function (evt) {
+            var modal = document.getElementById("modalPhoto");
+            var canvas = document.getElementById("photoCanvas");
+            var ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            modal.style.display = "none";
+        });
+
+    </script>
+
+    <script id="telemetry-template" type="text/x-handlebars-template">
+        <tr>
+            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
+                </button>
+            </td>
+            <td>{{eventTime}}</td>
+            <td>{{eventDeviceId}}</td>
+            <td>{{eventModelId}}</td>
+            <td>{{eventSource}}</td>
+            <td>{{eventType}}</td>
+            <td>
+                <button class="btn btn-primary btn-fa-icon" id="btn-{{eventId}}" disabled>
+                    <i class="fas fa-eye" onclick="viewPhoto(this)" eventId="{{eventId}}"></i>
+                </button>
+            </td>
+        </tr>
+        <tr class="hiddenRow collapse" id="event-{{eventId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre id="pre-{{eventId}}"><code class="nohighlight">{{eventData}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="cosmosdb-template" type="text/x-handlebars-template">
+        <tr>
+            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
+                </button>
+            </td>
+            <td>{{eventTime}}</td>
+            <td>{{deviceId}}</td>
+            <td>{{eventModelId}}</td>
+            <td>{{eventSource}}</td>
+            <td>{{eventType}}</td>
+            <td>
+                <button class="btn btn-primary btn-fa-icon" id="btn-{{eventId}}" disabled>
+                    <i class="fas fa-eye" onclick="viewPhotoWithCosmosDb(this)" eventId="{{eventId}}" deviceId="{{deviceId}}"></i>
+                </button>
+            </td>
+        </tr>
+        <tr class="hiddenRow collapse" id="event-{{eventId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre id="pre-{{eventId}}"><code class="nohighlight">{{eventData}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="image-template" type="text/x-handlebars-template">
+        <div class="filtr-item col-sm-1" data-category={{deviceId}} data-sort={{deviceId}}>
+            <a href={{image_url}} data-toggle={{deviceId}} data-title={{image_file_name}}>
+                <img src={{image_url}} class="img-fluid mb-1" alt={{image_file_name}} />
+            </a>
+        </div>
+    </script>
+
+    <script id="deviceList-template" type="text/x-handlebars-template">
+        <tr>
+            <td data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
+                </button>
+            </td>
+            <td>{{deviceId}}</td>
+            <td>{{deviceStatus}}</td>
+            <td>{{deviceConnectionStatus}}</td>
+        </tr>
+        <tr class="hiddenRow collapse" id="deviceDetail-{{deviceId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{dataPayload}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="modelList-template" type="text/x-handlebars-template">
+        <tr>
+            <td data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
+                </button>
+            </td>
+            <td>{{modelId}}</td>
+            <td>{{comment}}</td>
+            <td>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-trash-alt" onclick="deleteModel(this)" targetModel="{{modelId}}"></i>
+                </button>
+            </td>
+
+        </tr>
+        <tr class="hiddenRow collapse" id="modelDetail-{{modelId}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{dataPayload}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+
+    <script id="deployConfiguraions-template" type="text/x-handlebars-template">
+        <tr>
+            <td data-toggle="collapse" data-target="#deployConfigurationDetail-{{config_id}}" class="accordian-toggle">
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deployConfigurationDetail-{{config_id}}"></i>
+                </button>
+            </td>
+            <td>{{config_id}}</td>
+            <td>{{config_comment}}</td>
+            <td>
+                <button class="btn btn-primary btn-fa-icon">
+                    <i class="fas fa-trash-alt" onclick="deleteDeloyConfiguraions(this)" target_config_id="{{config_id}}"></i>
+                </button>
+            </td>
+
+        </tr>
+        <tr class="hiddenRow collapse" id="deployConfigurationDetail-{{config_id}}">
+            <td colspan="12">
+                <div class="accordian-body">
+                    <pre><code class="nohighlight">{{dataPayload}}</code></pre>
+                </div>
+            </td>
+        </tr>
+    </script>
+</body>
+
+</html>

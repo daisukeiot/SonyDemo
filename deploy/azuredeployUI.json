@@ -1,0 +1,291 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2021-09-09/uiFormDefinition.schema.json#",
+	"view": {
+	  "kind": "Form",
+	  "properties": {
+		"title": "",
+		"steps": [
+		  {
+			"name": "basics",
+			"label": "Basic Settings",
+			"description": "IMX500 Lab Setup",
+			"elements": [
+			  {
+				"name": "resourceScope",
+				"type": "Microsoft.Common.ResourceScope",
+				"subscription": {
+				  "constraints": {
+					"validations": [
+					  {
+						"permission": "Microsoft.Web/hostingEnvironments/Write",
+						"message": "Must have write permission to create a new App Service Environment."
+					  },
+					  {
+						"permission": "Microsoft.Storage/storageAccounts/write",
+						"message": "Must have write permission to creates a storage account."
+					  },
+					  {
+						"permission": "Microsoft.SignalRService/SignalR/write",
+						"message": "Must have write permission to create the SignalR's settings."
+					  }
+					]
+				  },
+				  "resourceProviders": [
+					"Microsoft.Web",
+					"Microsoft.Storage",
+					"Microsoft.SignalRService"
+				  ]
+				},
+				"location": {
+				  "label": "Region",
+				  "toolTip": "Azure region",
+				  "resourceTypes": [
+					"Microsoft.SignalRService/SignalR",
+					"Microsoft.Storage/storageAccounts",
+					"Microsoft.Web/serverfarms",
+					"Microsoft.Web/sites"
+				  ]
+				}
+			  },
+			  {
+				"name": "uniqueId",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Unique ID",
+				"toolTip": "String to make service names unique",
+				"placeholder": "Enter unique ID, or leave blank to automatically generate unique string.",
+				"multiLine": false,
+				"constraints": {
+				  "required": false,
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z]{3,5}$",
+					  "message": "Only alphanumeric characters are allowed, and the value must be 3-5 characters long."
+					}
+				  ]
+				},
+				"visible": true
+			  }
+			]
+		  },
+		  {
+			"name": "webAppConfig",
+			"label": "Web Portal settings",
+			"elements": [
+			  {
+				"name": "webAppInfo",
+				"type": "Microsoft.Common.InfoBox",
+				"visible": true,
+				"options": {
+				  "icon": "Info",
+				  "text": "Give a name to your Web App Dashboard.  The name becomes a part of URL."
+				}
+			  },
+			  {
+				"name": "webAppName",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Web App Name",
+				"defaultValue": "SonyIMXDashboard",
+				"toolTip": "",
+				"placeholder": "Specify a name of new Web App",
+				"constraints": {
+				  "required": true,
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z-]{0,39}$",
+					  "message": "Only alphanumeric characters and hypehens are allowed, and the value must be 1-40 characters long."
+					}
+				  ]
+				},
+				"visible": true
+			  },
+			  {
+				"name": "functionsAppName",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Functions App Name",
+				"defaultValue": "SonyIMXFunctions",
+				"toolTip": "",
+				"placeholder": "Specify a name of new Functions App",
+				"constraints": {
+				  "required": true,
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z-]{0,39}$",
+					  "message": "Only alphanumeric characters and hypehens are allowed, and the value must be 1-40 characters long."
+					}
+				  ]
+				},
+				"visible": true
+			  },
+			  {
+				"name": "signalRName",
+				"type": "Microsoft.Common.TextBox",
+				"label": "SignalR Name",
+				"defaultValue": "SonyIMXSignalR",
+				"toolTip": "",
+				"placeholder": "Specify a name of new Functions App",
+				"constraints": {
+				  "required": true,
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z-]{0,62}$",
+					  "message": "Only alphanumeric characters and hypehens are allowed, and the value must be 1-40 characters long."
+					}
+				  ]
+				},
+				"visible": true
+			  }
+			]
+		  },
+		  {
+			"name": "storageConfig",
+			"label": "Storage settings",
+			"elements": [
+			  {
+				"name": "storageConfigInfo",
+				"type": "Microsoft.Common.InfoBox",
+				"visible": true,
+				"options": {
+				  "icon": "Info",
+				  "text": "Give a name to your Web App Dashboard.  The name becomes a part of URL."
+				}
+			  },
+			  {
+				"name": "storageAccounts",
+				"type": "Microsoft.Storage.MultiStorageAccountCombo",
+				"label": {
+				  "prefix": "Storage account name prefix",
+				  "type": "Storage account type"
+				},
+				"defaultValue": {
+				  "prefix": "imx500stor",
+				  "type": "Standard_LRS"
+				},
+				"constraints": {
+				  "allowedTypes": [
+					"Premium_LRS",
+					"Standard_LRS",
+					"Standard_GRS"
+				  ]
+				},
+				"count": 2
+			  }
+			]
+		  },
+		  {
+			"name": "aitriosConfig",
+			"label": "Sony Aitrios Properties",
+			"elements": [
+			  {
+				"name": "aitriosConfigInfo",
+				"type": "Microsoft.Common.InfoBox",
+				"visible": true,
+				"options": {
+				  "icon": "Info",
+				  "uri": "",
+				  "text": "Properties to access Aitrios resources.  Please contact Sony representative if you do not have this information."
+				}
+			  },
+			  {
+				"name": "cosmosDbConnectionString",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Cosmos DB Connection String.",
+				"placeholder": "Provide Connection String to Cosmos DB to access inference results history.",
+				"toolTip": "Web App accesses Inference Result stored in Cosmos DB.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Connection String to Cosmos DB to access inference results history."
+				}
+			  },
+			  {
+				"name": "eventHubsConnectionString",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Event Hubs Connection String.",
+				"placeholder": "Provide Connection String to Event Hubs for telemetry subscription.",
+				"toolTip": "Functions App subscribes telemetry data frmo IMX5000.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Connection String to Event Hubs for telemetry subscription."
+				}
+			  },
+			  {
+				"name": "blobStorageConnectionString",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Blob Storage Connection String.",
+				"placeholder": "Provide Connection String to Blob Storage for image file access.",
+				"toolTip": "Web App requires to access Blob Storage to display images from IMX500.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Connection String to Blob Storage for image file access."
+				}
+			  },
+			  {
+				"name": "customVisionEndPoint",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Custom Vision Endpoint URI",
+				"defaultValue": "https://japaneast.api.cognitive.microsoft.com",
+				"placeholder": "Provide Custom Vision's Endpoint URI.",
+				"toolTip": "Endpoint for Azure Custom Vision to use.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Custom Vision's Endpoint URI."
+				}
+			  },
+			  {
+				"name": "customVisionAccessKey",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Custom Vision Access Key",
+				"placeholder": "Provide Custom Vision's Access Key.",
+				"toolTip": "Access key for Azure Custom Vision project",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Access Key to Custom Vision project"
+				}
+			  },
+			  {
+				"name": "aitriosUrl",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Aitrios Base Uri",
+				"placeholder": "Provide URL for AITrios API.",
+				"defaultValue": "https://apim-labstaging05.azure-api.net/v09_m/v1",
+				"toolTip": "Provide Custom Vision's Access Key.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Custom Vision's Access Key."
+				}
+			  },
+			  {
+				"name": "appGwValidation",
+				"type": "Microsoft.Common.TextBox",
+				"label": "App GW Validation",
+				"placeholder": "Provide App GW Validation key for AITrios API Access.",
+				"toolTip": "Web App requires validation key to access AITrios API.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide App GW Validation key for AITrios API Access."
+				}
+			  }
+			]
+		  }
+		]
+	  },
+	  "outputs": {
+		"parameters": {
+		  "UniqueId": "[steps('basics').uniqueId]",
+		  "Web_App_Name": "[steps('webAppConfig').webAppName]",
+		  "Function_App_Name": "[steps('webAppConfig').functionsAppName]",
+		  "SignalR_Name": "[steps('webAppConfig').signalRName]",
+		  "storageAccountType": "[steps('storageConfig').storageAccounts.type]",
+		  "Event_Hub_Connection_String": "[steps('aitriosConfig').eventHubsConnectionString]",
+		  "Cosmos_Db_Connection_String": "[steps('aitriosConfig').cosmosDbConnectionString]",
+		  "Blob_Storage_Connection_String": "[steps('aitriosConfig').blobStorageConnectionString]",
+		  "Custom_Vision_Endpoint": "[steps('aitriosConfig').customVisionEndPoint]",
+		  "Custom_Vision_AccessKey": "[steps('aitriosConfig').customVisionAccessKey]",
+		  "AITRIOS_URL": "[steps('aitriosConfig').aitriosUrl]",
+		  "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]"
+		},
+		"kind": "ResourceGroup",
+		"location": "[steps('basics').resourceScope.location.name]",
+		"resourceGroupId": "[steps('basics').resourceScope.resourceGroup.id]"
+	  }
+	}
+  }

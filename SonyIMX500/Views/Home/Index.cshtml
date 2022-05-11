@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Sony IMX 500";
+}
+<h1>@ViewData["Title"]</h1>
+
+    <span>Id Token</span>
+    <textarea id="tokenTa" cols="30" rows="10" style="display: block; overflow-y: scroll; width:700px; height:246px;" readonly></textarea>
+    <span>Expire time: </span>
+    <span id='idExpire'></span>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        console.log("Test " + '@ViewData["Token"]')
+        console.log(window.location.href);
+        document.getElementById('tokenTa').value = '@ViewData["Token"]';
+                    initialize();
+            auth();
+            getTokens();
+    }
+
+    $(window).load(function () {
+            alert("window load complete" + '@ViewData["Token"]');
+    });
+
+    $(document).ready(function () {
+            alert("document is ready." + '@ViewData["Token"]');
+    });
+
+
+</script>
+
+<p>test1.</p>
