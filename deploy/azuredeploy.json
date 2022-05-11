@@ -292,8 +292,7 @@
 			],
 			"properties": {
 				"Azure__Blob__ConnectionString": "[parameters('Blob_Storage_Connection_String')]",
-				"Azure__CosmosDb__AccessKey": "[parameters('Blob_Storage_Connection_String')]",
-				"Azure__CosmosDb__Uri": "https://cosmos-labstaging05.documents.azure.com:443/",
+				"Azure__CosmosDb__ConnectionString": "[parameters('Cosmos_Db_Connection_String')]",
 				"Azure__CustomVision__EndPoint": "[parameters('Custom_Vision_Endpoint')]",
 				"Azure__CustomVision__AccessKey": "[parameters('Custom_Vision_AccessKey')]",
 				"Azure__SonyAPI__AppGwValidation": "[parameters('APP_GW_VALIDATION_KEY')]",
