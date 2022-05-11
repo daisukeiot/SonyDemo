@@ -4,31 +4,75 @@
         "kind": "Form",
         "properties": {
             "title": "Sony IMX500 Lab deployment wizard",
+            "config": {
+                "isWizard": false,
+                "basics": {
+                    "description": "<h1>Select **Azure Subscription**, and **Resouce Group**</h1>",
+                    "subscription": {
+                        "constraints": {
+                            "validations": [{
+                                    "isValid": "[not(contains(subscription().displayName, 'Test'))]",
+                                    "message": "Can't use test subscription."
+                                },
+                                {
+                                    "permission": "Microsoft.Web/hostingEnvironments/Write",
+                                    "message": "Must have write permission to create a new App Service Environment."
+                                },
+                                {
+                                    "permission": "Microsoft.Storage/storageAccounts/write",
+                                    "message": "Must have write permission to creates a storage account."
+                                },
+                                {
+                                    "permission": "Microsoft.SignalRService/SignalR/write",
+                                    "message": "Must have write permission to create the SignalR's settings."
+                                }
+                            ]
+                        },
+                        "resourceProviders": [
+                            "Microsoft.Web",
+                            "Microsoft.Storage",
+                            "Microsoft.SignalRService"
+                        ]
+                    },
+                    "resourceGroup": {
+                        "constraints": {
+                            "validations": []
+                        },
+                        "allowExisting": true
+                    },
+                    "location": {
+                        "label": "Azure Region",
+                        "toolTip": "Select Azure region nearest to you",
+                        "resourceTypes": [
+                            "Microsoft.SignalRService/SignalR",
+                            "Microsoft.Storage/storageAccounts",
+                            "Microsoft.Web/serverfarms",
+                            "Microsoft.Web/sites"
+                        ],
+                        "allowedValues": [],
+                        "visible": true
+                    }
+                }
+            },
+            "basics": [],
             "steps": [{
-                    "name": "basics",
-                    "label": "Deployment location",
+                    "name": "webAppConfig",
+                    "label": "Web Portal settings",
                     "elements": [{
-                        "name": "resourceScope",
-                        "type": "Microsoft.Common.ResourceScope"
-                    }]
-                },
-                {
-                    "name": "webApp",
-                    "label": "WebApp properties",
-                    "elements": [{
-                            "name": "webAppInfobox",
+                            "name": "webAppInfo",
                             "type": "Microsoft.Common.InfoBox",
+                            "label": "Name of your Dashboard.  Becomes a part of URL.",
                             "visible": true,
                             "options": {
-                                "icon": "None",
-                                "text": "This wizard will guide through customizing and deploying a web app with all of it's components."
+                                "icon": "Info",
+                                "text": "Give a name to your Web App Dashboard.  The name becomes a part of URL."
                             }
                         },
                         {
                             "name": "webAppName",
                             "type": "Microsoft.Common.TextBox",
                             "label": "Web App Name",
-                            "defaultValue": "",
+                            "defaultValue": "SonyIMX",
                             "toolTip": "",
                             "constraints": {
                                 "required": true,
@@ -36,77 +80,156 @@
                                 "validationMessage": ""
                             },
                             "visible": true
+                        }
+                    ]
+                },
+                {
+                    "name": "storageConfig",
+                    "label": "Storage settings",
+                    "elements": [{
+                            "name": "storageConfigInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "label": "Name of your Dashboard.  Becomes a part of URL.",
+                            "visible": true,
+                            "options": {
+                                "icon": "Info",
+                                "text": "Give a name to your Web App Dashboard.  The name becomes a part of URL."
+                            }
                         },
                         {
-                            "name": "location",
+                            "name": "storageAccounts",
+                            "type": "Microsoft.Storage.MultiStorageAccountCombo",
+                            "label": {
+                                "prefix": "Storage account name prefix",
+                                "type": "Storage account type"
+                            },
+                            "defaultValue": {
+                                "prefix": "imx500",
+                                "type": "Standard_LRS"
+                            },
+                            "constraints": {
+                                "allowedTypes": [
+                                    "Premium_LRS",
+                                    "Standard_LRS",
+                                    "Standard_GRS"
+                                ]
+                            },
+                            "count": 2
+                        }
+                    ]
+                },
+                {
+                    "name": "aitriosConfig",
+                    "label": "Sony Aitrios Properties",
+                    "elements": [{
+                            "name": "aitriosConfigInfo",
+                            "type": "Microsoft.Common.InfoBox",
+                            "visible": true,
+                            "options": {
+                                "icon": "Info",
+                                "uri": "",
+                                "text": "Properties to access Aitrios resources"
+                            }
+                        },
+                        {
+                            "name": "cosmosDbConnectionString",
                             "type": "Microsoft.Common.TextBox",
-                            "label": "Location",
-                            "defaultValue": "[[resourceGroup().location]",
+                            "label": "Cosmos DB Connection String.",
+                            "defaultValue": "",
                             "toolTip": "",
                             "constraints": {
-                                "required": false,
+                                "required": true,
                                 "regex": "",
                                 "validationMessage": ""
-                            },
-                            "visible": true
+                            }
                         },
                         {
-                            "name": "skuName",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Sku Name",
-                            "defaultValue": "S1",
+                            "name": "eventHubsConnectionString",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Event Hubs Connection String.",
+                            "defaultValue": "",
                             "toolTip": "",
                             "constraints": {
-                                "required": false,
-                                "allowedValues": [{
-                                        "label": "S1",
-                                        "value": "S1"
-                                    },
-                                    {
-                                        "label": "S2",
-                                        "value": "S2"
-                                    },
-                                    {
-                                        "label": "S3",
-                                        "value": "S3"
-                                    },
-                                    {
-                                        "label": "B1",
-                                        "value": "B1"
-                                    }
-                                ]
-                            },
-                            "visible": true
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            }
                         },
                         {
-                            "name": "runtime",
-                            "type": "Microsoft.Common.DropDown",
-                            "label": "Runtime",
-                            "defaultValue": "NODE|16-lts",
+                            "name": "blobStorageConnectionString",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Blob Storage Connection String.",
+                            "defaultValue": "",
                             "toolTip": "",
                             "constraints": {
-                                "required": false,
-                                "allowedValues": [{
-                                        "label": "NODE|16-lts",
-                                        "value": "NODE|16-lts"
-                                    },
-                                    {
-                                        "label": "DOTNETCORE|3.0",
-                                        "value": "DOTNETCORE|3.0"
-                                    }
-                                ]
-                            },
-                            "visible": true
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            }
+                        },
+                        {
+                            "name": "customVisionEndPoint",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Custom Vision Endpoint URI",
+                            "defaultValue": "https://japaneast.api.cognitive.microsoft.com",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            }
+                        },
+                        {
+                            "name": "customVisionAccessKey",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Custom Vision Access Key",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            }
+                        },
+                        {
+                            "name": "aitriosUrl",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "Aitrios Base Uri",
+                            "defaultValue": "https://apim-labstaging05.azure-api.net/v09_m/v1",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            }
+                        },
+                        {
+                            "name": "appGwValidation",
+                            "type": "Microsoft.Common.TextBox",
+                            "label": "App GW Validation",
+                            "defaultValue": "",
+                            "toolTip": "",
+                            "constraints": {
+                                "required": true,
+                                "regex": "",
+                                "validationMessage": ""
+                            }
                         }
                     ]
                 }
-            ]
+            ],
         },
         "outputs": {
             "parameters": {
-                "webAppName": "[steps('webApp').webAppName]",
-                "skuName": "[steps('webApp').skuName]",
-                "runtime": "[steps('webApp').runtime]"
+                "storageAccountNamePrefix": "[steps('storageConfig').storageAccounts.prefix]",
+                "storageAccountType": "[steps('storageConfig').storageAccounts.type]",
+                "eventHubsConnectionString": "[steps('aitriosConfig').eventHubsConnectionString]",
+                "cosmosDbConnectionString": "[steps('aitriosConfig').cosmosDbConnectionString]",
+                "blobStorageConnectionString": "[steps('aitriosConfig').blobStorageConnectionString]",
+                "customVisionEndPoint": "[steps('aitriosConfig').customVisionEndPoint]",
+                "customVisionAccessKey": "[steps('aitriosConfig').customVisionAccessKey]",
+                "aitriosUrl": "[steps('aitriosConfig').aitriosUrl]",
+                "appGwValidation": "[steps('aitriosConfig').appGwValidation]"
             },
             "kind": "ResourceGroup",
             "location": "[steps('basics').resourceScope.location.name]",
