@@ -77,9 +77,9 @@
 
 		"githubrepo": {
 			"webApp": "https://github.com/daisukeiot/SonyDemo.git",
-			"webAppBranch": "WIP",
+			"webAppBranch": "main",
 			"functions": "https://github.com/daisukeiot/IMX500-Functions.git",
-			"functionsBranch": "WIP"
+			"functionsBranch": "main"
 		},
 		"deployment": {
 			"apiVersion": "2021-04-01"
