@@ -243,7 +243,6 @@
 			},
 			"kind": "SignalR",
 			"dependsOn": [
-				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Webapp')]"
 			],
 			"properties": {
 				"tls": {

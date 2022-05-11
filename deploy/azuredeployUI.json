@@ -182,40 +182,40 @@
 				"options": {
 				  "icon": "Info",
 				  "uri": "",
-				  "text": "Properties to access Aitrios resources"
+				  "text": "Properties to access Aitrios resources.  Please contact Sony representative if you do not have this information."
 				}
 			  },
 			  {
 				"name": "cosmosDbConnectionString",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Cosmos DB Connection String.",
-				"toolTip": "",
+				"placeholder": "Provide Connection String to Cosmos DB to access inference results history.",
+				"toolTip": "Web App accesses Inference Result stored in Cosmos DB.",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide Connection String to Cosmos DB to access inference results history."
 				}
 			  },
 			  {
 				"name": "eventHubsConnectionString",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Event Hubs Connection String.",
-				"toolTip": "",
+				"placeholder": "Provide Connection String to Event Hubs for telemetry subscription.",
+				"toolTip": "Functions App subscribes telemetry data frmo IMX5000.",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide Connection String to Event Hubs for telemetry subscription."
 				}
 			  },
 			  {
 				"name": "blobStorageConnectionString",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Blob Storage Connection String.",
-				"toolTip": "",
+				"placeholder": "Provide Connection String to Blob Storage for image file access.",
+				"toolTip": "Web App requires to access Blob Storage to display images from IMX500.",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide Connection String to Blob Storage for image file access."
 				}
 			  },
 			  {
@@ -223,47 +223,45 @@
 				"type": "Microsoft.Common.TextBox",
 				"label": "Custom Vision Endpoint URI",
 				"defaultValue": "https://japaneast.api.cognitive.microsoft.com",
-				"toolTip": "",
+				"placeholder": "Provide Custom Vision's Endpoint URI.",
+				"toolTip": "Endpoint for Azure Custom Vision to use.",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide Custom Vision's Endpoint URI."
 				}
 			  },
 			  {
 				"name": "customVisionAccessKey",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Custom Vision Access Key",
-				"defaultValue": "",
-				"toolTip": "",
+				"placeholder": "Provide Custom Vision's Access Key.",
+				"toolTip": "Access key for Azure Custom Vision project",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide Access Key to Custom Vision project"
 				}
 			  },
 			  {
 				"name": "aitriosUrl",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Aitrios Base Uri",
+				"placeholder": "Provide URL for AITrios API.",
 				"defaultValue": "https://apim-labstaging05.azure-api.net/v09_m/v1",
-				"toolTip": "",
+				"toolTip": "Provide Custom Vision's Access Key.",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide Custom Vision's Access Key."
 				}
 			  },
 			  {
 				"name": "appGwValidation",
 				"type": "Microsoft.Common.TextBox",
 				"label": "App GW Validation",
-				"defaultValue": "",
-				"toolTip": "",
+				"placeholder": "Provide App GW Validation key for AITrios API Access.",
+				"toolTip": "Web App requires validation key to access AITrios API.",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validationMessage": "Provide App GW Validation key for AITrios API Access."
 				}
 			  }
 			]
