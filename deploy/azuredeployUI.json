@@ -4,58 +4,52 @@
         "kind": "Form",
         "properties": {
             "title": "Sony IMX500 Lab deployment wizard",
-            "config": {
-                "isWizard": false,
-                "basics": {
-                    "description": "<h1>Select **Azure Subscription**, and **Resouce Group**</h1>",
-                    "subscription": {
-                        "constraints": {
-                            "validations": [{
-                                    "isValid": "[not(contains(subscription().displayName, 'Test'))]",
-                                    "message": "Can't use test subscription."
-                                },
-                                {
-                                    "permission": "Microsoft.Web/hostingEnvironments/Write",
-                                    "message": "Must have write permission to create a new App Service Environment."
-                                },
-                                {
-                                    "permission": "Microsoft.Storage/storageAccounts/write",
-                                    "message": "Must have write permission to creates a storage account."
-                                },
-                                {
-                                    "permission": "Microsoft.SignalRService/SignalR/write",
-                                    "message": "Must have write permission to create the SignalR's settings."
-                                }
+            "steps": [{
+                    "name": "basics",
+                    "label": "Basics",
+                    "elements": [{
+                        "name": "resouceScope",
+                        "type": "Microsoft.Common.ResourceScope",
+                        "subscription": {
+                            "constraints": {
+                                "validations": [{
+                                        "isValid": "[not(contains(subscription().displayName, 'Test'))]",
+                                        "message": "Can't use test subscription."
+                                    },
+                                    {
+                                        "permission": "Microsoft.Web/hostingEnvironments/Write",
+                                        "message": "Must have write permission to create a new App Service Environment."
+                                    },
+                                    {
+                                        "permission": "Microsoft.Storage/storageAccounts/write",
+                                        "message": "Must have write permission to creates a storage account."
+                                    },
+                                    {
+                                        "permission": "Microsoft.SignalRService/SignalR/write",
+                                        "message": "Must have write permission to create the SignalR's settings."
+                                    }
+                                ]
+                            },
+                            "resourceProviders": [
+                                "Microsoft.Web",
+                                "Microsoft.Storage",
+                                "Microsoft.SignalRService"
                             ]
                         },
-                        "resourceProviders": [
-                            "Microsoft.Web",
-                            "Microsoft.Storage",
-                            "Microsoft.SignalRService"
-                        ]
-                    },
-                    "resourceGroup": {
-                        "constraints": {
-                            "validations": []
-                        },
-                        "allowExisting": true
-                    },
-                    "location": {
-                        "label": "Azure Region",
-                        "toolTip": "Select Azure region nearest to you",
-                        "resourceTypes": [
-                            "Microsoft.SignalRService/SignalR",
-                            "Microsoft.Storage/storageAccounts",
-                            "Microsoft.Web/serverfarms",
-                            "Microsoft.Web/sites"
-                        ],
-                        "allowedValues": [],
-                        "visible": true
-                    }
-                }
-            },
-            "basics": [],
-            "steps": [{
+                        "location": {
+                            "label": "Azure Region",
+                            "toolTip": "Select Azure region nearest to you",
+                            "resourceTypes": [
+                                "Microsoft.SignalRService/SignalR",
+                                "Microsoft.Storage/storageAccounts",
+                                "Microsoft.Web/serverfarms",
+                                "Microsoft.Web/sites"
+                            ],
+                            "allowedValues": [],
+                            "visible": true
+                        }
+                    }]
+                }, {
                     "name": "webAppConfig",
                     "label": "Web Portal settings",
                     "elements": [{
