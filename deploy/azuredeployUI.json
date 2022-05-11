@@ -58,11 +58,8 @@
 				  "required": false,
 				  "validations": [
 					{
-						"regex": "^[a-z0-9A-Z]{4,15}$",
+					  "regex": "^[a-z0-9A-Z]{3,5}$",
 					  "message": "Only alphanumeric characters are allowed, and the value must be 3-5 characters long."
-					},
-					{
-
 					}
 				  ]
 				},
@@ -87,12 +84,53 @@
 				"name": "webAppName",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Web App Name",
-				"defaultValue": "SonyIMX",
+				"defaultValue": "SonyIMXDashboard",
 				"toolTip": "",
+				"placeholder": "Specify a name of new Web App",
 				"constraints": {
 				  "required": true,
-				  "regex": "",
-				  "validationMessage": ""
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z-]{0,39}$",
+					  "message": "Only alphanumeric characters and hypehens are allowed, and the value must be 1-40 characters long."
+					}
+				  ]
+				},
+				"visible": true
+			  },
+			  {
+				"name": "functionsAppName",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Functions App Name",
+				"defaultValue": "SonyIMXFunctions",
+				"toolTip": "",
+				"placeholder": "Specify a name of new Functions App",
+				"constraints": {
+				  "required": true,
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z-]{0,39}$",
+					  "message": "Only alphanumeric characters and hypehens are allowed, and the value must be 1-40 characters long."
+					}
+				  ]
+				},
+				"visible": true
+			  },
+			  {
+				"name": "signalRName",
+				"type": "Microsoft.Common.TextBox",
+				"label": "SignalR Name",
+				"defaultValue": "SonyIMXSignalR",
+				"toolTip": "",
+				"placeholder": "Specify a name of new Functions App",
+				"constraints": {
+				  "required": true,
+				  "validations": [
+					{
+					  "regex": "^[a-z0-9A-Z-]{0,62}$",
+					  "message": "Only alphanumeric characters and hypehens are allowed, and the value must be 1-40 characters long."
+					}
+				  ]
 				},
 				"visible": true
 			  }
@@ -151,7 +189,6 @@
 				"name": "cosmosDbConnectionString",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Cosmos DB Connection String.",
-				"defaultValue": "",
 				"toolTip": "",
 				"constraints": {
 				  "required": true,
@@ -163,7 +200,6 @@
 				"name": "eventHubsConnectionString",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Event Hubs Connection String.",
-				"defaultValue": "",
 				"toolTip": "",
 				"constraints": {
 				  "required": true,
@@ -175,7 +211,6 @@
 				"name": "blobStorageConnectionString",
 				"type": "Microsoft.Common.TextBox",
 				"label": "Blob Storage Connection String.",
-				"defaultValue": "",
 				"toolTip": "",
 				"constraints": {
 				  "required": true,
@@ -237,7 +272,9 @@
 	  },
 	  "outputs": {
 		"parameters": {
-		  "storageAccountNamePrefix": "[steps('storageConfig').storageAccounts.prefix]",
+		  "Web_App_Name": "[steps('webAppConfig').webAppName]",
+		  "Function_App_Name": "[steps('webAppConfig').functionsAppName]",
+		  "SignalR_Name": "[steps('webAppConfig').signalRName]",
 		  "storageAccountType": "[steps('storageConfig').storageAccounts.type]",
 		  "Event_Hub_Connection_String": "[steps('aitriosConfig').eventHubsConnectionString]",
 		  "Cosmos_Db_Connection_String": "[steps('aitriosConfig').cosmosDbConnectionString]",

@@ -6,6 +6,21 @@
 			"type": "string",
 			"defaultValue": "[resourceGroup().location]"
 		},
+		"Web_App_Name": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 40
+		},
+		"Function_App_Name": {
+			"type": "string",
+			"minLength": 1,
+			"maxLength": 40
+		},
+		"SignalR_Name": {
+			"type": "string",
+			"minLength": 3,
+			"maxLength": 63
+		},
 		"Blob_Storage_Connection_String": {
 			"type": "string"
 		},
@@ -29,30 +44,31 @@
 		}
 	},
 	"variables": {
-		"signalr": {
-			"apiVersion": "2022-02-01",
-			"sku": "Free_F1",
-			"skuTier": "Free",
-			"size": "F1",
-			"name": "[concat('IMX500-SignalR-', parameters('UniqueID'))]"
-		},
-		"storageAcct": {
-			"apiVersion": "2021-09-01",
-			"sku": "Standard_LRS",
-			"tier": "Standard",
-			"name": "[toLower(concat('imx500', parameters('UniqueID')))]"
-		},
 		"apps": {
 			"apiVersion": "2021-03-01",
 			"skuName": "S1",
 			"tier": "Standard",
 			"size": "S1",
 			"family": "S",
-			"hostingPlan": "[concat('IMX500-AppHost-', parameters('UniqueID'))]",
-			"functionsName": "[concat('IMX500-Functions-', parameters('UniqueID'))]",
-			"webappName": "[concat('IMX500-Portal-', parameters('UniqueID'))]",
-			"webappUrl": "[toLower(concat('https://', 'IMX500-Portal-', parameters('UniqueID'), '.azurewebsites.net'))]"
+			"hostingPlan": "[format('{0}-AppHost-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
+			"functionsName": "[format('{0}-{1}', parameters('Function_App_Name'),parameters('UniqueID'))]",
+			"webappName": "[format('{0}-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
+			"webappUrl": "[toLower(format('{0}-{1}.azurewebsites.net', parameters('Web_App_Name'),parameters('UniqueID')))]"
 		},
+		"signalr": {
+			"apiVersion": "2022-02-01",
+			"sku": "Free_F1",
+			"skuTier": "Free",
+			"size": "F1",
+			"name": "[format('{0}-{1}', parameters('SignalR_Name'),parameters('UniqueID'))]"
+		},
+		"storageAcct": {
+			"apiVersion": "2021-09-01",
+			"sku": "Standard_LRS",
+			"tier": "Standard",
+			"name": "[toLower(format('{0}-{1}', parameters('SignalR_Name'),parameters('UniqueID')))]"
+		},
+
 		"githubrepo": {
 			"webApp": "https://github.com/daisukeiot/SonyDemo.git",
 			"webAppBranch": "WIP",
