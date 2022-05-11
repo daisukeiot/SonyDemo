@@ -157,7 +157,7 @@
 				  "type": "Storage account type"
 				},
 				"defaultValue": {
-				  "prefix": "imx500",
+				  "prefix": "imx500stor",
 				  "type": "Standard_LRS"
 				},
 				"constraints": {
@@ -272,6 +272,7 @@
 	  },
 	  "outputs": {
 		"parameters": {
+		  "UniqueId": "[steps('basics').uniqueId]",
 		  "Web_App_Name": "[steps('webAppConfig').webAppName]",
 		  "Function_App_Name": "[steps('webAppConfig').functionsAppName]",
 		  "SignalR_Name": "[steps('webAppConfig').signalRName]",
