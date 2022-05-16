@@ -59,6 +59,7 @@ $("#blobStorJsGrid").jsGrid({
     sorting: true,
     paging: true,
     autoload: false,
+    loadMessage: "Please, wait...",
     //filtering: true,
 
     controller: {
@@ -89,22 +90,22 @@ $("#blobStorJsGrid").jsGrid({
             name: "Image",
             text: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ height: 120, width: 120 }).on("click", function () {
+                return $("<img>").attr("src", val).css({ height: "120px", width: "120px" }).on("click", function () {
                     $("#imagePreview").attr("src", item.Image);
                     console.log(item.Image)
                 });
             },
             align: "left",
-            width: 20
+            width: "auto"
         },
         {
-            name: "CreateDate", type: "text", align: "left", width: 50
+            name: "CreateDate", type: "text", align: "left", width: "auto"
         },
         {
-            name: "DeviceId", type: "text", align: "left", width: 50
+            name: "DeviceId", type: "text", align: "left", width: "auto"
         },
         {
-            name: "FileName", type: "text", align: "left"
+            name: "FileName", type: "text", align: "left", width: "auto"
         }
     ],
 
