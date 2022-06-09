@@ -59,6 +59,7 @@ function sonyApiInitialize() {
     }
 
     myMsal.handleRedirectCallback((err, response) => {
+        //console.log("handleRedirectCallback");
         if (err) {
             alert(err);
         } else {
@@ -968,7 +969,7 @@ async function StopUploadRetrainingData() {
 //    return ret;
 //}
 
-async function GetDevices(listElementId, silent) {
+async function GetDevices(listElementId, silent, isOption) {
 
     var funcName = arguments.callee.name + "()";
     var ret = true;
@@ -992,7 +993,13 @@ async function GetDevices(listElementId, silent) {
 
             list.innerText = null;
             var option = new Option('Select from list', '');
-            option.disabled = true;
+
+            if (isOption) {
+                option.disabled = false;
+            }
+            else {
+                option.disabled = true;
+            }
             list.append(option);
             for (var device in json.devices) {
               list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))

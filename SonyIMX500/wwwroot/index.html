@@ -88,17 +88,12 @@
                         <span class="dropdown-header">15 Notifications</span>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
-                            <i class="fas fa-envelope mr-2"></i> 4 new messages
-                            <span class="float-right text-muted text-sm">3 mins</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                            <i class="fas fa-users mr-2"></i> 8 friend requests
+                            <i class="fas fa-users mr-2"></i>Detection Report
                             <span class="float-right text-muted text-sm">12 hours</span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
-                            <i class="fas fa-file mr-2"></i> 3 new reports
+                            <i class="fas fa-file mr-2"></i>Alerts
                             <span class="float-right text-muted text-sm">2 days</span>
                         </a>
                         <div class="dropdown-divider"></div>
@@ -493,7 +488,7 @@
                                                                                 </div>
                                                                             </div>
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled>
+                                                                                <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn">
                                                                                     <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
                                                                                 </button>
                                                                                 <label for="convertModelGetBaseModelStatusConversionDiv" style="margin-left:1em">Conversion ID : </label>
@@ -1483,12 +1478,12 @@
                     document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
                     document.getElementById('convertModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
 
-                    if (json.versions[0].result == "completed") {
-                        $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
-                    }
-                    else {
-                        $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
-                    }
+                    //if (json.versions[0].result == "completed") {
+                    //    $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
+                    //}
+                    //else {
+                    //    $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
+                    //}
                 })
                 .catch(function (err) {
                     console.error("Error : " + err);
@@ -2325,7 +2320,7 @@
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("convertModelDeviceIdList", true)
+                        GetDevices("convertModelDeviceIdList", true, true)
                             .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
@@ -2354,7 +2349,7 @@
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("publishModelDeviceIdList", true)
+                        GetDevices("publishModelDeviceIdList", true, false)
                             .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
@@ -2422,7 +2417,7 @@
                     .then((ret) => {
 
                         if (ret) {
-                            GetDevices("deployByConfiguraionDeviceIdList", true)
+                            GetDevices("deployByConfiguraionDeviceIdList", true, false)
                                 .then((ret) => {
                                     if (ret) {
                                         GetAllModels(targetListName)
@@ -2458,7 +2453,7 @@
                 toggleLoader(false);
                 var targetListName = 'startUploadInferenceResultDeviceIdList';
 
-                GetDevices(targetListName, true)
+                GetDevices(targetListName, true, false)
                     .then((ret) => {
                         if (ret) {
 
@@ -2498,7 +2493,7 @@
 
             toggleLoader(false);
 
-            GetDevices(targetListName, true)
+            GetDevices(targetListName, true, false)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
@@ -2527,7 +2522,7 @@
                             }
 
                             var targetDeviceListName = 'startUploadRetrainingDataDeviceIdList';
-                            GetDevices(targetDeviceListName, true)
+                            GetDevices(targetDeviceListName, true, false)
                                 .then((ret) => {
                                     if (ret) {
                                         if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
@@ -2559,7 +2554,7 @@
 
             toggleLoader(false);
 
-            GetDevices(targetListName, true)
+            GetDevices(targetListName, true, false)
                 .then((ret) => {
                     if (ret && !isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
                         setSelectOption(targetListName, currentDeviceId);
