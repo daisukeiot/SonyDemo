@@ -137,9 +137,7 @@ async function sonyApiGetToken() {
 
         } catch (error) {
             //debugger;
-            console.log('### MSAL acquireTokenSilent was unsuccessful');
-            console.log('Error : ' + error.errorCode);
-            console.log('Error : ' + error);
+            console.log('### MSAL acquireTokenSilent was unsuccessful : ' + error);
             switch (error.errorCode) {
                 case "consent_required":
                 case "interaction_required":
