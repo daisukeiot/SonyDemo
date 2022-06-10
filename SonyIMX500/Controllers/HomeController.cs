@@ -21,7 +21,7 @@ namespace SonyIMX500.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static string _token = "test";
+        private static string _token = string.Empty;
         private readonly AppSettings _appSettings;
         const string blobContainerName = "iothub-link";
         static BlobContainerClient blobContainerClient;
