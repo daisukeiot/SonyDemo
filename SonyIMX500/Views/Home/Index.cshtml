@@ -1214,27 +1214,32 @@
             console.debug("Window.Load");
             if ('@ViewData["Name"]' != null && '@ViewData["Name"]'.length > 0)
             {
+                console.debug("ViewData[Name] : " + '@(ViewData["Name"])');
                 document.getElementById('userName').innerHTML = '@(ViewData["Name"])';
             }
 
             if ('@ViewData["PreferredName"]' != null && '@ViewData["PreferredName"]'.length > 0)
             {
+                console.debug("ViewData[PreferredName] : " + '@(ViewData["PreferredName"])');
                 document.getElementById('userDesc').innerHTML = '@(ViewData["PreferredName"])';
             }
 
             if ('@(ViewData["Token"])' != null && '@ViewData["Token"]'.length > 0)
             {
+                console.debug("ViewData[Token] : " + '@(ViewData["Token"])');
                 document.getElementById('taToken').value = '@(ViewData["Token"])';
                 document.getElementById('taToken').dispatchEvent(new Event("change"));
             }
 
             if ('@(ViewData["ClientId"])' != null && '@ViewData["ClientId"]'.length > 0)
             {
+                console.debug("ViewData[ClientId] : " + '@(ViewData["ClientId"])');
                 document.getElementById('clientId').value = '@(ViewData["ClientId"])';
             }
 
             if ('@(ViewData["TokenExpiration"])' != null && '@ViewData["TokenExpiration"]'.length > 0)
             {
+                console.debug("ViewData[TokenExpiration] : " + '@(ViewData["TokenExpiration"])');
                 var expiration = parseInt('@(ViewData["TokenExpiration"])');
                 var d = new Date(0);
                 d.setUTCSeconds(expiration);
