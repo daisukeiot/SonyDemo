@@ -27,6 +27,9 @@ namespace SonyIMX500.Controllers
         static BlobContainerClient blobContainerClient;
         static string userSasToken = string.Empty;
         static private string _clientId = string.Empty;
+        static private string _name = string.Empty;
+        static private string _preferredName = string.Empty;
+        static private string _tokenExpiration = string.Empty;
 
         public HomeController(IOptions<AppSettings> optionsAccessor, ILogger<HomeController> logger)
         {
@@ -51,6 +54,9 @@ namespace SonyIMX500.Controllers
 
             ViewData["Token"] = _token;
             ViewData["ClientId"] = _clientId;
+            ViewData["Name"] = _name;
+            ViewData["PreferredName"] = _preferredName;
+            ViewData["TokenExpiration"] = _tokenExpiration;
 
             return View();
         }
@@ -112,10 +118,37 @@ namespace SonyIMX500.Controllers
 
 
         [HttpPost]
-        public ActionResult SetLoginData(string idToken, string clientId)
+        public ActionResult SetLoginData(string idToken, string clientId, string idTokenJson)
         {
             try
             {
+
+                var idTokenObj = JObject.Parse(idTokenJson);
+
+                if (idTokenObj.ContainsKey("rawIdToken"))
+                {
+                    _token = (string)idTokenObj["rawIdToken"];
+                    ViewData["Token"] = _token;
+                }
+
+                if (idTokenObj.ContainsKey("name"))
+                {
+                    _name = (string)idTokenObj["name"];
+                    ViewData["Name"] = _name;
+                }
+
+                if (idTokenObj.ContainsKey("preferredName"))
+                {
+                    _preferredName = (string)idTokenObj["preferredName"];
+                    ViewData["PreferredName"] = _preferredName;
+                }
+
+                if (idTokenObj.ContainsKey("expiration"))
+                {
+                    _tokenExpiration = (string)idTokenObj["expiration"];
+                    ViewData["TokenExpiration"] = _tokenExpiration;
+                }
+
                 _clientId = clientId;
                 ViewData["Token"] = idToken;
                 return Ok();
@@ -275,5 +308,14 @@ namespace SonyIMX500.Controllers
             public string CreateDate { get; set; }
         }
         #endregion // blob
+
+        public class LOGIN_DATA
+        {
+            public string rawIdTOken { get; set; }
+            public string preferredName { get; set; }
+            public string name { get; set; }
+            public string expiration { get; set; }
+        }
+
     }
 }

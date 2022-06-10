@@ -51,36 +51,31 @@
             });
         });
 
-        function postLoginData(response) {
-            debugger
-            $.ajax({
-                type: "POST",
-                url: window.location.origin + '/' + 'home/SetLoginData',
-                data: {
-                    idToken: response.idToken.rawIdToken,
-                    clientId: response.idTokenClaims.aud
-                },
-                success: function (response) {
-                    
-                },
-                error: function (req, status, error) {
-                    alert("GetClientId Error " + status);
-                }
-            });
+        async function postLoginData(response) {
+            var temp = JSON.stringify(response.idToken);
 
-            $.ajax({
-                type: "POST",
-                url: window.location.origin + '/' + 'sony/PostToken',
-                data: { token: response.idToken.rawIdToken },
-                success: function (response) {
+            try {
+                const result = await $.ajax({
+                    type: "POST",
+                    url: window.location.origin + '/' + 'home/SetLoginData',
+                    data: {
+                        idToken: response.idToken.rawIdToken,
+                        clientId: response.idTokenClaims.aud,
+                        idTokenJson : temp,
+                    },
+                    success: function (response) {
                     
-                },
-                error: function (req, status, error) {
-                    alert("PostToken Error " + status);
-                }
-            });
+                    },
+                    error: function (req, status, error) {
+                        alert("SetLoginData Error " + status);
+                    }
+                });
+            } catch (err) {
+            } finally {
+                window.location.href = window.location.origin + window.location.hash;
+            }
 
-            window.location.href = window.location.origin;
+            
         }
 
         function loginSetup() {
@@ -105,7 +100,7 @@
             };
 
             dbgMsal.handleRedirectCallback((error, response) => {
-                debugger;
+                //debugger;
                 console.log("handleRedirectCallback : " + response);
                 postLoginData(response);
             });
@@ -118,7 +113,7 @@
                 //debugger;
                 tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
                 console.log('### MSAL acquireTokenSilent was successful')
-                loginSetup(tokenResp);
+                postLoginData(tokenResp);
             } catch (error) {
                 //debugger;
                 switch (error.errorCode) {

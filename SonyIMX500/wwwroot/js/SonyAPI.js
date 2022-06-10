@@ -209,6 +209,12 @@ function PostToken(token) {
     });
 }
 
+function sonyApiLogout() {
+    if (myMsal != null) {
+        myMsal.logout();
+    }
+}
+
 function UpdateHomeController(loginResponse) {
     console.log("UpdateHomeController : " + loginResponse);
 }

@@ -281,6 +281,9 @@
                                                                                         <button type="button" class="btn btn-success" id="loginBtn">
                                                                                             <i class="fas fa-sign-in-alt btn-fa"></i>Login
                                                                                         </button>
+                                                                                        <button type="button" class="btn btn-warning" id="logoutBtn">
+                                                                                            <i class="fas fa-sign-out-alt btn-fa"></i>Logout
+                                                                                        </button>
                                                                                     </div>
                                                                                     <div class="vertical-center">
                                                                                         <div class="info-box-text" id='btnLoginResult'></div>
@@ -1206,7 +1209,42 @@
             return true;
         }
 
+        $(window).load(function() { 
+
+            console.debug("Window.Load");
+            if ('@ViewData["Name"]' != null)
+            {
+                document.getElementById('userName').innerHTML = '@(ViewData["Name"])';
+            }
+
+            if ('@ViewData["PreferredName"]' != null)
+            {
+                document.getElementById('userDesc').innerHTML = '@(ViewData["PreferredName"])';
+            }
+
+            if ('@(ViewData["Token"])' != null)
+            {
+                document.getElementById('taToken').value = '@(ViewData["Token"])';
+                document.getElementById('taToken').dispatchEvent(new Event("change"));
+            }
+
+            if ('@(ViewData["ClientId"])' != null)
+            {
+                document.getElementById('clientId').value = '@(ViewData["ClientId"])';
+            }
+
+            if ('@(ViewData["TokenExpiration"])' != null)
+            {
+                var expiration = parseInt('@(ViewData["TokenExpiration"])');
+                var d = new Date(0);
+                d.setUTCSeconds(expiration);
+                document.getElementById('spanTokenExpire').innerHTML =  String(d);
+            }
+        });
+
+        
         $(document).ready(function () {
+            console.debug("document.Ready");
 
             if (document.getElementById('clientId').value == "") {
                 document.getElementById('clientId').value = '@(ViewData["ClientId"])';
@@ -1233,6 +1271,8 @@
             hubConnection.start()
                 .then(() => console.log('SignalR connected!'))
                 .catch(console.error);
+
+
 
         })
 
@@ -1280,6 +1320,12 @@
                         toggleLoader(false);
                     });
             }
+        })
+
+        $('#logoutBtn').click(function () {
+                toggleLoader(false);
+                sonyApiLogout();
+                toggleLoader(false);
         })
 
         $('#createBaseCustomVisionProjectBtn').click(function (evt) {
