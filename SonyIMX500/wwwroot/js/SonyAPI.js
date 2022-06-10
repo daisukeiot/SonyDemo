@@ -1,11 +1,13 @@
-﻿let myMsal;
+﻿let myMsal = null;
 let accessTokenRequest;
 
-let LoginRequest = {
+const loginScope = {
     scopes: ["User.Read"],
 };
 
-let authConfig;
+let authConfig = null;
+
+// Utility functions
 
 function setResultElement(resultElement, msg) {
 
@@ -26,44 +28,6 @@ function setResultElement(resultElement, msg) {
     }
 }
 
-function sonyApiInitialize() {
-
-    console.debug("sonyApiInitialize()");
-
-    var url = window.location.href;
-
-    if (url.includes("localhost")) {
-        url = url + "index.html"
-    }
-
-    console.log("Client ID : " + document.getElementById('clientId').value);
-
-    authConfig = {
-        auth: {
-            clientId: document.getElementById('clientId').value,
-            redirectUri: url
-        }
-    }
-
-    myMsal = new Msal.UserAgentApplication(authConfig);
-
-    accessTokenRequest = {
-        scopes: [authConfig.auth.clientId],
-        prompt: 'none',
-        authority: null,
-        account: myMsal.getAccount()
-    }
-
-    myMsal.handleRedirectCallback((err, response) => {
-        //console.log("handleRedirectCallback");
-        if (err) {
-            alert(err);
-        } else {
-            updateSetupUi(response);
-        }
-    });
-}
-
 function processError(funcName, err, bShowAlert) {
 
     var msg;
@@ -82,16 +46,36 @@ function processError(funcName, err, bShowAlert) {
     return msg;
 }
 
-function sonyApiAuth() {
+function AddApiOutput(apiName, result) {
+    var json;
 
-    console.log("sonyApiAuth()");
+    if (typeof (result) == 'string') {
+        json = JSON.parse(result);
+    }
+    else {
+        json = result;
+    }
 
+    document.getElementById('apiOutputLabel').innerHTML = apiName;
+    document.getElementById('tabApiOutput').value = null;
+    document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
+}
+
+// MSAL token functions
+
+function sonyApiInitializeMsal() {
+
+    console.debug(arguments.callee.name + "()");
+    var url = window.location.href;
     var clientId = document.getElementById('clientId').value;
 
-    var url = window.location.href;
+    if ((myMsal != null) && (authConfig && authConfig.auth.clientId == clientId))  {
+        return;
+    }
 
-    if (url.includes("localhost")) {
-        url = url + "index.html"
+    if (clientId.length == 0) {
+        console.log("Client ID empty");
+        return;
     }
 
     authConfig = {
@@ -101,9 +85,8 @@ function sonyApiAuth() {
         }
     }
 
-    console.debug("sonyApiAuth() Cliend ID : " + authConfig.auth.clientId);
-    console.debug("sonyApiAuth() Redirect URL : " + authConfig.auth.redirectUri);
-
+    console.debug("Redirect Url : " + authConfig.auth.redirectUri);
+    console.debug("Client ID    : " + authConfig.auth.clientId);
 
     myMsal = new Msal.UserAgentApplication(authConfig);
 
@@ -115,72 +98,78 @@ function sonyApiAuth() {
     }
 
     myMsal.handleRedirectCallback((err, response) => {
-        console.debug("Redirect Callback");
+        //debugger;
         if (err) {
             alert(err);
         } else {
-            console.log("Test");
-            UpdateHomeController(response);
+            updateLoginTab(response);
         }
     });
 
+    SetClientId(authConfig.auth.clientId);
+}
+
+async function sonyApiGetToken() {
+    console.debug(arguments.callee.name + "()");
+
+    var url = window.location.href;
+    if (url.includes("localhost") && !url.includes("index.html")) {
+        console.debug("Redirecting to index.html");
+        url = url + "index.html"
+        window.location.href = url;
+        return;
+    }
+
     if (!myMsal.getAccount()) {
-        myMsal.loginRedirect(LoginRequest);
+        // Not logged in.  Start login.
+        myMsal.loginRedirect(loginScope);
+    }
+    else {
+
+        try {
+            //debugger;
+            tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
+            console.log('### MSAL acquireTokenSilent was successful')
+            updateLoginTab(tokenResp);
+            return tokenResp.idToken.rawIdToken;
+
+        } catch (error) {
+            //debugger;
+            switch (error.errorCode) {
+                case "consent_required":
+                case "interaction_required":
+                case "login_required":
+                    tokenResp = await dbgMsal.acquireTokenPopup(dbgAccessTokenRequest)
+                    console.log('### MSAL acquireTokenPopup was successful')
+                    break;
+
+                case "user_login_error":
+                    console.log('### MSAL Login Error');
+                    if (!dbgMsal.getLoginInProgress()) {
+                        dbgMsal.loginRedirect(dbgLoginRequest);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return null;
+        }
     }
 }
 
-function PostToken(token) {
-    console.log("PostToken() : " + token);
+async function getToken() {
+    var token = sonyApiGetToken();
 
-    $.ajax({
-        type: "POST",
-        url: window.location.origin + '/' + 'sony/PostToken',
-        data: { token: token },
-        success: function (response) {
-            //console.log(response)
-        },
-        error: function (req, status, error) {
-            alert("PostToken Error " + status);
-        }
-    });
+    if (token) {
+        document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
+        PostToken(token);
+        var interval = setInterval(function () { getToken(); }, 300000);
+    }
 }
 
-function GetClientId() {
-    console.log("GetClientId()");
-
-    $.ajax({
-        type: "GET",
-        url: window.location.origin + '/' + 'home/GetClientId',
-        data: {},
-        success: function (response) {
-            document.getElementById('clientId').value = response;
-            return response;
-        },
-        error: function (req, status, error) {
-            alert("GetClientId Error " + status);
-        }
-    });
-}
-
-function SetClientId(ClientId) {
-    console.log("SetClientId()");
-
-    $.ajax({
-        type: "POST",
-        url: window.location.origin + '/' + 'home/SetClientId',
-        data: {ClientId: ClientId},
-        success: function (response) {
-            return response.responseText;
-        },
-        error: function (req, status, error) {
-            alert("SetClientId Error " + status);
-        }
-    });
-}
-
-function updateSetupUi(tokenResp) {
-
-    console.log("updateSetUi");
+function updateLoginTab(tokenResp) {
+    console.debug(arguments.callee.name + "()");
     if (tokenResp == null) {
         document.getElementById('taToken').value = "Access Token not found in response.";
         document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
@@ -201,71 +190,45 @@ function updateSetupUi(tokenResp) {
     }
 }
 
-function requiresInteraction(errorCode) {
-    if (!errorCode || !errorCode.length) {
-        return false;
-    }
-    return errorCode === "consent_required" ||
-        errorCode === "interaction_required" ||
-        errorCode === "login_required";
-}
+function PostToken(token) {
+    console.log("PostToken() : " + token);
 
-async function getToken() {
-    var token = getLoginToken();
-    console.log("getLoginToken : " + token);
-    document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
-    PostToken(token);
-    var interval = setInterval(function () { getToken(); }, 300000);
-}
-
-async function getLoginToken() {
-
-    console.debug('getLoginToken');
-    let tokenResp = null;
-    var url = window.location.href;
-
-    if (url.includes("localhost")) {
-        url = url + "index.html"
-        window.location.href = url;
-    }
-    else {
-        try {
-            tokenResp = await myMsal.acquireTokenSilent(accessTokenRequest);
-            console.log('### MSAL acquireTokenSilent was successful')
+    $.ajax({
+        type: "POST",
+        url: window.location.origin + '/' + 'sony/PostToken',
+        data: { token: token },
+        success: function (response) {
+            //console.log(response)
+        },
+        error: function (req, status, error) {
+            alert("PostToken Error " + status);
         }
-        catch (error) {
-            if (requiresInteraction(error.errorCode)) {
-                tokenResp = await myMsal.acquireTokenPopup(accessTokenRequest)
-                console.log('### MSAL acquireTokenPopup was successful')
-            }
-            else if (error.errorCode == "user_login_error") {
-                console.log('### MSAL Login Error');
-                if (!myMsal.getLoginInProgress()) {
-                    myMsal.loginRedirect(requestObj);
-                }
-            }
+    });
+}
+
+function UpdateHomeController(loginResponse) {
+    console.log("UpdateHomeController : " + loginResponse);
+}
+
+function SetClientId(ClientId) {
+    console.log("SetClientId()");
+
+    $.ajax({
+        type: "POST",
+        url: window.location.origin + '/' + 'home/SetClientId',
+        data: {ClientId: ClientId},
+        success: function (response) {
+            return response.responseText;
+        },
+        error: function (req, status, error) {
+            alert("SetClientId Error " + status);
         }
-
-        updateSetupUi(tokenResp);
-
-        return tokenResp.accessToken;
-    }
+    });
 }
 
-function AddApiOutput(apiName, result) {
-    var json;
 
-    if (typeof (result) == 'string') {
-        json = JSON.parse(result);
-    }
-    else {
-        json = result;
-    }
-    
-    document.getElementById('apiOutputLabel').innerHTML = apiName;
-    document.getElementById('tabApiOutput').value = null;
-    document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
-}
+
+
 
 //async function GetCustomVisionProjects() {
 

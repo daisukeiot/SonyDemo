@@ -110,6 +110,27 @@ namespace SonyIMX500.Controllers
             }
         }
 
+
+        [HttpPost]
+        public ActionResult SetLoginData(string idToken, string clientId)
+        {
+            try
+            {
+                _clientId = clientId;
+                ViewData["Token"] = idToken;
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
         private async Task<HttpResponseMessage> SendCVGet(string requestSegment)
         {
             using (HttpClient client = new HttpClient())

@@ -1209,11 +1209,10 @@
         $(document).ready(function () {
 
             if (document.getElementById('clientId').value == "") {
-                document.getElementById('clientId').value = '@(TempData["ClientId"])';
+                document.getElementById('clientId').value = '@(ViewData["ClientId"])';
             }
             
-            //sonyApiGetClientId();
-            //sonyApiInitialize();
+            sonyApiInitializeMsal();
 
             hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("telemetryHub")
@@ -1272,7 +1271,7 @@
         $('#loginBtn').click(function () {
             if ($('#loginForm').valid()) {
                 toggleLoader(false);
-                sonyApiAuth();
+                sonyApiInitializeMsal();
                 getToken()
                     .then(() => {
                         console.log("Login End");

@@ -6,7 +6,8 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 </head>
 
-<body onload=loginRedirect()>
+<!--<body onload=loginRedirect()>-->
+<body>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -15,14 +16,142 @@
 
 
     <h1>test</h1>
-    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="">
-
+    <input type="text" style="width:30vw" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="">
+    <div>
+        <button type="button" id="loginBtn">
+            Login
+        </button>
+    </div>
+    <div>
+        <button type="button" id="getAccountBtn">
+            GetAccount
+        </button>
+    </div>
     <script>
-        function loginRedirect() {
-            var clientId = GetClientId();
-            console.log(clientId);
-            //document.getElementById('clientId').value = GetClientId();
+        let dbgMsal;
+        let dbgAccessTokenRequest;
+        let dbgLoginRequest = {
+            scopes: ["User.Read"],
+        };
+
+        $(document).ready(function () {
+
+            $.ajax({
+                type: "GET",
+                url: window.location.origin + '/' + 'home/GetClientId',
+                data: {},
+                success: function (response) {
+                    document.getElementById('clientId').value = response;
+                    loginSetup();
+                    login();
+                },
+                error: function (req, status, error) {
+                    alert("GetClientId Error " + status);
+                }
+            });
+        });
+
+        function postLoginData(response) {
+            debugger
+            $.ajax({
+                type: "POST",
+                url: window.location.origin + '/' + 'home/SetLoginData',
+                data: {
+                    idToken: response.idToken.rawIdToken,
+                    clientId: response.idTokenClaims.aud
+                },
+                success: function (response) {
+                    
+                },
+                error: function (req, status, error) {
+                    alert("GetClientId Error " + status);
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: window.location.origin + '/' + 'sony/PostToken',
+                data: { token: response.idToken.rawIdToken },
+                success: function (response) {
+                    
+                },
+                error: function (req, status, error) {
+                    alert("PostToken Error " + status);
+                }
+            });
+
+            window.location.href = window.location.origin;
         }
+
+        function loginSetup() {
+            var replyUrl = window.location.href;
+
+            var dbgAuthConfig = {
+                auth: {
+                    clientId: document.getElementById('clientId').value,
+                    redirectUri: replyUrl,
+                }
+            };
+
+            dbgMsal = new Msal.UserAgentApplication(dbgAuthConfig);
+
+            console.log(dbgAuthConfig.auth.clientId);
+
+            dbgAccessTokenRequest = {
+                scopes: [dbgAuthConfig.auth.clientId],
+                prompt: 'none',
+                authority: null,
+                account: dbgMsal.getAccount()
+            };
+
+            dbgMsal.handleRedirectCallback((error, response) => {
+                debugger;
+                console.log("handleRedirectCallback : " + response);
+                postLoginData(response);
+            });
+
+        }
+
+        async function login() {
+
+            try {
+                //debugger;
+                tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
+                console.log('### MSAL acquireTokenSilent was successful')
+                loginSetup(tokenResp);
+            } catch (error) {
+                //debugger;
+                switch (error.errorCode) {
+                    case "consent_required":
+                    case "interaction_required":
+                    case "login_required":
+                        tokenResp = await dbgMsal.acquireTokenPopup(dbgAccessTokenRequest)
+                        console.log('### MSAL acquireTokenPopup was successful')
+                        break;
+
+                    case "user_login_error":
+                        console.log('### MSAL Login Error');
+                        if (!dbgMsal.getLoginInProgress()) {
+                            dbgMsal.loginRedirect(dbgLoginRequest);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        $('#loginBtn').click(function () {
+            login();
+        })
+
+        $('#getAccountBtn').click(function () {
+            var account = dbgMsal.getAccount();
+
+            if (account == null) {
+                login();
+            }
+        })
     </script>
 </body>
 
