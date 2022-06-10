@@ -87,7 +87,6 @@ function sonyApiAuth() {
     console.log("sonyApiAuth()");
 
     var clientId = document.getElementById('clientId').value;
-    console.debug("sonyApiInitialize() Cliend ID : " + clientId);
 
     var url = window.location.href;
 
@@ -102,6 +101,10 @@ function sonyApiAuth() {
         }
     }
 
+    console.debug("sonyApiAuth() Cliend ID : " + authConfig.auth.clientId);
+    console.debug("sonyApiAuth() Redirect URL : " + authConfig.auth.redirectUri);
+
+
     myMsal = new Msal.UserAgentApplication(authConfig);
 
     accessTokenRequest = {
@@ -112,6 +115,7 @@ function sonyApiAuth() {
     }
 
     myMsal.handleRedirectCallback((err, response) => {
+        console.debug("Redirect Callback");
         if (err) {
             alert(err);
         } else {
@@ -239,9 +243,10 @@ async function getLoginToken() {
                 console.log('### MSAL acquireTokenPopup was successful')
             }
             else if (error.errorCode == "user_login_error") {
-                if (!myMsal.GetLoginInProgress()) {
-                    myMsal.loginRedirect(requestObj);
-                }
+                console.log('### MSAL Login Error');
+                //if (!myMsal.GetLoginInProgress()) {
+                //    myMsal.loginRedirect(requestObj);
+                //}
             }
         }
 
