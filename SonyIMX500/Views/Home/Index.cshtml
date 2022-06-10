@@ -1213,7 +1213,7 @@
             }
             
             //sonyApiGetClientId();
-            sonyApiInitialize();
+            //sonyApiInitialize();
 
             hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("telemetryHub")
@@ -2556,7 +2556,7 @@
 
         $('#clientId').on('change', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-
+            console.debug("Client ID : " + document.getElementById('clientId').value);
             if (document.getElementById('clientId').value.length > 0) {
                 SetClientId(document.getElementById('clientId').value);
                 sonyApiInitialize();
