@@ -182,16 +182,12 @@ function updateSetupUi(tokenResp) {
 
     console.log("updateSetUi");
     if (tokenResp == null) {
-        console.log("tokenResp 1");
         document.getElementById('taToken').value = "Access Token not found in response.";
         document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
     }
     else {
-        console.log("tokenResp 2 " + tokenResp.idToken.claims.aud);
         document.getElementById('taToken').value = tokenResp.idToken.rawIdToken;
         document.getElementById('taToken').dispatchEvent(new Event("change"));
-        console.log('id Record time:' + String(expiresOn));
-        console.log('id Expire time:' + String(tokenResp.expiresOn));
 
         if (String(expiresOn) !== String(tokenResp.expiresOn)) {
             expiresOn = tokenResp.expiresOn;
