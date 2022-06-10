@@ -1187,11 +1187,11 @@ async function GetDevicesForImageGallery(listElementId, silent) {
     return ret;
 }
 
-async function GetAllModels(listElement) {
-    return await GetModels(null, null, null, null, null, null, null, listElement);
+async function GetAllModels(listElement, isOption) {
+    return await GetModels(null, null, null, null, null, null, null, listElement, isOption);
 }
 
-async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement) {
+async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption) {
 
     var funcName = arguments.callee.name + "()";
     var ret = true;
@@ -1218,7 +1218,12 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
             var list = document.getElementById(listElement);
             list.innerText = null;
             var option = new Option("Select from list", "");
-            option.disabled = true;
+            if (isOption) {
+                option.disabled = false;
+            }
+            else {
+                option.disabled = true;
+            }
             list.append(option);
             for (var model in json.models) {
                 list.append(new Option(json.models[model].model_id, json.models[model].model_id));

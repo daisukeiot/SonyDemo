@@ -567,7 +567,7 @@
 
                                                                                         <label for="createDeployConfigurationDeviceTypeList">Device Type (Optional)</label>
                                                                                         <select name="createDeployConfigurationDeviceTypeList" id="createDeployConfigurationDeviceTypeList" class="form-control">
-                                                                                            <option disabled selected>Select Device Type</option>
+                                                                                            <option selected value="">Select Device Type</option>
                                                                                             <option value="00">MPU Based (Type4)</option>
                                                                                             <option value="01">MCU Bsed (Type3)</option>
                                                                                         </select>
@@ -577,7 +577,7 @@
 
                                                                                         <label for="createDeployConfigurationColorMatrixModelList">Color Matrix Mode (Optional)</label>
                                                                                         <select name="createDeployConfigurationColorMatrixModelList" id="createDeployConfigurationColorMatrixModelList" class="form-control">
-                                                                                            <option disabled selected>Select Matrix Mode</option>
+                                                                                            <option selected value="">Select Matrix Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -593,7 +593,7 @@
 
                                                                                         <label for="createDeployConfigurationGammaModeList">Gamma Mode (Optional)</label>
                                                                                         <select name="createDeployConfigurationGammaModeList" id="createDeployConfigurationGammaModeList" class="form-control">
-                                                                                            <option disabled selected>Select Gamma Mode</option>
+                                                                                            <option selected value="">Select Gamma Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -609,7 +609,7 @@
 
                                                                                         <label for="createDeployConfigurationLscModeList">LSC Correction Camera Settings (Optional)</label>
                                                                                         <select name="createDeployConfigurationLscModeList" id="createDeployConfigurationLscModeList" class="form-control">
-                                                                                            <option disabled selected>Select LSC Mode</option>
+                                                                                            <option selected value="">Select LSC Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -620,7 +620,7 @@
 
                                                                                         <label for="createDeployConfigurationPrewbModeList">PreWB adjustment value Camera settings. (Optional)</label>
                                                                                         <select name="createDeployConfigurationPrewbModeList" id="createDeployConfigurationPrewbModeList" class="form-control">
-                                                                                            <option disabled selected>Select PreWB Mode</option>
+                                                                                            <option selected value="">Select PreWB Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -636,7 +636,7 @@
 
                                                                                         <label for="createDeployConfigurationDewarpModeList">Distortion correction Camera settings(bin)type. (Optional)</label>
                                                                                         <select name="createDeployConfigurationDewarpModeList" id="createDeployConfigurationDewarpModeList" class="form-control">
-                                                                                            <option disabled selected>Select Distortion Correction Type</option>
+                                                                                            <option selected value="">Select Distortion Correction Type</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -851,14 +851,14 @@
 
                                                                                         <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
                                                                                         <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
-                                                                                            <option disabled>Select Collection Mode</option>
+                                                                                            <option selected value="">Select Collection Mode</option>
                                                                                             <option value="0">Image</option>
                                                                                             <option value="1" selected>image & Inference results metadata</option>
                                                                                         </select>
 
                                                                                         <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
                                                                                         <select name="startUploadRetrainingDataFileFormatList" id="startUploadRetrainingDataFileFormatList" class="form-control">
-                                                                                            <option disabled selected>Select Image File Format</option>
+                                                                                            <option selected value="">Select Image File Format</option>
                                                                                             <option value="JPG">JPEG</option>
                                                                                             <option value="BMP">Bitmap (BMP)</option>
                                                                                         </select>
@@ -2309,7 +2309,7 @@
 
             toggleLoader(false);
 
-            GetAllModels(targetListName)
+            GetAllModels(targetListName, false)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2338,14 +2338,14 @@
 
             toggleLoader(false);
 
-            GetAllModels(targetListName)
+            GetAllModels(targetListName, false)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("publishModelDeviceIdList", true, false)
+                        GetDevices("publishModelDeviceIdList", true, true)
                             .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
@@ -2384,7 +2384,7 @@
                     .then((ret) => {
 
                         if (ret) {
-                            GetAllModels(targetListName)
+                            GetAllModels(targetListName, false)
                                 .then((ret) => {
                                     if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
                                         setSelectOption(targetListName, currentModel);
@@ -2416,7 +2416,7 @@
                             GetDevices("deployByConfiguraionDeviceIdList", true, false)
                                 .then((ret) => {
                                     if (ret) {
-                                        GetAllModels(targetListName)
+                                        GetAllModels(targetListName, true)
                                             .then((ret) => {
                                                 if (ret) {
                                                     //    if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2459,7 +2459,7 @@
 
                             targetListName = 'startUploadInferenceResultModelIdList';
 
-                            GetAllModels(targetListName)
+                            GetAllModels(targetListName, true)
                                 .then((ret) => {
                                     if (ret) {
                                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2510,7 +2510,7 @@
             try {
                 toggleLoader(false);
 
-                GetAllModels(targetListName)
+                GetAllModels(targetListName, true)
                     .then((ret) => {
                         if (ret) {
                             if (!isItemSelected(targetListName, currentModel) && currentModel) {
