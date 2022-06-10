@@ -244,9 +244,9 @@ async function getLoginToken() {
             }
             else if (error.errorCode == "user_login_error") {
                 console.log('### MSAL Login Error');
-                //if (!myMsal.GetLoginInProgress()) {
-                //    myMsal.loginRedirect(requestObj);
-                //}
+                if (!myMsal.getLoginInProgress()) {
+                    myMsal.loginRedirect(requestObj);
+                }
             }
         }
 
