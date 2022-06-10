@@ -8,7 +8,7 @@
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'home/FindImagesFromBlob',
+            url: window.location.origin + '/' + 'home/FindImagesFromBlob',
             data: {
                 deviceId: deviceId,
                 timeStamp : timeStamp
@@ -70,7 +70,7 @@ $("#blobStorJsGrid").jsGrid({
 
             $.ajax({
                 type: "GET",
-                url: window.location.href + 'home/GetAllImagesFromBlob',
+                url: window.location.origin + '/' + 'home/GetAllImagesFromBlob',
                 data: {
                 },
                 contentType: "application/json; charset=utf-8",

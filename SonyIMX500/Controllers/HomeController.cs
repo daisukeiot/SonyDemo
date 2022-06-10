@@ -26,22 +26,32 @@ namespace SonyIMX500.Controllers
         const string blobContainerName = "iothub-link";
         static BlobContainerClient blobContainerClient;
         static string userSasToken = string.Empty;
+        static private string _clientId = string.Empty;
+
         public HomeController(IOptions<AppSettings> optionsAccessor, ILogger<HomeController> logger)
         {
             _appSettings = optionsAccessor.Value;
             _logger = logger;
             BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
             blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            
         }
 
-        public IActionResult Spa()
-        {
-            return File("~/index.html", "text/html");
-        }
+        //public IActionResult Spa()
+        //{
+        //    return File("~/index.html", "text/html");
+        //}
 
         public IActionResult Index()
         {
             ViewData["Token"] = _token;
+
+            if (string.IsNullOrEmpty(_clientId))
+            {
+                _clientId = _appSettings.SonyApi.ClientId;
+            }
+            TempData["ClientId"] = _clientId;
+            TempData.Keep();
             return View();
         }
 
@@ -53,6 +63,51 @@ namespace SonyIMX500.Controllers
         private void AddRequestHeader(HttpClient client)
         {
             client.DefaultRequestHeaders.Add("Training-Key", _appSettings.CustomVision.AccessKey);
+        }
+
+        [HttpGet]
+        public ActionResult GetClientId()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(_appSettings.SonyApi.ClientId))
+                {
+                    return Ok(_clientId);
+
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Client ID not set");
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SetClientId(string clientId)
+        {
+            try
+            {
+                _clientId = clientId;
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
         }
 
         private async Task<HttpResponseMessage> SendCVGet(string requestSegment)

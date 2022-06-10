@@ -18,7 +18,7 @@
 
             $.ajax({
                 type: "GET",
-                url: window.location.href + 'cosmosdb/loadData',
+                url: window.location.origin + '/' + 'cosmosdb/loadData',
                 data: {
                     threshold: document.getElementById("cosmosDbThreshold").innerHTML
                 },
