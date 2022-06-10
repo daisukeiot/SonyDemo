@@ -1212,28 +1212,28 @@
         $(window).load(function() { 
 
             console.debug("Window.Load");
-            if ('@ViewData["Name"]' != null)
+            if ('@ViewData["Name"]' != null && '@ViewData["Name"]'.length > 0)
             {
                 document.getElementById('userName').innerHTML = '@(ViewData["Name"])';
             }
 
-            if ('@ViewData["PreferredName"]' != null)
+            if ('@ViewData["PreferredName"]' != null && '@ViewData["PreferredName"]'.length > 0)
             {
                 document.getElementById('userDesc').innerHTML = '@(ViewData["PreferredName"])';
             }
 
-            if ('@(ViewData["Token"])' != null)
+            if ('@(ViewData["Token"])' != null && '@ViewData["Token"]'.length > 0)
             {
                 document.getElementById('taToken').value = '@(ViewData["Token"])';
                 document.getElementById('taToken').dispatchEvent(new Event("change"));
             }
 
-            if ('@(ViewData["ClientId"])' != null)
+            if ('@(ViewData["ClientId"])' != null && '@ViewData["ClientId"]'.length > 0)
             {
                 document.getElementById('clientId').value = '@(ViewData["ClientId"])';
             }
 
-            if ('@(ViewData["TokenExpiration"])' != null)
+            if ('@(ViewData["TokenExpiration"])' != null && '@ViewData["TokenExpiration"]'.length > 0)
             {
                 var expiration = parseInt('@(ViewData["TokenExpiration"])');
                 var d = new Date(0);
