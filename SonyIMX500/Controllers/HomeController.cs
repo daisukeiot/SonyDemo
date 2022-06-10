@@ -44,14 +44,14 @@ namespace SonyIMX500.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Token"] = _token;
-
             if (string.IsNullOrEmpty(_clientId))
             {
                 _clientId = _appSettings.SonyApi.ClientId;
             }
-            TempData["ClientId"] = _clientId;
-            TempData.Keep();
+
+            ViewData["Token"] = _token;
+            ViewData["ClientId"] = _clientId;
+
             return View();
         }
 
