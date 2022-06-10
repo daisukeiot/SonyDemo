@@ -130,7 +130,7 @@ async function sonyApiGetToken() {
         try {
             //debugger;
             console.debug("Getting Token");
-            tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
+            tokenResp = await myMsal.acquireTokenSilent(dbgAccessTokenRequest);
             console.log('### MSAL acquireTokenSilent was successful')
             updateLoginTab(tokenResp);
             return tokenResp.idToken.rawIdToken;
@@ -144,14 +144,14 @@ async function sonyApiGetToken() {
                 case "consent_required":
                 case "interaction_required":
                 case "login_required":
-                    tokenResp = await dbgMsal.acquireTokenPopup(dbgAccessTokenRequest)
+                    tokenResp = await myMsal.acquireTokenPopup(dbgAccessTokenRequest)
                     console.log('### MSAL acquireTokenPopup was successful')
                     break;
 
                 case "user_login_error":
                     console.log('### MSAL Login Error');
-                    if (!dbgMsal.getLoginInProgress()) {
-                        dbgMsal.loginRedirect(dbgLoginRequest);
+                    if (!myMsal.getLoginInProgress()) {
+                        myMsal.loginRedirect(dbgLoginRequest);
                     }
                     break;
                 default:
