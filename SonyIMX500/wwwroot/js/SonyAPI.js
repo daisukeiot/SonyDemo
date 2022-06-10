@@ -122,12 +122,14 @@ async function sonyApiGetToken() {
 
     if (!myMsal.getAccount()) {
         // Not logged in.  Start login.
+        console.debug("Redirect to login");
         myMsal.loginRedirect(loginScope);
     }
     else {
 
         try {
             //debugger;
+            console.debug("Getting Token");
             tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
             console.log('### MSAL acquireTokenSilent was successful')
             updateLoginTab(tokenResp);
