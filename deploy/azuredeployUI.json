@@ -247,10 +247,22 @@
 				"label": "Aitrios Base Uri",
 				"placeholder": "Provide URL for AITrios API.",
 				"defaultValue": "https://apim-labstaging05.azure-api.net/v09_m/v1",
-				"toolTip": "Provide Custom Vision's Access Key.",
+				"toolTip": "Provide Aitrios Base Uri.",
 				"constraints": {
 				  "required": true,
-				  "validationMessage": "Provide Custom Vision's Access Key."
+				  "validationMessage": "PProvide Aitrios Base Uri."
+				}
+			  },
+			  {
+				"name": "aitriosClientId",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Aitrios Client ID",
+				"placeholder": "Provide Client ID for AITrios API.",
+				"defaultValue": "",
+				"toolTip": "Provide Aitrios Client ID.",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide Aitrios Client ID."
 				}
 			  },
 			  {
@@ -281,6 +293,7 @@
 		  "Custom_Vision_Endpoint": "[steps('aitriosConfig').customVisionEndPoint]",
 		  "Custom_Vision_AccessKey": "[steps('aitriosConfig').customVisionAccessKey]",
 		  "AITRIOS_URL": "[steps('aitriosConfig').aitriosUrl]",
+		  "AITRIOS_CLIENT_ID": "[steps('aitriosConfig').aitriosClientId]",
 		  "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]"
 		},
 		"kind": "ResourceGroup",
