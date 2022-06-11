@@ -48,7 +48,7 @@
 		"APP_GW_VALIDATION_KEY": {
 			"type": "string"
 		},
-		"AITRIOS_CLIEND_ID": {
+		"AITRIOS_CLIENT_ID": {
 			"type": "string"
 		}
 	},
@@ -299,7 +299,7 @@
 				"Azure__CustomVision__AccessKey": "[parameters('Custom_Vision_AccessKey')]",
 				"Azure__SonyAPI__AppGwValidation": "[parameters('APP_GW_VALIDATION_KEY')]",
 				"Azure__SonyAPI__BaseUrl": "[parameters('AITRIOS_URL')]",
-				"Azure__SonyAPI__ClientId": "[parameters('AITRIOS_CLIEND_ID')]",
+				"Azure__SonyAPI__ClientId": "[parameters('AITRIOS_CLIENT_ID')]",
 				"Azure__SignalR__ConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]"
 			}
 		}
