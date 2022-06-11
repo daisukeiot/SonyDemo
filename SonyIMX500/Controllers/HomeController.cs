@@ -21,27 +21,43 @@ namespace SonyIMX500.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private static string _token = "test";
+        private static string _token = string.Empty;
         private readonly AppSettings _appSettings;
         const string blobContainerName = "iothub-link";
         static BlobContainerClient blobContainerClient;
         static string userSasToken = string.Empty;
+        static private string _clientId = string.Empty;
+        static private string _name = string.Empty;
+        static private string _preferredName = string.Empty;
+        static private string _tokenExpiration = string.Empty;
+
         public HomeController(IOptions<AppSettings> optionsAccessor, ILogger<HomeController> logger)
         {
             _appSettings = optionsAccessor.Value;
             _logger = logger;
             BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
             blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            
         }
 
-        public IActionResult Spa()
-        {
-            return File("~/index.html", "text/html");
-        }
+        //public IActionResult Spa()
+        //{
+        //    return File("~/index.html", "text/html");
+        //}
 
         public IActionResult Index()
         {
+            if (string.IsNullOrEmpty(_clientId))
+            {
+                _clientId = _appSettings.SonyApi.ClientId;
+            }
+
             ViewData["Token"] = _token;
+            ViewData["ClientId"] = _clientId;
+            ViewData["Name"] = _name;
+            ViewData["PreferredName"] = _preferredName;
+            ViewData["TokenExpiration"] = _tokenExpiration;
+
             return View();
         }
 
@@ -53,6 +69,99 @@ namespace SonyIMX500.Controllers
         private void AddRequestHeader(HttpClient client)
         {
             client.DefaultRequestHeaders.Add("Training-Key", _appSettings.CustomVision.AccessKey);
+        }
+
+        [HttpGet]
+        public ActionResult GetClientId()
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(_appSettings.SonyApi.ClientId))
+                {
+                    return Ok(_clientId);
+
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Client ID not set");
+                }
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SetClientId(string clientId)
+        {
+            try
+            {
+                _clientId = clientId;
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+
+        [HttpPost]
+        public ActionResult SetLoginData(string idToken, string clientId, string idTokenJson)
+        {
+            try
+            {
+
+                var idTokenObj = JObject.Parse(idTokenJson);
+
+                if (idTokenObj.ContainsKey("rawIdToken"))
+                {
+                    _token = (string)idTokenObj["rawIdToken"];
+                    ViewData["Token"] = _token;
+                }
+
+                if (idTokenObj.ContainsKey("name"))
+                {
+                    _name = (string)idTokenObj["name"];
+                    ViewData["Name"] = _name;
+                }
+
+                if (idTokenObj.ContainsKey("preferredName"))
+                {
+                    _preferredName = (string)idTokenObj["preferredName"];
+                    ViewData["PreferredName"] = _preferredName;
+                }
+
+                if (idTokenObj.ContainsKey("expiration"))
+                {
+                    _tokenExpiration = (string)idTokenObj["expiration"];
+                    ViewData["TokenExpiration"] = _tokenExpiration;
+                }
+
+                _clientId = clientId;
+                ViewData["Token"] = idToken;
+                return Ok();
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, Json(ex.Message));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
         }
 
         private async Task<HttpResponseMessage> SendCVGet(string requestSegment)
@@ -199,5 +308,14 @@ namespace SonyIMX500.Controllers
             public string CreateDate { get; set; }
         }
         #endregion // blob
+
+        public class LOGIN_DATA
+        {
+            public string rawIdTOken { get; set; }
+            public string preferredName { get; set; }
+            public string name { get; set; }
+            public string expiration { get; set; }
+        }
+
     }
 }

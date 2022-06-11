@@ -7,7 +7,7 @@
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'customvision/GetProjects',
+            url: window.location.origin + '/' + 'customvision/GetProjects',
             data: {},
         });
 
@@ -66,7 +66,7 @@ async function DeleteProjectCV(project_name) {
         const result = await $.ajax({
             async: true,
             type: "DELETE",
-            url: window.location.href + 'customvision/DeleteProject',
+            url: window.location.origin + '/' + 'customvision/DeleteProject',
             data: { project_name: project_name},
         });
 

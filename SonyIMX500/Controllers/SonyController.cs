@@ -110,7 +110,6 @@ namespace SonyIMX500.Controllers
         {
             if (token != null)
             {
-                ViewData["Token"] = token;
                 _token = token;
                 return true;
             }

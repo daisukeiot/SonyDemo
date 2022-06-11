@@ -1,16 +1,13 @@
-﻿let myMsal;
+﻿let myMsal = null;
 let accessTokenRequest;
 
-//authConfig = {
-//    auth: {
-//        clientId: document.getElementById('clientId').value,
-//        redirectUri: window.location.href + "index.html"
-//    }
-//}
+const loginScope = {
+    scopes: ["User.Read"],
+};
 
-loginRequest = {
-    scopes: ["User.Read"]
-}
+let authConfig = null;
+
+// Utility functions
 
 function setResultElement(resultElement, msg) {
 
@@ -31,43 +28,6 @@ function setResultElement(resultElement, msg) {
     }
 }
 
-function sonyApiInitialize() {
-
-    console.debug("sonyApiInitialize()");
-
-    var url = window.location.href;
-    var redirectUrl;
-
-    if (url.includes("localhost")) {
-        url = url + "index.html"
-    }
-
-    authConfig = {
-        auth: {
-            clientId: document.getElementById('clientId').value,
-            redirectUri: url
-        }
-    }
-
-    myMsal = new Msal.UserAgentApplication(authConfig);
-
-    accessTokenRequest = {
-        scopes: [authConfig.auth.clientId], // here process.env.VUE_APP_CLIENT_ID is my Azure AD application id value
-        prompt: 'none',
-        authority: null, // I tried also without setting authority to null
-        account: myMsal.getAccount() // this one and the authority value I added because of another thread from git with another id token renewal issue
-    }
-
-    myMsal.handleRedirectCallback((err, response) => {
-        //console.log("handleRedirectCallback");
-        if (err) {
-            alert(err);
-        } else {
-            updateSetupUi(response);
-        }
-    });
-}
-
 function processError(funcName, err, bShowAlert) {
 
     var msg;
@@ -86,10 +46,150 @@ function processError(funcName, err, bShowAlert) {
     return msg;
 }
 
-function sonyApiAuth() {
+function AddApiOutput(apiName, result) {
+    var json;
+
+    if (typeof (result) == 'string') {
+        json = JSON.parse(result);
+    }
+    else {
+        json = result;
+    }
+
+    document.getElementById('apiOutputLabel').innerHTML = apiName;
+    document.getElementById('tabApiOutput').value = null;
+    document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
+}
+
+// MSAL token functions
+
+function sonyApiInitializeMsal() {
+
+    console.debug(arguments.callee.name + "()");
+    var url = window.location.href;
+    var clientId = document.getElementById('clientId').value;
+
+    if ((myMsal != null) && (authConfig && authConfig.auth.clientId == clientId))  {
+        return;
+    }
+
+    if (clientId.length == 0) {
+        console.log("Client ID empty");
+        return;
+    }
+
+    authConfig = {
+        auth: {
+            clientId: clientId,
+            redirectUri: url
+        }
+    }
+
+    console.debug("Redirect Url : " + authConfig.auth.redirectUri);
+    console.debug("Client ID    : " + authConfig.auth.clientId);
+
+    myMsal = new Msal.UserAgentApplication(authConfig);
+
+    accessTokenRequest = {
+        scopes: [authConfig.auth.clientId],
+        prompt: 'none',
+        authority: null,
+        account: myMsal.getAccount()
+    }
+
+    myMsal.handleRedirectCallback((err, response) => {
+        //debugger;
+        if (err) {
+            alert(err);
+        } else {
+            updateLoginTab(response);
+        }
+    });
+
+    SetClientId(authConfig.auth.clientId);
+}
+
+async function sonyApiGetToken() {
+    console.debug(arguments.callee.name + "()");
+
+    var url = window.location.href;
+    if (url.includes("localhost") && !url.includes("index.html")) {
+        console.debug("Redirecting to index.html");
+        url = url + "index.html"
+        window.location.href = url;
+        return;
+    }
 
     if (!myMsal.getAccount()) {
-        myMsal.loginRedirect(loginRequest);
+        // Not logged in.  Start login.
+        console.debug("Redirect to login");
+        myMsal.loginRedirect(loginScope);
+    }
+    else {
+
+        try {
+            //debugger;
+            console.debug("Getting Token");
+            tokenResp = await myMsal.acquireTokenSilent(accessTokenRequest);
+            console.log('### MSAL acquireTokenSilent was successful')
+            updateLoginTab(tokenResp);
+            return tokenResp.idToken.rawIdToken;
+
+        } catch (error) {
+            //debugger;
+            console.log('### MSAL acquireTokenSilent was unsuccessful : ' + error);
+            switch (error.errorCode) {
+                case "consent_required":
+                case "interaction_required":
+                case "login_required":
+                    tokenResp = await myMsal.acquireTokenPopup(accessTokenRequest)
+                    console.log('### MSAL acquireTokenPopup was successful')
+                    break;
+
+                case "user_login_error":
+                    console.log('### MSAL Login Error');
+                    if (!myMsal.getLoginInProgress()) {
+                        myMsal.loginRedirect(loginRequest);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return null;
+        }
+    }
+}
+
+async function getToken() {
+    var token = sonyApiGetToken();
+
+    if (token) {
+        document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
+        PostToken(token);
+        var interval = setInterval(function () { getToken(); }, 300000);
+    }
+}
+
+function updateLoginTab(tokenResp) {
+    console.debug(arguments.callee.name + "()");
+    if (tokenResp == null) {
+        document.getElementById('taToken').value = "Access Token not found in response.";
+        document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
+    }
+    else {
+        document.getElementById('taToken').value = tokenResp.idToken.rawIdToken;
+        document.getElementById('taToken').dispatchEvent(new Event("change"));
+
+        if (String(expiresOn) !== String(tokenResp.expiresOn)) {
+            expiresOn = tokenResp.expiresOn;
+            document.getElementById('spanTokenExpire').innerHTML = String(tokenResp.expiresOn);
+        }
+
+        document.getElementById('userName').innerHTML = tokenResp.account.name;
+        document.getElementById('userDesc').innerHTML = tokenResp.account.userName;
+        document.getElementById('btnLoginResult').innerHTML = "Login Success";
+        document.getElementById('clientId').value = tokenResp.idToken.claims.aud;
     }
 }
 
@@ -98,7 +198,7 @@ function PostToken(token) {
 
     $.ajax({
         type: "POST",
-        url: window.location.href + 'sony/PostToken',
+        url: window.location.origin + '/' + 'sony/PostToken',
         data: { token: token },
         success: function (response) {
             //console.log(response)
@@ -109,87 +209,35 @@ function PostToken(token) {
     });
 }
 
-function updateSetupUi(tokenResp) {
-
-    console.log("updateSetUi");
-    if (tokenResp == null) {
-        document.getElementById('taToken').value = "Access Token not found in response.";
-        document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
+function sonyApiLogout() {
+    if (myMsal != null) {
+        myMsal.logout();
     }
-    else {
-        document.getElementById('taToken').value = tokenResp.idToken.rawIdToken;
-        document.getElementById('taToken').dispatchEvent(new Event("change"));
-        console.log('id Record time:' + String(expiresOn));
-        console.log('id Expire time:' + String(tokenResp.expiresOn));
+}
 
-        if (String(expiresOn) !== String(tokenResp.expiresOn)) {
-            expiresOn = tokenResp.expiresOn;
-            document.getElementById('spanTokenExpire').innerHTML = String(tokenResp.expiresOn);
+function UpdateHomeController(loginResponse) {
+    console.log("UpdateHomeController : " + loginResponse);
+}
+
+function SetClientId(ClientId) {
+    console.log("SetClientId()");
+
+    $.ajax({
+        type: "POST",
+        url: window.location.origin + '/' + 'home/SetClientId',
+        data: {ClientId: ClientId},
+        success: function (response) {
+            return response.responseText;
+        },
+        error: function (req, status, error) {
+            alert("SetClientId Error " + status);
         }
-
-        document.getElementById('userName').innerHTML = tokenResp.account.name;
-        document.getElementById('userDesc').innerHTML = tokenResp.account.userName;
-        document.getElementById('btnLoginResult').innerHTML = "Login Success";
-    }
+    });
 }
 
-function requiresInteraction(errorCode) {
-    if (!errorCode || !errorCode.length) {
-        return false;
-    }
-    return errorCode === "consent_required" ||
-        errorCode === "interaction_required" ||
-        errorCode === "login_required";
-}
 
-async function getToken() {
-    var token = getLoginToken();
-    console.log("getLoginToken : " + token);
-    document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
-    PostToken(token);
-    var interval = setInterval(function () { getToken(); }, 300000);
-}
 
-async function getLoginToken() {
 
-    console.debug('getLoginToken');
-    let tokenResp = null;
-
-    try {
-        tokenResp = await myMsal.acquireTokenSilent(accessTokenRequest);
-        console.log('### MSAL acquireTokenSilent was successful')
-    }
-    catch (error) {
-        if (requiresInteraction(error.errorCode)) {
-            tokenResp = await myMsal.acquireTokenPopup(accessTokenRequest)
-            console.log('### MSAL acquireTokenPopup was successful')
-        }
-        else if (error.errorCode == "user_login_error") {
-            if (!myMsal.loginInProgress()) {
-                myMsal.loginRedirect(requestObj);
-            }
-        }
-    }
-
-    updateSetupUi(tokenResp);
-
-    return tokenResp.accessToken;
-}
-
-function AddApiOutput(apiName, result) {
-    var json;
-
-    if (typeof (result) == 'string') {
-        json = JSON.parse(result);
-    }
-    else {
-        json = result;
-    }
-    
-    document.getElementById('apiOutputLabel').innerHTML = apiName;
-    document.getElementById('tabApiOutput').value = null;
-    document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
-}
 
 //async function GetCustomVisionProjects() {
 
@@ -201,7 +249,7 @@ function AddApiOutput(apiName, result) {
 //        const result = await $.ajax({
 //            async: true,
 //            type: "GET",
-//            url: window.location.href + 'sony/GetModels',
+//            url: window.location.origin + '/' + 'sony/GetModels',
 //            data: {},
 //        });
 
@@ -242,7 +290,7 @@ async function CreateBaseCustomVisionProject() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/CreateBaseCustomVisionProject',
+            url: window.location.origin + '/' + 'sony/CreateBaseCustomVisionProject',
             data: {
                 project_name: projectName.value,
                 comment: projectComment.value.length == 0 ? null : projectComment.value
@@ -279,7 +327,7 @@ async function DeleteProject(project_name) {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetModels',
+            url: window.location.origin + '/' + 'sony/GetModels',
             data: {
                 model_id: null,
                 comment: null,
@@ -305,7 +353,7 @@ async function DeleteProject(project_name) {
             const result_proj = await $.ajax({
                 async: true,
                 type: "DELETE",
-                url: window.location.href + 'sony/DeleteProject',
+                url: window.location.origin + '/' + 'sony/DeleteProject',
                 data: {
                     project_name: project_name
                 },
@@ -340,7 +388,7 @@ async function SaveCustomVisionModel() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/SaveCustomVisionModel',
+            url: window.location.origin + '/' + 'sony/SaveCustomVisionModel',
             data: {
                 project_name: project_name,
                 model_id: model_id,
@@ -376,7 +424,7 @@ async function ConvertModel() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/ConvertModel',
+            url: window.location.origin + '/' + 'sony/ConvertModel',
             data: {
                 model_id: model_id,
                 device_id: device_id
@@ -416,7 +464,7 @@ async function PublishModel() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/PublishModel',
+            url: window.location.origin + '/' + 'sony/PublishModel',
             data: {
                 model_id: model_id,
                 device_id: device_id
@@ -453,7 +501,7 @@ async function GetBaseModelStatus(model_id, latest_type) {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetBaseModelStatus',
+            url: window.location.origin + '/' + 'sony/GetBaseModelStatus',
             data: {
                 model_id: model_id,
                 latest_type: latest_type
@@ -495,7 +543,7 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetFirmwares',
+            url: window.location.origin + '/' + 'sony/GetFirmwares',
             data: {
                 firmware_type: firmware_type,
                 ppl: ppl
@@ -563,7 +611,7 @@ async function CreateDeployConfiguration() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/CreateDeployConfiguration',
+            url: window.location.origin + '/' + 'sony/CreateDeployConfiguration',
             data: {
                 config_id: config_id,
                 sensor_loader_version_number: sensor_loader_version_number,
@@ -642,7 +690,7 @@ async function GetDeployConfigurations(listElementId) {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetDeployConfigurations',
+            url: window.location.origin + '/' + 'sony/GetDeployConfigurations',
             data: {
             },
         });
@@ -714,7 +762,7 @@ async function DeployByConfiguration() {
         const result = await $.ajax({
             async: true,
             type: "PUT",
-            url: window.location.href + 'sony/DeployByConfiguration',
+            url: window.location.origin + '/' + 'sony/DeployByConfiguration',
             data: {
                 config_id: config_id,
                 device_ids: device_ids,
@@ -749,7 +797,7 @@ async function GetDeployHistory() {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetDeployHistory',
+            url: window.location.origin + '/' + 'sony/GetDeployHistory',
             data: {
                 device_id: device_id
             },
@@ -793,7 +841,7 @@ async function StartUploadInferenceResult() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/StartUploadInferenceResult',
+            url: window.location.origin + '/' + 'sony/StartUploadInferenceResult',
             data: {
                 device_id: device_id,
                 FrequencyOfInferences: FrequencyOfInferences,
@@ -834,7 +882,7 @@ async function StopUploadInferenceResult() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/StopUploadInferenceResult',
+            url: window.location.origin + '/' + 'sony/StopUploadInferenceResult',
             data: {
                 device_id: device_id
             },
@@ -876,7 +924,7 @@ async function StartUploadRetrainingData() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/StartUploadRetrainingData',
+            url: window.location.origin + '/' + 'sony/StartUploadRetrainingData',
             data: {
                 device_id: device_id,
                 Mode: Mode,
@@ -920,7 +968,7 @@ async function StopUploadRetrainingData() {
         const result = await $.ajax({
             async: true,
             type: "POST",
-            url: window.location.href + 'sony/StopUploadRetrainingData',
+            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
             data: {
                 device_id: device_id
             },
@@ -951,7 +999,7 @@ async function StopUploadRetrainingData() {
 //        const result = await $.ajax({
 //            async: true,
 //            type: "POST",
-//            url: window.location.href + 'sony/StopUploadRetrainingData',
+//            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
 //            data: {
 //                device_id: device_id
 //            },
@@ -978,7 +1026,7 @@ async function GetDevices(listElementId, silent, isOption) {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetDevices',
+            url: window.location.origin + '/' + 'sony/GetDevices',
             data: {}
         });
 
@@ -1021,7 +1069,7 @@ async function RefreshDevicesList() {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetDevices',
+            url: window.location.origin + '/' + 'sony/GetDevices',
             data: {}
         });
 
@@ -1047,7 +1095,7 @@ async function RefreshModelsList() {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetModels',
+            url: window.location.origin + '/' + 'sony/GetModels',
             data: {
                 model_id : null,
                 comment: null,
@@ -1081,7 +1129,7 @@ async function RefreshDeployConfiguraions() {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetDeployConfigurations',
+            url: window.location.origin + '/' + 'sony/GetDeployConfigurations',
             data: {
             }
         });
@@ -1108,7 +1156,7 @@ async function GetDevicesForImageGallery(listElementId, silent) {
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetDevices',
+            url: window.location.origin + '/' + 'sony/GetDevices',
             data: {}
         });
 
@@ -1139,11 +1187,11 @@ async function GetDevicesForImageGallery(listElementId, silent) {
     return ret;
 }
 
-async function GetAllModels(listElement) {
-    return await GetModels(null, null, null, null, null, null, null, listElement);
+async function GetAllModels(listElement, isOption) {
+    return await GetModels(null, null, null, null, null, null, null, listElement, isOption);
 }
 
-async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement) {
+async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption) {
 
     var funcName = arguments.callee.name + "()";
     var ret = true;
@@ -1152,7 +1200,7 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
         const result = await $.ajax({
             async: true,
             type: "GET",
-            url: window.location.href + 'sony/GetModels',
+            url: window.location.origin + '/' + 'sony/GetModels',
             data: {
                 model_id: model_id,
                 comment: comment,
@@ -1170,7 +1218,12 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
             var list = document.getElementById(listElement);
             list.innerText = null;
             var option = new Option("Select from list", "");
-            option.disabled = true;
+            if (isOption) {
+                option.disabled = false;
+            }
+            else {
+                option.disabled = true;
+            }
             list.append(option);
             for (var model in json.models) {
                 list.append(new Option(json.models[model].model_id, json.models[model].model_id));
@@ -1194,7 +1247,7 @@ async function DeleteModel(model_id) {
         const result = await $.ajax({
             async: true,
             type: "DELETE",
-            url: window.location.href + 'sony/DeleteModel',
+            url: window.location.origin + '/' + 'sony/DeleteModel',
             data: {
                 model_id: model_id
             }
@@ -1217,7 +1270,7 @@ async function DeleteDeployConfiguration(config_id) {
         const result = await $.ajax({
             async: true,
             type: "DELETE",
-            url: window.location.href + 'sony/DeleteDeployConfiguration',
+            url: window.location.origin + '/' + 'sony/DeleteDeployConfiguration',
             data: {
                 config_id: config_id
             }
