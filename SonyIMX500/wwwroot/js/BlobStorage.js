@@ -61,10 +61,10 @@ $("#blobStorJsGrid").jsGrid({
     autoload: false,
     loadMessage: "Please, wait...",
     //filtering: true,
-
     controller: {
         loadData: function (filter) {
-
+            console.log("AAAA");
+            debugger;
             toggleLoader(false);
             var d = $.Deferred();
 

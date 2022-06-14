@@ -1,8 +1,185 @@
-﻿@{
-    ViewData["Title"] = "Sony IMX 500";
-}
-<body>
+﻿<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Dashboard Prototype</title>
+    <!-- for responsive -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2.0/dist/css/alt/adminlte.light.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+    <!--
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.light.min.css" />
+    -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fontawesome-free@1.0.4/css/all.min.css" />
+    <link rel="stylesheet" type="text/css" href="/css/site.css" />
+    <style>
+        @keyframes spinner {
+            0% {
+                transform: translate3d(-50%, -50%, 0) rotate(0deg);
+            }
+
+            100% {
+                transform: translate3d(-50%, -50%, 0) rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed">
+
     <div class="wrapper">
+
+        <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="images/azure.png" alt="Azure Logo" height="240" width="240" style="">
+        </div>
+
+        <!-- Top Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <!-- Top Left navbar links -->
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="#" class="nav-link">API Portal</a>
+                </li>
+            </ul>
+
+            <!-- Top Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+
+                <!-- Navbar Search -->
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+                        <i class="fas fa-search"></i>
+                    </a>
+                    <div class="navbar-search-block">
+                        <form class="form-inline">
+                            <div class="input-group input-group-sm">
+                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                                <div class="input-group-append">
+                                    <button class="btn btn-navbar" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </li>
+
+                <!-- Notifications Dropdown Menu -->
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span class="badge badge-warning navbar-badge">15</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-header">15 Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-users mr-2"></i>Detection Report
+                            <span class="float-right text-muted text-sm">12 hours</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-file mr-2"></i>Alerts
+                            <span class="float-right text-muted text-sm">2 days</span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+                        <i class="fas fa-expand-arrows-alt"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
+                        <i class="fas fa-th-large"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <!-- Side Bar -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="index3.html" class="brand-link">
+                <img src="images/azure.png" alt="Brand Logo" class="brand-image img-circle" style=".img-circle.border-circle:10%">
+                <span class="brand-text font-weight-light">Dashboard Sample</span>
+            </a>
+            <div class="sidebar">
+                <!-- SidebarSearch Form -->
+                <div class="form-inline">
+                    <div class="input-group" data-widget="sidebar-search">
+                        <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
+                        <div class="input-group-append">
+                            <button class="btn btn-sidebar">
+                                <i class="fas fa-search fa-fw"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <li class="nav-item menu-open">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <span class="badge badge-info right">3</span>
+                                <p>
+                                    Drop Down Menu
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="./index.html" class="nav-link active">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 1</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="./index.html" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 2</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Dropdown 3</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Link
+                                    <span class="right badge badge-danger">New</span>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+
         <div class="content-wrapper">
             <section class="content-header">
                 <div class="container-fluid">
@@ -97,8 +274,7 @@
                                                                                 <div class="form-group">
                                                                                     <label for="clientId">Client ID</label>
 <!--                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@ViewData["ClientId"]>-->
-                                                                                    @*<input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@TempData["ClientId"]>*@
-                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@ViewData["ClientId"]>
+                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=>
                                                                                 </div>
 
                                                                                 <div class="info-box">
@@ -132,9 +308,6 @@
                                                                                         <button type="button" class="btn btn-success" id="loginBtn">
                                                                                             <i class="fas fa-sign-in-alt btn-fa"></i>Login
                                                                                         </button>
-                                                                                        <button type="button" class="btn btn-warning" id="logoutBtn">
-                                                                                            <i class="fas fa-sign-out-alt btn-fa"></i>Logout
-                                                                                        </button>
                                                                                     </div>
                                                                                     <div class="vertical-center">
                                                                                         <div class="info-box-text" id='btnLoginResult'></div>
@@ -159,7 +332,7 @@
                                                                                 <div class="info-box">
                                                                                     <div class="info-box-content">
                                                                                         <div class="info-box-text">
-                                                                                            <label for="createBaseCustomVisionProjectDiv">Create New Custom Vision Project</label>
+                                                                                            <label for="newProjectDiv">Create New Custom Vision Project</label>
                                                                                         </div>
                                                                                         <div id="createBaseCustomVisionProjectDiv">
                                                                                             <form id="createBaseCustomVisionProjectForm">
@@ -418,7 +591,7 @@
 
                                                                                         <label for="createDeployConfigurationDeviceTypeList">Device Type (Optional)</label>
                                                                                         <select name="createDeployConfigurationDeviceTypeList" id="createDeployConfigurationDeviceTypeList" class="form-control">
-                                                                                            <option selected value="">Select Device Type</option>
+                                                                                            <option disabled selected>Select Device Type</option>
                                                                                             <option value="00">MPU Based (Type4)</option>
                                                                                             <option value="01">MCU Bsed (Type3)</option>
                                                                                         </select>
@@ -428,7 +601,7 @@
 
                                                                                         <label for="createDeployConfigurationColorMatrixModelList">Color Matrix Mode (Optional)</label>
                                                                                         <select name="createDeployConfigurationColorMatrixModelList" id="createDeployConfigurationColorMatrixModelList" class="form-control">
-                                                                                            <option selected value="">Select Matrix Mode</option>
+                                                                                            <option disabled selected>Select Matrix Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -444,7 +617,7 @@
 
                                                                                         <label for="createDeployConfigurationGammaModeList">Gamma Mode (Optional)</label>
                                                                                         <select name="createDeployConfigurationGammaModeList" id="createDeployConfigurationGammaModeList" class="form-control">
-                                                                                            <option selected value="">Select Gamma Mode</option>
+                                                                                            <option disabled selected>Select Gamma Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -460,7 +633,7 @@
 
                                                                                         <label for="createDeployConfigurationLscModeList">LSC Correction Camera Settings (Optional)</label>
                                                                                         <select name="createDeployConfigurationLscModeList" id="createDeployConfigurationLscModeList" class="form-control">
-                                                                                            <option selected value="">Select LSC Mode</option>
+                                                                                            <option disabled selected>Select LSC Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -471,7 +644,7 @@
 
                                                                                         <label for="createDeployConfigurationPrewbModeList">PreWB adjustment value Camera settings. (Optional)</label>
                                                                                         <select name="createDeployConfigurationPrewbModeList" id="createDeployConfigurationPrewbModeList" class="form-control">
-                                                                                            <option selected value="">Select PreWB Mode</option>
+                                                                                            <option disabled selected>Select PreWB Mode</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -487,7 +660,7 @@
 
                                                                                         <label for="createDeployConfigurationDewarpModeList">Distortion correction Camera settings(bin)type. (Optional)</label>
                                                                                         <select name="createDeployConfigurationDewarpModeList" id="createDeployConfigurationDewarpModeList" class="form-control">
-                                                                                            <option selected value="">Select Distortion Correction Type</option>
+                                                                                            <option disabled selected>Select Distortion Correction Type</option>
                                                                                             <option>none</option>
                                                                                             <option>std</option>
                                                                                             <option>custom</option>
@@ -702,14 +875,14 @@
 
                                                                                         <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
                                                                                         <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
-                                                                                            <option selected value="">Select Collection Mode</option>
+                                                                                            <option disabled>Select Collection Mode</option>
                                                                                             <option value="0">Image</option>
                                                                                             <option value="1" selected>image & Inference results metadata</option>
                                                                                         </select>
 
                                                                                         <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
                                                                                         <select name="startUploadRetrainingDataFileFormatList" id="startUploadRetrainingDataFileFormatList" class="form-control">
-                                                                                            <option selected value="">Select Image File Format</option>
+                                                                                            <option disabled selected>Select Image File Format</option>
                                                                                             <option value="JPG">JPEG</option>
                                                                                             <option value="BMP">Bitmap (BMP)</option>
                                                                                         </select>
@@ -873,7 +1046,7 @@
                                                     <span class="slider-blue">
                                                         <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange">
                                                     </span>
-                                                    <button type="button" class="btn btn-success" id="refreshCosmosDbBtn">
+                                                    <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
                                                         <i class="fas fa-sync btn-fa"></i>Refresh
                                                     </button>
                                                 </div>
@@ -1023,7 +1196,40 @@
 
         </div>
     </div>
+    <footer class="main-footer">
+        <strong>Copyright &copy; 2014-2021 <a href="">Hooter</a>.</strong> All rights reserved.
+        <div class="float-right d-none d-sm-inline-block">
+            <b>Version</b> 0.0.0
+        </div>
+    </footer>
 
+    <!-- JS -->
+    <!-- jquery -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/filterizr/1.3.4/jquery.filterizr.min.js"></script>
+    <script src="lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- adminLTE -->
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <!-- MSAL -->
+    <script src="/js/azure/msal/dist/msal.js"></script>
+    <script src="lib/signalr/dist/browser/signalr.js"></script>
+    <!-- Local -->
+    <script src="/js/SonyAPI.js"></script>
+    <script src="/js/CustomVision.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ekko-lightbox@5.3.0/dist/ekko-lightbox.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+    <script src="/js/SignalR.js"></script>
+    <script src="/js/BlobStorage.js"></script>
+    <script src="/js/CosmosDb.js"></script>
+    <!--<script src="/js/site.js"></script>-->
+    <!--<script>
+        $(function () {
+            $('.filter').filterizr();
+        });
+    </script>-->
 
     <script>
         var expiresOn = '';
@@ -1060,53 +1266,11 @@
             return true;
         }
 
-        $(window).load(function() { 
-
-            console.debug("Window.Load");
-            if ('@ViewData["Name"]' != null && '@ViewData["Name"]'.length > 0)
-            {
-                console.debug("ViewData[Name] : " + '@(ViewData["Name"])');
-                document.getElementById('userName').innerHTML = '@(ViewData["Name"])';
-            }
-
-            if ('@ViewData["PreferredName"]' != null && '@ViewData["PreferredName"]'.length > 0)
-            {
-                console.debug("ViewData[PreferredName] : " + '@(ViewData["PreferredName"])');
-                document.getElementById('userDesc').innerHTML = '@(ViewData["PreferredName"])';
-            }
-
-            if ('@(ViewData["Token"])' != null && '@ViewData["Token"]'.length > 0)
-            {
-                console.debug("ViewData[Token] : " + '@(ViewData["Token"])');
-                document.getElementById('taToken').value = '@(ViewData["Token"])';
-                document.getElementById('taToken').dispatchEvent(new Event("change"));
-            }
-
-            if ('@(ViewData["ClientId"])' != null && '@ViewData["ClientId"]'.length > 0)
-            {
-                console.debug("ViewData[ClientId] : " + '@(ViewData["ClientId"])');
-                document.getElementById('clientId').value = '@(ViewData["ClientId"])';
-            }
-
-            if ('@(ViewData["TokenExpiration"])' != null && '@ViewData["TokenExpiration"]'.length > 0)
-            {
-                console.debug("ViewData[TokenExpiration] : " + '@(ViewData["TokenExpiration"])');
-                var expiration = parseInt('@(ViewData["TokenExpiration"])');
-                var d = new Date(0);
-                d.setUTCSeconds(expiration);
-                document.getElementById('spanTokenExpire').innerHTML =  String(d);
-            }
-        });
-
-        
         $(document).ready(function () {
-            console.debug("document.Ready");
 
-            if (document.getElementById('clientId').value == "") {
-                document.getElementById('clientId').value = '@(ViewData["ClientId"])';
-            }
-            
-            sonyApiInitializeMsal();
+
+            sonyApiGetClientId();
+            sonyApiInitialize();
 
             hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("telemetryHub")
@@ -1127,8 +1291,6 @@
             hubConnection.start()
                 .then(() => console.log('SignalR connected!'))
                 .catch(console.error);
-
-
 
         })
 
@@ -1167,7 +1329,7 @@
         $('#loginBtn').click(function () {
             if ($('#loginForm').valid()) {
                 toggleLoader(false);
-                sonyApiInitializeMsal();
+                sonyApiAuth();
                 getToken()
                     .then(() => {
                         console.log("Login End");
@@ -1176,12 +1338,6 @@
                         toggleLoader(false);
                     });
             }
-        })
-
-        $('#logoutBtn').click(function () {
-                toggleLoader(false);
-                sonyApiLogout();
-                toggleLoader(false);
         })
 
         $('#createBaseCustomVisionProjectBtn').click(function (evt) {
@@ -1604,12 +1760,6 @@
             console.debug(evt.target.id + "() " + evt.type);
             $("#blobStorJsGrid").jsGrid("loadData");
         })
-
-        $('#refreshCosmosDbBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-            $("#cosmosDbJsGrid").jsGrid("loadData");
-        })
-
         //
         //form validations
         //
@@ -2166,7 +2316,7 @@
 
             toggleLoader(false);
 
-            GetAllModels(targetListName, false)
+            GetAllModels(targetListName)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2195,14 +2345,14 @@
 
             toggleLoader(false);
 
-            GetAllModels(targetListName, false)
+            GetAllModels(targetListName)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("publishModelDeviceIdList", true, true)
+                        GetDevices("publishModelDeviceIdList", true, false)
                             .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
@@ -2241,7 +2391,7 @@
                     .then((ret) => {
 
                         if (ret) {
-                            GetAllModels(targetListName, false)
+                            GetAllModels(targetListName)
                                 .then((ret) => {
                                     if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
                                         setSelectOption(targetListName, currentModel);
@@ -2273,7 +2423,7 @@
                             GetDevices("deployByConfiguraionDeviceIdList", true, false)
                                 .then((ret) => {
                                     if (ret) {
-                                        GetAllModels(targetListName, true)
+                                        GetAllModels(targetListName)
                                             .then((ret) => {
                                                 if (ret) {
                                                     //    if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2316,7 +2466,7 @@
 
                             targetListName = 'startUploadInferenceResultModelIdList';
 
-                            GetAllModels(targetListName, true)
+                            GetAllModels(targetListName)
                                 .then((ret) => {
                                     if (ret) {
                                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2367,7 +2517,7 @@
             try {
                 toggleLoader(false);
 
-                GetAllModels(targetListName, true)
+                GetAllModels(targetListName)
                     .then((ret) => {
                         if (ret) {
                             if (!isItemSelected(targetListName, currentModel) && currentModel) {
@@ -2458,15 +2608,6 @@
                 $('#copyTokenBtn').prop('disabled', false);
             } else {
                 $('#copyTokenBtn').prop('disabled', false);
-            }
-        })
-
-        $('#clientId').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-            console.debug("Client ID : " + document.getElementById('clientId').value);
-            if (document.getElementById('clientId').value.length > 0) {
-                SetClientId(document.getElementById('clientId').value);
-                sonyApiInitializeMsal();
             }
         })
 
@@ -2874,3 +3015,5 @@
         </tr>
     </script>
 </body>
+
+</html>
