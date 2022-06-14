@@ -1,6 +1,13 @@
 ﻿@{
     ViewData["Title"] = "Sony IMX 500";
 }
+
+@section scripts {
+    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>*@
+    <script type="text/javascript" src="/js/BlobStorage.js"></script>
+    <script type="text/javascript" src="/js/CosmosDb.js"></script>
+}
+
 <body>
     <div class="wrapper">
         <div class="content-wrapper">
@@ -2430,7 +2437,7 @@
         })
 
         $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            console.log(evt.target.id + "() " + evt.type);
             $("#blobStorJsGrid").jsGrid("loadData");
         })
 

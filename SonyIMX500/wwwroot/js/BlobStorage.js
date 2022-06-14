@@ -56,18 +56,15 @@ $("#blobStorJsGrid").jsGrid({
     loadIndication: false,
     inserting: false,
     editing: false,
+    filtering: false,
     sorting: true,
     paging: true,
     autoload: false,
     loadMessage: "Please, wait...",
-    //filtering: true,
     controller: {
         loadData: function (filter) {
-            console.log("AAAA");
-            debugger;
             toggleLoader(false);
             var d = $.Deferred();
-
             $.ajax({
                 type: "GET",
                 url: window.location.origin + '/' + 'home/GetAllImagesFromBlob',
