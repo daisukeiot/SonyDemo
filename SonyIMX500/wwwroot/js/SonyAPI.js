@@ -6,6 +6,7 @@ const loginScope = {
 };
 
 let authConfig = null;
+let interval = null;
 
 // Utility functions
 
@@ -162,12 +163,19 @@ async function sonyApiGetToken() {
 }
 
 async function getToken() {
+
+    if (interval) {
+        clearInterval(interval);
+        interval = null;
+    }
     var token = sonyApiGetToken();
 
     if (token) {
         document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
         PostToken(token);
-        var interval = setInterval(function () { getToken(); }, 300000);
+        if (interval == null) {
+            interval = setInterval(function () { getToken(); }, 30 * 60 * 1000);
+        }
     }
 }
 
