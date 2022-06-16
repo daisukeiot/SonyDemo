@@ -201,3 +201,70 @@ async function TrainProject(project_name) {
         resultElement.innerHTML = err.responseJSON ? err.responseJSON.value : error.responseText;
     }
 }
+
+$("#blobCvImageJsGrid").jsGrid({
+    width: "100%",
+    height: "400",
+
+    loadIndication: false,
+    inserting: false,
+    editing: false,
+    filtering: false,
+    sorting: true,
+    paging: true,
+    autoload: false,
+    loadMessage: "Please, wait...",
+    controller: {
+        loadData: function (filter) {
+            var d = $.Deferred();
+            $.ajax({
+                type: "GET",
+                url: window.location.origin + '/' + 'customvision/GetImages',
+                data: {
+                    projectId: document.getElementById("projectId").value
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            }).done(function (response) {
+                d.resolve(JSON.parse(response.value));
+                $("#blobCvImageJsGrid").jsGrid("sort", { field: "Uri", order: "desc" });
+            });
+
+            return d.promise();
+        }
+    },
+
+    fields: [
+        {
+            name: "Uri",
+            text: "Image",
+            itemTemplate: function (val, item) {
+                return $("<img>").attr("src", val).css({ height: "120px" }).on("click", function () {
+                    $("#imagePreview").attr("src", item.Uri);
+                    console.log(item.Uri)
+                });
+            },
+            align: "center",
+            width: "10vw"
+        },
+        {
+            name: "Width", type: "number", align: "left", width: "3vw"
+        },
+        {
+            name: "Height", type: "number", align: "left", width: "3vw"
+        },
+        {
+            name: "Regions", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "Proposal", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "Tags", type: "text", align: "left", width: "auto"
+        }
+    ],
+
+    rowClick: function (args) {
+        $("#imagePreview").attr("src", args.item.Image);
+    },
+});

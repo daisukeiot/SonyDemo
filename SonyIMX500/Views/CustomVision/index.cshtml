@@ -4,6 +4,7 @@
 @section scripts {
     <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
     <script src="/js/BlobStorage.js"></script>
+    <script src="/js/CustomVision.js"></script>
 }
 <body>
     <div class="wrapper">
@@ -83,31 +84,31 @@
                     <h4>Idea 2</h4>
                     <div class="card card-primary card-outline">
                         <div class="card-body p-0">
-                            <div class="bs-stepper">
+                            <div class="bs-stepper" id="cvStepper">
                                 <div class="bs-stepper-header" role="tablist">
                                     <!-- your steps here -->
-                                    <div class="step" data-target="#select-project-step">
+                                    <div class="step" data-target="#select-project-step" id="stepSelectProject">
                                         <button type="button" class="step-trigger" role="tab" aria-controls="select-project-step" id="select-project-step-trigger">
                                             <span class="bs-stepper-circle">1</span>
                                             <span class="bs-stepper-label">Select Project</span>
                                         </button>
                                     </div>
                                     <div class="line"></div>
-                                    <div class="step" data-target="#upload-images-step">
+                                    <div class="step" data-target="#upload-images-step" id="stepUploadImages">
                                         <button type="button" class="step-trigger" role="tab" aria-controls="upload-images-step" id="upload-images-step-trigger">
                                             <span class="bs-stepper-circle">2</span>
                                             <span class="bs-stepper-label">Upload Images</span>
                                         </button>
                                     </div>
                                     <div class="line"></div>
-                                    <div class="step" data-target="#tag-images-step">
+                                    <div class="step" data-target="#tag-images-step" id="stepTagImages">
                                         <button type="button" class="step-trigger" role="tab" aria-controls="tag-images-step" id="tag-images-step-trigger">
                                             <span class="bs-stepper-circle">3</span>
                                             <span class="bs-stepper-label">Tag Images</span>
                                         </button>
                                     </div>
                                     <div class="line"></div>
-                                    <div class="step" data-target="#train-model-step">
+                                    <div class="step" data-target="#train-model-step" id="stepTrainModel">
                                         <button type="button" class="step-trigger" role="tab" aria-controls="train-model-step" id="train-model-step-trigger">
                                             <span class="bs-stepper-circle">4</span>
                                             <span class="bs-stepper-label">Train Model</span>
@@ -145,7 +146,8 @@
                                             <form method="post" enctype="multipart/form-data" asp-controller="CustomVision" asp-action="UploadImages">
                                                 <div class="form-group">
                                                     <div class="custom-file" id="imageFiles">
-                                                        <input type="file" name="images" class="custom-file-input" id="exampleInputFile" onchange="readURL(this);" multiple >
+                                                        <input type="text" name="projectId" id="projectId" value="<? echo $currentProjectId ?>" />
+                                                        <input type="file" name="images" class="custom-file-input" id="exampleInputFile" multiple >
                                                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                                                     </div>
                                                 </div>
@@ -186,6 +188,18 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <div id="imagePreviewDiv" style="margin: 1em 0;max-width:10vw">
+                                <img id="imagePreview"  style="max-width:10vw" />
+                            </div>
+                        </div>
+                        <div class="card-body p-0">
+                            <div class="jsgridDiv">
+                                <div id="blobCvImageJsGrid" style="overflow-y:auto"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -193,15 +207,28 @@
     <script>
 
         let currentProjectid;
+        let stepperEl;
 
         $(document).ready(function () {
             console.debug("Custom Vision : document.Ready");
             GetCustomVisionProjects('customVisionProjectList');
+
         })
 
         // BS-Stepper Init
         document.addEventListener('DOMContentLoaded', function () {
             window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+            //stepperEl = new Stepper(document.querySelector('.bs-stepper'))
+        })
+
+        stepperEl = document.querySelector('#cvStepper');
+        stepperEl.addEventListener('show.bs-stepper', function (event) {
+            console.debug('Stepper ', event);
+
+            if (event.detail.indexStep == 1) {
+                document.getElementById("projectId").value = currentProjectId;
+                $("#blobCvImageJsGrid").jsGrid("loadData");
+            }
         })
 
         //
@@ -247,5 +274,15 @@
             GetCustomVisionProjectTags(currentProjectId, 'customVisionTagList');
             
         })
+
+        //
+        // Tab
+        //
+        $('#upload-images-step-trigger').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        // JSGrid
+
     </script>
 </body>

@@ -563,6 +563,7 @@
                                                                             </div>
                                                                         </div>
                                                                         <div class="card-footer">
+                                                                            <div class="info-box">
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                 <div>
                                                                                     <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
@@ -572,6 +573,7 @@
                                                                                 <div class="vertical-center">
                                                                                     <div class="info-box-text" id='deployByConfiguratonBtnResult'>Place Holder : To be deleted</div>
                                                                                 </div>
+                                                                            </div>
                                                                             </div>
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
                                                                                 <button type="button" class="btn btn-success" id="getDeployHistoryBtn" disabled>
@@ -612,7 +614,7 @@
 
                                                                                         <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
                                                                                         <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
-                                                                                               value="" min="1" , max="2592000">
+                                                                                               min="1" , max="2592000">
 
                                                                                         <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
                                                                                         <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"

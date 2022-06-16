@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training;
+using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
@@ -18,6 +21,7 @@ namespace SonyIMX500.Controllers
     {
         private readonly ILogger<CustomVision> _logger;
         private readonly AppSettings _appSettings;
+        private static CustomVisionTrainingClient _customVisionTrainingClient = null;
 
         public IActionResult Index()
         {
@@ -29,6 +33,14 @@ namespace SonyIMX500.Controllers
         {
             _appSettings = optionsAccessor.Value;
             _logger = logger;
+            if (_customVisionTrainingClient == null)
+            {
+                var credentials = new ApiKeyServiceClientCredentials(_appSettings.CustomVision.AccessKey);
+                _customVisionTrainingClient = new CustomVisionTrainingClient(credentials)
+                {
+                    Endpoint = _appSettings.CustomVision.Endpoint
+                };
+            }
         }
 
         private void AddRequestHeader(HttpClient client)
@@ -76,28 +88,103 @@ namespace SonyIMX500.Controllers
 
         [Route("UploadImages")]
         [HttpPost]
-        public async Task<IActionResult> UploadImagesAsync(IFormFile[] images)
+        public async Task<IActionResult> UploadImagesAsync(string projectId, IFormFile[] images)
         {
             if (images == null || images.Length == 0)
             {
-                return Content("File(s) not selected");
+                return BadRequest("File(s) not selected");
             }
 
+
+
             var filePaths = new List<string>();
+            var trainingImages = new List<ImageFileCreateEntry>();
 
             foreach (var formFile in images)
             {
-                using (var reader = new StreamReader(formFile.OpenReadStream()))
+                var imageFileCreateEntry = new ImageFileCreateEntry
                 {
-                    var fileContent = await reader.ReadToEndAsync();
-                }
+
+                    Name = formFile.FileName,
+                };
+
+                using (BinaryReader reader = new BinaryReader(formFile.OpenReadStream()))
+                {
+                    imageFileCreateEntry.Contents = reader.ReadBytes((int)formFile.OpenReadStream().Length);
+                };
+
+                trainingImages.Add(imageFileCreateEntry);
+
+                //using (var reader = new StreamReader(formFile.OpenReadStream()))
+                //{
+                //    imageFileCreateEntry.Contents = await reader.ReadToEndAsync();
+                //};
             }
 
+            if (trainingImages.Count > 0)
+            {
+                var batch = new ImageFileCreateBatch
+                {
+                    Images = trainingImages
+                };
+                await _customVisionTrainingClient.CreateImagesFromFilesAsync(Guid.Parse(projectId), batch);
+            }
 
-            return View("Success");
+            return Ok("Success");
         }
 
         #region CUSTOMVISIONGET
+
+        //
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.getimagesasync?view=azure-dotnet
+        //
+        [HttpGet]
+        public async Task<IActionResult> GetImages(string projectId)
+        {
+            var responses = new List<CV_IMAGE_DATA>();
+
+            var images = await _customVisionTrainingClient.GetImagesAsync(Guid.Parse(projectId));
+
+            foreach (var image in images)
+            {
+                var response = new CV_IMAGE_DATA()
+                {
+                    Uri = image.OriginalImageUri,
+                    ResizedImageUri = image.ResizedImageUri,
+                    ThumbnailUri = image.ThumbnailUri,
+                    Width = image.Width,
+                    Height = image.Height
+                };
+
+                if (image.Tags != null)
+                {
+                    foreach(var tag in image.Tags)
+                    {
+                        response.Tags += tag.TagName;
+                    }
+                }
+
+                if (image.Regions != null)
+                {
+                    foreach (var region in image.Regions)
+                    {
+                        response.Regions += $"({region.Left}),({region.Top}) - ({region.Width}),({region.Height}) ";
+                    }
+                }
+
+                var imageRegionProposal = await _customVisionTrainingClient.GetImageRegionProposalsAsync(Guid.Parse(projectId), image.Id);
+
+                if (imageRegionProposal != null)
+                {
+                    var boundingBox = imageRegionProposal.Proposals[0].BoundingBox;
+                    response.Proposal = $"({boundingBox.Left}),({boundingBox.Top}) - ({boundingBox.Width}),({boundingBox.Height}) ";
+                }
+
+                responses.Add(response);
+            }
+
+            return Ok(Json(JsonConvert.SerializeObject(responses)));
+        }
         //
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
         //
@@ -258,6 +345,19 @@ namespace SonyIMX500.Controllers
         {
             [Required(ErrorMessage = "Please select files")]
             public List<IFormFile> Files { get; set; }
+        }
+
+        public class CV_IMAGE_DATA
+        {
+            public string Uri { get; set; }
+            public string Id { get; set; }
+            public string ThumbnailUri { get; set; }
+            public string ResizedImageUri { get; set; }
+            public int Height { get; set; }
+            public int Width { get; set; }
+            public string Tags { get; set; }
+            public string Regions { get; set; }
+            public string Proposal { get; set; }
         }
     }
 }
