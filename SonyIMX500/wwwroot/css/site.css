@@ -4,11 +4,6 @@
     text-align: left;
 }
 
-label {
-    margin-top : 0.5em;
-    margin-bottom : 0.2em;
-}
-
 .TelemetrySection {
     display: table;
     width: auto;

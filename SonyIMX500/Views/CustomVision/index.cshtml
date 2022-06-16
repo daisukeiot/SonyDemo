@@ -1,0 +1,243 @@
+﻿@model SonyIMX500.Models.TraininImages  
+@{
+}
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    <script src="/js/BlobStorage.js"></script>
+}
+<body>
+    <div class="wrapper">
+        <div class="content-wrapper">
+            <section class="content-header">
+                <div class="container-fluid">
+                    <div class="row mb-2">
+                        <div class="col-md-10">
+                            <h1>Sony IMX500 Hands-on Lab Custom Vision</h1>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- Main content -->
+            <section class="content">
+                <div id="loader" class="loading" style="display:none"></div>
+                <div class="container-fluid">
+                    <div class="card card-primary card-outline">
+                        <div class="card-body">
+                            <h4>Custom Vision</h4>
+                            <div class="row">
+                                <div class="col-5 col-sm-2">
+                                    <div class="nav flex-column nav-tabs h-100" id="vert-tabs-tab" role="tablist" aria-orientation="vertical">
+                                      <a class="nav-link active" id="vert-tabs-project-tab" data-toggle="pill" href="#vert-tabs-project" role="tab" aria-controls="vert-tabs-project" aria-selected="true">Project</a>
+                                      <a class="nav-link" id="vert-tabs-images-tab" data-toggle="pill" href="#vert-tabs-images" role="tab" aria-controls="vert-tabs-images" aria-selected="false">Training Images</a>
+                                      <a class="nav-link" id="vert-tabs-tags-tab" data-toggle="pill" href="#vert-tabs-tags" role="tab" aria-controls="vert-tabs-tags" aria-selected="false">Image Tags</a>
+                                      <a class="nav-link" id="vert-tabs-training-tab" data-toggle="pill" href="#vert-tabs-training" role="tab" aria-controls="vert-tabs-training" aria-selected="false">Train Model</a>
+                                    </div>
+                                </div>
+                                <div class="col-7 col-sm-10">
+                                    <div class="tab-content" id="vert-tabs-tabContent">
+                                        <div class="tab-pane text-left fade show active" id="vert-tabs-project" role="tabpanel" aria-labelledby="vert-tabs-project-tab">
+                                            <div class="info-box">
+                                                <div class="info-box-content">
+                                                    <label for="customVisionProjectList2">Select Custom Vision Project</label>
+                                                    <select id="customVisionProjectList2" class="form-control select2" style="width: 100%;">Custom Vision Project</select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="vert-tabs-images" role="tabpanel" aria-labelledby="vert-tabs-images-tab">
+                                            <div class="info-box">
+                                                <div class="info-box-content">
+                                                <div class="custom-file">
+                                                        <input type="file" name="customVisionImages" class="custom-file-input" id="customVisionImages" multiple>
+                                                        <label class="custom-file-label" for="customVisionImages">Images.</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="vert-tabs-tags" role="tabpanel" aria-labelledby="vert-tabs-tags-tab">
+                                            <div class="info-box">
+                                                <div class="info-box-content">
+                                                    <label for="customVisionTagList">Image Tags</label>
+                                                    <select id="customVisionTagList" class="form-control select2" style="width: 100%;"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="vert-tabs-training" role="tabpanel" aria-labelledby="vert-tabs-training-tab">
+                                            <div class="info-box">
+                                                <div class="info-box-content">
+                                                    <button type="button" class="btn btn-success" id="customVisionStartTraining" disabled>
+                                                        <i class="fas fa-external-link-alt btn-fa"></i>Start Training
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="card card-primary card-outline">
+                        <div class="card-body p-0">
+                            <div class="bs-stepper">
+                                <div class="bs-stepper-header" role="tablist">
+                                    <!-- your steps here -->
+                                    <div class="step" data-target="#select-project-step">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="select-project-step" id="select-project-step-trigger">
+                                            <span class="bs-stepper-circle">1</span>
+                                            <span class="bs-stepper-label">Select Project</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#upload-images-step">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="upload-images-step" id="upload-images-step-trigger">
+                                            <span class="bs-stepper-circle">2</span>
+                                            <span class="bs-stepper-label">Upload Images</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#tag-images-step">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="tag-images-step" id="tag-images-step-trigger">
+                                            <span class="bs-stepper-circle">3</span>
+                                            <span class="bs-stepper-label">Tag Images</span>
+                                        </button>
+                                    </div>
+                                    <div class="line"></div>
+                                    <div class="step" data-target="#train-model-step">
+                                        <button type="button" class="step-trigger" role="tab" aria-controls="train-model-step" id="train-model-step-trigger">
+                                            <span class="bs-stepper-circle">4</span>
+                                            <span class="bs-stepper-label">Train Model</span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="bs-stepper-content">
+                                    <!-- Select Project -->
+                                    <div id="select-project-step" class="content" role="tabpanel" aria-labelledby="select-project-step-trigger">
+                                        <div class="form-group">
+                                            <label for="customVisionProjectList">Select Custom Vision Project</label>
+                                            <div class="input-group">
+                                                <select id="customVisionProjectList" class="form-control select2" style="width: 100%;">Custom Vision Project</select>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                                    </div>
+                                    <!-- Upload Image -->
+                                    <div id="upload-images-step" class="content" role="tabpanel" aria-labelledby="upload-images-step-trigger">
+                                        <div class="form-group">
+                                            <label for="exampleInputFile">File input</label>
+                                            <div class="input-group">
+@*                                                <div class="custom-file" id="imageFiles">
+                                                    <input type="file" class="custom-file-input" id="exampleInputFile" onchange="readURL(this);" multiple >
+                                                    <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                </div>*@
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text">Upload</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <form method="post" enctype="multipart/form-data" asp-controller="CustomVision" asp-action="UploadImages">
+                                                <div class="form-group">
+                                                    <div class="custom-file" id="imageFiles">
+                                                        <input type="file" name="images" class="custom-file-input" id="exampleInputFile" onchange="readURL(this);" multiple >
+                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <div class="col-md-10">
+                                                        <input type="submit" value="Upload" />
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                                    </div>
+
+                                    <!-- Tag Image -->
+                                    <div id="tag-images-step" class="content" role="tabpanel" aria-labelledby="tag-images-step-trigger">
+                                        <div class="form-group">
+                                            <label for="customVisionTagList">Image Tags</label>
+                                            <select id="customVisionTagList" class="form-control select2" style="width: 100%;"></select>
+                                        </div>
+
+                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                        <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                                    </div>
+
+                                    <!-- Train Model -->
+                                    <div id="train-model-step" class="content" role="tabpanel" aria-labelledby="train-model-step-trigger">
+                                        <div class="form-group">
+                                            <button type="button" class="btn btn-success" id="customVisionStartTraining" disabled>
+                                                <i class="fas fa-external-link-alt btn-fa"></i>Start Training
+                                            </button>
+                                        </div>
+                                        <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <script>
+
+        let currentProjectid;
+
+        $(document).ready(function () {
+            console.debug("Custom Vision : document.Ready");
+            GetCustomVisionProjects('customVisionProjectList');
+        })
+
+        // BS-Stepper Init
+        document.addEventListener('DOMContentLoaded', function () {
+            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+        })
+
+        //
+        // Change event
+        //
+        $('.custom-file-input').on('change', handleFileSelect);
+            function handleFileSelect(evt) {
+                var files = evt.target.files;
+ 
+                var output = [];
+                for (var i = 0, f; f = files[i]; i++) {
+                    output.push(escape(f.name), ', ');
+            }
+            $(this).next('.custom-file-label').html(output.join(''));
+        }
+
+        $('#customVisionProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                currentProjectId = projectList[projectList.selectedIndex].value;
+                GetCustomVisionProjectTags(currentProjectId, 'customVisionTagList');
+                $('#customVisionTagList').prop('disabled', false);
+            } else {
+                currentProjectId = null;
+                $('#customVisionTagList').prop('disabled', true);
+            }
+        })
+
+        //
+        // button clicks
+        //
+        $('#customVisionImagesCreateTagBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var projectList = document.getElementById('customVisionProjectList');
+
+            currentProjectId = projectList[projectList.selectedIndex].value;
+            CustomVisionCreateTag(currentProjectId);
+            GetCustomVisionProjectTags(currentProjectId, 'customVisionTagList');
+            
+        })
+    </script>
+</body>
