@@ -153,7 +153,9 @@ namespace SonyIMX500.Controllers
                     ResizedImageUri = image.ResizedImageUri,
                     ThumbnailUri = image.ThumbnailUri,
                     Width = image.Width,
-                    Height = image.Height
+                    Height = image.Height,
+                    Regions = new List<CV_REGION_DATA>(),
+                    Proposals = new List<CV_REGION_DATA>()
                 };
 
                 if (image.Tags != null)
@@ -168,16 +170,36 @@ namespace SonyIMX500.Controllers
                 {
                     foreach (var region in image.Regions)
                     {
-                        response.Regions += $"({region.Left}),({region.Top}) - ({region.Width}),({region.Height}) ";
+                        var regionData = new CV_REGION_DATA();
+                        regionData.X = region.Left;
+                        regionData.Y = region.Top;
+                        regionData.W = region.Width;
+                        regionData.H = region.Height;
+
+                        response.Regions.Add(regionData);
                     }
                 }
 
+                //
+                // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.getimageregionproposalsasync?view=azure-dotnet
+                //
                 var imageRegionProposal = await _customVisionTrainingClient.GetImageRegionProposalsAsync(Guid.Parse(projectId), image.Id);
 
                 if (imageRegionProposal != null)
                 {
-                    var boundingBox = imageRegionProposal.Proposals[0].BoundingBox;
-                    response.Proposal = $"({boundingBox.Left}),({boundingBox.Top}) - ({boundingBox.Width}),({boundingBox.Height}) ";
+                    foreach (var proposal in imageRegionProposal.Proposals)
+                    {
+                        if (proposal.Confidence > 0.9)
+                        {
+                            var regionData = new CV_REGION_DATA();
+                            regionData.X = proposal.BoundingBox.Left;
+                            regionData.Y = proposal.BoundingBox.Top;
+                            regionData.W = proposal.BoundingBox.Width;
+                            regionData.H = proposal.BoundingBox.Height;
+
+                            response.Proposals.Add(regionData);
+                        }
+                    }
                 }
 
                 responses.Add(response);
@@ -347,6 +369,14 @@ namespace SonyIMX500.Controllers
             public List<IFormFile> Files { get; set; }
         }
 
+        public class CV_REGION_DATA
+        {
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double W { get; set; }
+            public double H { get; set; }
+        }
+
         public class CV_IMAGE_DATA
         {
             public string Uri { get; set; }
@@ -356,8 +386,8 @@ namespace SonyIMX500.Controllers
             public int Height { get; set; }
             public int Width { get; set; }
             public string Tags { get; set; }
-            public string Regions { get; set; }
-            public string Proposal { get; set; }
+            public List<CV_REGION_DATA> Regions { get; set; }
+            public List<CV_REGION_DATA> Proposals { get; set; }
         }
     }
 }
