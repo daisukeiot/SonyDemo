@@ -86,16 +86,14 @@ namespace SonyIMX500.Controllers
             }
         }
 
-        [Route("UploadImages")]
+        [Route("UploadImagesAsync")]
         [HttpPost]
-        public async Task<IActionResult> UploadImagesAsync(string projectId, IFormFile[] images)
+        public async Task<ActionResult> UploadImagesAsync(string projectId, IFormFile[] images)
         {
             if (images == null || images.Length == 0)
             {
-                return BadRequest("File(s) not selected");
+                return BadRequest(Json(new { status = "File(s) not selected" }));
             }
-
-
 
             var filePaths = new List<string>();
             var trainingImages = new List<ImageFileCreateEntry>();
@@ -130,7 +128,7 @@ namespace SonyIMX500.Controllers
                 await _customVisionTrainingClient.CreateImagesFromFilesAsync(Guid.Parse(projectId), batch);
             }
 
-            return Ok("Success");
+            return Ok(Json(new { status = "ok" }));
         }
 
         #region CUSTOMVISIONGET
@@ -149,6 +147,7 @@ namespace SonyIMX500.Controllers
             {
                 var response = new CV_IMAGE_DATA()
                 {
+                    Id = image.Id.ToString(),
                     Uri = image.OriginalImageUri,
                     ResizedImageUri = image.ResizedImageUri,
                     ThumbnailUri = image.ThumbnailUri,

@@ -99,7 +99,8 @@ async function GetCustomVisionProjectTags(projectId, listElementId) {
             list.append(option);
 
             json.forEach(tag => {
-                list.append(new Option(tag.name, tag.id));
+                list.append(new Option(tag.name, tag.name));
+                list.setAttribute("tagId", tag.Id);
             });
 
             list.selectedIndex = 0;
@@ -132,8 +133,8 @@ async function CustomVisionCreateTag(projectId) {
     var msg;
 
     try {
-        var tagName = document.getElementById("createTagName").value;
-        var tagDesc = document.getElementById("createTagDesc").value;
+        var tagName = document.getElementById("cvCreateTagName").value;
+        var tagDesc = document.getElementById("cvCreateTagDesc").value;
 
         const result = await $.ajax({
             async: true,
@@ -204,21 +205,27 @@ async function TrainProject(project_name) {
 
 $("#blobCvImageJsGrid").jsGrid({
     width: "100%",
-    height: "400",
+    height: "50vh",
 
     loadIndication: true,
     loadIndicationDelay: 500,
     loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
     inserting: false,
-    editing: false,
+    //editing: false,
     filtering: false,
     sorting: true,
     paging: true,
     autoload: false,
-    loadMessage: "Please, wait...",
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
+    pageSize: 5,
+    loadMessage: "Fetching Training Images...",
     controller: {
         loadData: function (filter) {
             var d = $.Deferred();
+            currentImageId = null;
             $.ajax({
                 type: "GET",
                 url: window.location.origin + '/' + 'customvision/GetImages',
@@ -228,7 +235,6 @@ $("#blobCvImageJsGrid").jsGrid({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                var test = JSON.parse(response.value);
                 d.resolve(JSON.parse(response.value));
                 $("#blobCvImageJsGrid").jsGrid("sort", { field: "ResizedImageUri", order: "desc" });
             });
@@ -237,11 +243,21 @@ $("#blobCvImageJsGrid").jsGrid({
         }
     },
     fields: [
+        //{
+        //    name: "Married", title: "Select", sorting: false,
+        //    itemTemplate: function (value, item) {
+        //        return $("<input>").attr("type", "checkbox")
+        //            .attr("checked", value || item.Checked)
+        //            .on("change", function () {
+        //                item.Checked = $(this).is(":checked");
+        //            });
+        //    }
+        //},
         {
             name: "ResizedImageUri",
             text: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ height: "120px" });
+                return $("<img>").attr("src", val).css({ height: "80px" });
             },
             align: "center",
             width: "10vw"
@@ -255,20 +271,20 @@ $("#blobCvImageJsGrid").jsGrid({
         {
             name: "Regions", type: "text", align: "left", width: "auto",
             itemTemplate: function (val, item) {
-                console.log(item)
                 return JSON.stringify(item.Regions);
             }
         },
         {
             name: "Proposals", type: "text", align: "left", width: "auto",
             itemTemplate: function (val, item) {
-                console.log(item)
                 return JSON.stringify(item.Proposals);
             }
-
         },
         {
             name: "Tags", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "Id", type: "text", align: "left", width: "auto", visible: false, width: 0
         }
     ],
     rowClick: function (args) {
@@ -282,11 +298,14 @@ function viewPhotoCv(item) {
     //$("#cvImagePreview").attr("src", item.ThumbnailUri);
 
     var canvas = document.getElementById("cvImageCanvas");
+    canvas.setAttribute("imageId", item.Id);
     var ctx = canvas.getContext('2d');
     var img = new Image();
     img.src = item.ResizedImageUri;
     img.onload = function () {
-        canvas.height = canvas.width * (item.Height / item.Width);
+        canvas.width = item.Width * (canvas.width / item.Width);
+        canvas.height = (canvas.width * item.Height) / item.Width;
+        //canvas.hight = item.Height * (canvas.width / item.Width);
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
         ctx.lineWidth = 3
         ctx.strokeStyle = "rgb(255, 255, 0)"
@@ -296,17 +315,16 @@ function viewPhotoCv(item) {
 
         if (item.Regions.length > 0) {
             //var regions = JSON.parse(item.Regions);
-
-            ctx.strokeStyle = "rgb(255, 255, 0)"
+            ctx.strokeStyle = "rgb(57, 255, 20)"
             item.Regions.forEach((region) => {
                 var x = canvas.width * region.X;
                 var y = canvas.height * region.Y;
-                var w = canvas.width * region.W;
-                var h = canvas.height * region.H;
+                var w = canvas.width * region.W - ctx.lineWidth;
+                var h = canvas.height * region.H - ctx.lineWidth;
                 ctx.strokeRect(x, y, w, h);
             });
+            $("#cvAddTagBtn").prop('disabled', true);
         }
-
         else if (item.Proposals.length > 0) {
             //var proposals = JSON.parse(item.Proposals);
 
@@ -318,7 +336,19 @@ function viewPhotoCv(item) {
                 var h = canvas.height * proposal.H;
                 ctx.strokeRect(x, y, w, h);
             });
+            $("#cvAddTagBtn").prop('disabled', false);
         }
+        else {
+            $("#cvAddTagBtn").prop('disabled', true);
+        }
+
+        if (item.Tags) {
+            $('#customVisionTagList').val(item.Tags).trigger('change');
+        }
+        else {
+            $("#customVisionTagList")[0].selectedIndex = 0;
+        }
+
     }
 }
 
@@ -379,4 +409,56 @@ function viewPhotoWithRegionProposal(item) {
         ret = false;
         toggleLoader(true);
     }
+}
+
+function uploadImagesSubmit() {
+    var funcName = arguments.callee.name + "()";
+    console.debug(funcName);
+
+    var msg;
+
+    try {
+        var files = document.getElementById("exampleInputFile").files;
+        var projectId = document.getElementById("projectId").value;
+        var formData = new FormData();
+        //var url = window.location.origin + '/' + 'customvision/uploadimagesasync';
+        var url = 'uploadimagesasync';
+        formData.append("projectId", projectId);
+        for (var i = 0; i != files.length; i++) {
+            formData.append("images", files[i]);
+        }
+        $.ajax({
+            async: false,
+            type: "POST",
+            processData: false,
+            contentType: false,
+            url: url,
+            data: formData,
+            success: function (repo) {
+                if (repo.status == "success") {
+                    alert("File : " + repo.filename + " is uploaded successfully");
+                }
+            },
+            error: function () {
+                alert("Error occurs");
+            }
+        });
+    } catch (err) {
+        // msg = processError(funcName, err, true);
+        console.error(err);
+    } finally {
+        if (msg) {
+            console.debug(msg);
+            //    document.getElementById('tabApiOutput').value = null;
+            //    document.getElementById('tabApiOutput').value = msg;
+        }
+    }
+}
+
+function resizeCanvas(e) {
+    var imageCanvas = document.getElementById("cvImageCanvas");
+    var parentDiv = document.getElementById("cvImagePreviewDiv");
+    //imageCanvas.width = parentDiv.clientWidth;
+    //imageCanvas.height = parentDiv.clientHeight;
+    //draw(imageCanvas);
 }
