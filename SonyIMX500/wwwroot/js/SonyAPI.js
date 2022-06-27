@@ -66,7 +66,9 @@ function AddApiOutput(apiName, result) {
 
 function sonyApiInitializeMsal() {
 
-    console.debug(arguments.callee.name + "()");
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var url = window.location.href;
     var clientId = document.getElementById('clientId').value;
 
@@ -111,7 +113,9 @@ function sonyApiInitializeMsal() {
 }
 
 async function sonyApiGetToken() {
-    console.debug(arguments.callee.name + "()");
+
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     var url = window.location.href;
     if (url.includes("localhost") && !url.includes("index.html")) {
@@ -164,6 +168,9 @@ async function sonyApiGetToken() {
 
 async function getToken() {
 
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     if (interval) {
         clearInterval(interval);
         interval = null;
@@ -180,7 +187,10 @@ async function getToken() {
 }
 
 function updateLoginTab(tokenResp) {
-    console.debug(arguments.callee.name + "()");
+
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     if (tokenResp == null) {
         document.getElementById('taToken').value = "Access Token not found in response.";
         document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
@@ -202,7 +212,9 @@ function updateLoginTab(tokenResp) {
 }
 
 function PostToken(token) {
-    console.log("PostToken() : " + token);
+
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     $.ajax({
         type: "POST",
@@ -211,7 +223,7 @@ function PostToken(token) {
         success: function (response) {
             //console.log(response)
         },
-        error: function (req, status, error) {
+        error: function (response, status, error) {
             alert("PostToken Error " + status);
         }
     });
@@ -224,11 +236,13 @@ function sonyApiLogout() {
 }
 
 function UpdateHomeController(loginResponse) {
-    console.log("UpdateHomeController : " + loginResponse);
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 }
 
 function SetClientId(ClientId) {
-    console.log("SetClientId()");
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     $.ajax({
         type: "POST",
@@ -237,51 +251,17 @@ function SetClientId(ClientId) {
         success: function (response) {
             return response.responseText;
         },
-        error: function (req, status, error) {
+        error: function (response, status, error) {
             alert("SetClientId Error " + status);
         }
     });
 }
 
-
-
-
-
-//async function GetCustomVisionProjects() {
-
-//    try {
-//        var list = document.getElementById("listCustomVisionProjects");
-//        list.innerText = null;
-//        list.append(new Option("", 0));
-
-//        const result = await $.ajax({
-//            async: true,
-//            type: "GET",
-//            url: window.location.origin + '/' + 'sony/GetModels',
-//            data: {},
-//        });
-
-//        if (result['success'] == false) {
-//            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-//        }
-
-//        AddApiOutput(result.value);
-
-//        var json = JSON.parse(result.value);
-
-//        for (var model in json.models) {
-//            for (var project in json.models[model].projects) {
-//                list.append(new Option(json.models[model].projects[project].model_project_name, json.models[model].projects[project].model_project_name));
-//            }
-//        }
-//    } catch (err) {
-//        alert("GetModels() : Error (" + err.status + ") " + err.statusText);
-//    }
-//}
-
 async function CreateBaseCustomVisionProject() {
 
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var msg;
     var resultElement = document.getElementById('createBaseCustomVisionProjectBtnResult');
 
@@ -322,7 +302,10 @@ async function CreateBaseCustomVisionProject() {
 }
 
 async function DeleteProject(project_name) {
+
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var msg;
     var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
     var ret = true;
@@ -382,6 +365,8 @@ async function DeleteProject(project_name) {
 
 async function SaveCustomVisionModel() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var msg;
     var resultElement = document.getElementById('saveCustomVisionModelBtnResult');
 
@@ -421,6 +406,7 @@ async function SaveCustomVisionModel() {
 
 async function ConvertModel() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
     var msg;
     var json = null;
     var resultElement = document.getElementById('convertModelBtnResult');
@@ -461,6 +447,7 @@ async function ConvertModel() {
 
 async function PublishModel() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
     var msg;
     var resultElement = document.getElementById('publishModelBtnResult');
     var json = null;
@@ -502,6 +489,7 @@ async function PublishModel() {
 async function GetBaseModelStatus(model_id, latest_type) {
 
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var json = null;
 
@@ -544,6 +532,7 @@ async function GetBaseModelStatus(model_id, latest_type) {
 
 async function GetFirmwares(firmware_type, ppl, listElementId) {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var ret = true;
 
@@ -592,6 +581,7 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
 
 async function CreateDeployConfiguration() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('createDeployConfigurationResult');
     var ret = true;
@@ -657,6 +647,8 @@ async function CreateDeployConfiguration() {
 }
 
 function CheckCreateDeployConfigurationInputs() {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var enable = true;
     var configId = document.getElementById('createDeployConfigurationConfigId').value;
     var sensorLoaderVer = document.getElementById('createDeployConfigurationSensorLoaderVersionNumber');
@@ -690,6 +682,7 @@ function CheckCreateDeployConfigurationInputs() {
 
 async function GetDeployConfigurations(listElementId) {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var ret = true;
 
@@ -736,6 +729,8 @@ async function GetDeployConfigurations(listElementId) {
 }
 
 function CheckDeployByConfigurationInputs() {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var enable = true;
     var configId = document.getElementById('deployByConfiguraionFormConfigIdList');
     var deviceId = document.getElementById('deployByConfiguraionDeviceIdList');
@@ -757,6 +752,7 @@ function CheckDeployByConfigurationInputs() {
 
 async function DeployByConfiguration() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('deployByConfiguratonBtnResult');
     var ret = true;
@@ -795,6 +791,7 @@ async function DeployByConfiguration() {
 
 async function GetDeployHistory() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultMsg;
     var resultElement = document.getElementById('getDeployHistoryBtnResult');
@@ -831,6 +828,7 @@ async function GetDeployHistory() {
 
 async function StartUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
     var ret = true;
@@ -879,6 +877,7 @@ async function StartUploadInferenceResult() {
 
 async function StopUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
     //var resultElement = document.getElementById('stopUploadInferenceResultBtnResult');
@@ -911,6 +910,7 @@ async function StopUploadInferenceResult() {
 
 async function StartUploadRetrainingData() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
     var ret = true;
@@ -964,8 +964,8 @@ async function StartUploadRetrainingData() {
 }
 
 async function StopUploadRetrainingData() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
     var ret = true;
@@ -994,40 +994,9 @@ async function StopUploadRetrainingData() {
     return ret;
 }
 
-//async function StopUploadRetrainingData() {
-
-//    var funcName = arguments.callee.name + "()";
-//    var msg;
-//    var resultElement = document.getElementById('stopUploadRetrainingDataBtnResult');
-//    var ret = true;
-
-//    try {
-//        var device_id = document.getElementById("stopUploadRetrainingDataDeviceIdList").value;
-
-//        const result = await $.ajax({
-//            async: true,
-//            type: "POST",
-//            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
-//            data: {
-//                device_id: device_id
-//            },
-//        });
-//        msg = result.value;
-//    } catch (err) {
-//        msg = processError(funcName, err, true);
-//        ret = false;
-//    } finally {
-//        if (msg) {
-//            setResultElement(resultElement, msg);
-//            AddApiOutput(funcName, msg);
-//        }
-//    }
-//    return ret;
-//}
-
 async function GetDevices(listElementId, silent, isOption) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1070,8 +1039,8 @@ async function GetDevices(listElementId, silent, isOption) {
 }
 
 async function RefreshDevicesList() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
 
     try {
         const result = await $.ajax({
@@ -1096,8 +1065,8 @@ async function RefreshDevicesList() {
 }
 
 async function RefreshModelsList() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
 
     try {
         const result = await $.ajax({
@@ -1130,8 +1099,8 @@ async function RefreshModelsList() {
 }
 
 async function RefreshDeployConfiguraions() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
 
     try {
         const result = await $.ajax({
@@ -1156,8 +1125,8 @@ async function RefreshDeployConfiguraions() {
 }
 
 async function GetDevicesForImageGallery(listElementId, silent) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1200,8 +1169,8 @@ async function GetAllModels(listElement, isOption) {
 }
 
 async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1247,8 +1216,8 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
 }
 
 async function DeleteModel(model_id) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1270,8 +1239,8 @@ async function DeleteModel(model_id) {
 }
 
 async function DeleteDeployConfiguration(config_id) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1334,8 +1303,9 @@ function addDeployConfiguration(config_id, config_comment, payload) {
 }
 
 function viewPhoto(item) {
+    var funcName = arguments.callee.name + "()";
     var eventId = item.attributes.getNamedItem('eventId').nodeValue;
-    console.log("viewPhoto " + eventId);
+    console.debug("=>", funcName, "EventID", eventId);
     var funcName = arguments.callee.name + "()";
     var preElementId = "pre-" + eventId;
     var preElement = document.getElementById(preElementId);
@@ -1393,9 +1363,10 @@ function viewPhoto(item) {
 }
 
 function viewPhotoWithCosmosDb(item) {
+    var funcName = arguments.callee.name + "()";
     var eventId = item.attributes.getNamedItem('eventId').nodeValue;
     var deviceId = item.attributes.getNamedItem('deviceId').nodeValue;
-    console.log("viewPhotoWithCosmosDb " + eventId);
+    console.log(funcName + eventId);
     var funcName = arguments.callee.name + "()";
     var preElementId = "pre-" + eventId;
     var preElement = document.getElementById(preElementId);

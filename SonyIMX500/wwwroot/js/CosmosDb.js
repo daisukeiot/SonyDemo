@@ -62,15 +62,13 @@
 });
 
 function viewPhotoWithCosmosDbTable(item) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     if (item.Image == false) {
         return;
     }
     var deviceId = item.Device_ID;
-
-    console.log(funcName);
 
     try {
         toggleLoader(false);

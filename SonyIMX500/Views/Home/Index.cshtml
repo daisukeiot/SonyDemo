@@ -197,7 +197,7 @@
                                                                                 <select id="selectCustomVisionProjectList" class="form-control select2" style="width: 100%;">
                                                                                 </select>
                                                                             </div>
-                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                            <div class="info-box-text" style="position:relative;margin-top:0.5em">
                                                                                 <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
                                                                                     <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
                                                                                 </button>-->
@@ -1131,9 +1131,6 @@
             hubConnection.start()
                 .then(() => console.log('SignalR connected!'))
                 .catch(console.error);
-
-
-
         })
 
         function toggleLoader(bForceClear) {
@@ -1216,10 +1213,10 @@
             var projectList = document.getElementById('selectCustomVisionProjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 toggleLoader(false);
-                DeleteProjectCV(projectList[projectList.selectedIndex].value)
+                CvDeleteProject(projectList[projectList.selectedIndex].value)
                     .then(() => {
                         console.log("Custom Vision Project Deleted");
-                        GetCustomVisionProjects("selectCustomVisionProjectList");
+                        CvGetProjects("selectCustomVisionProjectList");
                     })
                     .finally(() => {
                         toggleLoader(false);
@@ -2121,7 +2118,7 @@
 
             toggleLoader(false);
 
-            GetCustomVisionProjects(targetListName)
+            CvGetProjects(targetListName)
                 .then(() => { })
                 .finally(() => {
                     toggleLoader(false);
@@ -2134,7 +2131,7 @@
             var targetListName = 'visitCustomVisionProjectList';
 
             toggleLoader(false);
-            GetCustomVisionProjects(targetListName)
+            CvGetProjects(targetListName)
                 .then(() => {
                     if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
                         setSelectOption(targetListName, currentProjectId);
@@ -2152,7 +2149,7 @@
 
             toggleLoader(false);
 
-            GetCustomVisionProjects(targetListName)
+            CvGetProjects(targetListName)
                 .then(() => {
                     if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
                         setSelectOption(targetListName, currentProjectId);

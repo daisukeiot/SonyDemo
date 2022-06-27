@@ -6,6 +6,7 @@ using Microsoft.Azure.CognitiveServices.Vision.CustomVision.Training.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
@@ -188,7 +189,7 @@ namespace SonyIMX500.Controllers
                 {
                     foreach (var proposal in imageRegionProposal.Proposals)
                     {
-                        if (proposal.Confidence > 0.9)
+                        if (proposal.Confidence > 0.8)
                         {
                             var regionData = new CV_REGION_DATA();
                             regionData.X = proposal.BoundingBox.Left;
@@ -265,7 +266,7 @@ namespace SonyIMX500.Controllers
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/delete-project/delete-project
         //
         [HttpDelete]
-        public async Task<ActionResult> DeleteProjectCv(string project_name)
+        public async Task<ActionResult> CvDeleteProject(string project_name)
         {
             try
             {
@@ -292,24 +293,30 @@ namespace SonyIMX500.Controllers
 
         #region CUSTOMVISIONPOST
         //
-        // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/train-project/train-project
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.createimageregionsasync?view=azure-dotnet
         //
         [HttpPost]
-        public async Task<IActionResult> TrainProject(string projectId)
+        public async Task<IActionResult> CreateImageRegion(string projectId, string imageId, string tagId, string proposals)
         {
             try
             {
-                var response = await SendPost($"customvision/v3.3/training/projects/{projectId}/train", null);
-                var jsonString = await response.Content.ReadAsStringAsync();
+                List<ImageRegionCreateEntry> regions = new List<ImageRegionCreateEntry>();
+                var proposalsArray = JArray.Parse(proposals);
 
-                if (response.IsSuccessStatusCode)
+                foreach(var x in proposalsArray)
                 {
-                    return Ok(Json(jsonString));
+                    Console.Write(x);
+                    regions.Add(new ImageRegionCreateEntry(Guid.Parse(imageId), 
+                                                           Guid.Parse(tagId),
+                                                           Convert.ToDouble(x["X"]),
+                                                           Convert.ToDouble(x["Y"]),
+                                                           Convert.ToDouble(x["W"]),
+                                                           Convert.ToDouble(x["H"])));
                 }
-                else
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
-                }
+                var newRegions = await _customVisionTrainingClient.CreateImageRegionsAsync(Guid.Parse(projectId), new ImageRegionCreateBatch(regions));
+
+                //return Ok(Json(JsonConvert.SerializeObject(newRegions)));
+                return Ok();
             }
             catch (Exception ex)
             {
@@ -318,6 +325,66 @@ namespace SonyIMX500.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.trainprojectasync?view=azure-dotnet
+        // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/train-project/train-project
+        //
+        [HttpPost]
+        public async Task<IActionResult> TrainProject(string projectId)
+        {
+            try
+            {
+                var iteration = await _customVisionTrainingClient.TrainProjectAsync( (Guid.Parse(projectId)));
+                _logger.LogError("test");
+                return Ok();
+            }
+            catch (CustomVisionErrorException ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+
+                var jsonResult = new JsonResult(new { data = ex.Response.Content });
+                jsonResult.StatusCode = (int)ex.Response.StatusCode;
+                jsonResult.ContentType = "application/json";
+                return jsonResult;
+                //return StatusCode(StatusCodes.Status400BadRequest, jsonResult);
+
+//                return new JsonResult(new { data = ex.Response.Content });
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        //[HttpPost]
+        //public async Task<IActionResult> TrainProject(string projectId)
+        //{
+        //    try
+        //    {
+        //        var response = await SendPost($"customvision/v3.3/training/projects/{projectId}/train", null);
+        //        var jsonString = await response.Content.ReadAsStringAsync();
+
+        //        if (response.IsSuccessStatusCode)
+        //        {
+        //            return Ok(Json(jsonString));
+        //        }
+        //        else
+        //        {
+        //            return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+        //        System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+        //        return BadRequest(ex.Message);
+        //    }
+        //}
 
         //
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/create-tag/create-tag
