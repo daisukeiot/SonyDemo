@@ -315,7 +315,7 @@ $("#cvImageJsGrid").jsGrid({
             name: "ResizedImageUri",
             title: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ "max-height": "80px","max-width":"80px" });
+                return $("<img>").attr("src", val).css({ "max-height": "80px", "max-width": "80px", "object-fit": "contain" });
             },
             align: "center",
             width: "85px",
