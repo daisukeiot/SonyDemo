@@ -4,12 +4,27 @@
     text-align: left;
 }
 
+label {
+    margin-bottom : 0.2em;
+    margin-top: 0.5em;
+}
+
+.custom-file-label {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
 .TelemetrySection {
     display: table;
     width: auto;
     text-align: left;
     margin: 0;
     padding: 0px;
+}
+
+.btn {
+    min-width: 10em;
+    width: auto;
 }
 
 .EventTBody{
@@ -439,7 +454,7 @@
 
 @media (min-width: 576px) {
     .modal-dialog {
-        max-width: 500px;
+        max-width: 60vw;
         margin: 5em auto;
     }
 
@@ -532,7 +547,7 @@
 
 .jsgridDiv {
     min-height: calc(40vh);
-    max-height: calc(60vh);
+    max-height: 100%;
 }
 
 .jsgrid-header-cell {

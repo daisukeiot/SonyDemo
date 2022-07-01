@@ -1,4 +1,6 @@
-﻿function isItemSelected(selectElement, value) {
+﻿let iterationInterval = null;
+
+function isItemSelected(selectElement, value) {
     if (document.getElementById(selectElement).selectedIndex == 0) {
         return false;
     } else if (document.getElementById(selectElement).selectedIndex == -1) {
@@ -19,6 +21,26 @@ function CvGetProjectId() {
         projectId = projectList[projectList.selectedIndex].value;
     }
     return projectId;
+}
+
+function CvGetIterationProjectId() {
+
+    var projectList = document.getElementById('cvTrainProjectList');
+    var projectId = null;
+
+    if (isItemSelected('cvTrainProjectList', null)) {
+        projectId = projectList[projectList.selectedIndex].value;
+    }
+    return projectId;
+}
+
+function RefreshIterationGrid() {
+
+    if (iterationInterval != null) {
+        clearInterval(iterationInterval);
+        iterationInterval = null;
+        $('#cvIterationsJsGrid').jsGrid('loadData');
+    }
 }
 
 async function CvGetProjects(listElementId) {
@@ -83,6 +105,8 @@ async function CvGetTags(projectId, listElementId) {
     console.debug("=>", funcName);
 
     try {
+        var list = document.getElementById(listElementId);
+        list.disalbed = true;
 
         await $.ajax({
             async: true,
@@ -90,10 +114,18 @@ async function CvGetTags(projectId, listElementId) {
             url: window.location.origin + '/' + 'customvision/GetTags',
             data: { projectId : projectId},
             success: function (result) {
-                msg = result.value;
-                if (listElementId) {
+
+                if (result.length == 0) {
+                    var option = new Option("No tags", "");
+                    option.disabled = true;
+                    list.innerText = null;
+                    list.append(option);
+                    list.selectedIndex = 0;
+                }
+                else {
+                    msg = result.value;
+
                     var json = JSON.parse(result.value);
-                    var list = document.getElementById(listElementId);
                     var currentSelection = null;
 
                     if (list.selectedIndex != -1) {
@@ -123,9 +155,7 @@ async function CvGetTags(projectId, listElementId) {
                                 break;
                             }
                         }
-
                     }
-                    list.blur();
                 }
             },
             error: function (response, status, error) {
@@ -135,6 +165,8 @@ async function CvGetTags(projectId, listElementId) {
         });
     } catch (err) {
     } finally {
+        list.disalbed = false;
+        list.blur();
     }
 }
 
@@ -191,6 +223,7 @@ async function CvAssignRegion(projectId, tagId) {
 
                     if (value.Id == selectedItem.Id) {
                         value["Regions"] = value["Proposals"];
+                        value["Tags"] = $("#cvTagList option:selected").text();
                         // Update grid entry
                         $(cvImageJsGrid).jsGrid("updateItem", value, value);
                         // Trigger click to refresh preview window
@@ -245,7 +278,7 @@ async function CvTrainProject(resultElement) {
 
     try {
 
-        var projectId = CvGetProjectId();
+        var projectId = CvGetIterationProjectId();
 
         if (projectId != null) {
             await $.ajax({
@@ -253,8 +286,9 @@ async function CvTrainProject(resultElement) {
                     type: "POST",
                     url: window.location.origin + '/' + 'customvision/TrainProject',
                     data: { projectId: projectId },
-                    success: function (response) {
+                    success: function (result) {
                         resultElement.innerHTML = "Success";
+                        $("#cvIterationsJsGrid").jsGrid("loadData");
                     },
                     error: function (response, status, error) {
                         console.error(response);
@@ -270,7 +304,7 @@ async function CvTrainProject(resultElement) {
 
 $("#cvImageJsGrid").jsGrid({
     width: "100%",
-    height: "50vh",
+    height: "58vh",
 
     loadIndication: true,
     loadIndicationDelay: 500,
@@ -278,7 +312,8 @@ $("#cvImageJsGrid").jsGrid({
     shrinkToFit: true,
     multiselect: true,
     inserting: false,
-    //editing: false,
+    editing: false,
+    inserting: false,
     filtering: false,
     sorting: true,
     paging: true,
@@ -301,7 +336,7 @@ $("#cvImageJsGrid").jsGrid({
                 dataType: "json"
             }).done(function (response) {
                 d.resolve(JSON.parse(response.value));
-                $(cvImageJsGrid).jsGrid("sort", { field: "ResizedImageUri", order: "desc" });
+                $("#cvImageJsGrid").jsGrid("sort", { field: "ResizedImageUri", order: "desc" });
             });
 
             return d.promise();
@@ -315,11 +350,11 @@ $("#cvImageJsGrid").jsGrid({
             name: "ResizedImageUri",
             title: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ "max-height": "80px", "max-width": "80px", "object-fit": "contain" });
+                return $("<img>").attr("src", val).css({ "max-height": "75px", "min-height": "75px", "max-width": "80px", "object-fit": "contain" });
             },
             align: "center",
             width: "85px",
-            height: "82px"
+            height: "76px"
         },
         {
             name: "Width", title:"W", type: "number", align: "left", width: "4em"
@@ -344,6 +379,100 @@ $("#cvImageJsGrid").jsGrid({
         },
         {
             name: "Id", type: "text", align: "left", width: "auto", visible: false, width: 0
+        },
+        {
+            type: "control", deleteButton: false, editButton: false,
+            headerTemplate: function () {
+                return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
+            }
+        }
+    ],
+    rowClick: function (args) {
+        CvPreviewPhoto(args.item);
+    },
+});
+
+$("#cvIterationsJsGrid").jsGrid({
+    width: "100%",
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
+    inserting: false,
+    //editing: false,
+    filtering: false,
+    sorting: true,
+    paging: true,
+    autoload: false,
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
+    pageSize: 20,
+    loadMessage: "Fetching Training Images...",
+    controller: {
+        loadData: function (filter) {
+            var d = $.Deferred();
+            $('#cvStartTrainingBtn').prop('disabled', false);
+            var projectId = CvGetIterationProjectId();
+            currentImageId = null;
+            $.ajax({
+                type: "GET",
+                url: window.location.origin + '/' + 'customvision/GetIterations',
+                data: {
+                    projectId: projectId
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            }).done(function (response) {
+                d.resolve(JSON.parse(response.value));
+                $("#cvIterationsJsGrid").jsGrid("sort", { field: "Created", order: "desc" });
+            });
+
+            return d.promise();
+        }
+    },
+    onItemUpdated: function (item) {
+        console.log("Updated");
+    },
+    fields: [
+        {
+            name: "Name", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "Status", type: "text", align: "left", width: "auto",
+            itemTemplate: function (val, item) {
+                if (val == "Training") {
+                    $('#cvStartTrainingBtn').prop('disabled', true);
+                    if (iterationInterval == null) {
+                        iterationInterval = setInterval(function () { RefreshIterationGrid(); }, 10 * 1000);
+                    }
+                }
+                return val;
+            }
+        },
+        {
+            name: "Created", type: "text", align: "left", width: "auto", visible: false
+        },
+        {
+            name: "TrainedAt", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "TrainingType", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "Precision", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "Recall", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "AveratePrecision", type: "text", align: "left", width: "auto"
+        },
+        {
+            type: "control", deleteButton: false, editButton: false,
+            headerTemplate: function () {
+                return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
+            }
         }
     ],
     rowClick: function (args) {
@@ -397,10 +526,10 @@ function CvPreviewPhoto(item) {
         }
 
         if (item.Tags) {
-            $('#customVisionTagList').val(item.Tags).trigger('change');
+            $('#cvTagList').val(item.Tags).trigger('change');
         }
         else {
-            $("#customVisionTagList")[0].selectedIndex = 0;
+            $("#cvTagList")[0].selectedIndex = 0;
         }
 
         selectedItem = item;
@@ -408,15 +537,15 @@ function CvPreviewPhoto(item) {
     }
 }
 
-function CvUploadImage() {
+function CvUploadImages() {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
 
     var msg;
 
     try {
-        var files = document.getElementById("exampleInputFile").files;
-        var projectId = document.getElementById("projectId").value;
+        var files = document.getElementById("cvUploadImages").files;
+        var projectId = CvGetProjectId();
         var formData = new FormData();
         //var url = window.location.origin + '/' + 'customvision/uploadimagesasync';
         var url = 'uploadimagesasync';
@@ -431,13 +560,11 @@ function CvUploadImage() {
             contentType: false,
             url: url,
             data: formData,
-            success: function (repo) {
-                if (repo.status == "success") {
-                    alert("File : " + repo.filename + " is uploaded successfully");
-                }
+            success: function (result) {
+                alert("File(s) is uploaded successfully");
             },
-            error: function () {
-                alert("Error occurs");
+            error: function (response, status, error) {
+                alert(funcName + " Error " + response.responseJSON.value);
             }
         });
     } catch (err) {

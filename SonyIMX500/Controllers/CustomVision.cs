@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net.Http;
+using System.Security.Permissions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -126,10 +127,25 @@ namespace SonyIMX500.Controllers
                 {
                     Images = trainingImages
                 };
-                await _customVisionTrainingClient.CreateImagesFromFilesAsync(Guid.Parse(projectId), batch);
+                var result = await _customVisionTrainingClient.CreateImagesFromFilesAsync(Guid.Parse(projectId), batch);
+
+                if (result.IsBatchSuccessful == false)
+                {
+                    foreach(var image in result.Images)
+                    {
+                        if (image.Status == "OKDuplicate")
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError, JsonConvert.SerializeObject(image));
+                        }
+                    }
+                }
             }
 
-            return Ok(Json(new { status = "ok" }));
+            return Ok();
         }
 
         #region CUSTOMVISIONGET
@@ -207,11 +223,81 @@ namespace SonyIMX500.Controllers
 
             return Ok(Json(JsonConvert.SerializeObject(responses)));
         }
+
+        //
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.getiterationsasync?view=azure-dotnet
+        //
+        [HttpGet]
+        public async Task<IActionResult> GetIterations(string projectId)
+        {
+            var responses = new List<CV_ITERATION_DATA>();
+
+            try
+            {
+                var iterations = await _customVisionTrainingClient.GetIterationsAsync(Guid.Parse(projectId));
+
+                foreach (var iteration in iterations)
+                {
+                    var response = new CV_ITERATION_DATA()
+                    {
+                        Name = iteration.Name,
+                        Status = iteration.Status,
+                        Created = iteration.Created.ToString(),
+                        TrainedAt = iteration.TrainedAt.ToString(),
+                        TrainingType = iteration.TrainingType
+                    };
+
+                    if (iteration.Status == "Completed")
+                    {
+                        var performance = await _customVisionTrainingClient.GetIterationPerformanceAsync(iteration.ProjectId, iteration.Id);
+
+                        response.Precision = String.Format("{0:P1}.", performance.Precision);
+                        response.Recall = String.Format("{0:P1}.", performance.Recall);
+                        response.AveratePrecision = String.Format("{0:P1}.", performance.AveragePrecision);
+                    }
+
+                    responses.Add(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+
+            return Ok(Json(JsonConvert.SerializeObject(responses)));
+        }
+
+        //
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.models.project?view=azure-dotnet 
+        //
+        [HttpGet]
+        public async Task<IActionResult> GetProjects()
+        {
+            try
+            {
+                IList<Project> project = await _customVisionTrainingClient.GetProjectsAsync();
+
+                if (project.Count > 0)
+                {
+                    return Ok(Json(JsonConvert.SerializeObject(project)));
+                }
+                return StatusCode(StatusCodes.Status202Accepted);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
         //
         // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/get-projects/get-projects
         //
         [HttpGet]
-        public async Task<IActionResult> GetProjects(string model_id)
+        public async Task<IActionResult> GetProjectsREST()
         {
             try
             {
@@ -234,9 +320,32 @@ namespace SonyIMX500.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
+        //
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.gettagsasync?view=azure-dotnet
+        //
         [HttpGet]
         public async Task<IActionResult> GetTags(string projectId)
+        {
+            try
+            {
+                IList<Tag> tags = await _customVisionTrainingClient.GetTagsAsync(Guid.Parse(projectId));
+
+                if (tags.Count > 0)
+                {
+                    return Ok(Json(JsonConvert.SerializeObject(tags)));
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetTagsREST(string projectId)
         {
             try
             {
@@ -387,10 +496,33 @@ namespace SonyIMX500.Controllers
         //}
 
         //
-        // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/create-tag/create-tag
+        // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.createtagasync?view=azure-dotnet
         //
         [HttpPost]
         public async Task<IActionResult> CreateTag(string projectId, string tagName, string desc)
+        {
+            try
+            {
+                Tag tag = await _customVisionTrainingClient.CreateTagAsync(Guid.Parse(projectId), tagName, desc);
+
+                if (tag != null)
+                {
+                    return Ok(Json(JsonConvert.SerializeObject(tag)));
+                }
+                return BadRequest("CreateTagAsync() failed");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+        //
+        // https://docs.microsoft.com/en-us/rest/api/customvision/training3.3/create-tag/create-tag
+        //
+        [HttpPost]
+        public async Task<IActionResult> CreateTagREST(string projectId, string tagName, string desc)
         {
             try
             {
@@ -454,6 +586,18 @@ namespace SonyIMX500.Controllers
             public string Tags { get; set; }
             public List<CV_REGION_DATA> Regions { get; set; }
             public List<CV_REGION_DATA> Proposals { get; set; }
+        }
+
+        public class CV_ITERATION_DATA
+        {
+            public string Name { get; set; }
+            public string Status { get; set; }
+            public string Created { get; set; }
+            public string TrainedAt { get; set; }
+            public string TrainingType { get; set; }
+            public string Precision { get; set; }
+            public string Recall { get; set; }
+            public string AveratePrecision { get; set; }
         }
     }
 }

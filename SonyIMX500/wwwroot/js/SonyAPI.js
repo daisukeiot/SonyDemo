@@ -1,12 +1,6 @@
-﻿let myMsal = null;
-let accessTokenRequest;
+﻿
 
-const loginScope = {
-    scopes: ["User.Read"],
-};
-
-let authConfig = null;
-let interval = null;
+let getBaseModelInterval = null;
 
 // Utility functions
 
@@ -62,152 +56,63 @@ function AddApiOutput(apiName, result) {
     document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
 }
 
-// MSAL token functions
-
-function sonyApiInitializeMsal() {
-
-    var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
-
-    var url = window.location.href;
-    var clientId = document.getElementById('clientId').value;
-
-    if ((myMsal != null) && (authConfig && authConfig.auth.clientId == clientId))  {
-        return;
-    }
-
-    if (clientId.length == 0) {
-        console.log("Client ID empty");
-        return;
-    }
-
-    authConfig = {
-        auth: {
-            clientId: clientId,
-            redirectUri: url
-        }
-    }
-
-    console.debug("Redirect Url : " + authConfig.auth.redirectUri);
-    console.debug("Client ID    : " + authConfig.auth.clientId);
-
-    myMsal = new Msal.UserAgentApplication(authConfig);
-
-    accessTokenRequest = {
-        scopes: [authConfig.auth.clientId],
-        prompt: 'none',
-        authority: null,
-        account: myMsal.getAccount()
-    }
-
-    myMsal.handleRedirectCallback((err, response) => {
-        //debugger;
-        if (err) {
-            alert(err);
-        } else {
-            updateLoginTab(response);
-        }
-    });
-
-    SetClientId(authConfig.auth.clientId);
+function GetBaseModelStatusRefresh(target) {
+    document.getElementById(target).dispatchEvent(new Event("click"));
 }
 
-async function sonyApiGetToken() {
+function GetBaseModelStatusInterval(target) {
 
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
 
-    var url = window.location.href;
-    if (url.includes("localhost") && !url.includes("index.html")) {
-        console.debug("Redirecting to index.html");
-        url = url + "index.html"
-        window.location.href = url;
-        return;
+    if (target == null) {
+        console.debug("=> Cancel Interval");
+        if (getBaseModelInterval != null) {
+            clearInterval(getBaseModelInterval);
+        }
+    } else if (getBaseModelInterval == null) {
+        getBaseModelInterval = setInterval(function () { GetBaseModelStatusRefresh(target); }, 10 * 1000);
     }
+}
 
-    if (!myMsal.getAccount()) {
-        // Not logged in.  Start login.
-        console.debug("Redirect to login");
-        myMsal.loginRedirect(loginScope);
-    }
-    else {
+function telemetryTableFilter() {
+    var input, filter, table, tr, td, i;
 
-        try {
-            //debugger;
-            console.debug("Getting Token");
-            tokenResp = await myMsal.acquireTokenSilent(accessTokenRequest);
-            console.log('### MSAL acquireTokenSilent was successful')
-            updateLoginTab(tokenResp);
-            return tokenResp.idToken.rawIdToken;
+    input = document.getElementById("telemetryTableFilterInput");
 
-        } catch (error) {
-            //debugger;
-            console.log('### MSAL acquireTokenSilent was unsuccessful : ' + error);
-            switch (error.errorCode) {
-                case "consent_required":
-                case "interaction_required":
-                case "login_required":
-                    tokenResp = await myMsal.acquireTokenPopup(accessTokenRequest)
-                    console.log('### MSAL acquireTokenPopup was successful')
-                    break;
-
-                case "user_login_error":
-                    console.log('### MSAL Login Error');
-                    if (!myMsal.getLoginInProgress()) {
-                        myMsal.loginRedirect(loginRequest);
-                    }
-                    break;
-                default:
-                    break;
+    filter = input.value.toUpperCase();
+    table = document.getElementById("telemetryTbl");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
             }
-
-            return null;
         }
     }
 }
 
-async function getToken() {
+function telemetryTableFilter2(targetListId) {
+    var input, filter, table, tr, td, i;
 
-    var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    var deviceList = document.getElementById(targetListId);
 
-    if (interval) {
-        clearInterval(interval);
-        interval = null;
-    }
-    var token = sonyApiGetToken();
+    filter = deviceList[deviceList.selectedIndex].value.toUpperCase();
 
-    if (token) {
-        document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
-        PostToken(token);
-        if (interval == null) {
-            interval = setInterval(function () { getToken(); }, 30 * 60 * 1000);
+    table = document.getElementById("telemetryTbl");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
         }
-    }
-}
-
-function updateLoginTab(tokenResp) {
-
-    var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
-
-    if (tokenResp == null) {
-        document.getElementById('taToken').value = "Access Token not found in response.";
-        document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
-    }
-    else {
-        document.getElementById('taToken').value = tokenResp.idToken.rawIdToken;
-        document.getElementById('taToken').dispatchEvent(new Event("change"));
-
-        if (String(expiresOn) !== String(tokenResp.expiresOn)) {
-            expiresOn = tokenResp.expiresOn;
-            document.getElementById('spanTokenExpire').innerHTML = String(tokenResp.expiresOn);
-        }
-
-        document.getElementById('userName').innerHTML = tokenResp.account.name;
-        document.getElementById('userDesc').innerHTML = tokenResp.account.userName;
-        document.getElementById('btnLoginResult').innerHTML = "Login Success";
-        document.getElementById('clientId').value = tokenResp.idToken.claims.aud;
     }
 }
 
@@ -229,11 +134,6 @@ function PostToken(token) {
     });
 }
 
-function sonyApiLogout() {
-    if (myMsal != null) {
-        myMsal.logout();
-    }
-}
 
 function UpdateHomeController(loginResponse) {
     var funcName = arguments.callee.name + "()";
@@ -703,8 +603,8 @@ async function GetDeployConfigurations(listElementId) {
 
             var list = document.getElementById(listElementId);
             list.innerText = null;
-            var option = new Option("Select from list", "");
-            option.disabled = true;
+            var option = new Option("Select deployment", "");
+            option.disabled = false;
             list.append(option);
             for (var deploy_configuration in json.deploy_configurations) {
                 list.append(new Option(json.deploy_configurations[deploy_configuration].config_id, json.deploy_configurations[deploy_configuration].config_id));
@@ -725,7 +625,7 @@ async function GetDeployConfigurations(listElementId) {
         }
     }
 
-    return ret;
+    return msg;
 }
 
 function CheckDeployByConfigurationInputs() {
@@ -994,7 +894,7 @@ async function StopUploadRetrainingData() {
     return ret;
 }
 
-async function GetDevices(listElementId, silent, isOption) {
+async function GetDevices(listElementId, silent, isOption, placeHolderText, placeHolderValue) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName)
     var ret = true;
@@ -1017,7 +917,7 @@ async function GetDevices(listElementId, silent, isOption) {
             var list = document.getElementById(listElementId);
 
             list.innerText = null;
-            var option = new Option('Select from list', '');
+            var option = new Option(placeHolderText, placeHolderValue);
 
             if (isOption) {
                 option.disabled = false;
@@ -1419,3 +1319,85 @@ function viewPhotoWithCosmosDb(item) {
         toggleLoader(true);
     }
 }
+
+$("#deploymentHistoryGrid").jsGrid({
+    width: "100%",
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
+    inserting: false,
+    //editing: false,
+    filtering: false,
+    sorting: true,
+    paging: true,
+    autoload: false,
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
+    pageSize: 20,
+    loadMessage: "Fetching Deployment History...",
+    controller: {
+        loadData: function (filter) {
+            var d = $.Deferred();
+
+            console.log("Test1111");
+            var deviceList = document.getElementById('deployByConfiguraionDeviceIdList');
+            var deviceId = null;
+
+            deviceId = deviceList[deviceList.selectedIndex].value;
+
+            $.ajax({
+                async: true,
+                type: "GET",
+                url: window.location.origin + '/' + 'sony/GetDeployHistory',
+                data: {
+                    device_id: deviceId
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            }).done(function (response) {
+                d.resolve(JSON.parse(response.value));
+                $("#deploymentHistoryGrid").jsGrid("sort", { field: "id", order: "asc" });
+            });
+
+            return d.promise();
+        }
+    },
+    fields: [
+        {
+            name: "id", type: "number", align: "left", width: "4em"
+        },
+        {
+            name: "deploy_type", type: "text", align: "left", width: "11em"
+        },
+        {
+            name: "deploy_status", type: "text", align: "left", width: "12rem", 
+            itemTemplate: function (val, item) {
+                console.log("1111 ", val);
+                console.log("1112 ", item);
+                
+                if (val == "0") {
+                    return "0 (Processing)";
+                } else if (val == "1") {
+                    return "1 (Done : Success)";
+                } else if (val == "1") {
+                    return "2 (Fail)";
+                }
+                return "";
+            }
+        },
+        {
+            name: "config_id", type: "text", align: "left", width: "15em"
+        },
+        {
+            name: "total_status", type: "text", align: "left", width: "12em"
+        },
+        {
+            name: "upd_date", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "ins_date", type: "text", align: "left", width: "auto"
+        }
+    ],
+});

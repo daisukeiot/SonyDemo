@@ -8,7 +8,7 @@
     sorting: true,
     paging: true,
     autoload: false,
-    //filtering: true,
+    filtering: true,
 
     controller: {
         loadData: function (filter) {
@@ -52,7 +52,8 @@
         },
         { name: "C", type: "text", align: "left", width: 50},
         { name: "P", type: "text", align: "left", width: 50 },
-        { name: "Coord", type: "text", title: "(X,Y)-(x,y)", align: "left" }
+        { name: "Coord", type: "text", title: "(X,Y)-(x,y)", align: "left" },
+        { type: "control" }
     ],
 
     rowClick: function (args) {

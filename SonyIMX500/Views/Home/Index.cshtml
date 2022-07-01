@@ -3,12 +3,14 @@
 }
 
 @section scripts {
-    @*<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>*@
+    <script type="text/javascript" src="/js/SonyApi.js"></script>
+    <script type="text/javascript" src="/js/Token.js"></script>
     <script type="text/javascript" src="/js/BlobStorage.js"></script>
     <script type="text/javascript" src="/js/CosmosDb.js"></script>
-}
+    <script type="text/javascript" src="/js/CustomVision.js"></script>}
 
 <body>
+
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -21,7 +23,6 @@
     <!-- Main content -->
     <div id="loader" class="loading" style="display:none"></div>
     <div class="container-fluid">
-        <section class="content">
         <div class="row">
             <div class="col-12 col-sm-12">
                 <div class="card card-primary card-tabs">
@@ -226,6 +227,7 @@
                                                         <div id="accordionVisitCustomVision" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
                                                                 <div class="info-box-text">
+                                                                    <label for="visitCustomVisionProjectList">Custom Vision Project Name</label>
                                                                     <select id="visitCustomVisionProjectList" class="form-control select2" style="width: 100%;">
                                                                     </select>
                                                                 </div>
@@ -234,8 +236,8 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <button type="button" class="btn btn-success" id="visitCustomVisionBtn" disabled>
-                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Open a new tab.
+                                                                <button type="button" class="btn btn-success" id="visitCustomVisionBtn" style="width:auto" disabled>
+                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Visit CustomVision.ai
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -254,13 +256,9 @@
                                                                 <div id="saveCustomVisionDiv">
                                                                     <form id="saveCustomVisionModelForm">
                                                                         <div class="form-group">
-                                                                            <div class="info-box-text">
-                                                                                <label for="saveCustomVisionModelProjectNameList">Project Name</label>
-                                                                            </div>
-                                                                            <div id="projectListDiv">
-                                                                                <select id="saveCustomVisionModelProjectNameList" class="form-control select2" style="width: 100%;">
-                                                                                </select>
-                                                                            </div>
+                                                                            <label for="saveCustomVisionModelProjectNameList">Project Name</label>
+                                                                            <select id="saveCustomVisionModelProjectNameList" class="form-control select2" style="width: 100%;">
+                                                                            </select>
 
                                                                             <label for="saveCustomVisionModelProjectModelId">Model ID (Optional)</label>
                                                                             <input type="text" name="saveCustomVisionModelProjectModelId" class="form-control" id="saveCustomVisionModelProjectModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
@@ -282,8 +280,8 @@
                                                             </div>
                                                             <div class="card-footer">
                                                                 <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="saveCustomVisionModelBtn" disabled>
-                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Save Custom Vision model
+                                                                    <button type="button" class="btn btn-success" id="saveCustomVisionModelBtn" disabled
+                                                                        <i class="fas fa-save btn-fa"></i>Save Custom Vision model
                                                                     </button>
                                                                     <div class="vertical-center">
                                                                         <div class="info-box-text" id='saveCustomVisionModelBtnResult'>Place Holder : To be deleted</div>
@@ -321,7 +319,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled>
+                                                                    <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
                                                                     </button>
                                                                     <label for="convertModelGetBaseModelStatusConversionDiv" style="margin-left:1em">Conversion ID : </label>
@@ -369,7 +367,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="publishModelGetBaseModelStatusBtn" disabled>
+                                                                    <button type="button" class="btn btn-success" id="publishModelGetBaseModelStatusBtn" disabled
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
                                                                     </button>
                                                                     <label for="publishModelGetBaseModelStatusConversionIdDiv" style="margin-left:1em">Conversion ID : </label>
@@ -512,7 +510,7 @@
                                                             </div>
                                                             <div class="card-footer">
                                                                 <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationBtn" disabled>
+                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationBtn" disabled
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Create Deploy Configuraion
                                                                     </button>
                                                                     <div class="vertical-center">
@@ -520,7 +518,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationGetDeployConfigurationsBtn">
+                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationGetDeployConfigurationsBtn"
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy Configurations
                                                                     </button>
                                                                     <label for="createDeployConfigurationGetDeployConfigurationsList" style="margin-left:1em">Configuration ID : </label>
@@ -551,6 +549,12 @@
                                                                             <label for="deployByConfiguraionDeviceIdList">Device ID</label>
                                                                             <select name="deployByConfiguraionDeviceIdList" id="deployByConfiguraionDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
 
+                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#deploymentHistoryModal" id="deployByConfiguratonHistoryBtn" disabled
+                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy History
+                                                                                </button>
+                                                                            </div>
+
                                                                             <label for="deployByConfiguraionComment">Comment (Optional)</label>
                                                                             <input type="text" name="deployByConfiguraionComment" class="form-control" id="deployByConfiguraionComment" placeholder="Description. Less than 100 characters." value="">
 
@@ -561,8 +565,7 @@
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="info-box">
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                <div class="row" style="position:relative">
                                                                     <div>
                                                                         <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
                                                                             <i class="fas fa-external-link-alt btn-fa"></i>Deploy by Configuraion
@@ -572,23 +575,6 @@
                                                                         <div class="info-box-text" id='deployByConfiguratonBtnResult'>Place Holder : To be deleted</div>
                                                                     </div>
                                                                 </div>
-                                                                </div>
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="getDeployHistoryBtn" disabled>
-                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy History
-                                                                    </button>
-                                                                    <label for="deployByConfiguratonGetDeployHistoryDeployModelIdDiv" style="margin-left:1em">Model ID : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployModelIdDiv'></div>
-                                                                    </div>
-                                                                    <label for="deployByConfiguratonGetDeployHistoryDeployStatusDiv" style="margin-left:1em">Deploy Status : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='deployByConfiguratonGetDeployHistoryDeployStatusDiv'></div>
-                                                                    </div>
-                                                                    <label for="getDeployHistoryBtnResult" style="margin-left:1em">Result : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='getDeployHistoryBtnResult'></div>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -658,38 +644,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Stop Upload Inference Result -->
-                                                    <!--<div class="card card-primary">
-                                                        <div class="card-header">
-                                                            <h4 class="card-title w-100">
-                                                                <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadInferenceResult">
-                                                                    Step 10 : Stop Upload Inference Result
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="accordionStopUploadInferenceResult" class="collapse" data-parent="#accordion">
-                                                            <div class="card-body">
-                                                                <div id="stopUploadInferenceResultDiv">
-                                                                    <form id="stopUploadInferenceResultForm">
-                                                                        <div class="form-group">
-                                                                            <label for="stopUploadInferenceResultDeviceIdList">Device ID</label>
-                                                                            <select name="stopUploadInferenceResultDeviceIdList" id="stopUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                                <div class="row" style="position:relative">
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
-                                                                            <i class="fas fa-external-link-alt btn-fa"></i>Stop Upload Inference Result
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='stopUploadInferenceResultBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
                                                     <!-- Start Upload Retraining Data -->
                                                     <div class="card card-primary">
                                                         <div class="card-header">
@@ -773,46 +727,12 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- Stop Upload Retraining Data -->
-                                                    <!--<div class="card card-primary">
-                                                        <div class="card-header">
-                                                            <h4 class="card-title w-100">
-                                                                <a class="d-block w-100" data-toggle="collapse" href="#accordionStopUploadRetrainingData">
-                                                                    Step 12 : Stop Upload Retraining Data
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="accordionStopUploadRetrainingData" class="collapse" data-parent="#accordion">
-                                                            <div class="card-body">
-                                                                <div id="stopUploadInferenceResultDiv">
-                                                                    <form id="stopUploadRetrainingDataForm">
-                                                                        <div class="form-group">
-                                                                            <label for="stopUploadRetrainingDataDeviceIdList">Device ID</label>
-                                                                            <select name="stopUploadRetrainingDataDeviceIdList" id="stopUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
-                                                                        </div>
-                                                                    </form>
-                                                                </div>
-                                                                <div class="row" style="position:relative">
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
-                                                                            <i class="fas fa-external-link-alt btn-fa"></i>Stop Upload Retraining Data
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='stopUploadRetrainingDataBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>-->
                                                 </div>
                                                 <!-- End of Accordion -->
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                            </div>
                             <!-- Telemetry Tab -->
                             <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                 <div class="card-header">
@@ -823,6 +743,10 @@
                                     </h4>
                                 </div>
                                 <div class="card-body">
+                                    <label for="telemetryTableFilterList">Device ID</label>
+                                    <select name="telemetryTableFilterList" id="telemetryTableFilterList" class="form-control custom-select" style="min-width:10em"></select>
+
+                                    <input type="text" id="telemetryTableFilterInput" onkeyup="telemetryTableFilter()" placeholder="Filter with Device ID" title="Type in Device ID">
                                     <div id="telemetryTableDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
                                         <table id="telemetryTbl" class="table table-striped" style="max-height: 100%">
                                             <thead>
@@ -1004,31 +928,49 @@
                             </div>
                         </div>
                     </div>
-                    <!-- /setup -->
                 </div>
             </div>
         </div>
-    
-    </div>
-    <div class="modal" id="modalPhoto">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Inference Result</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnModalClose">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+        <div class="modal fade" id="deploymentHistoryModal" style="min-width:60vw">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Deployment History</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="card-body" style="padding:0 0 0 0.5em;min-height:450px">
+                            <div class="jsgridDiv">
+                                <div id="deploymentHistoryGrid" style="overflow-y:auto"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
                 </div>
-                <div class="modal-body" style="display:flex;justify-content:center">
-                    <canvas id="photoCanvas" height="320" width="320"></canvas>
-                </div>
-                <div class="modal-footer justify-content-between">
+            </div>
+        </div>
+        <div class="modal" id="modalPhoto">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Inference Result</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnModalClose">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" style="display:flex;justify-content:center">
+                        <canvas id="photoCanvas" height="320" width="320"></canvas>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    </section>
-
     <script>
         var expiresOn = '';
         var currentProjectId = null;
@@ -1224,11 +1166,6 @@
             }
         })
 
-
-        //
-        // Button Click
-        //
-
         $('#deleteCustomVisionProjectBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
@@ -1313,25 +1250,36 @@
         $('#convertModelGetBaseModelStatusBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
+            var modelIdList = 'convertModelModelIdList';
+
             toggleLoader(false);
 
-            var model_id = document.getElementById("convertModelModelIdList").selectedIndex == 0 ? null : document.getElementById("convertModelModelIdList").value;
+            var model_id = document.getElementById(modelIdList).selectedIndex == 0 ? null : document.getElementById(modelIdList).value;
 
             GetBaseModelStatus(model_id, "1")
                 .then(function (project) {
-                    console.log("Model Status : " + project);
                     var json = JSON.parse(project);
-                    console.log("Model Status : " + json);
-                    document.getElementById('convertModelGetBaseModelStatusConversionDiv').innerHTML = json.versions[0].conv_id;
-                    document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
-                    document.getElementById('convertModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
 
-                    //if (json.versions[0].result == "completed") {
-                    //    $('#convertModelGetBaseModelStatusBtn').prop('disabled', false);
-                    //}
-                    //else {
-                    //    $('#convertModelGetBaseModelStatusBtn').prop('disabled', true);
-                    //}
+                    if (json.versions[0].stage == "conversion") {
+
+                        document.getElementById('convertModelGetBaseModelStatusConversionDiv').innerHTML = json.versions[0].conv_id;
+                        document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
+                        document.getElementById('convertModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
+
+                        if (json.versions[0].result == "processing") {
+                            // set timer
+                            GetBaseModelStatusInterval(evt.target.id);
+                        }
+                        else if (json.versions[0].result == "completed") {
+                            // cancel interval
+                            GetBaseModelStatusInterval(null);
+                            $('#convertModelBtn').prop('disabled', true);
+                        }
+                    }
+                    else if (json.versions[0].stage == "before") {
+                        $('#convertModelBtn').prop('disabled', false);
+                    }
+
                 })
                 .catch(function (err) {
                     console.error("Error : " + err);
@@ -1350,7 +1298,7 @@
                 .then(function (conversion_id) {
                     if (conversion_id) {
                         console.log("Publish Started : " + conversion_id);
-                        document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = conversion_id;
+                        document.getElementById('publishModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
                     }
                 })
                 .catch(function (err) {
@@ -1364,24 +1312,34 @@
         $('#publishModelGetBaseModelStatusBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
+            var modelIdList = 'publishModelModelIdList';
+
             toggleLoader(false);
 
-            var model_id = document.getElementById("publishModelModelIdList").selectedIndex == 0 ? null : document.getElementById("publishModelModelIdList").value;
+            var model_id = document.getElementById(modelIdList).selectedIndex == 0 ? null : document.getElementById(modelIdList).value;
 
             GetBaseModelStatus(model_id, "1")
                 .then(function (project) {
-                    console.log("Model Status : " + project);
                     var json = JSON.parse(project);
-                    console.log("Model Status : " + json);
-                    document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = json.versions[0].conv_id;
-                    document.getElementById('publishModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
-                    document.getElementById('publishModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
 
-                    if (json.versions[0].result == "completed") {
-                        $('#publishModelBtn').prop('disabled', false);
+                    if (json.versions[0].stage == "publish") {
+
+                        document.getElementById('publishModelGetBaseModelStatusConversionIdDiv').innerHTML = json.versions[0].conv_id;
+                        document.getElementById('publishModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
+                        document.getElementById('publishModelGetBaseModelStatusBtnResult').innerHTML = json.versions[0].result;
+
+                        if (json.versions[0].result == "processing") {
+                            // set timer
+                            GetBaseModelStatusInterval(evt.target.id);
+                        }
+                        else if (json.versions[0].result == "completed") {
+                            // cancel interval
+                            GetBaseModelStatusInterval(null);
+                            $('#publishModelBtn').prop('disabled', true);
+                        }
                     }
-                    else {
-                        $('#publishModelBtn').prop('disabled', true);
+                    else if (json.versions[0].stage == "before") {
+                        $('#publishModelBtn').prop('disabled', false);
                     }
                 })
                 .catch(function (err) {
@@ -1437,40 +1395,46 @@
         $('#getDeployHistoryBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
+            //toggleLoader(false);
 
-            GetDeployHistory()
-                .then(function (deploys) {
-                    var json = JSON.parse(deploys);
+            //GetDeployHistory()
+            //    .then(function (deploys) {
+            //        var json = JSON.parse(deploys);
 
-                    if (json.deploys) {
-                        var deploy_status = json.deploys[0].deploy_status;
-                        var deploy_status_msg;
-                        if (deploy_status == "0") {
-                            deploy_status_msg = "0 (Processing)";
-                        } else if (deploy_status == "1") {
-                            deploy_status_msg = "1 (Done : Success)";
-                        } else if (deploy_status == "1") {
-                            deploy_status_msg = "2 (Fail)";
-                        }
-                        document.getElementById('deployByConfiguratonGetDeployHistoryDeployStatusDiv').innerHTML = deploy_status_msg;
+            //        if (json.deploys) {
+            //            var deploy_status = json.deploys[0].deploy_status;
+            //            var deploy_status_msg;
+            //            if (deploy_status == "0") {
+            //                deploy_status_msg = "0 (Processing)";
+            //            } else if (deploy_status == "1") {
+            //                deploy_status_msg = "1 (Done : Success)";
+            //            } else if (deploy_status == "1") {
+            //                deploy_status_msg = "2 (Fail)";
+            //            }
+            //            document.getElementById('deployByConfiguratonGetDeployHistoryDeployStatusDiv').innerHTML = deploy_status_msg;
 
-                        document.getElementById('deployByConfiguratonGetDeployHistoryDeployModelIdDiv').innerHTML = json.deploys[0].model.model_id;
+            //            document.getElementById('deployByConfiguratonGetDeployHistoryDeployModelIdDiv').innerHTML = json.deploys[0].model.model_id;
 
-                    }
-                })
-                .finally(() => {
-                    toggleLoader(false);
-                });
+            //        }
+            //    })
+            //    .finally(() => {
+            //        toggleLoader(false);
+            //    });
         })
 
         $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
+            var targetList = 'createDeployConfigurationGetDeployConfigurationsList';
+            var currentDeployment = document.getElementById(targetList).value;
             GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
                 .then(() => {
                     console.log("Configuration Acquired");
+                    console.debug(currentDeployment);
+                    if (currentDeployment.length > 0 && !isItemSelected(targetList, currentDeployment)) {
+                        setSelectOption(targetList, currentDeployment);
+                    }
                 })
                 .finally(() => {
                     toggleLoader(false);
@@ -2174,7 +2138,7 @@
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("convertModelDeviceIdList", true, true)
+                        GetDevices("convertModelDeviceIdList", true, true, 'Select Device', '')
                             .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
@@ -2203,7 +2167,7 @@
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("publishModelDeviceIdList", true, true)
+                        GetDevices("publishModelDeviceIdList", true, true, 'Select Device', '')
                             .then(() => { })
                             .finally(() => {
                                 toggleLoader(true);
@@ -2271,7 +2235,7 @@
                     .then((ret) => {
 
                         if (ret) {
-                            GetDevices("deployByConfiguraionDeviceIdList", true, false)
+                            GetDevices("deployByConfiguraionDeviceIdList", true, false, 'Select Device', '')
                                 .then((ret) => {
                                     if (ret) {
                                         GetAllModels(targetListName, true)
@@ -2307,7 +2271,7 @@
                 toggleLoader(false);
                 var targetListName = 'startUploadInferenceResultDeviceIdList';
 
-                GetDevices(targetListName, true, false)
+                GetDevices(targetListName, true, false, 'Select Device', '')
                     .then((ret) => {
                         if (ret) {
 
@@ -2347,7 +2311,7 @@
 
             toggleLoader(false);
 
-            GetDevices(targetListName, true, false)
+            GetDevices(targetListName, true, false, 'Select Device', '')
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
@@ -2376,7 +2340,7 @@
                             }
 
                             var targetDeviceListName = 'startUploadRetrainingDataDeviceIdList';
-                            GetDevices(targetDeviceListName, true, false)
+                            GetDevices(targetDeviceListName, true, false, 'Select Device', '')
                                 .then((ret) => {
                                     if (ret) {
                                         if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
@@ -2408,7 +2372,7 @@
 
             toggleLoader(false);
 
-            GetDevices(targetListName, true, false)
+            GetDevices(targetListName, true, false, 'Select Device', '')
                 .then((ret) => {
                     if (ret && !isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
                         setSelectOption(targetListName, currentDeviceId);
@@ -2417,6 +2381,14 @@
                 .finally(() => {
                     toggleLoader(false);
                 })
+        })
+        //
+        // modal
+        //
+
+        $('#deploymentHistoryModal').on('show.bs.modal', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $("#deploymentHistoryGrid").jsGrid("loadData");
         })
 
         //
@@ -2428,6 +2400,18 @@
 
         $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
+            var targetDeviceListName = 'telemetryTableFilterList';
+            GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
+                .then((ret) => {
+                    if (ret) {
+                        if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
+                            setSelectOption(targetDeviceListName, currentDeviceId);
+                        }
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(true);
+                })
         })
 
         $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
@@ -2590,6 +2574,77 @@
             CheckCreateDeployConfigurationInputs();
         })
 
+        $('#createDeployConfigurationGetDeployConfigurationsList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            toggleLoader(false);
+
+            var currentDeployment = document.getElementById(evt.target.id).value;
+
+            if (currentDeployment.length > 0)
+            {
+                GetDeployConfigurations(null)
+                    .then((deployments) => {
+                        var json = JSON.parse(deployments);
+                        var config_id = document.getElementById(evt.target.id).selectedIndex == 0 ? null : document.getElementById(evt.target.id).value;
+                        console.debug(typeof json);
+                        json.deploy_configurations.forEach(function(deployment) {
+                            if (deployment.config_id == config_id)
+                            {
+                                document.getElementById('createDeployConfigurationConfigId').value = deployment.config_id;
+                                document.getElementById('createDeployConfigurationSensorLoaderVersionNumber').value = deployment.firmware.sensor_loader_version_number;
+                                document.getElementById('createDeployConfigurationSensorVersionNumber').value = deployment.firmware.sensor_version_number;
+                                document.getElementById('createDeployConfigurationModelId').value = deployment.model.model_id;
+                                document.getElementById('createDeployConfigurationApFwVersionNumber').value = deployment.firmware.apfw_version_number;
+                                document.getElementById('createDeployConfigurationComment').value = deployment.config_comment;
+                                document.getElementById('createDeployConfigurationDeviceTypeList').value = deployment.device_type;
+                                document.getElementById('createDeployConfigurationModelVersionNumber').value = deployment.model.model_version_number;
+
+                                document.getElementById('createDeployConfigurationColorMatrixModelList').value = deployment.custom_setting.color_matrix_mode;
+                                if (deployment.custom_setting.color_matrix_file_name.length > 0)
+                                {
+                                    document.getElementById('createDeployConfigurationColorMatrixFileName').value = deployment.custom_setting.color_matrix_file_name;
+                                }
+
+                                document.getElementById('createDeployConfigurationGammaModeList').value = deployment.custom_setting.gamma_mode;
+                                if (deployment.custom_setting.gamma_file_name.length > 0)
+                                {
+                                    document.getElementById('createDeployConfigurationGammaFileName').value = deployment.custom_setting.gamma_file_name;
+                                }
+
+                                document.getElementById('createDeployConfigurationLscModeList').value = deployment.custom_setting.lsc_mode;
+                                if (deployment.custom_setting.lsc_file_name.length > 0)
+                                {
+                                    document.getElementById('createDeployConfigurationLscFileName').value = deployment.custom_setting.lsc_file_name;
+                                }
+
+                                document.getElementById('createDeployConfigurationPrewbModeList').value = deployment.custom_setting.prewb_mode;
+                                if (deployment.custom_setting.prewb_file_name.length > 0)
+                                {
+                                    document.getElementById('createDeployConfigurationPrewbFileName').value = deployment.custom_setting.prewb_file_name;
+                                }
+
+                                document.getElementById('createDeployConfigurationDewarpModeList').value = deployment.custom_setting.dewarp_mode;
+                                if (deployment.custom_setting.dewarp_file_name.length > 0)
+                                {
+                                    document.getElementById('createDeployConfigurationDewarpFileName').value = deployment.custom_setting.dewarp_file_name;
+                                }
+                            }
+
+                        });
+
+                    })
+                    .finally(() => {
+                        toggleLoader(false);
+                    });
+            }
+            else
+            {
+                ResetDeploymentUi();
+                toggleLoader(false);
+            }
+        })
+        
         $('#deployByConfiguraionFormConfigIdList').on('change', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
@@ -2602,13 +2657,17 @@
             var targetListId = evt.target.id;
 
             if (isItemSelected(targetListId, null)) {
+                $('#deployByConfiguratonHistoryBtn').prop('disabled', false);
                 $('#getDeployHistoryBtn').prop('disabled', false);
                 currentDeviceId = document.getElementById(targetListId).value;
             } else {
+                $('#deployByConfiguratonHistoryBtn').prop('disabled', false);
                 $('#getDeployHistoryBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
         })
+
+
 
         $('#startUploadInferenceResultDeviceIdList').on('change', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
@@ -2694,6 +2753,11 @@
             }
         })
 
+        $('#telemetryTableFilterList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            telemetryTableFilter2(evt.target.id);
+        })
+
         $('#createBaseCustomVisionProjectName').on('input', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var inputField = document.getElementById('createBaseCustomVisionProjectName');
@@ -2741,6 +2805,27 @@
             modal.style.display = "none";
         });
 
+        function ResetDeploymentUi() {
+            document.getElementById('createDeployConfigurationConfigId').value = '';
+            document.getElementById('createDeployConfigurationSensorLoaderVersionNumber').value = '';
+            document.getElementById('createDeployConfigurationSensorVersionNumber').value = '';
+            document.getElementById('createDeployConfigurationModelId').value = '';
+            document.getElementById('createDeployConfigurationApFwVersionNumber').value = '';
+            document.getElementById('createDeployConfigurationComment').value = '';
+            document.getElementById('createDeployConfigurationDeviceTypeList').value = '';
+            document.getElementById('createDeployConfigurationModelVersionNumber').value = '';
+
+            document.getElementById('createDeployConfigurationColorMatrixModelList').value = '';
+            document.getElementById('createDeployConfigurationColorMatrixFileName').value = '';
+            document.getElementById('createDeployConfigurationGammaModeList').value = '';
+            document.getElementById('createDeployConfigurationGammaFileName').value = '';
+            document.getElementById('createDeployConfigurationLscModeList').value = '';
+            document.getElementById('createDeployConfigurationLscFileName').value = '';
+            document.getElementById('createDeployConfigurationPrewbModeList').value = '';
+            document.getElementById('createDeployConfigurationPrewbFileName').value = '';
+            document.getElementById('createDeployConfigurationDewarpModeList').value = '';
+            document.getElementById('createDeployConfigurationDewarpFileName').value = '';
+        }
     </script>
 
     <script id="telemetry-template" type="text/x-handlebars-template">

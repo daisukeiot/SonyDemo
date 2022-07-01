@@ -57,7 +57,7 @@ $("#blobStorJsGrid").jsGrid({
     loadIndication: false,
     inserting: false,
     editing: false,
-    filtering: false,
+    filtering: true,
     sorting: true,
     paging: true,
     autoload: false,
@@ -104,7 +104,8 @@ $("#blobStorJsGrid").jsGrid({
         },
         {
             name: "FileName", type: "text", align: "left", width: "auto"
-        }
+        },
+        { type: "control" }
     ],
 
     rowClick: function (args) {
