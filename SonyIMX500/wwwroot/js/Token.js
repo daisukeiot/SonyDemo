@@ -86,10 +86,10 @@ async function sonyApiGetToken() {
             updateLoginTab(tokenResp);
             return tokenResp.idToken.rawIdToken;
 
-        } catch (error) {
+        } catch (err) {
             //debugger;
-            console.log('### MSAL acquireTokenSilent was unsuccessful : ' + error);
-            switch (error.errorCode) {
+            console.log('### MSAL acquireTokenSilent was unsuccessful : ' + err);
+            switch (err.errorCode) {
                 case "consent_required":
                 case "interaction_required":
                 case "login_required":

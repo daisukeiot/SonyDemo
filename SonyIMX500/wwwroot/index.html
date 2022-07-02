@@ -44,7 +44,7 @@
                     loginSetup();
                     login();
                 },
-                error: function (response, status, error) {
+                error: function (response, status, err) {
                     alert("GetClientId Error " + status);
                 }
             });
@@ -65,7 +65,7 @@
                     success: function (response) {
 
                     },
-                    error: function (response, status, error) {
+                    error: function (response, status, err) {
                         alert("SetLoginData Error " + status);
                     }
                 });
@@ -113,9 +113,9 @@
                 tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
                 console.log('### MSAL acquireTokenSilent was successful')
                 postLoginData(tokenResp);
-            } catch (error) {
+            } catch (err) {
                 //debugger;
-                switch (error.errorCode) {
+                switch (err.errorCode) {
                     case "consent_required":
                     case "interaction_required":
                     case "login_required":

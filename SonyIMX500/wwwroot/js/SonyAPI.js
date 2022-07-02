@@ -69,6 +69,7 @@ function GetBaseModelStatusInterval(target) {
         console.debug("=> Cancel Interval");
         if (getBaseModelInterval != null) {
             clearInterval(getBaseModelInterval);
+            getBaseModelInterval = null;
         }
     } else if (getBaseModelInterval == null) {
         getBaseModelInterval = setInterval(function () { GetBaseModelStatusRefresh(target); }, 10 * 1000);
@@ -128,7 +129,7 @@ function PostToken(token) {
         success: function (response) {
             //console.log(response)
         },
-        error: function (response, status, error) {
+        error: function (response, status, err) {
             alert("PostToken Error " + status);
         }
     });
@@ -151,7 +152,7 @@ function SetClientId(ClientId) {
         success: function (response) {
             return response.responseText;
         },
-        error: function (response, status, error) {
+        error: function (response, status, err) {
             alert("SetClientId Error " + status);
         }
     });

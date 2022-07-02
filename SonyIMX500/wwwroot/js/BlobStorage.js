@@ -54,13 +54,19 @@ $("#blobStorJsGrid").jsGrid({
     width: "100%",
     height: "400",
 
-    loadIndication: false,
-    inserting: false,
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
     editing: false,
-    filtering: true,
+    inserting: false,
+    filtering: false,
     sorting: true,
     paging: true,
     autoload: false,
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
     loadMessage: "Please, wait...",
     controller: {
         loadData: function (filter) {
@@ -105,7 +111,12 @@ $("#blobStorJsGrid").jsGrid({
         {
             name: "FileName", type: "text", align: "left", width: "auto"
         },
-        { type: "control" }
+        {
+            type: "control", deleteButton: false, editButton: false,
+            headerTemplate: function () {
+                return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
+            }
+        }
     ],
 
     rowClick: function (args) {

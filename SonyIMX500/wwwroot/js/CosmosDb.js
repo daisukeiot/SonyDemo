@@ -2,13 +2,19 @@
     width: "100%",
     height: "auto",
 
-    loadIndication: false,
-    inserting: false,
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
     editing: false,
+    inserting: false,
+    filtering: false,
     sorting: true,
     paging: true,
     autoload: false,
-    filtering: true,
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
 
     controller: {
         loadData: function (filter) {
@@ -53,7 +59,12 @@
         { name: "C", type: "text", align: "left", width: 50},
         { name: "P", type: "text", align: "left", width: 50 },
         { name: "Coord", type: "text", title: "(X,Y)-(x,y)", align: "left" },
-        { type: "control" }
+        {
+            type: "control", deleteButton: false, editButton: false,
+            headerTemplate: function () {
+                return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
+            }
+        }
     ],
 
     rowClick: function (args) {

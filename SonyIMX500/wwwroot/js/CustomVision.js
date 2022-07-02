@@ -47,56 +47,62 @@ async function CvGetProjects(listElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
 
-    try {
+    if (listElementId) {
+        var list = document.getElementById(listElementId);
+        list.disabled = true;
 
-        await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.origin + '/' + 'customvision/GetProjects',
-            data: {},
-            success: function (result) {
-                msg = result.value;
-                if (listElementId) {
-                    var json = JSON.parse(result.value);
-                    var list = document.getElementById(listElementId);
-                    var currentSelection = null;
+        try {
 
-                    if (list.selectedIndex != -1) {
-                        currentSelection = list.value;
-                    }
-                    list.innerText = null;
-                    var option = new Option("Select from list", "");
-                    option.disabled = true;
+            $('#cvStartTrainingBtn').prop('disabled', false);
+            await $.ajax({
+                async: true,
+                type: "GET",
+                url: window.location.origin + '/' + 'customvision/GetProjects',
+                data: {},
+                success: function (result) {
+                    msg = result.value;
+                    if (listElementId) {
+                        var json = JSON.parse(result.value);
+                        var currentSelection = null;
 
-                    list.append(option);
-
-                    json.forEach(project => {
-                        list.append(new Option(project.name, project.id));
-                        //list.append(new Option(project.name, project.id));
-                    });
-
-                    list.selectedIndex = 0;
-
-                    if (currentSelection) {
-                        for (var i = 0, len = list.options.length; i < len; i++) {
-                            var opt = list.options[i];
-
-                            if (opt.value == currentSelection) {
-                                list.value = currentSelection;
-                                break;
-                            }
+                        if (list.selectedIndex != -1) {
+                            currentSelection = list.value;
                         }
+                        list.innerText = null;
+                        var option = new Option("Select from list", "");
+                        option.disabled = true;
 
+                        list.append(option);
+
+                        json.forEach(project => {
+                            list.append(new Option(project.name, project.id));
+                            //list.append(new Option(project.name, project.id));
+                        });
+
+                        list.selectedIndex = 0;
+
+                        if (currentSelection) {
+                            for (var i = 0, len = list.options.length; i < len; i++) {
+                                var opt = list.options[i];
+
+                                if (opt.value == currentSelection) {
+                                    list.value = currentSelection;
+                                    break;
+                                }
+                            }
+
+                        }
                     }
+                },
+                error: function (response, status, err) {
+                    console.error(err);
+                    alert(funcName + " Error " + status);
                 }
-            },
-            error: function (response, status, error) {
-                console.error(err);
-                alert(funcName + " Error " + status);
-            }
-        });
-    } catch (err) {
-    } finally {
+            });
+        } catch (err) {
+        } finally {
+            list.disabled = false;
+        }
     }
 }
 
@@ -104,69 +110,71 @@ async function CvGetTags(projectId, listElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
 
-    try {
+    if (listElementId) {
         var list = document.getElementById(listElementId);
-        list.disalbed = true;
+        list.disabled = true;
 
-        await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.origin + '/' + 'customvision/GetTags',
-            data: { projectId : projectId},
-            success: function (result) {
+        try {
+            await $.ajax({
+                async: true,
+                type: "GET",
+                url: window.location.origin + '/' + 'customvision/GetTags',
+                data: { projectId: projectId },
+                success: function (result) {
 
-                if (result.length == 0) {
-                    var option = new Option("No tags", "");
-                    option.disabled = true;
-                    list.innerText = null;
-                    list.append(option);
-                    list.selectedIndex = 0;
-                }
-                else {
-                    msg = result.value;
-
-                    var json = JSON.parse(result.value);
-                    var currentSelection = null;
-
-                    if (list.selectedIndex != -1) {
-                        currentSelection = list.value;
+                    if (result.length == 0) {
+                        var option = new Option("No tags", "");
+                        option.disabled = true;
+                        list.innerText = null;
+                        list.append(option);
+                        list.selectedIndex = 0;
                     }
-                    list.innerText = null;
-                    var option = new Option("Select from list", "");
-                    option.disabled = true;
+                    else {
+                        msg = result.value;
 
-                    list.append(option);
+                        var json = JSON.parse(result.value);
+                        var currentSelection = null;
 
-                    json.forEach(tag => {
-                        var option = new Option(tag.name, tag.name)
-                        option.setAttribute('data-tagid', tag.id);
+                        if (list.selectedIndex != -1) {
+                            currentSelection = list.value;
+                        }
+                        list.innerText = null;
+                        var option = new Option("Select from list", "");
+                        option.disabled = true;
+
                         list.append(option);
 
-                    });
+                        json.forEach(tag => {
+                            var option = new Option(tag.name, tag.name)
+                            option.setAttribute('data-tagid', tag.id);
+                            list.append(option);
 
-                    list.selectedIndex = 0;
+                        });
 
-                    if (currentSelection) {
-                        for (var i = 0, len = list.options.length; i < len; i++) {
-                            var opt = list.options[i];
+                        list.selectedIndex = 0;
 
-                            if (opt.value == currentSelection) {
-                                list.value = currentSelection;
-                                break;
+                        if (currentSelection) {
+                            for (var i = 0, len = list.options.length; i < len; i++) {
+                                var opt = list.options[i];
+
+                                if (opt.value == currentSelection) {
+                                    list.value = currentSelection;
+                                    break;
+                                }
                             }
                         }
                     }
+                },
+                error: function (response, status, err) {
+                    console.error(err);
+                    alert(funcName + " Error " + status);
                 }
-            },
-            error: function (response, status, error) {
-                console.error(err);
-                alert(funcName + " Error " + status);
-            }
-        });
-    } catch (err) {
-    } finally {
-        list.disalbed = false;
-        list.blur();
+            });
+        } catch (err) {
+        } finally {
+            list.disabled = false;
+            list.blur();
+        }
     }
 }
 
@@ -189,7 +197,7 @@ async function CvCreateTag(projectId) {
             },
             success: function (result) {
             },
-            error: function (response, status, error) {
+            error: function (response, status, err) {
                 console.error(err);
                 alert(funcName + " Error " + status);
             }
@@ -231,7 +239,7 @@ async function CvAssignRegion(projectId, tagId) {
                     }
                 });
             },
-            error: function (response, status, error) {
+            error: function (response, status, err) {
                 alert(funcName + " Error " + status);
                 console.error(err);
             },
@@ -258,7 +266,7 @@ async function CvDeleteProject(project_name) {
             success: function (result) {
                 resultElement.innerHTML = "Success";
             },
-            error: function (response, status, error) {
+            error: function (response, status, err) {
                 console.error(err);
                 alert(funcName + " Error " + status);
             }
@@ -290,7 +298,7 @@ async function CvTrainProject(resultElement) {
                         resultElement.innerHTML = "Success";
                         $("#cvIterationsJsGrid").jsGrid("loadData");
                     },
-                    error: function (response, status, error) {
+                    error: function (response, status, err) {
                         console.error(response);
                         alert(funcName + " Error " + response.responseJSON ? response.responseJSON.data : response.responseText);
                     }
@@ -311,7 +319,6 @@ $("#cvImageJsGrid").jsGrid({
     loadShading: true,
     shrinkToFit: true,
     multiselect: true,
-    inserting: false,
     editing: false,
     inserting: false,
     filtering: false,
@@ -335,10 +342,15 @@ $("#cvImageJsGrid").jsGrid({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                d.resolve(JSON.parse(response.value));
-                $("#cvImageJsGrid").jsGrid("sort", { field: "ResizedImageUri", order: "desc" });
-            });
+                var array = JSON.parse(response.value);
+                array = $.grep(array, function (value) {
+                    return (!filter.Tags || value.Tags.toUpperCase().indexOf(filter.Tags.toUpperCase()) > -1);
+                });
 
+                d.resolve(array);
+                $("#cvImageJsGrid").jsGrid("sort", { field: "ResizedImageUri", order: "desc" });
+                $("#cvTagImageCount").html(array.length.toString())
+            });
             return d.promise();
         }
     },
@@ -354,7 +366,9 @@ $("#cvImageJsGrid").jsGrid({
             },
             align: "center",
             width: "85px",
-            height: "76px"
+            height: "76px",
+            sorting: false,
+            filtering: false
         },
         {
             name: "Width", title:"W", type: "number", align: "left", width: "4em"
@@ -366,23 +380,25 @@ $("#cvImageJsGrid").jsGrid({
             name: "Regions", type: "text", align: "left", width: "auto",
             itemTemplate: function (val, item) {
                 return JSON.stringify(item.Regions);
-            }
+            },
+            filtering: false
         },
         {
             name: "Proposals", type: "text", align: "left", width: "auto",
             itemTemplate: function (val, item) {
                 return JSON.stringify(item.Proposals);
-            }
+            },
+            filtering: false
         },
         {
             name: "Tags", type: "text", align: "left", width: "auto"
         },
         {
-            name: "Id", type: "text", align: "left", width: "auto", visible: false, width: 0
+            name: "Id", type: "text", align: "left", width: "auto", visible: false, width: 0, filtering: false
         },
         {
             type: "control", deleteButton: false, editButton: false,
-            headerTemplate: function () {
+            _createFilterSwitchButton: function () {
                 return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
             }
         }
@@ -424,10 +440,14 @@ $("#cvIterationsJsGrid").jsGrid({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                d.resolve(JSON.parse(response.value));
+                var array = JSON.parse(response.value);
+                array = $.grep(array, function (value) {
+                    return (!filter.Name || value.Name.indexOf(filter.Name) > -1);
+                });
+
+                d.resolve(array);
                 $("#cvIterationsJsGrid").jsGrid("sort", { field: "Created", order: "desc" });
             });
-
             return d.promise();
         }
     },
@@ -436,7 +456,7 @@ $("#cvIterationsJsGrid").jsGrid({
     },
     fields: [
         {
-            name: "Name", type: "text", align: "left", width: "auto"
+            name: "Name", type: "text", align: "left", width: "auto", filtering: false,
         },
         {
             name: "Status", type: "text", align: "left", width: "auto",
@@ -563,7 +583,7 @@ function CvUploadImages() {
             success: function (result) {
                 alert("File(s) is uploaded successfully");
             },
-            error: function (response, status, error) {
+            error: function (response, status, err) {
                 alert(funcName + " Error " + response.responseJSON.value);
             }
         });

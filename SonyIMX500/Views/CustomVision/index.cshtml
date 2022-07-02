@@ -61,7 +61,7 @@
                                 <div class="form-group">
                                     <label for="cvProjectList">Select Custom Vision Project</label>
                                     <div class="input-group">
-                                        <select id="cvProjectList" class="form-control select2" style="width: 100%;">Custom Vision Project</select>
+                                        <select id="cvProjectList" class="form-control select2" style="width: 100%;" disabled>Custom Vision Project</select>
                                     </div>
                                 </div>
                                 <div style="text-align:right;margin-top:0.5em">
@@ -72,69 +72,67 @@
                             <div id="upload-images-step" class="content" role="tabpanel" aria-labelledby="upload-images-step-trigger">
                                 <h4>Under Construction</h4>
                                 <div class="form-group">
-                                    @*<form method="post" enctype="multipart/form-data" id="cvUploadImagesForm" asp-controller="CustomVision">*@
-                                        <div class="form-group">
-                                            <input type="text" name="projectId" id="cvProjectId" value="" hidden/>
-                                            <div class="input-group">
-                                                <div class="custom-file" id="cvImageFiles">
-                                                    <input type="file" class="custom-file-input" id="cvUploadImages" multiple >
-                                                    <label class="custom-file-label" for="cvUploadImages">Choose image file</label>
+                                    <div class="form-group">
+                                        <input type="text" name="projectId" id="cvProjectId" value="" hidden/>
+                                        <div class="input-group">
+                                            <div class="custom-file" id="cvImageFiles">
+                                                <input type="file" class="custom-file-input" id="cvUploadImages" multiple >
+                                                <label class="custom-file-label" for="cvUploadImages">Choose image file</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <button id="cvUploadImagesBtn" class="btn btn-success" onclick="CvUploadImages()" disabled>Upload</button>
+                                            </div>
+                                        </div>
+                                    </div>
+@*                                    <div class="btn-group w-50">
+                                        <span class="btn btn-success col fileinput-button">
+                                            <i class="fas fa-plus"></i>
+                                            <span>Add files</span>
+                                        </span>
+                                        <button class="btn btn-primary col start" onclick="CvUploadImages()">
+                                            <i class="fas fa-upload"></i>
+                                            <span>Start upload</span>
+                                        </button>
+                                        <button type="reset" class="btn btn-warning col cancel">
+                                            <i class="fas fa-times-circle"></i>
+                                            <span>Cancel upload</span>
+                                        </button>
+                                    </div>
+                                    <div class="table table-striped files" id="previews">
+                                        <div id="dropZoneTemplate" class="row mt-2">
+                                            <div class="col-auto">
+                                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                            </div>
+                                            <div class="col d-flex align-items-center">
+                                                <p class="mb-0">
+                                                    <span class="lead" data-dz-name></span>
+                                                    (<span data-dz-size></span>)
+                                                </p>
+                                                <strong class="error text-danger" data-dz-errormessage></strong>
+                                            </div>
+                                            <div class="col-4 d-flex align-items-center">
+                                                <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
                                                 </div>
-                                                <div class="input-group-append">
-                                                    <button id="cvUploadImagesBtn" class="btn btn-success" onclick="CvUploadImages()" disabled>Upload</button>
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary start">
+                                                        <i class="fas fa-upload"></i>
+                                                        <span>Start</span>
+                                                    </button>
+                                                    <button data-dz-remove class="btn btn-warning cancel">
+                                                        <i class="fas fa-times-circle"></i>
+                                                        <span>Cancel</span>
+                                                    </button>
+                                                    <button data-dz-remove class="btn btn-danger delete">
+                                                        <i class="fas fa-trash"></i>
+                                                        <span>Delete</span>
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="btn-group w-100">
-                                            <span class="btn btn-success col fileinput-button">
-                                                <i class="fas fa-plus"></i>
-                                                <span>Add files</span>
-                                            </span>
-                                            <button type="submit" class="btn btn-primary col start">
-                                                <i class="fas fa-upload"></i>
-                                                <span>Start upload</span>
-                                            </button>
-                                            <button type="reset" class="btn btn-warning col cancel">
-                                                <i class="fas fa-times-circle"></i>
-                                                <span>Cancel upload</span>
-                                            </button>
-                                        </div>
-                                        <div class="table table-striped files" id="previews">
-                                            <div id="template" class="row mt-2">
-                                                <div class="col-auto">
-                                                    <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                                </div>
-                                                <div class="col d-flex align-items-center">
-                                                    <p class="mb-0">
-                                                        <span class="lead" data-dz-name></span>
-                                                        (<span data-dz-size></span>)
-                                                    </p>
-                                                    <strong class="error text-danger" data-dz-errormessage></strong>
-                                                </div>
-                                                <div class="col-4 d-flex align-items-center">
-                                                    <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                                        <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-auto d-flex align-items-center">
-                                                    <div class="btn-group">
-                                                        <button class="btn btn-primary start">
-                                                            <i class="fas fa-upload"></i>
-                                                            <span>Start</span>
-                                                        </button>
-                                                        <button data-dz-remove class="btn btn-warning cancel">
-                                                            <i class="fas fa-times-circle"></i>
-                                                            <span>Cancel</span>
-                                                        </button>
-                                                        <button data-dz-remove class="btn btn-danger delete">
-                                                            <i class="fas fa-trash"></i>
-                                                            <span>Delete</span>
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @*</form>*@
+                                    </div>*@
                                 </div>
                                 <div style="text-align:right;margin-top:0.5em">
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -144,6 +142,14 @@
 
                             <!-- Tag Image -->
                             <div id="tag-images-step" class="content" role="tabpanel" aria-labelledby="tag-images-step-trigger">
+                                <div class="row">
+                                    <div class="col-md-1" style="height:100%">
+                                        <label for="cvTagImageCount">Image Count</label>
+                                    </div>
+                                    <div class="col-md-5" style="height:100%">
+                                        <label id="cvTagImageCount"></label>
+                                    </div>
+                                </div>
                                 <div class="row" style="height:60vh" id="cvImagePreviewDiv">
                                     <div class="col-md-3" style="height:100%">
                                         <div class="card card-success card-outline" style="height:100%">
@@ -162,13 +168,7 @@
                                                     <button id="cvAssignTagBtn" class="btn btn-success" style="width:100%" disabled>Assign Region & Tag</button>
                                                 </div>
                                             </div>
-@*                                            <div class="card-footer">
-                                                <div class="form-group">
-                                                    <select id="cvTagList" class="form-control select2" style="width: 100%;margin-bottom:1rem"></select>
-                                                    <button id="cvAssignTagBtn" class="btn btn-success" disabled>Assign Region & Tag</button>
-                                                </div>
-                                            </div>
-*@                                        </div>                        
+                                        </div>                        
                                     </div>
                                     <div class="col-md-9" style="height:100%">
                                         <div class="card card-success card-outline" style="height:100%">
@@ -272,24 +272,24 @@
 
         $(window).load(function() {
 
-            Dropzone.autoDiscover = false;
+            //Dropzone.autoDiscover = false;
 
-            var previewNode = document.querySelector("#template");
-            previewNode.id = "";
-            var previewTemplate = previewNode.parentNode.innerHTML;
-            previewNode.parentNode.removeChild(previewNode);
+            //var previewNode = document.querySelector("#dropZoneTemplate");
+            //previewNode.id = "";
+            //var previewTemplate = previewNode.parentNode.innerHTML;
+            //previewNode.parentNode.removeChild(previewNode);
 
-            let myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-                url: "/target-url", // Set the url
-                thumbnailWidth: 80,
-                thumbnailHeight: 80,
-                parallelUploads: 20,
-                previewTemplate: previewTemplate,
-                acceptedFiles: "image/jpeg, image/png, image/gif, image/jpg",
-                autoQueue: false, // Make sure the files aren't queued until manually added
-                previewsContainer: "#previews", // Define the container to display the previews
-                clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-            })
+            //let myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            //    url: "/target-url", // Set the url
+            //    thumbnailWidth: 80,
+            //    thumbnailHeight: 80,
+            //    parallelUploads: 20,
+            //    previewTemplate: previewTemplate,
+            //    acceptedFiles: "image/jpeg, image/png, image/gif, image/jpg",
+            //    autoQueue: false, // Make sure the files aren't queued until manually added
+            //    previewsContainer: "#previews", // Define the container to display the previews
+            //    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+            //})
         });
 
         //window.addEventListener("resize", resizeCanvas, false);
@@ -430,9 +430,8 @@
             var tagList = document.getElementById('cvTagList');
             var tagOption = tagList[tagList.selectedIndex];
             var tagId = tagOption.getAttribute("data-tagid");
-            var response = await CvAssignRegion(projectId, tagId)
-                                    .then(() => { 
-                                         //$("#cvImageJsGrid").jsGrid("loadData");
+            await CvAssignRegion(projectId, tagId)
+                                    .then((response) => { 
                                          $('#cvImageJsGrid').trigger( 'reloadGrid' );
                                     })
                                     .finally(() => {

@@ -228,6 +228,7 @@ namespace SonyIMX500.Controllers
         // https://docs.microsoft.com/en-us/dotnet/api/microsoft.azure.cognitiveservices.vision.customvision.training.customvisiontrainingclientextensions.getiterationsasync?view=azure-dotnet
         //
         [HttpGet]
+//        public async Task<IActionResult> GetIterations(string projectId)
         public async Task<IActionResult> GetIterations(string projectId)
         {
             var responses = new List<CV_ITERATION_DATA>();
@@ -263,9 +264,10 @@ namespace SonyIMX500.Controllers
             {
                 _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
                 System.Diagnostics.Trace.TraceError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
-                return BadRequest(ex.Message);
+                return null;// BadRequest(ex.Message);
             }
 
+            //return JsonConvert.SerializeObject(responses);
             return Ok(Json(JsonConvert.SerializeObject(responses)));
         }
 
@@ -409,7 +411,26 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-                List<ImageRegionCreateEntry> regions = new List<ImageRegionCreateEntry>();
+                // remove currently assigned regions & tags
+                List<Guid> imageIds = new List<Guid>();
+                imageIds.Add(Guid.Parse(imageId));
+                var images = await _customVisionTrainingClient.GetImagesByIdsAsync(Guid.Parse(projectId), imageIds);
+
+                foreach(var image in images)
+                {
+                    if (image.Regions != null)
+                    {
+                        List<Guid> regionIds = new List<Guid>();
+
+                        foreach (var region in image.Regions)
+                        {
+                            regionIds.Add(region.RegionId);
+                        }
+                        await _customVisionTrainingClient.DeleteImageRegionsAsync(Guid.Parse(projectId), regionIds);
+                    }
+                }
+
+                List <ImageRegionCreateEntry> regions = new List<ImageRegionCreateEntry>();
                 var proposalsArray = JArray.Parse(proposals);
 
                 foreach(var x in proposalsArray)
