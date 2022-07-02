@@ -783,7 +783,7 @@
                                 </div>
                                 <div class="card-header">
                                     <div id="imagePreviewDiv" style="margin: 1em 0;">
-                                        <img id="imagePreview" />
+                                        <img id="imagePreview" style="max-height: 200px; min-height: 200px; max-width: 200px; object-fit: contain"/>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -1060,6 +1060,7 @@
                 .build();
 
             hubConnection.on('DeviceTelemetry', function (payload) {
+                console.debug("DeviceTelemetry");
                 var jsonData = JSON.parse(payload);
                 addEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.data);
             });
@@ -1382,10 +1383,6 @@
             DeployByConfiguration()
                 .then(() => {
                     console.log("Configuration Deployed");
-                    GetDeployConfigurations('deployByConfiguratonGetDeployHistoryConfigIdList');
-                    setSelectOption('deployByConfiguratonGetDeployHistoryConfigIdList', currentConfigId);
-                    document.getElementById('deployByConfiguratonGetDeployHistoryConfigIdList').dispatchEvent(new Event("change"));
-
                 })
                 .finally(() => {
                     toggleLoader(false);
@@ -1465,19 +1462,6 @@
                 });
         })
 
-        //$('#stopUploadInferenceResultBtn').click(function (evt) {
-        //    console.debug(evt.target.id + "() " + evt.type);
-
-        //    if ($('#stopUploadInferenceResultForm').valid()) {
-        //        toggleLoader(false);
-        //        StopUploadInferenceResult()
-        //            .then(() => { })
-        //            .finally(() => {
-        //                toggleLoader(false);
-        //            });
-        //    }
-        //})
-
         $('#startUploadRetrainingDataBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
@@ -1501,19 +1485,6 @@
                     toggleLoader(false);
                 });
         })
-
-        //$('#stopUploadRetrainingDataBtn').click(function (evt) {
-        //    console.debug(evt.target.id + "() " + evt.type);
-
-        //    if ($('#stopUploadRetrainingDataForm').valid()) {
-        //        toggleLoader(false);
-        //        StopUploadRetrainingData()
-        //            .then(() => { })
-        //            .finally(() => {
-        //                toggleLoader(false);
-        //            });
-        //    }
-        //})
 
         $('#clearTelemetryTableBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
@@ -2830,8 +2801,8 @@
 
     <script id="telemetry-template" type="text/x-handlebars-template">
         <tr>
-            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
-                <button class="btn btn-primary btn-fa-icon">
+            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle" style="width:1em">
+                <button class="btn btn-primary btn-fa-icon btn-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
             </td>
@@ -2857,8 +2828,8 @@
 
     <script id="cosmosdb-template" type="text/x-handlebars-template">
         <tr>
-            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle">
-                <button class="btn btn-primary btn-fa-icon">
+            <td data-toggle="collapse" data-target="#event-{{eventId}}" class="accordian-toggle" style="width:1em">
+                <button class="btn btn-primary btn-fa-icon btn-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
             </td>
@@ -2892,8 +2863,8 @@
 
     <script id="deviceList-template" type="text/x-handlebars-template">
         <tr>
-            <td data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle">
-                <button class="btn btn-primary btn-fa-icon">
+            <td data-toggle="collapse" data-target="#deviceDetail-{{deviceId}}" class="accordian-toggle" style="width:1em">
+                <button class="btn btn-primary btn-fa-icon btn-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deviceDetail-{{deviceId}}"></i>
                 </button>
             </td>
@@ -2902,7 +2873,7 @@
             <td>{{deviceConnectionStatus}}</td>
         </tr>
         <tr class="hiddenRow collapse" id="deviceDetail-{{deviceId}}">
-            <td colspan="12">
+            <td colspan="4">
                 <div class="accordian-body">
                     <pre><code class="nohighlight">{{dataPayload}}</code></pre>
                 </div>
@@ -2912,8 +2883,8 @@
 
     <script id="modelList-template" type="text/x-handlebars-template">
         <tr>
-            <td data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle">
-                <button class="btn btn-primary btn-fa-icon">
+            <td data-toggle="collapse" data-target="#modelDetail-{{modelId}}" class="accordian-toggle" style="width:1em">
+                <button class="btn btn-primary btn-fa-icon btn-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#modelDetail-{{modelId}}"></i>
                 </button>
             </td>
@@ -2937,8 +2908,8 @@
 
     <script id="deployConfiguraions-template" type="text/x-handlebars-template">
         <tr>
-            <td data-toggle="collapse" data-target="#deployConfigurationDetail-{{config_id}}" class="accordian-toggle">
-                <button class="btn btn-primary btn-fa-icon">
+            <td data-toggle="collapse" data-target="#deployConfigurationDetail-{{config_id}}" class="accordian-toggle" style="width:1em">
+                <button class="btn btn-primary btn-fa-icon btn-icon">
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#deployConfigurationDetail-{{config_id}}"></i>
                 </button>
             </td>

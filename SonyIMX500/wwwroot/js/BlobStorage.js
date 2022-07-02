@@ -67,7 +67,7 @@ $("#blobStorJsGrid").jsGrid({
     autoload: false,
     allowSelection: true,
     selectionSettings: { persistSelection: true },
-    loadMessage: "Please, wait...",
+    loadMessage: "Loading images from Blob Storage...",
     controller: {
         loadData: function (filter) {
             toggleLoader(false);
@@ -80,7 +80,14 @@ $("#blobStorJsGrid").jsGrid({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                d.resolve(JSON.parse(response.value));
+                var array = JSON.parse(response.value);
+                array = $.grep(array, function (value) {
+                    return ((!filter.CreateDate || value.CreateDate.toUpperCase().indexOf(filter.CreateDate.toUpperCase()) > -1) && 
+                        (!filter.DeviceId || value.DeviceId.toUpperCase().indexOf(filter.DeviceId.toUpperCase()) > -1) &&
+                        (!filter.FileName || value.FileName.toUpperCase().indexOf(filter.FileName.toUpperCase()) > -1));
+                });
+
+                d.resolve(array);
                 $("#blobStorJsGrid").jsGrid("sort", { field: "CreateDate", order: "desc" });
                 toggleLoader(true);
             });
@@ -94,13 +101,13 @@ $("#blobStorJsGrid").jsGrid({
             name: "Image",
             text: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ height: "120px", width: "120px" }).on("click", function () {
+                return $("<img>").attr("src", val).css({ "max-height": "75px", "min-height": "75px", "max-width": "80px", "object-fit": "contain" }).on("click", function () {
                     $("#imagePreview").attr("src", item.Image);
-                    console.log(item.Image)
                 });
             },
             align: "left",
-            width: "auto"
+            width: "84px",
+            filtering: false
         },
         {
             name: "CreateDate", type: "text", align: "left", width: "auto"

@@ -1341,8 +1341,6 @@ $("#deploymentHistoryGrid").jsGrid({
     controller: {
         loadData: function (filter) {
             var d = $.Deferred();
-
-            console.log("Test1111");
             var deviceList = document.getElementById('deployByConfiguraionDeviceIdList');
             var deviceId = null;
 
@@ -1375,9 +1373,7 @@ $("#deploymentHistoryGrid").jsGrid({
         {
             name: "deploy_status", type: "text", align: "left", width: "12rem", 
             itemTemplate: function (val, item) {
-                console.log("1111 ", val);
-                console.log("1112 ", item);
-                
+               
                 if (val == "0") {
                     return "0 (Processing)";
                 } else if (val == "1") {

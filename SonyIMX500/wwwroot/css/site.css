@@ -27,6 +27,11 @@ label {
     width: auto;
 }
 
+.btn-icon {
+    min-width: 1em;
+    width: auto;
+}
+
 .EventTBody{
     overflow-y:scroll;
     display:block;
