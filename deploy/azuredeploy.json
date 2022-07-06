@@ -257,7 +257,7 @@
 				}],
 				"cors": {
 					"allowedOrigins": [
-						"[toLower(format('https://{0}.azurewebsites.net', parameters('Web_App_Name')))]",
+						"[toLower(format('https://{0}.azurewebsites.net', variables('apps').webappName))]",
 						"http://localhost:8000"
 					]
 				}
