@@ -61,8 +61,7 @@
 			"family": "S",
 			"hostingPlan": "[format('{0}-AppHost-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
 			"functionsName": "[format('{0}-{1}', parameters('Function_App_Name'),parameters('UniqueID'))]",
-			"webappName": "[parameters('Web_App_Name')]",
-			"webappUrl": "[toLower(format('https://{0}-{1}.azurewebsites.net', parameters('Web_App_Name'),parameters('UniqueID')))]"
+			"webappName": "[parameters('Web_App_Name')]"
 		},
 		"signalr": {
 			"apiVersion": "2022-02-01",
@@ -258,7 +257,7 @@
 				}],
 				"cors": {
 					"allowedOrigins": [
-						"[variables('apps').webappUrl]",
+						"[toLower(format('https://{0}.azurewebsites.net', parameters('Web_App_Name')))]",
 						"http://localhost:8000"
 					]
 				}
