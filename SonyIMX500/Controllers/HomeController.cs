@@ -248,27 +248,11 @@ namespace SonyIMX500.Controllers
         {
             try
             {
-
-                //CloudBlobContainer blobContainer = CloudStorageAccount
-                //                                    .Parse(_appSettings.Blob.ConnectionString)
-                //                                    .CreateCloudBlobClient()
-                //                                    .GetContainerReference("iothub-link");
-
                 BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
                 BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("iothub-link");
 
-                //var directory = blobContainer.GetDirectoryReference(deviceId);
-                //var item = await RecursiveFindFile(directory, deviceId, timeStamp);
-
-                //if (item != null)
-                //{
-                //    string sas = await GetSasToken();
-                //    return Ok(Json($"{{\"uri\":\"{item.Uri.AbsoluteUri}{sas}\"}}"));
-                //}
-
                 await foreach (BlobItem item in blobContainerClient.GetBlobsAsync())
                 {
-                    
                     var split = item.Name.Split("/");
 
                     if (split.Length > 1)
@@ -289,10 +273,9 @@ namespace SonyIMX500.Controllers
                             }
                         }
                     }
-                    //return Ok(Json($"{{\"uri\":\"{item.Uri.AbsoluteUri}{sas}\"}}"));
                 }
 
-                return NotFound();
+                return StatusCode(StatusCodes.Status404NotFound, Json($"{{\"Status\":\"Image File ({timeStamp}) Not Found in Blob Storage\"}}"));
             }
             catch (Exception ex)
             {

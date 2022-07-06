@@ -1,6 +1,7 @@
 ﻿async function GetImage(deviceId, timeStamp) {
 
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
     var msg = null;
     var image = null;
 
@@ -51,16 +52,23 @@ function addImage(deviceId, image_url, image_file_name) {
 
 $("#blobStorJsGrid").jsGrid({
     width: "100%",
-    height: "400",
+    height: "40vh",
 
-    loadIndication: false,
-    inserting: false,
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
     editing: false,
+    inserting: false,
     filtering: false,
     sorting: true,
     paging: true,
     autoload: false,
-    loadMessage: "Please, wait...",
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
+    loadMessage: "Loading images from Blob Storage...",
+    pageSize: 10,
     controller: {
         loadData: function (filter) {
             toggleLoader(false);
@@ -73,7 +81,14 @@ $("#blobStorJsGrid").jsGrid({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                d.resolve(JSON.parse(response.value));
+                var array = JSON.parse(response.value);
+                array = $.grep(array, function (value) {
+                    return ((!filter.CreateDate || value.CreateDate.toUpperCase().indexOf(filter.CreateDate.toUpperCase()) > -1) &&
+                        (!filter.DeviceId || value.DeviceId.toUpperCase().indexOf(filter.DeviceId.toUpperCase()) > -1) &&
+                        (!filter.FileName || value.FileName.toUpperCase().indexOf(filter.FileName.toUpperCase()) > -1));
+                });
+
+                d.resolve(array);
                 $("#blobStorJsGrid").jsGrid("sort", { field: "CreateDate", order: "desc" });
                 toggleLoader(true);
             });
@@ -87,29 +102,37 @@ $("#blobStorJsGrid").jsGrid({
             name: "Image",
             text: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ height: "120px", width: "120px" }).on("click", function () {
+                return $("<img>").attr("src", val).css({ "max-height": "40px", "min-height": "40px", "max-width": "42px", "object-fit": "contain" }).on("click", function () {
                     $("#imagePreview").attr("src", item.Image);
-                    console.log(item.Image)
                 });
             },
-            align: "left",
-            width: "auto"
-        },
-        {
-            name: "CreateDate", type: "text", align: "left", width: "auto"
+            align: "center",
+            width: "84px",
+            filtering: false
         },
         {
             name: "DeviceId", type: "text", align: "left", width: "auto"
         },
         {
             name: "FileName", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "CreateDate", type: "text", align: "left", width: "auto"
+        },
+        {
+            type: "control", deleteButton: false, editButton: false,
+            headerTemplate: function () {
+                return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
+            }
         }
     ],
 
     rowClick: function (args) {
         $("#imagePreview").attr("src", args.item.Image);
+        $("#imagePreviewName").html(args.item.FileName);
     },
 });
+
 
 var imagerenderer = function (item, value) {
     console.log(value)

@@ -12,8 +12,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/js/azure/msal/dist/msal.js"></script>
-    <script src="/js/SonyAPI.js"></script>
-
+    <script type="text/javascript" src="/js/Token.js"></script>
 
     <h1>test</h1>
     <input type="text" style="width:30vw" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="">
@@ -45,7 +44,7 @@
                     loginSetup();
                     login();
                 },
-                error: function (req, status, error) {
+                error: function (response, status, err) {
                     alert("GetClientId Error " + status);
                 }
             });
@@ -61,12 +60,12 @@
                     data: {
                         idToken: response.idToken.rawIdToken,
                         clientId: response.idTokenClaims.aud,
-                        idTokenJson : temp,
+                        idTokenJson: temp,
                     },
                     success: function (response) {
-                    
+
                     },
-                    error: function (req, status, error) {
+                    error: function (response, status, err) {
                         alert("SetLoginData Error " + status);
                     }
                 });
@@ -75,7 +74,7 @@
                 window.location.href = window.location.origin + window.location.hash;
             }
 
-            
+
         }
 
         function loginSetup() {
@@ -114,9 +113,9 @@
                 tokenResp = await dbgMsal.acquireTokenSilent(dbgAccessTokenRequest);
                 console.log('### MSAL acquireTokenSilent was successful')
                 postLoginData(tokenResp);
-            } catch (error) {
+            } catch (err) {
                 //debugger;
-                switch (error.errorCode) {
+                switch (err.errorCode) {
                     case "consent_required":
                     case "interaction_required":
                     case "login_required":
