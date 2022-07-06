@@ -1,0 +1,484 @@
+﻿@model SonyIMX500.Models.TraininImages  
+@{
+}
+@section scripts {
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script type="text/javascript" src="/js/BlobStorage.js"></script>
+    <script type="text/javascript" src="/js/CustomVision.js"></script>
+}
+
+<body>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                    <h3>Sony IMX500 Hands-on Lab Custom Vision</h3>
+            </div>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div id="loader" class="loading" style="display:none"></div>
+    <div class="container-fluid">
+        <div class="row row-cols-md-1">
+            @*Horizonal*@
+            <div class="card card-primary card-outline">
+                <div class="card-body p-0">
+                    <div class="bs-stepper" id="cvStepper">
+                        <div class="bs-stepper-header" role="tablist">
+                            <!-- your steps here -->
+                            <div class="step" data-target="#select-project-step" id="stepSelectProject">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="select-project-step" id="select-project-step-trigger">
+                                    <span class="bs-stepper-circle">1</span>
+                                    <span class="bs-stepper-label">Select Project</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#upload-images-step" id="stepUploadImages">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="upload-images-step" id="upload-images-step-trigger">
+                                    <span class="bs-stepper-circle">2</span>
+                                    <span class="bs-stepper-label">Upload Images</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#tag-images-step" id="stepTagImages">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="tag-images-step" id="tag-images-step-trigger">
+                                    <span class="bs-stepper-circle">3</span>
+                                    <span class="bs-stepper-label">Tag Images</span>
+                                </button>
+                            </div>
+                            <div class="line"></div>
+                            <div class="step" data-target="#train-model-step" id="stepTrainModel">
+                                <button type="button" class="step-trigger" role="tab" aria-controls="train-model-step" id="train-model-step-trigger">
+                                    <span class="bs-stepper-circle">4</span>
+                                    <span class="bs-stepper-label">Train Model</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="bs-stepper-content">
+                            <!-- Select Project -->
+                            <div id="select-project-step" class="content" role="tabpanel" aria-labelledby="select-project-step-trigger">
+                                <div class="form-group">
+                                    <label for="cvProjectList">Select Custom Vision Project</label>
+                                    <div class="input-group">
+                                        <select id="cvProjectList" class="form-control select2" style="width: 100%;" disabled>Custom Vision Project</select>
+                                    </div>
+                                </div>
+                                <div style="text-align:right;margin-top:0.5em">
+                                    <button id="cvProjectListNextBtn" class="btn btn-primary" style="width:10rem" onclick="stepper.next()" disabled>Next</button>
+                                </div>
+                            </div>
+                            <!-- Upload Image -->
+                            <div id="upload-images-step" class="content" role="tabpanel" aria-labelledby="upload-images-step-trigger">
+                                <h4>Under Construction</h4>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        <input type="text" name="projectId" id="cvProjectId" value="" hidden/>
+                                        <div class="input-group">
+                                            <div class="custom-file" id="cvImageFiles">
+                                                <input type="file" class="custom-file-input" id="cvUploadImages" multiple >
+                                                <label class="custom-file-label" for="cvUploadImages">Choose image file</label>
+                                            </div>
+                                            <div class="input-group-append">
+                                                <button id="cvUploadImagesBtn" class="btn btn-success" onclick="CvUploadImages()" disabled>Upload</button>
+                                            </div>
+                                        </div>
+                                    </div>
+@*                                    <div class="btn-group w-50">
+                                        <span class="btn btn-success col fileinput-button">
+                                            <i class="fas fa-plus"></i>
+                                            <span>Add files</span>
+                                        </span>
+                                        <button class="btn btn-primary col start" onclick="CvUploadImages()">
+                                            <i class="fas fa-upload"></i>
+                                            <span>Start upload</span>
+                                        </button>
+                                        <button type="reset" class="btn btn-warning col cancel">
+                                            <i class="fas fa-times-circle"></i>
+                                            <span>Cancel upload</span>
+                                        </button>
+                                    </div>
+                                    <div class="table table-striped files" id="previews">
+                                        <div id="dropZoneTemplate" class="row mt-2">
+                                            <div class="col-auto">
+                                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
+                                            </div>
+                                            <div class="col d-flex align-items-center">
+                                                <p class="mb-0">
+                                                    <span class="lead" data-dz-name></span>
+                                                    (<span data-dz-size></span>)
+                                                </p>
+                                                <strong class="error text-danger" data-dz-errormessage></strong>
+                                            </div>
+                                            <div class="col-4 d-flex align-items-center">
+                                                <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                                                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto d-flex align-items-center">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-primary start">
+                                                        <i class="fas fa-upload"></i>
+                                                        <span>Start</span>
+                                                    </button>
+                                                    <button data-dz-remove class="btn btn-warning cancel">
+                                                        <i class="fas fa-times-circle"></i>
+                                                        <span>Cancel</span>
+                                                    </button>
+                                                    <button data-dz-remove class="btn btn-danger delete">
+                                                        <i class="fas fa-trash"></i>
+                                                        <span>Delete</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+                                </div>
+                                <div style="text-align:right;margin-top:0.5em">
+                                    <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Tag Image -->
+                            <div id="tag-images-step" class="content" role="tabpanel" aria-labelledby="tag-images-step-trigger">
+                                <div class="row">
+                                    <div class="col-md-1" style="height:100%">
+                                        <label for="cvTagImageCount">Image Count</label>
+                                    </div>
+                                    <div class="col-md-5" style="height:100%">
+                                        <label id="cvTagImageCount"></label>
+                                    </div>
+                                </div>
+                                <div class="row" style="height:60vh" id="cvImagePreviewDiv">
+                                    <div class="col-md-3" style="height:100%">
+                                        <div class="card card-success card-outline" style="height:100%">
+                                            <div class="card-body p-0" style="padding:0.2em;min-height:500px">
+                                                <div id="cvImageCanvasDiv" style="padding:0.2em; text-align:center; display:block;overflow:auto">
+                                                    <div style="margin-bottom:1em">
+                                                        <div style="border: 3px solid rgb(57, 255, 20);width:100%">
+                                                            Assigned Region
+                                                        </div>
+                                                        <div style="border: 3px solid red;width:100%">
+                                                            Proposed Region
+                                                        </div>
+                                                    </div>
+                                                    <canvas id="cvImageCanvas" style="border: 1px solid blue;top:0;bottom:0; right:0; left:0;width:100%;max-height:300px"></canvas>
+                                                    <select id="cvTagList" class="form-control select2" style="width: 100%;margin-bottom:1rem"></select>
+                                                    <button id="cvAssignTagBtn" class="btn btn-success" style="width:100%" disabled>Assign Region & Tag</button>
+                                                </div>
+                                            </div>
+                                        </div>                        
+                                    </div>
+                                    <div class="col-md-9" style="height:100%">
+                                        <div class="card card-success card-outline" style="height:100%">
+                                            <div class="card-body" style="padding:0.2em;min-height:500px">
+                                                <div class="jsgridDiv">
+                                                    <div id="cvImageJsGrid" style="overflow-y:auto"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div style="text-align:right;margin-top:0.5em">
+                                    <button id="cvCreateTagModalBtn" class="btn btn-success" data-toggle="modal" data-target="#cvCreateTagModal">Create a new Tag</button>
+                                    <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                    <button class="btn btn-primary" onclick="stepper.next()">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Train Model -->
+                            <div id="train-model-step" class="content" role="tabpanel" aria-labelledby="train-model-step-trigger">
+                                <div class="form-group">
+                                    <label for="cvTrainProjectList">Select Custom Vision Project</label>
+                                    <select id="cvTrainProjectList" class="form-control select2" style="width:50%;"></select>
+                                </div>
+                                <div class="info-box-tex" style="position:relative">
+                                    <button type="button" class="btn btn-success" id="cvStartTrainingBtn">
+                                        <i class="fas fa-external-link-alt btn-fa"></i>Start Training
+                                    </button>
+                                    <div class="vertical-center">
+                                        <div class="info-box-text" style="overflow-x:auto" id='cvStartTrainingBtnResult'>Place Holder : To be deleted</div>
+                                    </div>
+                                </div>
+
+                                <label for="cvIterationsJsGridDiv">Iterations</label>
+                                <div class="jsgridDiv" style="min-height:auto" id="cvIterationsJsGridDiv">
+                                    <div id="cvIterationsJsGrid" style="overflow-y:auto"></div>
+                                </div>
+
+                                <div style="text-align:right;margin-top:0.5em">
+                                    <button type="button" class="btn btn-success" id="cvVisitCustomVisionBtn" style="width:auto">
+                                        <i class="fas fa-external-link-alt btn-fa"></i>Visit CustomVision.ai
+                                    </button>
+                                    <button type="button" class="btn btn-success" id="cvStartTrainingRefreshBtn">
+                                        <i class="fas fa-external-link-alt btn-fa"></i>Refresh Table
+                                    </button>
+                                    <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="cvCreateTagModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Create a new tag</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-group row">
+                                <label for="cvCreateTagName" class="col-sm-3 col-form-label">Tag</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="cvCreateTagName" class="form-control" id="cvCreateTagName" placeholder="Enter tag name">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="cvCreateTagDesc"  class="col-sm-3 col-form-label">Description</label>
+                                <div class="col-sm-9">
+                                    <input type="text" name="cvCreateTagDesc" class="form-control" id="cvCreateTagDesc" placeholder="Enter description">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary" id="cvCreateTagBtn">Create</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        let stepperEl;
+        let currentImageId;
+        let selectedItem;
+
+        $(document).ready(function () {
+            console.debug("Custom Vision : document.Ready");
+            CvGetProjects('cvProjectList');
+            CvGetProjects('cvTrainProjectList');
+            document.getElementById('nav-link-home').classList.remove('active');
+            document.getElementById('nav-link-cv').classList.add('active');
+        })
+
+        $(window).load(function() {
+
+            //Dropzone.autoDiscover = false;
+
+            //var previewNode = document.querySelector("#dropZoneTemplate");
+            //previewNode.id = "";
+            //var previewTemplate = previewNode.parentNode.innerHTML;
+            //previewNode.parentNode.removeChild(previewNode);
+
+            //let myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
+            //    url: "/target-url", // Set the url
+            //    thumbnailWidth: 80,
+            //    thumbnailHeight: 80,
+            //    parallelUploads: 20,
+            //    previewTemplate: previewTemplate,
+            //    acceptedFiles: "image/jpeg, image/png, image/gif, image/jpg",
+            //    autoQueue: false, // Make sure the files aren't queued until manually added
+            //    previewsContainer: "#previews", // Define the container to display the previews
+            //    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
+            //})
+        });
+
+        //window.addEventListener("resize", resizeCanvas, false);
+
+        // BS-Stepper Init
+        document.addEventListener('DOMContentLoaded', function () {
+            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
+            //stepperEl = new Stepper(document.querySelector('.bs-stepper'))
+        })
+
+        stepperEl = document.querySelector('#cvStepper');
+        stepperEl.addEventListener('show.bs-stepper', function (event) {
+
+            switch (event.detail.indexStep) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    var projectId = CvGetProjectId();
+                    if (projectId)
+                    {
+                        document.getElementById("cvProjectId").value = projectId;
+                        CvGetTags(projectId, 'cvTagList');
+                        $("#cvImageJsGrid").jsGrid("loadData");
+                    }
+                    break;
+                case 3:
+                        $("#cvIterationsJsGrid").jsGrid("loadData");
+                    break;
+            }
+        })
+
+        //
+        // Change event
+        //
+        $('.custom-file-input').on('change', handleFileSelect);
+            function handleFileSelect(evt) {
+                var files = evt.target.files;
+ 
+                var output = [];
+                for (var i = 0, f; f = files[i]; i++) {
+                    output.push(escape(f.name), ', ');
+            }
+            $(this).next('.custom-file-label').html(output.join(''));
+        }
+
+        $('#cvProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                $('#cvTagList').prop('disabled', false);
+                $('#cvProjectListNextBtn').prop('disabled', false);
+            } else {
+                $('#cvTagList').prop('disabled', true);
+                $('#cvProjectListNextBtn').prop('disabled', true);
+            }
+
+            document.getElementById('cvTrainProjectList').value = projectList.value;
+        })
+
+        $('#cvTagList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var targetListId = evt.target.id;
+            var projectList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                var imageId = document.getElementById("cvImageCanvas").getAttribute("data-imageId");
+                console.log("imageid", imageId);
+                if (imageId.length > 0) {
+                    $("#cvAssignTagBtn").prop('disabled', false);
+                }
+                else
+                {
+                    $("#cvAssignTagBtn").prop('disabled', true);
+                }
+            } else {
+                $("#cvAssignTagBtn").prop('disabled', true);
+            }
+        })
+
+
+        $('#cvUploadImages').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if (document.getElementById(evt.target.id).value.length > 0) {
+                $("#cvUploadImagesBtn").prop('disabled', false);
+            }
+            else {
+                $("#cvUploadImagesBtn").prop('disabled', true);
+            }
+        })
+
+        $('#cvCreateTagName').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            if (document.getElementById(evt.target.id).value.length > 0) {
+                $("#cvCreateTagModalBtn").prop('disabled', false);
+            }
+            else {
+                $("#cvCreateTagModalBtn").prop('disabled', true);
+            }
+        })
+
+        $('#cvTrainProjectList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $('#cvIterationsJsGrid').jsGrid('loadData');
+        })
+
+        //
+        // button clicks
+        //
+        $('#cvCreateTagBtn').click(async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+
+            var projectId = CvGetProjectId();
+
+            var response = await CvCreateTag(projectId)
+                                .then(() => {
+                                    console.log("Custom Vision Project");
+                                    CvGetTags(projectId, 'cvTagList');
+                                    $('#cvCreateTagModal').modal('hide');
+                                })
+                                .finally(() => {
+                                });
+            
+        })
+
+        $('#cvAssignTagBtn').click(async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            
+            var projectId = CvGetProjectId();
+            $("#cvAssignTagBtn").prop('disabled', true);
+            var tagList = document.getElementById('cvTagList');
+            var tagOption = tagList[tagList.selectedIndex];
+            var tagId = tagOption.getAttribute("data-tagid");
+            await CvAssignRegion(projectId, tagId)
+                                    .then((response) => { 
+                                         $('#cvImageJsGrid').trigger( 'reloadGrid' );
+                                    })
+                                    .finally(() => {
+                                        $("#cvAssignTagBtn").prop('disabled', false);
+                                    });
+            
+        })
+
+        $('#cvStartTrainingBtn').click(async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var response = await CvTrainProject()
+                                    .then(() => { 
+                                    })
+                                    .finally(() => {
+                                    });
+        })
+
+        $('#cvStartTrainingRefreshBtn').click(async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            $('#cvIterationsJsGrid').jsGrid('loadData');
+        })
+        
+        $('#cvVisitCustomVisionBtn').click(async function(evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var projectId = CvGetIterationProjectId();
+            var url = "https://www.customvision.ai/projects/" + projectId;
+            window.open(url, "_blank");
+        })
+
+        
+        //
+        // Tab
+        //
+        $('#upload-images-step-trigger').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        // Modal
+        $('#cvCreateTagModal').on('hidden.bs.modal', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+             $('#cvCreateTagName').value = "";
+             $('#cvCreateTagDesc').value = "";
+        })
+
+
+
+    </script>
+</body>

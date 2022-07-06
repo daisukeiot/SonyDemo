@@ -1,14 +1,21 @@
 ﻿$("#cosmosDbJsGrid").jsGrid({
     width: "100%",
-    height: "auto",
+    height: "59vh",
 
-    loadIndication: false,
-    inserting: false,
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
     editing: false,
+    inserting: false,
+    filtering: false,
     sorting: true,
     paging: true,
     autoload: false,
-    //filtering: true,
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
+    pageSize: 20,
 
     controller: {
         loadData: function (filter) {
@@ -25,7 +32,16 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                d.resolve(JSON.parse(response.value));
+                var array = JSON.parse(response.value);
+                array = $.grep(array, function (value) {
+                    return ((!filter.Id || value.Id.toUpperCase().indexOf(filter.Id.toUpperCase()) > -1) &&
+                        (!filter.Ts || value.Ts.toUpperCase().indexOf(filter.Ts.toUpperCase()) > -1) &&
+                        (!filter.Device_ID || value.Device_ID.toUpperCase().indexOf(filter.Device_ID.toUpperCase()) > -1) &&
+                        (!filter.Model_ID || value.Model_ID.toUpperCase().indexOf(filter.Model_ID.toUpperCase()) > -1) &&
+                        (filter.Image == undefined || value.Image == filter.Image));
+                });
+
+                d.resolve(array);
                 $("#cosmosDbJsGrid").jsGrid("sort", { field: "Ts", order: "desc" });
                 toggleLoader(true);
             });
@@ -42,35 +58,35 @@
         { name: "Image", type: "checkbox", align: "left", width: 50},
         {
             name: "T",
-            //itemTemplate: function (val, item) {
-            //    return $("<td>").text(val).on("click", function (evt) {
-            //        viewPhotoWithCosmosDbTable(item);
-            //    });
-            //},
             type: "text",
             align: "left"
         },
-        { name: "C", type: "text", align: "left", width: 50},
-        { name: "P", type: "text", align: "left", width: 50 },
-        { name: "Coord", type: "text", title: "(X,Y)-(x,y)", align: "left" }
+        { name: "C", type: "text", align: "left", width: 50 },
+        { name: "P", type: "text", align: "left", width: 50, filtering: false },
+        { name: "Coord", type: "text", title: "(X,Y)-(x,y)", align: "left", filtering: false },
+        {
+            type: "control", deleteButton: false, editButton: false,
+            headerTemplate: function () {
+                return this._createOnOffSwitchButton("filtering", this.searchModeButtonClass, false);
+            },
+            filtering: false
+        }
     ],
 
     rowClick: function (args) {
         viewPhotoWithCosmosDbTable(args.item);
-        $row.toggleClass("highlight");
+        //$row.toggleClass("highlight");
     },
 });
 
 function viewPhotoWithCosmosDbTable(item) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     if (item.Image == false) {
         return;
     }
     var deviceId = item.Device_ID;
-
-    console.log(funcName);
 
     try {
         toggleLoader(false);

@@ -1,11 +1,7 @@
-﻿let myMsal = null;
-let accessTokenRequest;
+﻿
 
-const loginScope = {
-    scopes: ["User.Read"],
-};
-
-let authConfig = null;
+let getBaseModelInterval = null;
+let getDeployHistoryInterval = null;
 
 // Utility functions
 
@@ -61,140 +57,92 @@ function AddApiOutput(apiName, result) {
     document.getElementById('tabApiOutput').value = JSON.stringify(json, null, 2);
 }
 
-// MSAL token functions
-
-function sonyApiInitializeMsal() {
-
-    console.debug(arguments.callee.name + "()");
-    var url = window.location.href;
-    var clientId = document.getElementById('clientId').value;
-
-    if ((myMsal != null) && (authConfig && authConfig.auth.clientId == clientId))  {
-        return;
-    }
-
-    if (clientId.length == 0) {
-        console.log("Client ID empty");
-        return;
-    }
-
-    authConfig = {
-        auth: {
-            clientId: clientId,
-            redirectUri: url
-        }
-    }
-
-    console.debug("Redirect Url : " + authConfig.auth.redirectUri);
-    console.debug("Client ID    : " + authConfig.auth.clientId);
-
-    myMsal = new Msal.UserAgentApplication(authConfig);
-
-    accessTokenRequest = {
-        scopes: [authConfig.auth.clientId],
-        prompt: 'none',
-        authority: null,
-        account: myMsal.getAccount()
-    }
-
-    myMsal.handleRedirectCallback((err, response) => {
-        //debugger;
-        if (err) {
-            alert(err);
-        } else {
-            updateLoginTab(response);
-        }
-    });
-
-    SetClientId(authConfig.auth.clientId);
+function GetBaseModelStatusRefresh(target) {
+    document.getElementById(target).dispatchEvent(new Event("click"));
 }
 
-async function sonyApiGetToken() {
-    console.debug(arguments.callee.name + "()");
+function GetBaseModelStatusInterval(target) {
 
-    var url = window.location.href;
-    if (url.includes("localhost") && !url.includes("index.html")) {
-        console.debug("Redirecting to index.html");
-        url = url + "index.html"
-        window.location.href = url;
-        return;
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
+    if (target == null) {
+        console.debug("=> Cancel Interval");
+        if (getBaseModelInterval != null) {
+            clearInterval(getBaseModelInterval);
+            getBaseModelInterval = null;
+        }
+    } else if (getBaseModelInterval == null) {
+        getBaseModelInterval = setInterval(function () { GetBaseModelStatusRefresh(target); }, 10 * 1000);
     }
+}
 
-    if (!myMsal.getAccount()) {
-        // Not logged in.  Start login.
-        console.debug("Redirect to login");
-        myMsal.loginRedirect(loginScope);
+function GetDeployHistoryRefresh(target) {
+    document.getElementById(target).dispatchEvent(new Event("click"));
+}
+
+function GetDeployHistoryInterval() {
+
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+    target = 'deploymentHistoryModalRefreshBtn';
+
+    if (target == null) {
+        console.debug("=> Cancel Interval");
+        if (getDeployHistoryInterval != null) {
+            clearInterval(getDeployHistoryInterval);
+            getDeployHistoryInterval = null;
+        }
+    } else if (getDeployHistoryInterval == null) {
+        getDeployHistoryInterval = setInterval(function () { GetBaseModelStatusRefresh(target); }, 10 * 1000);
     }
-    else {
+}
 
-        try {
-            //debugger;
-            console.debug("Getting Token");
-            tokenResp = await myMsal.acquireTokenSilent(accessTokenRequest);
-            console.log('### MSAL acquireTokenSilent was successful')
-            updateLoginTab(tokenResp);
-            return tokenResp.idToken.rawIdToken;
+function telemetryTableFilter() {
+    var input, filter, table, tr, td, i;
 
-        } catch (error) {
-            //debugger;
-            console.log('### MSAL acquireTokenSilent was unsuccessful : ' + error);
-            switch (error.errorCode) {
-                case "consent_required":
-                case "interaction_required":
-                case "login_required":
-                    tokenResp = await myMsal.acquireTokenPopup(accessTokenRequest)
-                    console.log('### MSAL acquireTokenPopup was successful')
-                    break;
+    input = document.getElementById("telemetryTableFilterInput");
 
-                case "user_login_error":
-                    console.log('### MSAL Login Error');
-                    if (!myMsal.getLoginInProgress()) {
-                        myMsal.loginRedirect(loginRequest);
-                    }
-                    break;
-                default:
-                    break;
+    filter = input.value.toUpperCase();
+    table = document.getElementById("telemetryTbl");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
             }
-
-            return null;
         }
     }
 }
 
-async function getToken() {
-    var token = sonyApiGetToken();
+function telemetryTableFilter2(targetListId) {
+    var input, filter, table, tr, td, i;
 
-    if (token) {
-        document.getElementById('spanTokenLastUpdate').innerHTML = new Date();
-        PostToken(token);
-        var interval = setInterval(function () { getToken(); }, 300000);
-    }
-}
+    var deviceList = document.getElementById(targetListId);
 
-function updateLoginTab(tokenResp) {
-    console.debug(arguments.callee.name + "()");
-    if (tokenResp == null) {
-        document.getElementById('taToken').value = "Access Token not found in response.";
-        document.getElementById('btnLoginResult').innerHTML = "Access Token not found in response";
-    }
-    else {
-        document.getElementById('taToken').value = tokenResp.idToken.rawIdToken;
-        document.getElementById('taToken').dispatchEvent(new Event("change"));
+    filter = deviceList[deviceList.selectedIndex].value.toUpperCase();
 
-        if (String(expiresOn) !== String(tokenResp.expiresOn)) {
-            expiresOn = tokenResp.expiresOn;
-            document.getElementById('spanTokenExpire').innerHTML = String(tokenResp.expiresOn);
+    table = document.getElementById("telemetryTbl");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[2];
+        if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
         }
-
-        document.getElementById('userName').innerHTML = tokenResp.account.name;
-        document.getElementById('userDesc').innerHTML = tokenResp.account.userName;
-        document.getElementById('btnLoginResult').innerHTML = "Login Success";
-        document.getElementById('clientId').value = tokenResp.idToken.claims.aud;
     }
 }
 
 function PostToken(token) {
-    console.log("PostToken() : " + token);
+
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     $.ajax({
         type: "POST",
@@ -203,24 +151,21 @@ function PostToken(token) {
         success: function (response) {
             //console.log(response)
         },
-        error: function (req, status, error) {
+        error: function (response, status, err) {
             alert("PostToken Error " + status);
         }
     });
 }
 
-function sonyApiLogout() {
-    if (myMsal != null) {
-        myMsal.logout();
-    }
-}
 
 function UpdateHomeController(loginResponse) {
-    console.log("UpdateHomeController : " + loginResponse);
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 }
 
 function SetClientId(ClientId) {
-    console.log("SetClientId()");
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
 
     $.ajax({
         type: "POST",
@@ -229,51 +174,17 @@ function SetClientId(ClientId) {
         success: function (response) {
             return response.responseText;
         },
-        error: function (req, status, error) {
+        error: function (response, status, err) {
             alert("SetClientId Error " + status);
         }
     });
 }
 
-
-
-
-
-//async function GetCustomVisionProjects() {
-
-//    try {
-//        var list = document.getElementById("listCustomVisionProjects");
-//        list.innerText = null;
-//        list.append(new Option("", 0));
-
-//        const result = await $.ajax({
-//            async: true,
-//            type: "GET",
-//            url: window.location.origin + '/' + 'sony/GetModels',
-//            data: {},
-//        });
-
-//        if (result['success'] == false) {
-//            throw new Error(res["error"] + ". Please fix the problem and click Run again.");
-//        }
-
-//        AddApiOutput(result.value);
-
-//        var json = JSON.parse(result.value);
-
-//        for (var model in json.models) {
-//            for (var project in json.models[model].projects) {
-//                list.append(new Option(json.models[model].projects[project].model_project_name, json.models[model].projects[project].model_project_name));
-//            }
-//        }
-//    } catch (err) {
-//        alert("GetModels() : Error (" + err.status + ") " + err.statusText);
-//    }
-//}
-
 async function CreateBaseCustomVisionProject() {
 
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var msg;
     var resultElement = document.getElementById('createBaseCustomVisionProjectBtnResult');
 
@@ -314,7 +225,10 @@ async function CreateBaseCustomVisionProject() {
 }
 
 async function DeleteProject(project_name) {
+
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var msg;
     var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
     var ret = true;
@@ -374,6 +288,8 @@ async function DeleteProject(project_name) {
 
 async function SaveCustomVisionModel() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
     var msg;
     var resultElement = document.getElementById('saveCustomVisionModelBtnResult');
 
@@ -413,6 +329,7 @@ async function SaveCustomVisionModel() {
 
 async function ConvertModel() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
     var msg;
     var json = null;
     var resultElement = document.getElementById('convertModelBtnResult');
@@ -453,6 +370,7 @@ async function ConvertModel() {
 
 async function PublishModel() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
     var msg;
     var resultElement = document.getElementById('publishModelBtnResult');
     var json = null;
@@ -494,6 +412,7 @@ async function PublishModel() {
 async function GetBaseModelStatus(model_id, latest_type) {
 
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var json = null;
 
@@ -536,6 +455,7 @@ async function GetBaseModelStatus(model_id, latest_type) {
 
 async function GetFirmwares(firmware_type, ppl, listElementId) {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var ret = true;
 
@@ -584,6 +504,7 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
 
 async function CreateDeployConfiguration() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('createDeployConfigurationResult');
     var ret = true;
@@ -649,6 +570,8 @@ async function CreateDeployConfiguration() {
 }
 
 function CheckCreateDeployConfigurationInputs() {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var enable = true;
     var configId = document.getElementById('createDeployConfigurationConfigId').value;
     var sensorLoaderVer = document.getElementById('createDeployConfigurationSensorLoaderVersionNumber');
@@ -682,6 +605,7 @@ function CheckCreateDeployConfigurationInputs() {
 
 async function GetDeployConfigurations(listElementId) {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var ret = true;
 
@@ -702,8 +626,8 @@ async function GetDeployConfigurations(listElementId) {
 
             var list = document.getElementById(listElementId);
             list.innerText = null;
-            var option = new Option("Select from list", "");
-            option.disabled = true;
+            var option = new Option("Select deployment", "");
+            option.disabled = false;
             list.append(option);
             for (var deploy_configuration in json.deploy_configurations) {
                 list.append(new Option(json.deploy_configurations[deploy_configuration].config_id, json.deploy_configurations[deploy_configuration].config_id));
@@ -724,10 +648,12 @@ async function GetDeployConfigurations(listElementId) {
         }
     }
 
-    return ret;
+    return msg;
 }
 
 function CheckDeployByConfigurationInputs() {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var enable = true;
     var configId = document.getElementById('deployByConfiguraionFormConfigIdList');
     var deviceId = document.getElementById('deployByConfiguraionDeviceIdList');
@@ -749,6 +675,7 @@ function CheckDeployByConfigurationInputs() {
 
 async function DeployByConfiguration() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('deployByConfiguratonBtnResult');
     var ret = true;
@@ -787,6 +714,7 @@ async function DeployByConfiguration() {
 
 async function GetDeployHistory() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultMsg;
     var resultElement = document.getElementById('getDeployHistoryBtnResult');
@@ -804,6 +732,16 @@ async function GetDeployHistory() {
         });
 
         msg = result.value;
+
+        //if (json.versions[0].result == "processing") {
+        //    // set timer
+        //    GetBaseModelStatusInterval(evt.target.id);
+        //}
+        //else if (json.versions[0].result == "completed") {
+        //    // cancel interval
+        //    GetBaseModelStatusInterval(null);
+        //    $('#convertModelBtn').prop('disabled', true);
+        //}
         resultMsg = '{"result" : "Success"}';
     } catch (err) {
         msg = processError(funcName, err, true);
@@ -823,6 +761,7 @@ async function GetDeployHistory() {
 
 async function StartUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
     var ret = true;
@@ -871,6 +810,7 @@ async function StartUploadInferenceResult() {
 
 async function StopUploadInferenceResult() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
     //var resultElement = document.getElementById('stopUploadInferenceResultBtnResult');
@@ -903,6 +843,7 @@ async function StopUploadInferenceResult() {
 
 async function StartUploadRetrainingData() {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
     var ret = true;
@@ -956,8 +897,8 @@ async function StartUploadRetrainingData() {
 }
 
 async function StopUploadRetrainingData() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var msg;
     var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
     var ret = true;
@@ -986,40 +927,9 @@ async function StopUploadRetrainingData() {
     return ret;
 }
 
-//async function StopUploadRetrainingData() {
-
-//    var funcName = arguments.callee.name + "()";
-//    var msg;
-//    var resultElement = document.getElementById('stopUploadRetrainingDataBtnResult');
-//    var ret = true;
-
-//    try {
-//        var device_id = document.getElementById("stopUploadRetrainingDataDeviceIdList").value;
-
-//        const result = await $.ajax({
-//            async: true,
-//            type: "POST",
-//            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
-//            data: {
-//                device_id: device_id
-//            },
-//        });
-//        msg = result.value;
-//    } catch (err) {
-//        msg = processError(funcName, err, true);
-//        ret = false;
-//    } finally {
-//        if (msg) {
-//            setResultElement(resultElement, msg);
-//            AddApiOutput(funcName, msg);
-//        }
-//    }
-//    return ret;
-//}
-
-async function GetDevices(listElementId, silent, isOption) {
-
+async function GetDevices(listElementId, silent, isOption, placeHolderText, placeHolderValue) {
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1040,7 +950,7 @@ async function GetDevices(listElementId, silent, isOption) {
             var list = document.getElementById(listElementId);
 
             list.innerText = null;
-            var option = new Option('Select from list', '');
+            var option = new Option(placeHolderText, placeHolderValue);
 
             if (isOption) {
                 option.disabled = false;
@@ -1062,8 +972,8 @@ async function GetDevices(listElementId, silent, isOption) {
 }
 
 async function RefreshDevicesList() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
 
     try {
         const result = await $.ajax({
@@ -1088,8 +998,8 @@ async function RefreshDevicesList() {
 }
 
 async function RefreshModelsList() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
 
     try {
         const result = await $.ajax({
@@ -1122,8 +1032,8 @@ async function RefreshModelsList() {
 }
 
 async function RefreshDeployConfiguraions() {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
 
     try {
         const result = await $.ajax({
@@ -1148,8 +1058,8 @@ async function RefreshDeployConfiguraions() {
 }
 
 async function GetDevicesForImageGallery(listElementId, silent) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1192,8 +1102,8 @@ async function GetAllModels(listElement, isOption) {
 }
 
 async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1239,8 +1149,8 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
 }
 
 async function DeleteModel(model_id) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1262,8 +1172,8 @@ async function DeleteModel(model_id) {
 }
 
 async function DeleteDeployConfiguration(config_id) {
-
     var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
     var ret = true;
 
     try {
@@ -1326,8 +1236,9 @@ function addDeployConfiguration(config_id, config_comment, payload) {
 }
 
 function viewPhoto(item) {
+    var funcName = arguments.callee.name + "()";
     var eventId = item.attributes.getNamedItem('eventId').nodeValue;
-    console.log("viewPhoto " + eventId);
+    console.debug("=>", funcName, "EventID", eventId);
     var funcName = arguments.callee.name + "()";
     var preElementId = "pre-" + eventId;
     var preElement = document.getElementById(preElementId);
@@ -1385,9 +1296,10 @@ function viewPhoto(item) {
 }
 
 function viewPhotoWithCosmosDb(item) {
+    var funcName = arguments.callee.name + "()";
     var eventId = item.attributes.getNamedItem('eventId').nodeValue;
     var deviceId = item.attributes.getNamedItem('deviceId').nodeValue;
-    console.log("viewPhotoWithCosmosDb " + eventId);
+    console.log(funcName + eventId);
     var funcName = arguments.callee.name + "()";
     var preElementId = "pre-" + eventId;
     var preElement = document.getElementById(preElementId);
@@ -1440,3 +1352,88 @@ function viewPhotoWithCosmosDb(item) {
         toggleLoader(true);
     }
 }
+
+$("#deploymentHistoryGrid").jsGrid({
+    width: "100%",
+    loadIndication: true,
+    loadIndicationDelay: 500,
+    loadShading: true,
+    shrinkToFit: true,
+    multiselect: true,
+    inserting: false,
+    //editing: false,
+    filtering: false,
+    sorting: true,
+    paging: true,
+    autoload: false,
+    allowSelection: true,
+    selectionSettings: { persistSelection: true },
+    pageSize: 20,
+    loadMessage: "Fetching Deployment History...",
+    controller: {
+        loadData: function (filter) {
+            var d = $.Deferred();
+            var deviceList = document.getElementById('deployByConfiguraionDeviceIdList');
+            var deviceId = null;
+
+            deviceId = deviceList[deviceList.selectedIndex].value;
+
+            $.ajax({
+                async: true,
+                type: "GET",
+                url: window.location.origin + '/' + 'sony/GetDeployHistory',
+                data: {
+                    device_id: deviceId
+                },
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            }).done(function (response) {
+                var json = JSON.parse(response.value);
+
+                // Deployment in Process.  Set Timer.
+                if (json[0].deploy_status == "0") {
+                    GetDeployHistoryInterval();
+                }
+
+                d.resolve(json);
+                $("#deploymentHistoryGrid").jsGrid("sort", { field: "id", order: "asc" });
+            });
+
+            return d.promise();
+        }
+    },
+    fields: [
+        {
+            name: "id", type: "number", align: "left", width: "4em"
+        },
+        {
+            name: "deploy_type", type: "text", align: "left", width: "11em"
+        },
+        {
+            name: "deploy_status", type: "text", align: "left", width: "12rem", 
+            itemTemplate: function (val, item) {
+               
+                if (val == "0") {
+                    return "0 (Processing)";
+                } else if (val == "1") {
+                    return "1 (Done : Success)";
+                } else if (val == "1") {
+                    return "2 (Fail)";
+                }
+                return "";
+            }
+        },
+        {
+            name: "config_id", type: "text", align: "left", width: "15em"
+        },
+        {
+            name: "total_status", type: "text", align: "left", width: "12em"
+        },
+        {
+            name: "upd_date", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "ins_date", type: "text", align: "left", width: "auto"
+        }
+    ],
+});

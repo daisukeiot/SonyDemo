@@ -100,7 +100,7 @@ namespace SonyIMX500.Controllers
                                     {
                                         double p = (double)item.Value["P"];
 
-                                        if (p < thresholdValue)
+                                        if ((p < thresholdValue) || (p > 1))
                                         {
                                             continue;
                                         }
@@ -120,13 +120,8 @@ namespace SonyIMX500.Controllers
                                         responses.Add(response);
                                     }
                                 }
-
-                                _logger.LogInformation($"test");
-
-                                
                             }
                         }
-
                     }
                     //FeedResponse<INFERENCE_RESULT> inferenceResults = await iterator.ReadNextAsync();
                     //_logger.LogInformation($"Test");

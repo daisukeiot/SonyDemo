@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
@@ -194,10 +195,11 @@ namespace SonyIMX500.Controllers
                 }
                 var response = await SendGet($"devices/{device_id}/deploys");
                 var jsonString = await response.Content.ReadAsStringAsync();
+                var jsonObj = JObject.Parse(jsonString);
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return Ok(Json(jsonString));
+                    return Ok(Json(jsonObj["deploys"].ToString()));
                 }
                 else
                 {
