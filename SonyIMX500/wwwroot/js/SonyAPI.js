@@ -1,6 +1,7 @@
 ﻿
 
 let getBaseModelInterval = null;
+let getDeployHistoryInterval = null;
 
 // Utility functions
 
@@ -73,6 +74,27 @@ function GetBaseModelStatusInterval(target) {
         }
     } else if (getBaseModelInterval == null) {
         getBaseModelInterval = setInterval(function () { GetBaseModelStatusRefresh(target); }, 10 * 1000);
+    }
+}
+
+function GetDeployHistoryRefresh(target) {
+    document.getElementById(target).dispatchEvent(new Event("click"));
+}
+
+function GetDeployHistoryInterval() {
+
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+    target = 'deploymentHistoryModalRefreshBtn';
+
+    if (target == null) {
+        console.debug("=> Cancel Interval");
+        if (getDeployHistoryInterval != null) {
+            clearInterval(getDeployHistoryInterval);
+            getDeployHistoryInterval = null;
+        }
+    } else if (getDeployHistoryInterval == null) {
+        getDeployHistoryInterval = setInterval(function () { GetBaseModelStatusRefresh(target); }, 10 * 1000);
     }
 }
 
@@ -710,6 +732,16 @@ async function GetDeployHistory() {
         });
 
         msg = result.value;
+
+        //if (json.versions[0].result == "processing") {
+        //    // set timer
+        //    GetBaseModelStatusInterval(evt.target.id);
+        //}
+        //else if (json.versions[0].result == "completed") {
+        //    // cancel interval
+        //    GetBaseModelStatusInterval(null);
+        //    $('#convertModelBtn').prop('disabled', true);
+        //}
         resultMsg = '{"result" : "Success"}';
     } catch (err) {
         msg = processError(funcName, err, true);
@@ -1356,7 +1388,14 @@ $("#deploymentHistoryGrid").jsGrid({
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"
             }).done(function (response) {
-                d.resolve(JSON.parse(response.value));
+                var json = JSON.parse(response.value);
+
+                // Deployment in Process.  Set Timer.
+                if (json[0].deploy_status == "0") {
+                    GetDeployHistoryInterval();
+                }
+
+                d.resolve(json);
                 $("#deploymentHistoryGrid").jsGrid("sort", { field: "id", order: "asc" });
             });
 

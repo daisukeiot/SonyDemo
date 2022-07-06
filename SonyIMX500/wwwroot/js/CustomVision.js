@@ -428,7 +428,6 @@ $("#cvIterationsJsGrid").jsGrid({
     controller: {
         loadData: function (filter) {
             var d = $.Deferred();
-            $('#cvStartTrainingBtn').prop('disabled', false);
             var projectId = CvGetIterationProjectId();
             currentImageId = null;
             $.ajax({
@@ -466,6 +465,11 @@ $("#cvIterationsJsGrid").jsGrid({
                     if (iterationInterval == null) {
                         iterationInterval = setInterval(function () { RefreshIterationGrid(); }, 10 * 1000);
                     }
+                }
+                else if (val == "Completed") {
+                }
+                else {
+                    $('#cvStartTrainingBtn').prop('disabled', false);
                 }
                 return val;
             }
@@ -548,12 +552,8 @@ function CvPreviewPhoto(item) {
         if (item.Tags) {
             $('#cvTagList').val(item.Tags).trigger('change');
         }
-        else {
-            $("#cvTagList")[0].selectedIndex = 0;
-        }
 
         selectedItem = item;
-
     }
 }
 

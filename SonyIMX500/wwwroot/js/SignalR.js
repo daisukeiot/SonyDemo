@@ -1,11 +1,11 @@
-﻿function addEvent(id, type, deviceId, modelId, source, time, data) {
+﻿function addEvent(id, type, deviceId, modelId, dataSource, time, data) {
     var dataObj = JSON.parse(data);
     var context = {
         eventTime: time,
         eventDeviceId: deviceId,
         eventModelId: modelId,
         eventType: type,
-        eventSource: source,
+        eventSource: dataSource,
         eventId: id,
         eventData: JSON.stringify(dataObj, undefined, 2)
     };
@@ -15,19 +15,24 @@
     $("#telemetryTbl").show();
     $('#telemetryTblDetails').prepend(html);
 
+    var btn_id = "btn-" + id;
+
     if (dataObj.Image == true) {
-        var btn_id = "btn-" + id;
         document.getElementById(btn_id).disabled = false;
+    }
+    else {
+        document.getElementById(btn_id).classList.remove('btn-primary');
+        document.getElementById(btn_id).classList.add('btn-secondary');
     }
 }
 
-function addCosmosDbEvent(id, type, deviceId, modelId, source, time, hasImage, data) {
+function addCosmosDbEvent(id, type, deviceId, modelId, dataSource, time, hasImage, data) {
     
     var context = {
         eventTime: time,
         deviceId: deviceId,
         eventType: type,
-        eventSource: source,
+        eventSource: dataSource,
         eventId: id,
         eventData: JSON.stringify(data, undefined, 2)
     };
@@ -37,8 +42,14 @@ function addCosmosDbEvent(id, type, deviceId, modelId, source, time, hasImage, d
     $("#telemetryTbl").show();
     $('#telemetryTblDetails').prepend(html);
 
+    var btn_id = "btn-" + id;
+
     if (hasImage == true) {
-        var btn_id = "btn-" + id;
         document.getElementById(btn_id).disabled = false;
     }
+    else {
+        document.getElementById(btn_id).classList.remove('btn-primary');
+        document.getElementById(btn_id).classList.add('btn-secondary');
+    }
+
 }

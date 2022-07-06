@@ -10,16 +10,6 @@
     <script type="text/javascript" src="/js/CustomVision.js"></script>}
 
 <body>
-
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-md-10">
-                    <h1>Sony IMX500 Hands-on Lab</h1>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- Main content -->
     <div id="loader" class="loading" style="display:none"></div>
     <div class="container-fluid">
@@ -550,7 +540,7 @@
                                                                             <select name="deployByConfiguraionDeviceIdList" id="deployByConfiguraionDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
 
                                                                             <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#deploymentHistoryModal" id="deployByConfiguratonHistoryBtn" disabled
+                                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#deploymentHistoryModal" id="deployByConfiguratonHistoryBtn" disabled>
                                                                                     <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy History
                                                                                 </button>
                                                                             </div>
@@ -743,11 +733,24 @@
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <label for="telemetryTableFilterList">Device ID</label>
-                                    <select name="telemetryTableFilterList" id="telemetryTableFilterList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                    <input type="text" id="telemetryTableFilterInput" onkeyup="telemetryTableFilter()" placeholder="Filter with Device ID" title="Type in Device ID">
-                                    <div id="telemetryTableDiv" class="row" style="max-height: 60vh; overflow-y:scroll">
+                                    <div class="row">
+                                        <div class="card-tools">
+                                            <div class="row" style="position:relative">
+                                                <div class="col">
+                                                    <label for="telemetryTableFilterList">Device ID Filter</label>
+                                                </div>
+                                                <div class="col">
+                                                    <select name="telemetryTableFilterList" id="telemetryTableFilterList" class="form-control custom-select" style="min-width:10em"></select>
+                                                </div>
+                                                <div class="col">
+                                                    <button type="button" class="btn btn-danger" id="clearTelemetryTableBtn">
+                                                        <i class="far fa-trash-alt btn-fa"></i>Clear Events
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="telemetryTableDiv" class="row" style="min-height:10vh; max-height: 55vh; overflow-y:scroll">
                                         <table id="telemetryTbl" class="table table-striped" style="max-height: 100%">
                                             <thead>
                                             <th>&nbsp;</th>
@@ -756,62 +759,118 @@
                                             <th>Model ID</th>
                                             <th>Event Type</th>
                                             <th>Event Source</th>
+                                            <th>Image Preview</th>
                                             </thead>
                                             <tbody id="telemetryTblDetails"></tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <div class="card-footer">
-                                    <button type="button" class="btn btn-danger" id="clearTelemetryTableBtn">
-                                        <i class="far fa-trash-alt btn-fa"></i>Clear Events
-                                    </button>
-                                </div>
                             </div>
                             <!-- Image Gallery Tab -->
                             <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-imageGallery-label">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        Images stored in Azure Blob Storage
-                                    </h3>
-
-                                    <div class="card-tools">
+                                <div class="card-header" style="padding:0">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <h3 class="card-title">
+                                                <strong>
+                                                    Images stored in Azure Blob Storage
+                                                </strong>
+                                            </h3>
+                                            <br />
+                                            <h5 class="card-title">
+                                                Select row to preview image
+                                            </h5>
+                                        </div>
+                                        <div class="col" style="max-width:fit-content;min-width:20vh">
+                                            <div id="imagePreviewDiv" style="padding: 0.2em">
+                                                <img id="imagePreview" style="max-height: 20vh; min-height: 20vh; max-width: 200px; object-fit: contain"/>
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <h3 class="card-title">
+                                                <strong>
+                                                    File Name
+                                                </strong>
+                                            </h3>
+                                            <br />
+                                            <h5 class="card-title" id="imagePreviewName"></h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body" style="padding:0.5em 0 0.5em 0">
+                                    <div class="row">
+                                        <div class="card-tools">
+                                            <div class="row" style="position:relative">
+                                                <div class="col">
+                                                    <label for="imageGalleryDeviceIdList">Device ID Filter</label>
+                                                </div>
+                                                <div class="col">
+                                                    <select name="imageGalleryDeviceIdList" id="imageGalleryDeviceIdList" class="form-control custom-select" style="min-width:15em"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin:0.5em 0 0.5em 0">
+                                        <div class="jsgridDiv">
+                                            <div id="blobStorJsGrid" style="overflow-y:auto"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
                                             <i class="fas fa-sync btn-fa"></i>Refresh
                                         </button>
-                                    </div>
-
-                                </div>
-                                <div class="card-header">
-                                    <div id="imagePreviewDiv" style="margin: 1em 0;">
-                                        <img id="imagePreview" style="max-height: 200px; min-height: 200px; max-width: 200px; object-fit: contain"/>
-                                    </div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="jsgridDiv">
-                                        <div id="blobStorJsGrid" style="overflow-y:auto"></div>
                                     </div>
                                 </div>
                             </div>
                             <!-- History Tab -->
                             <div class="tab-pane fade" id="tab-cosmosDb" role="tabpanel" aria-labelledby="tab-cosmosDb-label">
-                                <div class="card-header">
-                                    <h3 class="card-title">
-                                        AI Inference History stored in Cosmos DB
-                                    </h3>
-
-                                    <div class="card-tools">
-                                        <span>Threshold: <span id="cosmosDbThreshold"></span><span>%</span></span>
-                                        <span class="slider-blue">
-                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange">
-                                        </span>
-                                        <button type="button" class="btn btn-success" id="refreshCosmosDbBtn">
-                                            <i class="fas fa-sync btn-fa"></i>Refresh
-                                        </button>
+                                <div class="card-header" style="padding:0">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <h3 class="card-title">
+                                                <strong>
+                                                    AI Inference History stored in Cosmos DB
+                                                </strong>
+                                            </h3>
+                                            <br />
+                                            <h5 class="card-title">
+                                                Select a result with image to preview image
+                                            </h5>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="card-body">
-                                    <div style="overflow:auto">
-                                        <div id="cosmosDbJsGrid"></div>
+                                    <div class="card-body" style="padding:0.5em 0 0.5em 0">
+                                        <div class="row">
+                                            <div class="card-tools">
+                                                <div class="row" style="position:relative">
+                                                    <div class="col">
+                                                        <label for="cosmosDbDeviceIdList">Device ID Filter</label>
+                                                    </div>
+                                                    <div class="col">
+                                                        <select name="cosmosDbDeviceIdList" id="cosmosDbDeviceIdList" class="form-control custom-select" style="min-width:15em"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin:0.5em 0 0.5em 0">
+                                           <div class="jsgridDiv">
+                                                <div id="cosmosDbJsGrid"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="margin:0.5em 0 0 0">
+                                            <div class="card-tools">
+                                                <div class="row" style="position:relative">
+                                                    <div style="position:relative">
+                                                        <span style="height:100%">Threshold: <span id="cosmosDbThreshold"></span><span>%</span></span>
+                                                        <span class="slider-blue">
+                                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange" style="min-width: 5em">
+                                                        </span>
+                                                        <button type="button" class="btn btn-success" id="refreshCosmosDbBtn">
+                                                            <i class="fas fa-sync btn-fa"></i>Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -948,6 +1007,7 @@
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" id="deploymentHistoryModalRefreshBtn">Refresh</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                     </div>
                 </div>
@@ -1009,6 +1069,7 @@
         $(window).load(function() { 
 
             console.debug("Window.Load");
+
             if ('@ViewData["Name"]' != null && '@ViewData["Name"]'.length > 0)
             {
                 console.debug("ViewData[Name] : " + '@(ViewData["Name"])');
@@ -2387,12 +2448,29 @@
 
         $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
             console.log(evt.target.id + "() " + evt.type);
-            $("#blobStorJsGrid").jsGrid("loadData");
+            toggleLoader(false);
+            var targetDeviceListName = 'imageGalleryDeviceIdList';
+            GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
+                .then((ret) => {
+                    $("#blobStorJsGrid").jsGrid("loadData");
+                })
+                .finally(() => {
+                    toggleLoader(true);
+                })      
         })
 
         $('#tab-cosmosDb-label').on('show.bs.tab', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            $("#cosmosDbJsGrid").jsGrid("loadData");
+
+            toggleLoader(false);
+            var targetDeviceListName = 'cosmosDbDeviceIdList';
+            GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
+                .then((ret) => {
+                    $("#cosmosDbJsGrid").jsGrid("loadData");
+                })
+                .finally(() => {
+                    toggleLoader(true);
+                })   
         })
 
         $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
@@ -2632,7 +2710,7 @@
                 $('#getDeployHistoryBtn').prop('disabled', false);
                 currentDeviceId = document.getElementById(targetListId).value;
             } else {
-                $('#deployByConfiguratonHistoryBtn').prop('disabled', false);
+                $('#deployByConfiguratonHistoryBtn').prop('disabled', true);
                 $('#getDeployHistoryBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
@@ -2729,6 +2807,30 @@
             telemetryTableFilter2(evt.target.id);
         })
 
+        $('#imageGalleryDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                blobSearchDeviceId = document.getElementById(targetListId).value;
+                $("#blobStorJsGrid").jsGrid("search", {DeviceId: blobSearchDeviceId});
+            } else {
+            }
+        })
+
+        $('#cosmosDbDeviceIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
+
+            if (isItemSelected(targetListId, null)) {
+                cosmosDbSearchDeviceId = document.getElementById(targetListId).value;
+                $("#cosmosDbJsGrid").jsGrid("search", {Device_ID: cosmosDbSearchDeviceId});
+            } else {
+            }
+        })
+
         $('#createBaseCustomVisionProjectName').on('input', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var inputField = document.getElementById('createBaseCustomVisionProjectName');
@@ -2776,6 +2878,10 @@
             modal.style.display = "none";
         });
 
+        $("#deploymentHistoryModalRefreshBtn").on("click", function (evt) {
+            $("#deploymentHistoryGrid").jsGrid("loadData");
+        });
+
         function ResetDeploymentUi() {
             document.getElementById('createDeployConfigurationConfigId').value = '';
             document.getElementById('createDeployConfigurationSensorLoaderVersionNumber').value = '';
@@ -2806,12 +2912,12 @@
                     <i class="fas fa-angle-double-down" onclick="toggleTableDetail(this)" data-targetId="#event-{{eventId}}"></i>
                 </button>
             </td>
-            <td>{{eventTime}}</td>
-            <td>{{eventDeviceId}}</td>
-            <td>{{eventModelId}}</td>
-            <td>{{eventSource}}</td>
-            <td>{{eventType}}</td>
-            <td>
+            <td style="width:auto">{{eventTime}}</td>
+            <td style="width:auto">{{eventDeviceId}}</td>
+            <td style="width:auto">{{eventModelId}}</td>
+            <td style="width:auto">{{eventSource}}</td>
+            <td style="width:auto">{{eventType}}</td>
+            <td style="width:1em">
                 <button class="btn btn-primary btn-fa-icon" id="btn-{{eventId}}" disabled>
                     <i class="fas fa-eye" onclick="viewPhoto(this)" eventId="{{eventId}}"></i>
                 </button>

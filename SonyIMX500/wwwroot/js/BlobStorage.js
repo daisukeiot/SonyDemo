@@ -52,7 +52,7 @@ function addImage(deviceId, image_url, image_file_name) {
 
 $("#blobStorJsGrid").jsGrid({
     width: "100%",
-    height: "400",
+    height: "40vh",
 
     loadIndication: true,
     loadIndicationDelay: 500,
@@ -68,6 +68,7 @@ $("#blobStorJsGrid").jsGrid({
     allowSelection: true,
     selectionSettings: { persistSelection: true },
     loadMessage: "Loading images from Blob Storage...",
+    pageSize: 10,
     controller: {
         loadData: function (filter) {
             toggleLoader(false);
@@ -82,7 +83,7 @@ $("#blobStorJsGrid").jsGrid({
             }).done(function (response) {
                 var array = JSON.parse(response.value);
                 array = $.grep(array, function (value) {
-                    return ((!filter.CreateDate || value.CreateDate.toUpperCase().indexOf(filter.CreateDate.toUpperCase()) > -1) && 
+                    return ((!filter.CreateDate || value.CreateDate.toUpperCase().indexOf(filter.CreateDate.toUpperCase()) > -1) &&
                         (!filter.DeviceId || value.DeviceId.toUpperCase().indexOf(filter.DeviceId.toUpperCase()) > -1) &&
                         (!filter.FileName || value.FileName.toUpperCase().indexOf(filter.FileName.toUpperCase()) > -1));
                 });
@@ -101,22 +102,22 @@ $("#blobStorJsGrid").jsGrid({
             name: "Image",
             text: "Image",
             itemTemplate: function (val, item) {
-                return $("<img>").attr("src", val).css({ "max-height": "75px", "min-height": "75px", "max-width": "80px", "object-fit": "contain" }).on("click", function () {
+                return $("<img>").attr("src", val).css({ "max-height": "40px", "min-height": "40px", "max-width": "42px", "object-fit": "contain" }).on("click", function () {
                     $("#imagePreview").attr("src", item.Image);
                 });
             },
-            align: "left",
+            align: "center",
             width: "84px",
             filtering: false
-        },
-        {
-            name: "CreateDate", type: "text", align: "left", width: "auto"
         },
         {
             name: "DeviceId", type: "text", align: "left", width: "auto"
         },
         {
             name: "FileName", type: "text", align: "left", width: "auto"
+        },
+        {
+            name: "CreateDate", type: "text", align: "left", width: "auto"
         },
         {
             type: "control", deleteButton: false, editButton: false,
@@ -128,8 +129,10 @@ $("#blobStorJsGrid").jsGrid({
 
     rowClick: function (args) {
         $("#imagePreview").attr("src", args.item.Image);
+        $("#imagePreviewName").html(args.item.FileName);
     },
 });
+
 
 var imagerenderer = function (item, value) {
     console.log(value)
