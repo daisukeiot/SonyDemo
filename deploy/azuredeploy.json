@@ -61,7 +61,7 @@
 			"family": "S",
 			"hostingPlan": "[format('{0}-AppHost-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
 			"functionsName": "[format('{0}-{1}', parameters('Function_App_Name'),parameters('UniqueID'))]",
-			"webappName": "[parameters('Web_App_Name')]"
+			"webappName": "[format('{0}-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]"
 		},
 		"signalr": {
 			"apiVersion": "2022-02-01",
