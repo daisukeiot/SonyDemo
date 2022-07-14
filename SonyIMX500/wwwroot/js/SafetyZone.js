@@ -59,7 +59,7 @@ function getHandle(mouse) {
 
 function mouseDown(e) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    //console.debug("=>", funcName);
 
     e.preventDefault();
     e.stopPropagation();
@@ -85,7 +85,7 @@ function mouseDown(e) {
 
 function mouseUp(e) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    //console.debug("=>", funcName);
     e.preventDefault();
     e.stopPropagation();
 
@@ -122,7 +122,7 @@ function mouseUp(e) {
 
 function mouseMove(e) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+   // console.debug("=>", funcName);
 
     e.preventDefault();
     e.stopPropagation();
@@ -188,7 +188,7 @@ function mouseMove(e) {
 
 function drawRegion() {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    //console.debug("=>", funcName);
 
     if (currentHandle == false) {
         // mouse pointer not on a corner / line.  Clear region
@@ -346,28 +346,45 @@ async function processBlobMessage(signalRMsg) {
         return;
     }
 
+    var imagePath = pendingImagePath.split("/");
+
+    if (imagePath.length != 4) {
+        return;
+    }
+
     try {
         var message = JSON.parse(signalRMsg);
-        var device_id = document.getElementById("safetyDetectionDeviceIdList").value;
+        var blobPath = message.blobPath.split("/");
+
+        if (imagePath[1] != document.getElementById("safetyDetectionDeviceIdList").value) {
+            return;
+        } else if (blobPath[0] != imagePath[1]) {
+            return;
+        } else if (blobPath[1] != imagePath[2]) {
+            return;
+        } else if (blobPath[2] != imagePath[3]) {
+            return;
+        }
 
         await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'home/GetImagesFromBlob',
             data: {
-                deviceId: device_id,
+                deviceId: imagePath[1],
                 imagePath: message.blobPath
             }
         }).done(function (response) {
             console.debug(response.value);
             var json = JSON.parse(response.value);
-            var canvas = document.getElementById("captureImageCanvas");
+            var canvas = document.getElementById("captureImageCanvasOverlay");
             var ctx = canvas.getContext('2d');
             var img = new Image();
             img.src = json.uri;
             img.onload = function () {
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
             }
+            pendingImagePath = '';
         });
     } catch (err) {
     } finally {
