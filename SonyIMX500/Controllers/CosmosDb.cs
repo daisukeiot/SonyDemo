@@ -100,6 +100,11 @@ namespace SonyIMX500.Controllers
                                     {
                                         double p = (double)item.Value["P"];
 
+                                        if (p > 1)
+                                        {
+                                            _logger.LogInformation($"Test");
+                                        }
+
                                         if ((p < thresholdValue) || (p > 1))
                                         {
                                             continue;

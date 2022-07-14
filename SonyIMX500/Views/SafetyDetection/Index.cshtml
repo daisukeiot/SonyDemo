@@ -1,0 +1,248 @@
+﻿@section scripts {
+    <script type="text/javascript" src="/js/SonyApi.js"></script>
+    <script type="text/javascript" src="/js/Token.js"></script>
+    <script type="text/javascript" src="/js/SafetyZone.js"></script>
+}
+<body>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                    <h3>Sony IMX500 Hands-on Lab Custom Vision</h3>
+            </div>
+        </div>
+    </section>
+    <!-- Main content -->
+    <div id="loader" class="loading" style="display:none"></div>
+    <div class="container-fluid">
+        <div class="row row-cols-md-1">
+            <div class="card card-primary card-outline">
+                <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs" id="tab-main" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="tab-setup-label" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry/Events</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content" id="tab-main">
+                        <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
+                            <div class="row">
+                                <div class="col-md-3" style="min-width:320px">
+                                    <div class="row">
+                                        <canvas id="captureImageCanvas" height="320" width="320" style="border:1px dashed green;justify-content:right"></canvas>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div id="accordion">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionCaptureImage">
+                                                        Step 1 : Capture Image
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordionCaptureImage" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="row div-Horizontal-Input" style="justify-content:right">
+                                                        <label class="label-right" style="width:auto" for="safetyDetectionDeviceIdList">Device ID :</label>
+                                                        <select name="safetyDetectionDeviceIdList" id="safetyDetectionDeviceIdList" class="form-control custom-select" style="min-width:10em; max-width:50%"></select>
+                                                    </div>
+                                                    <div class="row div-Horizontal-Input" style="justify-content:right">
+                                                        <label class="label-right" style="width:auto" for="safetyDetectionModelIdList">Model ID :</label>
+                                                        <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" style="min-width:10em; max-width:50%"></select>
+                                                    </div>
+                                                    <div class="div-Button-Right">
+                                                        <button type="button" class="btn btn-success" id="captureImageBtn">
+                                                            <i class="fas fa-sign-in-alt btn-fa"></i>Capture
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionSpecifyZone">
+                                                        Step 2 : Specify Zone
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordionSpecifyZone" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="row">
+                                                        <div class="col-md-auto">
+                                                            <div class="row vertical-center-relative">
+                                                                <button type="button" class="btn btn-success" id="captureImageBtn">
+                                                                    <i class="fas fa-sign-in-alt btn-fa"></i>Adjust Region
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-auto">
+                                                            <div style="text-align:right">
+                                                                <strong>Top Left</strong>
+                                                            </div>
+                                                            <div style="text-align:right">
+                                                                <strong >Bottom Right</strong>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4">
+                                                            <div>
+                                                                <pre class="pre-inline">(x:<pre class="pre-inline" id="region_x"></pre>, y:<pre class="pre-inline" id="region_y"></pre>)</pre>
+                                                            </div>
+                                                            <div>
+                                                                <pre class="pre-inline">(x:<pre class="pre-inline" id="region_w"></pre>, y:<pre class="pre-inline" id="region_h"></pre>)</pre>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionStartInference">
+                                                        Step 3 : Start Inference
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordionStartInference" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="row div-Horizontal-Input" style="justify-content:left;border:1px dashed blue;">
+                                                        <input type="range" class="slider-horizontal" min="0" max="100" value="80" step="1" id="safetyDetectionThreshold" style="min-width:60%; max-width:80%">
+                                                        <label class="label-right" for="safetyDetectionThreshold" id="safetyDetectionThresholdLabel" style="min-width:5em;width:auto">100%</label>
+                                                    </div>
+                                                    <div class="div-Button-Right">
+                                                        <button type="button" class="btn btn-success" id="startInferenceBtn">
+                                                            <i class="fas fa-play btn-fa"></i>Start
+                                                        </button>
+                                                        <button type="button" class="btn btn-success" id="stopInferenceBtn">
+                                                            <i class="fas fa-stop btn-fa"></i>Stop
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveParameter">
+                                                        Step 4 : Save Parameter
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                            <div id="accordionSaveParameter" class="collapse" data-parent="#accordion">
+                                                <div class="card-body">
+                                                    <div class="div-Button-Right">
+                                                        <button type="button" class="btn btn-success" id="startInferenceBtn">
+                                                            <i class="fas fa-play btn-fa"></i>Save
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var hubConnection;
+        var start;
+
+        $(document).ready(function () {
+            console.debug("Safety Zone : document.Ready");
+            document.getElementById('nav-link-home').classList.remove('active');
+            document.getElementById('nav-link-sd').classList.add('active');
+
+            initCanvas('captureImageCanvas');
+
+            hubConnection = new signalR.HubConnectionBuilder()
+                .withUrl("telemetryHub")
+                .configureLogging(signalR.LogLevel.Debug)
+                .build();
+
+            hubConnection.on('CosmosDb', function (payload) {
+                var jsonData = JSON.parse(payload);
+                console.debug("CosmosDB ", payload);
+            });
+
+            hubConnection.on('blobTrigger', function (payload) {
+                var jsonData = JSON.parse(payload);
+                var millis = Date.now() - start;
+                console.debug(`seconds elapsed = ${Math.floor(millis / 1000)}`);
+                console.debug("blobTrigger ", payload);
+                processBlobMessage(payload);
+            });
+
+            hubConnection.start()
+                .then(() => console.log('SignalR connected!'))
+                .catch(console.error);
+        })
+
+        $(window).load(function() {
+        });
+
+        //
+        // Accordion
+        //
+
+        $('#accordionCaptureImage').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            GetDevices("safetyDetectionDeviceIdList", true, true, 'Select Device', '')
+                .then(() => { 
+                    GetAllModels("safetyDetectionModelIdList", false);
+                
+                })
+                .finally(() => {
+                })
+        })
+
+        $('#accordionSpecifyZone').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#accordionStartInference').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#accordionSaveParameter').on('show.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+
+        //
+        // Change event
+        //
+
+        //
+        // button clicks
+        //
+        $('#captureImageBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            console.debug("captureImageBtn ", Date.now());
+            start = Date.now();
+            // toggleLoader(false);
+            CaptureSingleImage()
+                .then(() => { })
+                .finally(() => {
+                    // toggleLoader(false);
+                });
+        })
+        //
+        // Tab
+        //
+
+        // Modal
+
+    </script>
+</body>

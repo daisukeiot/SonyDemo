@@ -267,7 +267,6 @@ namespace SonyIMX500.Controllers
                                 if (fileNameSplit[0] == timeStamp)
                                 {
                                     string sas = GetSasToken();
-                                    var test = $"{{\"uri\":\"{blobContainerClient.Uri.AbsoluteUri}/{item.Name}{sas}\"}}";
                                     return Ok(Json($"{{\"uri\":\"{blobContainerClient.Uri.AbsoluteUri}/{item.Name}{sas}\"}}"));
                                 }
                             }
@@ -276,6 +275,34 @@ namespace SonyIMX500.Controllers
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, Json($"{{\"Status\":\"Image File ({timeStamp}) Not Found in Blob Storage\"}}"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetImagesFromBlob(string deviceId, string imagePath)
+        {
+            try
+            {
+                BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
+                BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("iothub-link");
+
+                await foreach (BlobItem item in blobContainerClient.GetBlobsAsync())
+                {
+                    if (item.Name.IndexOf(imagePath) < 0)
+                    {
+                        continue;
+                    }
+
+                    string sas = GetSasToken();
+                    return Ok(Json($"{{\"uri\":\"{blobContainerClient.Uri.AbsoluteUri}/{item.Name}{sas}\"}}"));
+                }
+
+                return StatusCode(StatusCodes.Status404NotFound, Json($"{{\"Status\":\"Image File ({imagePath}) Not Found in Blob Storage\"}}"));
             }
             catch (Exception ex)
             {

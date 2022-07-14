@@ -1,11 +1,38 @@
 ﻿.label-right {
     display: inline-block;
-    width: 7em;
-    text-align: left;
+    width: -webkit-fill-available;
+    text-align: right;
+    float: left;
+    min-width: max-content;
+    margin-right:0.5em;
 }
 
 label {
     margin-bottom : 0.2em;
+    margin-top: 0.5em;
+}
+
+.pre-inline {
+    font-size: 1rem;
+    margin: 0;
+    padding: 0;
+    display:inline
+
+}
+.div-Horizontal-Input {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: right;
+    margin-bottom: 0.5em;
+    margin-right:0;
+    margin-left:0;
+}
+
+.div-Button-Right {
+    justify-content: right;
+    text-align: right;
     margin-top: 0.5em;
 }
 
@@ -183,6 +210,15 @@ label {
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     overflow-x:auto;
+}
+
+.vertical-center-relative {
+    position: relative;
+    top: 50%;
+    right: 0;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    overflow-x: auto;
 }
 
 /*.modal {

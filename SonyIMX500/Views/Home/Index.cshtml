@@ -1132,6 +1132,11 @@
                 addCosmosDbEvent(jsonData.eventId, jsonData.eventType, jsonData.deviceId, jsonData.dtDataSchema, jsonData.eventSource, jsonData.eventTime, jsonData.hasImage, jsonData.inferenceResults);
             });
 
+            hubConnection.on('blobTrigger', function (payload) {
+                // console.debug("blobTrigger ", payload);
+            });
+
+
             hubConnection.start()
                 .then(() => console.log('SignalR connected!'))
                 .catch(console.error);
