@@ -89,16 +89,12 @@
                                                                             <h5 id="userDesc" class="widget-user-desc">User Desc</h5>
                                                                         </div>
                                                                     </div>
-
-                                                                    <div class="form-group row">
-                                                                        <label for="clientId">Client ID</label>
-<!--                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@ViewData["ClientId"]>-->
-                                                                        @*<input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@TempData["ClientId"]>*@
-                                                                        <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@ViewData["ClientId"]>
-                                                                    </div>
-
                                                                     <div class="info-box">
                                                                         <div class="info-box-content">
+                                                                            <div class="form-group">
+                                                                                <label for="clientId">Client ID</label>
+                                                                                <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@ViewData["ClientId"]>
+                                                                            </div>
                                                                             <span class="info-box-text">
                                                                                 <label for="taToken">Token</label>
                                                                                 <textarea id="taToken" class="form-control" cols="30" rows="3"></textarea>
@@ -112,13 +108,14 @@
                                                                                 </button>
                                                                             </div>
                                                                             <span class="info-box-text" style="margin-top:0.5em">
-                                                                                <label for="spanTokenExpire" class="label-right">Expiration:</label>
+                                                                                <label for="spanTokenExpire">Expiration:</label>
                                                                                 <span class="info-box-text" style="display:contents" id='spanTokenExpire'></span>
                                                                             </span>
                                                                             <span class="info-box-text" style="margin-top:0.5em">
-                                                                                <label for="spanTokenLastUpdate" class="label-right">Last Update:</label>
+                                                                                <label for="spanTokenLastUpdate">Last Update:</label>
                                                                                 <span class="info-box-text" id='spanTokenLastUpdate' style="display:contents"></span>
                                                                             </span>
+
                                                                         </div>
                                                                     </div>
                                                                 </div>
