@@ -1,7 +1,14 @@
 ﻿@section scripts {
     <script type="text/javascript" src="/js/SonyApi.js"></script>
     <script type="text/javascript" src="/js/Token.js"></script>
+    <script type="text/javascript" src="/js/BlobStorage.js"></script>
     <script type="text/javascript" src="/js/SafetyZone.js"></script>
+@*    <script type="text/javascript" src="https://MomentJS.com/downloads/moment.js"></script>
+    <script type="text/javascript" src="https://MomentJS.com/downloads/moment-with-locales.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>
+*@
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.2/chart.min.js"></script>
 }
 <body>
     <section class="content-header">
@@ -14,134 +21,241 @@
     <!-- Main content -->
     <div id="loader" class="loading" style="display:none"></div>
     <div class="container-fluid">
-        <div class="row row-cols-md-1">
-            <div class="card card-primary card-outline">
-                <div class="card-header p-0 pt-1">
-                    <ul class="nav nav-tabs" id="tab-main" role="tablist">
-                        <li class="nav-item">
-                            <a class="nav-link active" id="tab-setup-label" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry/Events</a>
-                        </li>
-                    </ul>
-                </div>
-                <div class="card-body">
-                    <div class="tab-content" id="tab-main">
-                        <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
-                            <div class="row">
-                                <div class="col-md-3" style="min-width:320px">
-                                    <div class="row">
-                                        <canvas id="captureImageCanvas" height="320" width="320" style="border:1px dashed green;justify-content:right;position:absolute"></canvas>
-                                        <canvas id="captureImageCanvasOverlay" height="320" width="320" style="justify-content:right"></canvas>
+        <div class="row">
+            <div class="col-12 col-sm-12">
+                <div class="card card-primary card-tabs">
+                    <div class="card-header p-0 pt-1">
+                        <ul class="nav nav-tabs" id="tab-main" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="tab-setup-label" data-toggle="pill" href="#tabs-setup" role="tab" aria-controls="tabs-setup" aria-selected="true">Setup</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="tab-telemetry-label" data-toggle="pill" href="#tab-telemetry" role="tab" aria-controls="tab-telemetry" aria-selected="false">Telemetry/Events</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card-body">
+                        <div class="tab-content" id="tab-main">
+                            <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
+                                <div class="row">
+                                    <div class="col-md-3" style="min-width:640px">
+                                        <div class="container loader-parent">
+                                            <div class="row justify-content-center align-items-center" style="position:relative">
+                                                <canvas id="captureImageCanvasOverlay" height="640" width="640"></canvas>
+                                                <canvas id="captureImageCanvas" height="640" width="640" style="border:1px dashed green;position:absolute"></canvas>
+                                            </div>
+                                            <div id="canvasLoaderWrapper" height="640" width="640" style="display:none">
+                                                <div id="canvasLoader">
+                                                </div>
+                                                <div class="loading-text" id="canvasLoaderText">Waiting for an image. This can take a few minutes.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="min-width:60%">
+                                        <div id="accordion">
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100" data-toggle="collapse" href="#accordionCaptureImage">
+                                                            Step 1 : Capture Image
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="accordionCaptureImage" class="collapse" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        <div class="info-box">
+                                                            <div class="info-box-content">
+                                                                <label for="safetyDetectionDeviceIdList">Device ID</label>
+                                                                <div class="form-group">
+                                                                    <div class="input-group">
+                                                                        <select name="safetyDetectionDeviceIdList" id="safetyDetectionDeviceIdList" class="form-control custom-select"></select>
+                                                                        <div class="input-group-append">
+                                                                            <button type="button" class="btn btn-success" style="min-width:1em" id="captureImageRefreshDeviceListBtn">
+                                                                                <i class="fas fa-sync btn-fa" style="margin:0"></i>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="safetyDetectionModelIdList">Model ID</label>
+                                                                    <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" disabled></select>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label for="divTrigger">Trigger</label>
+                                                                    <div id="divTrigger" >
+                                                                        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                                                            <label class="btn btn-info" style="min-width:8em">
+                                                                                <input type="radio" name="safetyDetectionImageNotification" id="safetyDetectionImageNotification_Telemetry" autocomplete="off" value="telemetry">Telemetry
+                                                                            </label>
+                                                                            <label class="btn btn-info active" style="min-width:8em">
+                                                                                <input type="radio" name="safetyDetectionImageNotification" id="safetyDetectionImageNotification_CosmosDb" autocomplete="off" value="cosmosDb" checked>Cosmos DB  
+                                                                            </label>
+                                                                            <label class="btn btn-info" style="min-width:8em">
+                                                                                <input type="radio" name="safetyDetectionImageNotification" id="safetyDetectionImageNotification_Telemetry_Blob" autocomplete="off" value="blob">Blob Storage
+                                                                            </label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="footer-div">
+                                                            <button type="button" class="btn btn-success" id="captureImageBtn" disabled>
+                                                                <i class="fas fa-camera btn-fa"></i>Capture
+                                                            </button>
+                                                            <div class="info-box-text vertical-center" id='captureImageBtnResult'>Place Holder : To be deleted</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100" data-toggle="collapse" href="#accordionSpecifyZone">
+                                                            Step 2 : Specify Zone
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="accordionSpecifyZone" class="collapse" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        <div class="info-box">
+                                                            <div class="info-box-content">
+                                                                <div class="row">
+                                                                    <div class="col-md-auto">
+                                                                        <div style="text-align:right">
+                                                                            <strong>Top Left</strong>
+                                                                        </div>
+                                                                        <div style="text-align:right">
+                                                                            <strong >Bottom Right</strong>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <div>
+                                                                            <pre class="pre-inline">(x:<pre class="pre-inline" id="region_x"></pre>, y:<pre class="pre-inline" id="region_y"></pre>)</pre>
+                                                                        </div>
+                                                                        <div>
+                                                                            <pre class="pre-inline">(x:<pre class="pre-inline" id="region_w"></pre>, y:<pre class="pre-inline" id="region_h"></pre>)</pre>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100" data-toggle="collapse" href="#accordionStartInference">
+                                                            Step 3 : Start Inference
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="accordionStartInference" class="collapse" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        <div class="info-box">
+                                                            <div class="info-box-content">
+                                                                <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                                    <label for="safetyDetectionImageCountRange" style="margin-right:0.5em; width:11em">Number of images : </label>
+                                                                    <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
+                                                                        <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountRange" style="width:100%">
+                                                                    </div>
+                                                                    <span><span id="safetyDetectionImageCount"></span><span> images</span></span>
+                                                                </div>
+                                                                <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                                    <label for="safetyDetectionThresholdRange" style="margin-right:0.5em; width:11em">Threashold (percent) : </label>
+                                                                    <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
+                                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdRange" style="width:100%">
+                                                                    </div>
+                                                                    <span> <span id="safetyDetectionThreshold"></span><span> %</span></span>
+                                                                </div>
+                                                                <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                                    <label for="safetyDetectionFrequencyRange" style="margin-right:0.5em; width:11em">Frequency (seconds) : </label>
+                                                                    <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
+                                                                        <input type="range" class="slider" min="10" max="600" value="10" step="1" id="safetyDetectionFrequencyRange" style="width:100%">
+                                                                    </div>
+                                                                    <span id="safetyDetectionFrequency"></span><span> sec</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <div class="footer-div">
+                                                            <button type="button" class="btn btn-success btn-icon" id="startInferenceBtn" disabled>
+                                                                <i class="fas fa-play btn-fa"></i>Start
+                                                            </button>
+                                                            <button type="button" class="btn btn-success btn-icon" id="stopInferenceBtn" disabled>
+                                                                <i class="fas fa-stop btn-fa"></i>Stop
+                                                            </button>
+                                                            <div class="info-box-text vertical-center" id='startInferenceBtnResult'>Place Holder : To be deleted</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card card-primary">
+                                                <div class="card-header">
+                                                    <h4 class="card-title w-100">
+                                                        <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveParameter">
+                                                            Step 4 : Save Parameter
+                                                        </a>
+                                                    </h4>
+                                                </div>
+                                                <div id="accordionSaveParameter" class="collapse" data-parent="#accordion">
+                                                    <div class="card-body">
+                                                        <div class="div-Button-Right">
+                                                            <button type="button" class="btn btn-success" id="startInferenceResultBtn" disabled>
+                                                                <i class="fas fa-play btn-fa"></i>Save
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div id="accordion">
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h4 class="card-title w-100">
-                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionCaptureImage">
-                                                        Step 1 : Capture Image
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="accordionCaptureImage" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <div class="row div-Horizontal-Input" style="justify-content:right">
-                                                        <label class="label-right" style="width:auto" for="safetyDetectionDeviceIdList">Device ID :</label>
-                                                        <select name="safetyDetectionDeviceIdList" id="safetyDetectionDeviceIdList" class="form-control custom-select" style="min-width:10em; max-width:50%"></select>
+                            </div>
+                            <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
+                                <div class="info-box" style="margin-bottom:0.5em">
+                                    <div class="info-box-content">
+                                        <div class="form-group">
+                                            <label for="inferenceDetectionDeviceIdList" style="width:10em">Select Device ID : </label>
+                                            <select name="inferenceDetectionDeviceIdList" id="inferenceDetectionDeviceIdList" class="form-control custom-select" style="min-width:15em; width:30%"></select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="inferenceDetectionModelIdList" style="width:10em">Select Model ID : </label>
+                                            <select name="inferenceDetectionModelIdList" id="inferenceDetectionModelIdList" class="form-control custom-select" style="min-width:15em; width:30%" disabled></select>
+                                        </div>
+                                        <div class="btnStatusDiv">
+                                            <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
+                                                <i class="fas fa-play btn-fa"></i>Start Inference
+                                            </button>
+                                            <button type="button" class="btn btn-success" id="stopSafetyDetectionBtn" disabled>
+                                                <i class="fas fa-stop btn-fa"></i>Stop Inference
+                                            </button>
+                                            <div class="info-box-text vertical-center" id='startSafetyDetectionBtnResult'>Place Holder : To be deleted</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="info-box">
+                                    <div class="info-box-content">
+                                        <div class="row">
+                                            <div class="col-md-3" style="min-width:330px; min-height:350px">
+                                                <div class="container loader-parent" style="border:1px dashed green;">
+                                                    <div class="row justify-content-center align-items-center">
+                                                        <canvas id="inferenceImageCanvas" height="320" width="320" style="position:absolute"></canvas>
+                                                        <canvas id="inferenceImageCanvasOverlay" height="320" width="320"></canvas>
                                                     </div>
-                                                    <div class="row div-Horizontal-Input" style="justify-content:right">
-                                                        <label class="label-right" style="width:auto" for="safetyDetectionModelIdList">Model ID :</label>
-                                                        <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" style="min-width:10em; max-width:50%"></select>
-                                                    </div>
-                                                    <div class="div-Button-Right">
-                                                        <button type="button" class="btn btn-success" id="captureImageBtn">
-                                                            <i class="fas fa-sign-in-alt btn-fa"></i>Capture
-                                                        </button>
+                                                    <div id="canvasLoaderWrapper" height="320" width="320" style="display:none">
+                                                        <div id="canvasLoader">
+                                                        </div>
+                                                        <div class="loading-text" id="canvasLoaderText">Waiting for an image. This can take a few minutes.</div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h4 class="card-title w-100">
-                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionSpecifyZone">
-                                                        Step 2 : Specify Zone
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="accordionSpecifyZone" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <div class="row">
-                                                        <div class="col-md-auto">
-                                                            <div class="row vertical-center-relative">
-                                                                <button type="button" class="btn btn-success" id="captureImageBtn">
-                                                                    <i class="fas fa-sign-in-alt btn-fa"></i>Adjust Region
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-auto">
-                                                            <div style="text-align:right">
-                                                                <strong>Top Left</strong>
-                                                            </div>
-                                                            <div style="text-align:right">
-                                                                <strong >Bottom Right</strong>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <div>
-                                                                <pre class="pre-inline">(x:<pre class="pre-inline" id="region_x"></pre>, y:<pre class="pre-inline" id="region_y"></pre>)</pre>
-                                                            </div>
-                                                            <div>
-                                                                <pre class="pre-inline">(x:<pre class="pre-inline" id="region_w"></pre>, y:<pre class="pre-inline" id="region_h"></pre>)</pre>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h4 class="card-title w-100">
-                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionStartInference">
-                                                        Step 3 : Start Inference
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="accordionStartInference" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <div class="row div-Horizontal-Input" style="justify-content:left;border:1px dashed blue;">
-                                                        <input type="range" class="slider-horizontal" min="0" max="100" value="80" step="1" id="safetyDetectionThreshold" style="min-width:60%; max-width:80%">
-                                                        <label class="label-right" for="safetyDetectionThreshold" id="safetyDetectionThresholdLabel" style="min-width:5em;width:auto">100%</label>
-                                                    </div>
-                                                    <div class="div-Button-Right">
-                                                        <button type="button" class="btn btn-success" id="startInferenceBtn">
-                                                            <i class="fas fa-play btn-fa"></i>Start
-                                                        </button>
-                                                        <button type="button" class="btn btn-success" id="stopInferenceBtn">
-                                                            <i class="fas fa-stop btn-fa"></i>Stop
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="card card-primary">
-                                            <div class="card-header">
-                                                <h4 class="card-title w-100">
-                                                    <a class="d-block w-100" data-toggle="collapse" href="#accordionSaveParameter">
-                                                        Step 4 : Save Parameter
-                                                    </a>
-                                                </h4>
-                                            </div>
-                                            <div id="accordionSaveParameter" class="collapse" data-parent="#accordion">
-                                                <div class="card-body">
-                                                    <div class="div-Button-Right">
-                                                        <button type="button" class="btn btn-success" id="startInferenceBtn">
-                                                            <i class="fas fa-play btn-fa"></i>Save
-                                                        </button>
-                                                    </div>
+                                            <div class="col-md-9" style="min-width:330px">
+                                                <div class="chart">
+                                                    <canvas id="lineChart" style="min-height: 330px; height: 330px; max-height: 330px;"></canvas>
                                                 </div>
                                             </div>
                                         </div>
@@ -150,95 +264,407 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
-                    </div>
                 </div>
             </div>
         </div>
     </div>
     <script>
-        var hubConnection;
-        var start;
+        let hubConnection;
+        let start;
+        let currentDeviceId;
+        let currentModelId;
+        let thresholdSlider = document.getElementById("safetyDetectionThresholdRange");
+        let thresholdLabel = document.getElementById("safetyDetectionThreshold");
+        let frequencySlider = document.getElementById("safetyDetectionFrequencyRange");
+        let frequencyLabel = document.getElementById("safetyDetectionFrequency");
+        let imageCountSlider = document.getElementById("safetyDetectionImageCountRange");
+        let imageCountLabel = document.getElementById("safetyDetectionImageCount");
+        let thresholdSliderHandler;
+        let imageCountSliderHandler;
+        let frequencySpinnerHandler;
+        let lineChart;
+        let currentThreshold = 0.8;
 
-        $(document).ready(function () {
+        let chartOptions = {
+            showLines: true,
+            responsive: true,
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [{
+                    type: 'timeseries',
+                }],
+                yAxes: {
+                    type: 'linear',
+                    min: 0,
+                    max: 1,
+                    display: true,
+                    gridLines : {
+                        display : true,
+                    },
+                    ticks: {
+                        display: true,
+                        count: 10,
+                        stepSize:0.1,
+                        callback: function(val, index) {
+                            //return index % 2 === 0 ? val : '';
+                            return `${(val * 100).toFixed(0)}%`;
+                        },
+                    }
+                }
+            },
+            plugins: {
+                legend: false
+            }
+        }
+
+        var chartData = {
+                labels: [],
+                datasets: [
+                    {
+                        label: "Inference Results",
+                        fill: false,
+                        lineTension: 0.0,
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHitRadius: 10,
+                        data: [],
+                    }
+                ]
+            };
+
+        $(document).ready(function() {
             console.debug("Safety Zone : document.Ready");
             document.getElementById('nav-link-home').classList.remove('active');
             document.getElementById('nav-link-sd').classList.add('active');
 
-            initCanvas('captureImageCanvas');
+            thresholdLabel.innerHTML = thresholdSlider.value;
+            frequencyLabel.innerHTML = frequencySlider.value;
+            imageCountLabel.innerHTML = imageCountSlider.value;
+
+            initCanvas('captureImageCanvasOverlay', 'captureImageCanvas');
 
             hubConnection = new signalR.HubConnectionBuilder()
                 .withUrl("telemetryHub")
                 .configureLogging(signalR.LogLevel.Debug)
                 .build();
 
-            hubConnection.on('CosmosDb', function (payload) {
-                var jsonData = JSON.parse(payload);
-                console.debug("CosmosDB ", payload);
+            hubConnection.on('DeviceTelemetry', function(payload) {
+                printTime("Telemetry");
+                //console.debug(payload);
+                processTelemetryMessage(payload);
+                processTelemetryForChart(payload, lineChart);
             });
 
-            hubConnection.on('blobTrigger', function (payload) {
+            hubConnection.on('CosmosDb', function(payload) {
+                printTime("CosmosDb");
                 var jsonData = JSON.parse(payload);
-                var millis = Date.now() - start;
-                console.debug(`seconds elapsed = ${Math.floor(millis / 1000)}`);
-                console.debug("blobTrigger ", payload);
+                //console.debug("CosmosDB ", payload);
+                //var millis = Date.now() - start;
+                //console.debug(`CosmosDB seconds elapsed = ${Math.floor(millis / 1000)}`);
+                processCosmosDbMessage(payload, currentThreshold);
+            });
+
+            hubConnection.on('blobTrigger', function(payload) {
+                printTime("blobTrigger");
+                var jsonData = JSON.parse(payload);
+                //var millis = Date.now() - start;
+                //console.debug("blobTrigger ", payload);
+                //console.debug(`Blob seconds elapsed = ${Math.floor(millis / 1000)}`);
                 processBlobMessage(payload);
             });
 
             hubConnection.start()
                 .then(() => console.log('SignalR connected!'))
                 .catch(console.error);
-        })
 
-        $(window).load(function() {
+            var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
+
+            lineChart = new Chart(lineChartCanvas, {
+                type: 'line',
+                data: chartData,
+                options: chartOptions
+            });
         });
 
         //
         // Accordion
         //
-
         $('#accordionCaptureImage').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            GetDevices("safetyDetectionDeviceIdList", true, true, 'Select Device', '')
-                .then(() => { 
-                    GetAllModels("safetyDetectionModelIdList", false);
-                
-                })
-                .finally(() => {
-                })
+            if (currentDeviceId == undefined) {
+                toggleLoader(false);
+
+                GetDevices("safetyDetectionDeviceIdList", true, true, 'Select Device', '0')
+                    .then((response) => { 
+                        if (response == false) {
+                            var resultElement = document.getElementById('captureImageBtnResult');
+                            setResultElement(resultElement, "Failed to retrieve device list");
+                        }
+                    })
+                    .catch((err) => {
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    })
+            }
         })
 
         $('#accordionSpecifyZone').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
+            toggleMouseEvent(false);
+        })
+
+        $('#accordionSpecifyZone').on('hide.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleMouseEvent(true);
         })
 
         $('#accordionStartInference').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
+
+            imageCountSlider.addEventListener("input", function imageCountSliderHandler(evt) {
+                var count = parseInt(evt.target.value);
+
+                if (count == 0)
+                {
+                    imageCountLabel.innerHTML = "0 (Continuous)"
+                }
+                else
+                {
+                    imageCountLabel.innerHTML = evt.target.value;
+                }
+            })
+
+            thresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
+                thresholdLabel.innerHTML = evt.target.value;
+                currentThreshold = parseInt(evt.target.value) / 100;
+            })
+
+            frequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
+                frequencyLabel.innerHTML = evt.target.value;
+            })
+        })
+
+        $('#accordionStartInference').on('hide.bs.collapse', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            thresholdSlider.removeEventListener("input", thresholdSliderHandler);
+            frequencySlider.removeEventListener("input", frequencySpinnerHandler);
+            imageCountSlider.removeEventListener("input", imageCountSliderHandler);
         })
 
         $('#accordionSaveParameter').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
         })
 
+        //
+        // Tab
+        //
+        $('#tab-setup-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        })
+
+        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+            GetDevices("inferenceDetectionDeviceIdList", true, false, 'Select Device', '0')
+                .then((response) => { 
+
+                })
+                .catch((error) => {
+                })
+                .finally(() => {
+                    toggleLoader(true);
+                })
+        })
 
         //
         // Change event
         //
+        $('#safetyDetectionDeviceIdList').on('change', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var deviceList = document.getElementById(targetListId);
 
+            if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value)) {
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+                await GetSingleDevice(currentDeviceId, 'safetyDetectionModelIdList', 'captureImageBtnResult')
+                    .then(function(isDisconnected) {
+                        if (isDisconnected == false)
+                        {
+                            // Make sure the device is not running inference.
+                            StopInference();
+                        }
+                    })
+                    .catch((err) => {
+                        var resultElement = document.getElementById('captureImageBtnResult');
+                        setResultElement(resultElement, "Failed to retrieve model list");
+                    });
+            }
+        })
+
+        $('#safetyDetectionModelIdList').on('change', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelList = document.getElementById(targetListId);
+            currentModelId = modelList[modelList.selectedIndex].value;
+
+            if (modelList.selectedIndex > 0)
+            {
+                disableUiElements(false);
+            }
+            else
+            {
+                disableUiElements(true);
+            }
+        })
+
+        $('#inferenceDetectionDeviceIdList').on('change', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var targetListId = evt.target.id;
+            var modelListId = 'inferenceDetectionModelIdList';
+            var deviceList = document.getElementById(targetListId);
+            var modelList = document.getElementById(modelListId);
+
+            if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value)) {
+                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+                await GetSingleDevice(currentDeviceId, modelListId, 'captureImageBtnResult')
+                    .then(function(isDisconnected) {
+                        deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
+
+                        if (modelList.selectedIndex > 0 && isDisconnected == false) {
+                            $('#startSafetyDetectionBtn').prop('disabled', false);
+
+                        } else {
+                            $('#startSafetyDetectionBtn').prop('disabled', true);
+                        }
+                    });
+            }
+        })
+
+        $('#inferenceDetectionModelIdList').on('change', async function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var deviceListId = 'inferenceDetectionDeviceIdList';
+            var modelListId = evt.target.id;
+            var deviceList = document.getElementById(deviceListId);
+            var modelList = document.getElementById(modelListId);
+
+            if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
+
+                var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
+                $('#startSafetyDetectionBtn').prop('disabled', isDisconnected);
+            }
+        })
         //
         // button clicks
         //
+        $('#captureImageRefreshDeviceListBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            var resultElement = document.getElementById('saveCustomVisionModelBtnResult');
+            toggleLoader(false);
+
+            var selectedVal = $('#safetyDetectionDeviceIdList option:selected').val();
+
+            GetDevices('safetyDetectionDeviceIdList', true, false, 'Select Device', '0')
+                .then(() => { 
+                })
+                .catch((err) => {
+                    var resultElement = document.getElementById('captureImageBtnResult');
+                    setResultElement(resultElement, "Failed to refresh device list");
+                })
+                .finally(() => {
+                    if (selectedVal.length > 0) {
+                        console.debug(selectedVal);
+                        $('select[name="safetyDetectionDeviceIdList"]').val(selectedVal);
+                    }
+                    toggleLoader(true);
+                })
+        })
+
         $('#captureImageBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            console.debug("captureImageBtn ", Date.now());
+            printTime("captureImageBtn");
             start = Date.now();
-            // toggleLoader(false);
+            toggleLoader(false);
             CaptureSingleImage()
-                .then(() => { })
+                .then((response) => {
+                    var resultElement = document.getElementById('captureImageBtnResult');
+                    if (response.length > 0) {
+                        setResultElement(resultElement, `Waiting for image at ${response}`);
+                    }
+                    else {
+                        setResultElement(resultElement, 'Failed to capture image');
+                    }
+                })
                 .finally(() => {
-                    // toggleLoader(false);
+                    toggleLoader(true);
                 });
         })
+        
+        $('#startInferenceBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+            StartInference('startInferenceBtnResult')
+                .then(() => { })
+                .finally(() => {
+                    disableUiElements(true);
+                    $('#stopInferenceBtn').prop('disabled', false);
+                    toggleLoader(true);
+                });
+        })
+
+        $('#stopInferenceBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            StopInference('startInferenceBtnResult')
+                .then(() => { })
+                .finally(() => {
+                    disableUiElements(false);
+                    $('#stopInferenceBtn').prop('disabled', true);
+                    toggleLoader(true);
+                });
+        })
+
+        $('#startSafetyDetectionBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+            StartInference('startSafetyDetectionBtnResult')
+                .then(() => { })
+                .finally(() => {
+                    disableUiElements(false);
+                    $('#stopSafetyDetectionBtn').prop('disabled', false);
+                    toggleLoader(true);
+                });
+        })
+
+        $('#stopSafetyDetectionBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+            StopInference('startSafetyDetectionBtnResult')
+                .then(() => { })
+                .finally(() => {
+                    disableUiElements(true);
+                    $('#stopSafetyDetectionBtn').prop('disabled', true);
+                    toggleLoader(true);
+                });
+        })
+
+        $('input[type=radio]').change(function(evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+        });
+
         //
         // Tab
         //

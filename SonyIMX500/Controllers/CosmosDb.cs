@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
@@ -34,7 +35,8 @@ namespace SonyIMX500.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> loadData(string threshold)
+        //public async Task<IActionResult> loadData(string threshold, string recordCount, string deviceId)
+        public async Task<IActionResult> loadData(string threshold, string recordCount)
         {
             var responses = new List<COSMOS_DB_DATA>();
             COSMOS_DB_DATA response = null;
@@ -42,7 +44,22 @@ namespace SonyIMX500.Controllers
 
             try
             {
-                var query = $"SELECT TOP 1000 * FROM c order by c._ts desc";
+                string query;
+                string queryCondition = "IS_DEFINED(c.Inferences[0]['1']) = true";
+
+                //if (deviceId.Equals("*"))
+                //{
+                //    queryCondition += $" AND c.DeviceID = {deviceId}";
+                //}
+
+                if (recordCount.Equals("0"))
+                {
+                    query = $"SELECT * FROM c WHERE {queryCondition} order by c._ts desc";
+                }
+                else
+                {
+                    query = $"SELECT TOP {recordCount} * FROM c WHERE {queryCondition} order by c._ts desc";
+                }
 
                 QueryDefinition queryDef = new QueryDefinition(query);
 
@@ -99,11 +116,6 @@ namespace SonyIMX500.Controllers
                                     if (item.Key != "T")
                                     {
                                         double p = (double)item.Value["P"];
-
-                                        if (p > 1)
-                                        {
-                                            _logger.LogInformation($"Test");
-                                        }
 
                                         if ((p < thresholdValue) || (p > 1))
                                         {

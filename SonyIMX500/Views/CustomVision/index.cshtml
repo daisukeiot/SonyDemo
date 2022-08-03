@@ -3,7 +3,7 @@
 }
 @section scripts {
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    @*<script type="text/javascript" src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>*@
     <script type="text/javascript" src="/js/BlobStorage.js"></script>
     <script type="text/javascript" src="/js/CustomVision.js"></script>
 }
@@ -60,9 +60,7 @@
                             <div id="select-project-step" class="content" role="tabpanel" aria-labelledby="select-project-step-trigger">
                                 <div class="form-group">
                                     <label for="cvProjectList">Select Custom Vision Project</label>
-                                    <div class="input-group">
-                                        <select id="cvProjectList" class="form-control select2" style="width: 100%;" disabled>Custom Vision Project</select>
-                                    </div>
+                                    <select id="cvProjectList" class="form-control select2" style="width: 100%;" disabled>Custom Vision Project</select>
                                 </div>
                                 <div class="div-Button-Right">
                                     <button id="cvProjectListNextBtn" class="btn btn-primary" style="width:10rem" onclick="stepper.next()" disabled>Next</button>
@@ -70,10 +68,13 @@
                             </div>
                             <!-- Upload Image -->
                             <div id="upload-images-step" class="content" role="tabpanel" aria-labelledby="upload-images-step-trigger">
-                                <h4>Under Construction</h4>
                                 <div class="form-group">
                                     <div class="form-group">
-                                        <input type="text" name="projectId" id="cvProjectId" value="" hidden/>
+                                        <label for="projectId">Current Project :</label>
+                                        <span class="info-box-text" id="cvProjectId" value=""></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="projectId">Select images to upload</label>
                                         <div class="input-group">
                                             <div class="custom-file" id="cvImageFiles">
                                                 <input type="file" class="custom-file-input" id="cvUploadImages" multiple >
@@ -84,55 +85,6 @@
                                             </div>
                                         </div>
                                     </div>
-@*                                    <div class="btn-group w-50">
-                                        <span class="btn btn-success col fileinput-button">
-                                            <i class="fas fa-plus"></i>
-                                            <span>Add files</span>
-                                        </span>
-                                        <button class="btn btn-primary col start" onclick="CvUploadImages()">
-                                            <i class="fas fa-upload"></i>
-                                            <span>Start upload</span>
-                                        </button>
-                                        <button type="reset" class="btn btn-warning col cancel">
-                                            <i class="fas fa-times-circle"></i>
-                                            <span>Cancel upload</span>
-                                        </button>
-                                    </div>
-                                    <div class="table table-striped files" id="previews">
-                                        <div id="dropZoneTemplate" class="row mt-2">
-                                            <div class="col-auto">
-                                                <span class="preview"><img src="data:," alt="" data-dz-thumbnail /></span>
-                                            </div>
-                                            <div class="col d-flex align-items-center">
-                                                <p class="mb-0">
-                                                    <span class="lead" data-dz-name></span>
-                                                    (<span data-dz-size></span>)
-                                                </p>
-                                                <strong class="error text-danger" data-dz-errormessage></strong>
-                                            </div>
-                                            <div class="col-4 d-flex align-items-center">
-                                                <div class="progress progress-striped active w-100" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
-                                                    <div class="progress-bar progress-bar-success" style="width:0%;" data-dz-uploadprogress></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto d-flex align-items-center">
-                                                <div class="btn-group">
-                                                    <button class="btn btn-primary start">
-                                                        <i class="fas fa-upload"></i>
-                                                        <span>Start</span>
-                                                    </button>
-                                                    <button data-dz-remove class="btn btn-warning cancel">
-                                                        <i class="fas fa-times-circle"></i>
-                                                        <span>Cancel</span>
-                                                    </button>
-                                                    <button data-dz-remove class="btn btn-danger delete">
-                                                        <i class="fas fa-trash"></i>
-                                                        <span>Delete</span>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>*@
                                 </div>
                                 <div class="div-Button-Right">
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
@@ -142,36 +94,41 @@
 
                             <!-- Tag Image -->
                             <div id="tag-images-step" class="content" role="tabpanel" aria-labelledby="tag-images-step-trigger">
-                                <div class="row">
-                                    <div class="col-md-1" style="height:100%">
-                                        <label for="cvTagImageCount">Image Count</label>
-                                    </div>
-                                    <div class="col-md-5" style="height:100%">
-                                        <label id="cvTagImageCount"></label>
-                                    </div>
-                                </div>
                                 <div class="row" style="height:60vh" id="cvImagePreviewDiv">
                                     <div class="col-md-3" style="height:100%">
-                                        <div class="card card-success card-outline" style="height:100%">
-                                            <div class="card-body p-0" style="padding:0.2em;min-height:500px">
+                                        <div class="card card-success card-outline">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    Image Count
+                                                    <span class="info-box-number" id="cvTagImageCount">0</span>
+                                                </h4>
+                                            </div>
+                                        </div>
+                                        <div class="card card-success card-outline">
+                                            <div class="card-body p-0" style="padding:0.2em;min-height:400px">
                                                 <div id="cvImageCanvasDiv" style="padding:0.2em; text-align:center; display:block;overflow:auto">
                                                     <div style="margin-bottom:1em">
-                                                        <div style="border: 3px solid rgb(57, 255, 20);width:100%">
+                                                        <div style="border: 3px dotted rgb(57, 255, 20);width:100%">
                                                             Assigned Region
                                                         </div>
-                                                        <div style="border: 3px solid red;width:100%">
+                                                        <div style="border: 3px dotted red;width:100%">
                                                             Proposed Region
                                                         </div>
                                                     </div>
                                                     <canvas id="cvImageCanvas" style="border: 1px solid blue;top:0;bottom:0; right:0; left:0;width:100%;max-height:300px"></canvas>
-                                                    <select id="cvTagList" class="form-control select2" style="width: 100%;margin-bottom:1rem"></select>
-                                                    <button id="cvAssignTagBtn" class="btn btn-success" style="width:100%" disabled>Assign Region & Tag</button>
+                                                    <div>
+                                                        <select id="cvTagList" class="form-control select2" style="width: 100%;margin-bottom:0.5rem"></select>
+                                                        <button id="cvAssignTagBtn" class="btn btn-success" style="width:100%" disabled>Assign Region & Tag</button>
+                                                    </div>
+                                                    <div style="margin-top:0.5em">
+                                                        <button id="cvCreateTagModalBtn" class="btn btn-success" data-toggle="modal" data-target="#cvCreateTagModal" style="width:100%">Create a new Tag</button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>                        
                                     </div>
                                     <div class="col-md-9" style="height:100%">
-                                        <div class="card card-success card-outline" style="height:100%">
+                                        <div class="card card-success card-outline">
                                             <div class="card-body" style="padding:0.2em;min-height:500px">
                                                 <div class="jsgridDiv">
                                                     <div id="cvImageJsGrid" style="overflow-y:auto"></div>
@@ -181,7 +138,6 @@
                                     </div>
                                 </div>
                                 <div class="div-Button-Right">
-                                    <button id="cvCreateTagModalBtn" class="btn btn-success" data-toggle="modal" data-target="#cvCreateTagModal">Create a new Tag</button>
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                                     <button class="btn btn-primary" onclick="stepper.next()">Next</button>
                                 </div>
@@ -189,19 +145,16 @@
 
                             <!-- Train Model -->
                             <div id="train-model-step" class="content" role="tabpanel" aria-labelledby="train-model-step-trigger">
-                                <div class="form-group">
+                                <div class="form-group" style="margin-bottom:0.5em">
                                     <label for="cvTrainProjectList">Select Custom Vision Project</label>
                                     <select id="cvTrainProjectList" class="form-control select2" style="width:50%;"></select>
                                 </div>
-                                <div class="info-box-tex" style="position:relative">
+                                <div class="btnStatusDiv">
                                     <button type="button" class="btn btn-success" id="cvStartTrainingBtn">
                                         <i class="fas fa-external-link-alt btn-fa"></i>Start Training
                                     </button>
-                                    <div class="vertical-center">
-                                        <div class="info-box-text" style="overflow-x:auto" id='cvStartTrainingBtnResult'>Place Holder : To be deleted</div>
-                                    </div>
+                                    <div class="info-box-text vertical-center" id='cvStartTrainingBtnResult'>Place Holder : To be deleted</div>
                                 </div>
-
                                 <label for="cvIterationsJsGridDiv">Iterations</label>
                                 <div class="jsgridDiv" style="min-height:auto" id="cvIterationsJsGridDiv">
                                     <div id="cvIterationsJsGrid" style="overflow-y:auto"></div>
@@ -211,7 +164,7 @@
                                         <i class="fas fa-external-link-alt btn-fa"></i>Visit CustomVision.ai
                                     </button>
                                     <button type="button" class="btn btn-success" id="cvStartTrainingRefreshBtn">
-                                        <i class="fas fa-external-link-alt btn-fa"></i>Refresh Table
+                                        <i class="fas fa-sync btn-fa"></i>Refresh Table
                                     </button>
                                     <button class="btn btn-primary" onclick="stepper.previous()">Previous</button>
                                 </div>
@@ -307,6 +260,8 @@
                 case 0:
                     break;
                 case 1:
+                    var projectList = document.getElementById('cvProjectList');
+                    document.getElementById("cvProjectId").innerHTML = projectList[projectList.selectedIndex].innerHTML;
                     break;
                 case 2:
                     var projectId = CvGetProjectId();
@@ -318,7 +273,7 @@
                     }
                     break;
                 case 3:
-                        $("#cvIterationsJsGrid").jsGrid("loadData");
+                    $("#cvIterationsJsGrid").jsGrid("loadData");
                     break;
             }
         })

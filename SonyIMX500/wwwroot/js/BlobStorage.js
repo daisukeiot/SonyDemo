@@ -4,7 +4,6 @@
     console.debug("=>", funcName);
     var msg = null;
     var image = null;
-
     try {
         const result = await $.ajax({
             async: true,

@@ -27,7 +27,8 @@
                 type: "GET",
                 url: window.location.origin + '/' + 'cosmosdb/loadData',
                 data: {
-                    threshold: document.getElementById("cosmosDbThreshold").innerHTML
+                    threshold: document.getElementById("cosmosDbThreshold").innerHTML,
+                    recordCount: document.getElementById("cosmosDbRecordCount").innerHTML,
                 },
                 contentType: "application/json; charset=utf-8",
                 dataType: "json"

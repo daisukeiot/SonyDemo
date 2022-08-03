@@ -139,7 +139,7 @@ namespace SonyIMX500.Controllers
                         }
                         else
                         {
-                            return StatusCode(StatusCodes.Status500InternalServerError, JsonConvert.SerializeObject(image));
+                            return StatusCode(StatusCodes.Status500InternalServerError, Json(JsonConvert.SerializeObject(image)));
                         }
                     }
                 }
@@ -203,6 +203,17 @@ namespace SonyIMX500.Controllers
 
                 if (imageRegionProposal != null)
                 {
+                    if (imageRegionProposal.Proposals[0].Confidence < 0.8)
+                    {
+                        var regionData = new CV_REGION_DATA();
+                        regionData.X = imageRegionProposal.Proposals[0].BoundingBox.Left;
+                        regionData.Y = imageRegionProposal.Proposals[0].BoundingBox.Top;
+                        regionData.W = imageRegionProposal.Proposals[0].BoundingBox.Width;
+                        regionData.H = imageRegionProposal.Proposals[0].BoundingBox.Height;
+
+                        response.Proposals.Add(regionData);
+                    }
+
                     foreach (var proposal in imageRegionProposal.Proposals)
                     {
                         if (proposal.Confidence > 0.8)
@@ -466,7 +477,6 @@ namespace SonyIMX500.Controllers
             try
             {
                 var iteration = await _customVisionTrainingClient.TrainProjectAsync( (Guid.Parse(projectId)));
-                _logger.LogError("test");
                 return Ok();
             }
             catch (CustomVisionErrorException ex)

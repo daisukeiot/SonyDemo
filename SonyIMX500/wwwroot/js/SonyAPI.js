@@ -2,25 +2,43 @@
 
 let getBaseModelInterval = null;
 let getDeployHistoryInterval = null;
-
 // Utility functions
+
+function toggleLoader(bForceClear) {
+    var loader = document.getElementById("loader");
+
+    if (bForceClear) {
+        loader.style.display = "none";
+    } else {
+        if (loader.style.display == "none") {
+            loader.style.display = "block";
+        } else {
+            loader.style.display = "none";
+        }
+    }
+}
 
 function setResultElement(resultElement, msg) {
 
     if (msg) {
-        var json = JSON.parse(msg);
+        try {
+            var json = JSON.parse(msg);
 
-        if (json.result && json.result == "ERROR") {
-            if (json.message) {
-                resultElement.innerHTML = json.message;
+            if (json.result && json.result == "ERROR") {
+                if (json.message) {
+                    resultElement.innerHTML = json.message;
+                }
+                else {
+                    resultElement.innerHTML = json.stringify();
+                }
             }
             else {
-                resultElement.innerHTML = json.stringify();
+                resultElement.innerHTML = msg;
             }
-        }
-        else {
+        } catch (err) {
             resultElement.innerHTML = msg;
-        }
+        } finally {
+        }        
     }
 }
 
@@ -185,7 +203,7 @@ async function CreateBaseCustomVisionProject() {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
 
-    var msg;
+    var msg = null;
     var resultElement = document.getElementById('createBaseCustomVisionProjectBtnResult');
 
     try {
@@ -431,6 +449,21 @@ async function GetBaseModelStatus(model_id, latest_type) {
 
         json = JSON.parse(result.value);
 
+        if (json.model_id == model_id) {
+
+            if (json.projects.length == 1) {
+
+                if ((json.projects[0].versions[0].stage == 'conversion') || (json.projects[0].versions[0].stage == 'publish')) {
+
+                    if (json.projects[0].versions[0].result == 'completed') {
+                        disableUiButtons(false);
+                    }
+                    else if (json.projects[0].versions[0].result == 'processing') {
+                        disableUiButtons(true);
+                    }
+                }
+            }
+        }
     } catch (err) {
         if (err.responseJSON) {
             msg = err.responseJSON.value;
@@ -960,7 +993,16 @@ async function GetDevices(listElementId, silent, isOption, placeHolderText, plac
             }
             list.append(option);
             for (var device in json.devices) {
-              list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
+                //list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
+                var option = new Option(`${json.devices[device].device_id} (${json.devices[device].connectionState})`, json.devices[device].device_id);
+
+                if (json.devices[device].connectionState == 'Connected') {
+                    option.classList.add("connectedDevice");
+                }
+                else {
+                    option.classList.add("disConnectedDevice");
+                }
+                list.append(option);
             }
             list.options[0].selected = true;
         }
@@ -968,6 +1010,8 @@ async function GetDevices(listElementId, silent, isOption, placeHolderText, plac
         msg = processError(funcName, err, true);
         ret = false;
     }
+
+    console.debug("<=", funcName)
     return ret;
 }
 
@@ -1099,6 +1143,54 @@ async function GetDevicesForImageGallery(listElementId, silent) {
 
 async function GetAllModels(listElement, isOption) {
     return await GetModels(null, null, null, null, null, null, null, listElement, isOption);
+}
+
+async function GetModelForDevice(listElementId, device_id) {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName);
+
+    try {
+        toggleLoader(false);
+        if (listElementId) {
+            document.getElementById(listElementId).disabled = true;
+        }
+        await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.origin + '/' + 'sony/GetDevice',
+            data: {
+                device_id: device_id
+            },
+        }).done(function (response) {
+            var json = JSON.parse(response.value);
+
+            if (listElementId) {
+
+                var list = document.getElementById(listElementId);
+
+                list.innerText = null;
+
+                var option = new Option("Select from list", "");
+                list.append(option);
+
+                for (var model in json.models) {
+                    var modelId = json.models[model].model_version_id.split(":");
+                    list.append(new Option(modelId[0], modelId[0]));
+                }
+                list.options[0].selected = true;
+                list.disabled = false;
+            }
+
+            if (json.connectionState == 'Connected') {
+                ret = false;
+            }
+        });
+
+    } catch (err) {
+    } finally {
+        toggleLoader(false);
+    }
+
 }
 
 async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption) {
@@ -1396,7 +1488,7 @@ $("#deploymentHistoryGrid").jsGrid({
                 }
 
                 d.resolve(json);
-                $("#deploymentHistoryGrid").jsGrid("sort", { field: "id", order: "asc" });
+                $("#deploymentHistoryGrid").jsGrid("sort", { field: "id", order: "desc" });
             });
 
             return d.promise();
@@ -1407,10 +1499,10 @@ $("#deploymentHistoryGrid").jsGrid({
             name: "id", type: "number", align: "left", width: "4em"
         },
         {
-            name: "deploy_type", type: "text", align: "left", width: "11em"
+            name: "deploy_type", type: "text", align: "left", width: "6em"
         },
         {
-            name: "deploy_status", type: "text", align: "left", width: "12rem", 
+            name: "deploy_status", type: "text", align: "left", width: "7em", 
             itemTemplate: function (val, item) {
                
                 if (val == "0") {
@@ -1424,16 +1516,16 @@ $("#deploymentHistoryGrid").jsGrid({
             }
         },
         {
-            name: "config_id", type: "text", align: "left", width: "15em"
+            name: "config_id", type: "text", align: "left", width: "7em"
         },
         {
-            name: "total_status", type: "text", align: "left", width: "12em"
+            name: "total_status", type: "text", align: "left", width: "5em"
         },
         {
-            name: "upd_date", type: "text", align: "left", width: "auto"
+            name: "upd_date", type: "text", align: "left", width: "10em"
         },
         {
-            name: "ins_date", type: "text", align: "left", width: "auto"
+            name: "ins_date", type: "text", align: "left", width: "10em"
         }
     ],
 });

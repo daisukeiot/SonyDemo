@@ -7,6 +7,7 @@ using Newtonsoft.Json.Linq;
 using SonyIMX500.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -1409,6 +1410,12 @@ namespace SonyIMX500.Controllers
                 }
                 else
                 {
+                    var jsonData = JObject.Parse(jsonString);
+
+                    if (jsonData["message"].ToString().Contains("AlreadyStopped"))
+                    {
+                        return Ok(Json(jsonString));
+                    }
                     return StatusCode(StatusCodes.Status500InternalServerError, Json(jsonString));
                 }
             }

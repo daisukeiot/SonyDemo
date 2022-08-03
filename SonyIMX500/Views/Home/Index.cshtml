@@ -12,7 +12,7 @@
 <body>
     <!-- Main content -->
     <div id="loader" class="loading" style="display:none"></div>
-    <div class="container-fluid">
+    <div class="container-fluid" style="min-width:640px">
         <div class="row">
             <div class="col-12 col-sm-12">
                 <div class="card card-primary card-tabs">
@@ -90,7 +90,7 @@
                                                                         </div>
                                                                     </div>
 
-                                                                    <div class="form-group">
+                                                                    <div class="form-group row">
                                                                         <label for="clientId">Client ID</label>
 <!--                                                                                    <input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@ViewData["ClientId"]>-->
                                                                         @*<input type="text" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value=@TempData["ClientId"]>*@
@@ -123,7 +123,7 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="card-footer">
-                                                                    <div class="row" style="position:relative">
+                                                                    <div class="footer-div">
                                                                         <div>
                                                                             <button type="button" class="btn btn-success" id="loginBtn">
                                                                                 <i class="fas fa-sign-in-alt btn-fa"></i>Login
@@ -151,54 +151,39 @@
                                                         </div>
                                                         <div id="accordionCreateBaseCustomVisionProject" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div>
-                                                                    <div class="info-box">
-                                                                        <div class="info-box-content">
-                                                                            <div class="info-box-text">
-                                                                                <label for="createBaseCustomVisionProjectDiv">Create New Custom Vision Project</label>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <label for="createBaseCustomVisionProjectForm">Create New Custom Vision Project</label>
+                                                                        <form id="createBaseCustomVisionProjectForm">
+                                                                            <div class="form-group">
+                                                                                <label for="createBaseCustomVisionProjectName">Project Name</label>
+                                                                                <input type="text" name="createBaseCustomVisionProjectName" class="form-control" id="createBaseCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
                                                                             </div>
-                                                                            <div id="createBaseCustomVisionProjectDiv">
-                                                                                <form id="createBaseCustomVisionProjectForm">
-                                                                                    <div class="form-group">
-                                                                                        <label for="createBaseCustomVisionProjectName">Project Name</label>
-                                                                                        <input type="text" name="createBaseCustomVisionProjectName" class="form-control" id="createBaseCustomVisionProjectName" placeholder="Enter name of new Custom Vision project" value="">
-                                                                                        <label for="createBaseCustomVisionProjectComment">Comment (Optional)</label>
-                                                                                        <input type="text" name="createBaseCustomVisionProjectComment" class="form-control" id="createBaseCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
-                                                                                    </div>
-                                                                                </form>
+                                                                            <div class="form-group">
+                                                                                <label for="createBaseCustomVisionProjectComment">Comment (Optional)</label>
+                                                                                <input type="text" name="createBaseCustomVisionProjectComment" class="form-control" id="createBaseCustomVisionProjectComment" placeholder="Enter description of new Custom Vision project" value="">
                                                                             </div>
-                                                                            <div class="info-box-tex" style="position:relative">
-                                                                                <div>
-                                                                                    <button type="button" class="btn btn-success" id="createBaseCustomVisionProjectBtn">
-                                                                                        <i class="fas fa-plus btn-fa"></i>Create
-                                                                                    </button>
-                                                                                </div>
-                                                                                <div class="vertical-center">
-                                                                                    <div class="info-box-text" id='createBaseCustomVisionProjectBtnResult'>Place Holder : To be deleted</div>
-                                                                                </div>
-                                                                            </div>
+                                                                        </form>
+                                                                        <div class="btnStatusDiv">
+                                                                            <button type="button" class="btn btn-success" id="createBaseCustomVisionProjectBtn">
+                                                                                <i class="fas fa-plus btn-fa"></i>Create
+                                                                            </button>
+                                                                            <div class="info-box-text vertical-center" id='createBaseCustomVisionProjectBtnResult'>Place Holder : To be deleted</div>
                                                                         </div>
                                                                     </div>
-                                                                    <div class="info-box">
-                                                                        <div class="info-box-content">
-                                                                            <div class="info-box-text">
-                                                                                <label for="selectCustomVisionProjectDiv">Select Custom Vision Project</label>
-                                                                            </div>
-                                                                            <div id="selectCustomVisionProjectDiv">
-                                                                                <select id="selectCustomVisionProjectList" class="form-control select2" style="width: 100%;">
-                                                                                </select>
-                                                                            </div>
-                                                                            <div class="info-box-text" style="position:relative;margin-top:0.5em">
-                                                                                <!--<button type="button" class="btn btn-danger" id="deleteCustomVisionProjectCvBtn" disabled>
-                                                                                    <i class="fas fa-trash-alt"></i> Delete (CustomVision API)
-                                                                                </button>-->
-                                                                                <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
-                                                                                    <i class="fas fa-trash-alt btn-fa"></i>Delete (Sony API)
-                                                                                </button>
-                                                                                <div class="vertical-center">
-                                                                                    <div class="info-box-text" style="overflow-x:auto" id='deleteCustomVisionProjectBtnResult'>Place Holder : To be deleted</div>
-                                                                                </div>
-                                                                            </div>
+                                                                </div>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <label for="selectCustomVisionProjectListDiv">Select Custom Vision Project</label>
+                                                                        <div class="form-group" id="selectCustomVisionProjectListDiv">
+                                                                            <select id="selectCustomVisionProjectList" class="form-control select2">
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="btnStatusDiv">
+                                                                            <button type="button" class="btn btn-danger" id="deleteCustomVisionProjectBtn" disabled>
+                                                                                <i class="fas fa-trash-alt btn-fa"></i>Delete (Sony API)
+                                                                            </button>
+                                                                            <div class="info-box-text vertical-center" style="overflow-x:auto" id='deleteCustomVisionProjectBtnResult'>Place Holder : To be deleted</div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -216,19 +201,25 @@
                                                         </div>
                                                         <div id="accordionVisitCustomVision" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div class="info-box-text">
-                                                                    <label for="visitCustomVisionProjectList">Custom Vision Project Name</label>
-                                                                    <select id="visitCustomVisionProjectList" class="form-control select2" style="width: 100%;">
-                                                                    </select>
-                                                                </div>
-                                                                <div class="info-box-text" style="margin-top:0.5em">
-                                                                    Visit https://customvision.ai to Upload and Tag photos, and start training.
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <div class="form-group">
+                                                                            <label for="visitCustomVisionProjectList">Custom Vision Project Name</label>
+                                                                            <select id="visitCustomVisionProjectList" class="form-control select2">
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="info-box-text" style="margin-top:0.5em">
+                                                                            Visit https://customvision.ai to Upload and Tag photos, and start training.
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <button type="button" class="btn btn-success" id="visitCustomVisionBtn" style="width:auto" disabled>
-                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Visit CustomVision.ai
-                                                                </button>
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="visitCustomVisionBtn" style="width:auto" disabled>
+                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Visit CustomVision.ai
+                                                                    </button>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -243,39 +234,44 @@
                                                         </div>
                                                         <div id="accordionSaveCustomVisionModel" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="saveCustomVisionDiv">
-                                                                    <form id="saveCustomVisionModelForm">
-                                                                        <div class="form-group">
-                                                                            <label for="saveCustomVisionModelProjectNameList">Project Name</label>
-                                                                            <select id="saveCustomVisionModelProjectNameList" class="form-control select2" style="width: 100%;">
-                                                                            </select>
-
-                                                                            <label for="saveCustomVisionModelProjectModelId">Model ID (Optional)</label>
-                                                                            <input type="text" name="saveCustomVisionModelProjectModelId" class="form-control" id="saveCustomVisionModelProjectModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
-
-                                                                            <label for="saveCustomVisionModelInitialVersionNumber">Initial Version Number (Optional)</label>
-                                                                            <input type="number" name="saveCustomVisionModelInitialVersionNumber" class="form-control" id="saveCustomVisionModelInitialVersionNumber" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="" min="1" max="100">
-
-                                                                            <label for="saveCustomVisionModelFunctionality">Functionality (Optional)</label>
-                                                                            <input type="text" name="saveCustomVisionModelFunctionality" class="form-control" id="saveCustomVisionModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
-
-                                                                            <label for="saveCustomVisionModelVendorName">Vendor Name (Optional)</label>
-                                                                            <input type="text" name="saveCustomVisionModelVendorName" class="form-control" id="saveCustomVisionModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
-
-                                                                            <label for="saveCustomVisionModelComment">Comment (Optional)</label>
-                                                                            <input type="text" name="saveCustomVisionModelComment" class="form-control" id="saveCustomVisionModelComment" placeholder="Description. Within 100 characters." value="">
-                                                                        </div>
-                                                                    </form>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <form id="saveCustomVisionModelForm">
+                                                                            <div class="form-group">
+                                                                                <label for="saveCustomVisionModelProjectNameList">Project Name</label>
+                                                                                <select id="saveCustomVisionModelProjectNameList" class="form-control select2">
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="saveCustomVisionModelProjectModelId">Model ID (Optional)</label>
+                                                                                <input type="text" name="saveCustomVisionModelProjectModelId" class="form-control" id="saveCustomVisionModelProjectModelId" placeholder="Enter Model ID (E.g. YYMMDD_Name_Model_01)" value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="saveCustomVisionModelInitialVersionNumber">Initial Version Number (Optional)</label>
+                                                                                <input type="number" name="saveCustomVisionModelInitialVersionNumber" class="form-control" id="saveCustomVisionModelInitialVersionNumber" placeholder="Initial version # Specify it when it is newly saved. Integer(1 to 100)" value="" min="1" max="100">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="saveCustomVisionModelFunctionality">Functionality (Optional)</label>
+                                                                                <input type="text" name="saveCustomVisionModelFunctionality" class="form-control" id="saveCustomVisionModelFunctionality" placeholder="Functional description. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="saveCustomVisionModelVendorName">Vendor Name (Optional)</label>
+                                                                                <input type="text" name="saveCustomVisionModelVendorName" class="form-control" id="saveCustomVisionModelVendorName" placeholder="Vendor name. Specify it when saved as NEW. Less than 100 characters." value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="saveCustomVisionModelComment">Comment (Optional)</label>
+                                                                                <input type="text" name="saveCustomVisionModelComment" class="form-control" id="saveCustomVisionModelComment" placeholder="Description. Within 100 characters." value="">
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="saveCustomVisionModelBtn" disabled
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="saveCustomVisionModelBtn" disabled>
                                                                         <i class="fas fa-save btn-fa"></i>Save Custom Vision model
                                                                     </button>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='saveCustomVisionModelBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
+                                                                    <div class="info-box-text vertical-center" id='saveCustomVisionModelBtnResult'>Place Holder : To be deleted</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -291,39 +287,39 @@
                                                         </div>
                                                         <div id="accordionConvertModel" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="convertModelDiv">
-                                                                    <label for="convertModelModelIdList">Model ID</label>
-                                                                    <select name="convertModelModelIdList" id="convertModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                    <label for="convertModelDeviceIdList">Device ID (Optional)</label>
-                                                                    <select name="convertModelDeviceIdList" id="convertModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <div class="form-group">
+                                                                            <label for="convertModelModelIdList">Model ID</label>
+                                                                            <select name="convertModelModelIdList" id="convertModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="convertModelDeviceIdList">Device ID (Optional)</label>
+                                                                            <select name="convertModelDeviceIdList" id="convertModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                <div class="footer-div">
                                                                     <button type="button" class="btn btn-success" id="convertModelBtn" disabled>
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Convert Model
                                                                     </button>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='convertModelBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
+                                                                    <div class="info-box-text vertical-center" id='convertModelBtnResult'>Place Holder : To be deleted</div>
                                                                 </div>
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="convertModelGetBaseModelStatusBtn" disabled>
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
                                                                     </button>
+
                                                                     <label for="convertModelGetBaseModelStatusConversionDiv" style="margin-left:1em">Conversion ID : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='convertModelGetBaseModelStatusConversionDiv'></div>
-                                                                    </div>
+                                                                    <div class="info-box-text" style="display:inline-block" id='convertModelGetBaseModelStatusConversionDiv'></div>
+
                                                                     <label for="convertModelGetBaseModelStatusStageDiv" style="margin-left:1em">Stage : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='convertModelGetBaseModelStatusStageDiv'></div>
-                                                                    </div>
+                                                                    <div class="info-box-text" style="display:inline-block" id='convertModelGetBaseModelStatusStageDiv'></div>
+
                                                                     <label for="convertModelGetBaseModelStatusBtnResult" style="margin-left:1em">Result : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='convertModelGetBaseModelStatusBtnResult'></div>
-                                                                    </div>
+                                                                    <div class="info-box-text" style="display:inline-block" id='convertModelGetBaseModelStatusBtnResult'></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -339,39 +335,39 @@
                                                         </div>
                                                         <div id="accordionPublishModel" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="publishModelDiv">
-                                                                    <label for="publishModelModelIdList">Model ID</label>
-                                                                    <select name="publishModelModelIdList" id="publishModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                    <label for="publishModelDeviceIdList">Device ID (Optional)</label>
-                                                                    <select name="publishModelDeviceIdList" id="publishModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <div class="form-group">
+                                                                            <label for="publishModelModelIdList">Model ID</label>
+                                                                            <select name="publishModelModelIdList" id="publishModelModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="publishModelDeviceIdList">Device ID (Optional)</label>
+                                                                            <select name="publishModelDeviceIdList" id="publishModelDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
+                                                                <div class="footer-div">
                                                                     <button type="button" class="btn btn-success" id="publishModelBtn" disabled>
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Publish Model
                                                                     </button>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='publishModelBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
+                                                                    <div class="info-box-text vertical-center" id='publishModelBtnResult'>Place Holder : To be deleted</div>
                                                                 </div>
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="publishModelGetBaseModelStatusBtn" disabled
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="publishModelGetBaseModelStatusBtn" disabled>
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Get Base Model Status
                                                                     </button>
+
                                                                     <label for="publishModelGetBaseModelStatusConversionIdDiv" style="margin-left:1em">Conversion ID : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='publishModelGetBaseModelStatusConversionIdDiv'></div>
-                                                                    </div>
+                                                                    <div class="info-box-text" style="display:inline-block" id='publishModelGetBaseModelStatusConversionIdDiv'></div>
+
                                                                     <label for="publishModelGetBaseModelStatusStageDiv" style="margin-left:1em">Stage : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='publishModelGetBaseModelStatusStageDiv'></div>
-                                                                    </div>
+                                                                    <div class="info-box-text" style="display:inline-block" id='publishModelGetBaseModelStatusStageDiv'></div>
+
                                                                     <label for="publishModelGetBaseModelStatusBtnResult" style="margin-left:1em">Result : </label>
-                                                                    <div style="display:inline-block">
-                                                                        <div class="info-box-text" id='publishModelGetBaseModelStatusBtnResult'></div>
-                                                                    </div>
+                                                                    <div class="info-box-text" style="display:inline-block" id='publishModelGetBaseModelStatusBtnResult'></div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -387,128 +383,143 @@
                                                         </div>
                                                         <div id="accordionCreatePeployConfiguration" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="createDeployConfigurationDiv">
-                                                                    <form id="createDeployConfigurationForm">
-                                                                        <div class="form-group">
-
-                                                                            <label for="createDeployConfigurationConfigId">Config ID</label>
-                                                                            <input type="text" name="createDeployConfigurationConfigId" class="form-control" id="createDeployConfigurationConfigId" placeholder="configID. Less than 20 characters." value="">
-
-                                                                            <label for="createDeployConfigurationSensorLoaderVersionNumber">SensorLoader version number</label>
-                                                                            <select name="createDeployConfigurationSensorLoaderVersionNumber" id="createDeployConfigurationSensorLoaderVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="createDeployConfigurationSensorVersionNumber">Sensor version number</label>
-                                                                            <select name="createDeployConfigurationSensorVersionNumber" id="createDeployConfigurationSensorVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="createDeployConfigurationModelId">Model ID</label>
-                                                                            <select name="createDeployConfigurationModelId" id="createDeployConfigurationModelId" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="createDeployConfigurationApFwVersionNumber">ApFw version number</label>
-                                                                            <select name="createDeployConfigurationApFwVersionNumber" id="createDeployConfigurationApFwVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="createDeployConfigurationComment">Comment (Optional)</label>
-                                                                            <input type="text" name="createDeployConfigurationComment" class="form-control" id="createDeployConfigurationComment" placeholder="Description. Less than 100 characters." value="">
-
-                                                                            <label for="createDeployConfigurationDeviceTypeList">Device Type (Optional)</label>
-                                                                            <select name="createDeployConfigurationDeviceTypeList" id="createDeployConfigurationDeviceTypeList" class="form-control">
-                                                                                <option selected value="">Select Device Type</option>
-                                                                                <option value="00">MPU Based (Type4)</option>
-                                                                                <option value="01">MCU Bsed (Type3)</option>
-                                                                            </select>
-
-                                                                            <label for="createDeployConfigurationModelVersionNumber">Model Version Number (Optional)</label>
-                                                                            <input type="text" name="createDeployConfigurationModelVersionNumber" class="form-control" id="createDeployConfigurationModelVersionNumber" placeholder="Model version number." value="">
-
-                                                                            <label for="createDeployConfigurationColorMatrixModelList">Color Matrix Mode (Optional)</label>
-                                                                            <select name="createDeployConfigurationColorMatrixModelList" id="createDeployConfigurationColorMatrixModelList" class="form-control">
-                                                                                <option selected value="">Select Matrix Mode</option>
-                                                                                <option>none</option>
-                                                                                <option>std</option>
-                                                                                <option>custom</option>
-                                                                            </select>
-
-                                                                            <label for="createDeployConfigurationColorMatrixFileName">Color Matrix File Name (Optional)</label>
-                                                                            <div class="input-group">
-                                                                                <div class="custom-file">
-                                                                                    <input type="file" name="createDeployConfigurationColorMatrixFileName" class="custom-file-input" id="createDeployConfigurationColorMatrixFileName">
-                                                                                    <label class="custom-file-label" for="createDeployConfigurationColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <form id="createDeployConfigurationForm">
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationConfigId">Config ID</label>
+                                                                                <input type="text" name="createDeployConfigurationConfigId" class="form-control" id="createDeployConfigurationConfigId" placeholder="configID. Less than 20 characters." value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationSensorLoaderVersionNumber">SensorLoader version number</label>
+                                                                                <select name="createDeployConfigurationSensorLoaderVersionNumber" id="createDeployConfigurationSensorLoaderVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationSensorVersionNumber">Sensor version number</label>
+                                                                                <select name="createDeployConfigurationSensorVersionNumber" id="createDeployConfigurationSensorVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationModelId">Model ID</label>
+                                                                                <select name="createDeployConfigurationModelId" id="createDeployConfigurationModelId" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationApFwVersionNumber">ApFw version number</label>
+                                                                                <select name="createDeployConfigurationApFwVersionNumber" id="createDeployConfigurationApFwVersionNumber" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationComment">Comment (Optional)</label>
+                                                                                <input type="text" name="createDeployConfigurationComment" class="form-control" id="createDeployConfigurationComment" placeholder="Description. Less than 100 characters." value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationDeviceTypeList">Device Type (Optional)</label>
+                                                                                <select name="createDeployConfigurationDeviceTypeList" id="createDeployConfigurationDeviceTypeList" class="form-control">
+                                                                                    <option selected value="">Select Device Type</option>
+                                                                                    <option value="00">MPU Based (Type4)</option>
+                                                                                    <option value="01">MCU Bsed (Type3)</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationModelVersionNumber">Model Version Number (Optional)</label>
+                                                                                <input type="text" name="createDeployConfigurationModelVersionNumber" class="form-control" id="createDeployConfigurationModelVersionNumber" placeholder="Model version number." value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationColorMatrixModelList">Color Matrix Mode (Optional)</label>
+                                                                                <select name="createDeployConfigurationColorMatrixModelList" id="createDeployConfigurationColorMatrixModelList" class="form-control">
+                                                                                    <option selected value="">Select Matrix Mode</option>
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationColorMatrixFileName">Color Matrix File Name (Optional)</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="custom-file">
+                                                                                        <input type="file" name="createDeployConfigurationColorMatrixFileName" class="custom-file-input" id="createDeployConfigurationColorMatrixFileName">
+                                                                                        <label class="custom-file-label" for="createDeployConfigurationColorMatrixFileName">Color tone adjustment Custom settings file (bin) name.</label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                            <label for="createDeployConfigurationGammaModeList">Gamma Mode (Optional)</label>
-                                                                            <select name="createDeployConfigurationGammaModeList" id="createDeployConfigurationGammaModeList" class="form-control">
-                                                                                <option selected value="">Select Gamma Mode</option>
-                                                                                <option>none</option>
-                                                                                <option>std</option>
-                                                                                <option>custom</option>
-                                                                            </select>
-
-                                                                            <label for="createDeployConfigurationGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
-                                                                            <div class="input-group">
-                                                                                <div class="custom-file">
-                                                                                    <input type="file" name="createDeployConfigurationGammaFileName" class="custom-file-input" id="createDeployConfigurationGammaFileName">
-                                                                                    <label class="custom-file-label" for="createDeployConfigurationGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationGammaModeList">Gamma Mode (Optional)</label>
+                                                                                <select name="createDeployConfigurationGammaModeList" id="createDeployConfigurationGammaModeList" class="form-control">
+                                                                                    <option selected value="">Select Gamma Mode</option>
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationGammaFileName">Gamma Correction Custom Setting File (bin) name (Optional)</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="custom-file">
+                                                                                        <input type="file" name="createDeployConfigurationGammaFileName" class="custom-file-input" id="createDeployConfigurationGammaFileName">
+                                                                                        <label class="custom-file-label" for="createDeployConfigurationGammaFileName">Gamma Correction Custom settings file (bin) name.</label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                            <label for="createDeployConfigurationLscModeList">LSC Correction Camera Settings (Optional)</label>
-                                                                            <select name="createDeployConfigurationLscModeList" id="createDeployConfigurationLscModeList" class="form-control">
-                                                                                <option selected value="">Select LSC Mode</option>
-                                                                                <option>none</option>
-                                                                                <option>std</option>
-                                                                                <option>custom</option>
-                                                                            </select>
-
-                                                                            <label for="createDeployConfigurationLscFileName">LSC Correction Camera Settings File (bin) name (Optional)</label>
-                                                                            <input type="text" name="createDeployConfigurationLscFileName" class="form-control" id="createDeployConfigurationLscFileName" placeholder="LSC Correction Camera Settings file (bin) name." value="">
-
-                                                                            <label for="createDeployConfigurationPrewbModeList">PreWB adjustment value Camera settings. (Optional)</label>
-                                                                            <select name="createDeployConfigurationPrewbModeList" id="createDeployConfigurationPrewbModeList" class="form-control">
-                                                                                <option selected value="">Select PreWB Mode</option>
-                                                                                <option>none</option>
-                                                                                <option>std</option>
-                                                                                <option>custom</option>
-                                                                            </select>
-
-                                                                            <label for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) name (Optional)</label>
-                                                                            <div class="input-group">
-                                                                                <div class="custom-file">
-                                                                                    <input type="file" name="createDeployConfigurationPrewbFileName" class="custom-file-input" id="createDeployConfigurationPrewbFileName">
-                                                                                    <label class="custom-file-label" for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationLscModeList">LSC Correction Camera Settings (Optional)</label>
+                                                                                <select name="createDeployConfigurationLscModeList" id="createDeployConfigurationLscModeList" class="form-control">
+                                                                                    <option selected value="">Select LSC Mode</option>
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationLscFileName">LSC Correction Camera Settings File (bin) name (Optional)</label>
+                                                                                <input type="text" name="createDeployConfigurationLscFileName" class="form-control" id="createDeployConfigurationLscFileName" placeholder="LSC Correction Camera Settings file (bin) name." value="">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationPrewbModeList">PreWB adjustment value Camera settings. (Optional)</label>
+                                                                                <select name="createDeployConfigurationPrewbModeList" id="createDeployConfigurationPrewbModeList" class="form-control">
+                                                                                    <option selected value="">Select PreWB Mode</option>
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) name (Optional)</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="custom-file">
+                                                                                        <input type="file" name="createDeployConfigurationPrewbFileName" class="custom-file-input" id="createDeployConfigurationPrewbFileName">
+                                                                                        <label class="custom-file-label" for="createDeployConfigurationPrewbFileName">PreWB adjustment value Camera settings (bin) file.</label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                            <label for="createDeployConfigurationDewarpModeList">Distortion correction Camera settings(bin)type. (Optional)</label>
-                                                                            <select name="createDeployConfigurationDewarpModeList" id="createDeployConfigurationDewarpModeList" class="form-control">
-                                                                                <option selected value="">Select Distortion Correction Type</option>
-                                                                                <option>none</option>
-                                                                                <option>std</option>
-                                                                                <option>custom</option>
-                                                                            </select>
-
-                                                                            <label for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name. (Optional)</label>
-                                                                            <div class="input-group">
-                                                                                <div class="custom-file">
-                                                                                    <input type="file" name="createDeployConfigurationDewarpFileName" class="custom-file-input" id="createDeployConfigurationDewarpFileName">
-                                                                                    <label class="custom-file-label" for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name.</label>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationDewarpModeList">Distortion correction Camera settings(bin)type. (Optional)</label>
+                                                                                <select name="createDeployConfigurationDewarpModeList" id="createDeployConfigurationDewarpModeList" class="form-control">
+                                                                                    <option selected value="">Select Distortion Correction Type</option>
+                                                                                    <option>none</option>
+                                                                                    <option>std</option>
+                                                                                    <option>custom</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name. (Optional)</label>
+                                                                                <div class="input-group">
+                                                                                    <div class="custom-file">
+                                                                                        <input type="file" name="createDeployConfigurationDewarpFileName" class="custom-file-input" id="createDeployConfigurationDewarpFileName">
+                                                                                        <label class="custom-file-label" for="createDeployConfigurationDewarpFileName">Distortion correction Custom settings file(bin)name.</label>
+                                                                                    </div>
                                                                                 </div>
                                                                             </div>
-
-                                                                        </div>
-                                                                    </form>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationBtn" disabled
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationBtn" disabled>
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Create Deploy Configuraion
                                                                     </button>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='createDeployConfigurationResult'>Place Holder : To be deleted</div>
-                                                                    </div>
+                                                                    <div class="info-box-text vertical-center" id='createDeployConfigurationResult'>Place Holder : To be deleted</div>
                                                                 </div>
-                                                                <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationGetDeployConfigurationsBtn"
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="createDeployConfigurationGetDeployConfigurationsBtn">
                                                                         <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy Configurations
                                                                     </button>
                                                                     <label for="createDeployConfigurationGetDeployConfigurationsList" style="margin-left:1em">Configuration ID : </label>
@@ -530,41 +541,39 @@
                                                         </div>
                                                         <div id="accordionDeployByConfiguration" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="deployByConfiguratonDiv">
-                                                                    <form id="deployByConfiguraionForm">
-                                                                        <div class="form-group">
-                                                                            <label for="deployByConfiguraionFormConfigIdList">Config ID</label>
-                                                                            <select name="deployByConfiguraionFormConfigIdList" id="deployByConfiguraionFormConfigIdList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="deployByConfiguraionDeviceIdList">Device ID</label>
-                                                                            <select name="deployByConfiguraionDeviceIdList" id="deployByConfiguraionDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <div class="info-box-tex" style="position:relative;margin-top:0.5em">
-                                                                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#deploymentHistoryModal" id="deployByConfiguratonHistoryBtn" disabled>
-                                                                                    <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy History
-                                                                                </button>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <form id="deployByConfiguraionForm">
+                                                                            <div class="form-group">
+                                                                                <label for="deployByConfiguraionFormConfigIdList">Config ID</label>
+                                                                                <select name="deployByConfiguraionFormConfigIdList" id="deployByConfiguraionFormConfigIdList" class="form-control custom-select" style="min-width:10em"></select>
                                                                             </div>
-
+                                                                            <div class="form-group">
+                                                                                <label for="deployByConfiguraionDeviceIdList">Device ID</label>
+                                                                                <select name="deployByConfiguraionDeviceIdList" id="deployByConfiguraionDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <div class="btnStatusDiv">
+                                                                                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#deploymentHistoryModal" id="deployByConfiguratonHistoryBtn" disabled>
+                                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Get Deploy History
+                                                                                    </button>
+                                                                                </div>
+                                                                            </div>
                                                                             <label for="deployByConfiguraionComment">Comment (Optional)</label>
                                                                             <input type="text" name="deployByConfiguraionComment" class="form-control" id="deployByConfiguraionComment" placeholder="Description. Less than 100 characters." value="">
 
                                                                             <label for="deployByConfiguraionReplaceModelIdList">Model ID to replace (Optional)</label>
                                                                             <select name="deployByConfiguraionReplaceModelIdList" id="deployByConfiguraionReplaceModelIdList" class="form-control custom-select" style="min-width:10em"></select>
-                                                                        </div>
-                                                                    </form>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="row" style="position:relative">
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
-                                                                            <i class="fas fa-external-link-alt btn-fa"></i>Deploy by Configuraion
-                                                                        </button>
-                                                                    </div>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='deployByConfiguratonBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
-                                                                </div>
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="deployByConfiguratonBtn" disabled>
+                                                                        <i class="fas fa-external-link-alt btn-fa"></i>Deploy by Configuraion
+                                                                    </button>
+                                                                    <div class="info-box-text vertical-center" id='deployByConfiguratonBtnResult'>Place Holder : To be deleted</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -580,56 +589,61 @@
                                                         </div>
                                                         <div id="accordionStartUploadInferenceResult" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="startUploadInferenceResultDiv">
-                                                                    <form id="startUploadInferenceResultForm">
-                                                                        <div class="form-group">
-                                                                            <label for="startUploadInferenceResultDeviceIdList">Device ID</label>
-                                                                            <select name="startUploadInferenceResultDeviceIdList" id="startUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
-                                                                            <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
-                                                                                    min="1" , max="2592000">
-
-                                                                            <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
-                                                                                    value="" min="1" , max="64">
-
-                                                                            <label for="startUploadInferenceResultCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadInferenceResultCropHOffset" class="form-control" id="startUploadInferenceResultCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
-
-                                                                            <label for="startUploadInferenceResultCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadInferenceResultCropVOffset" class="form-control" id="startUploadInferenceResultCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
-
-                                                                            <label for="startUploadInferenceResultCropHSize">Hsize for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadInferenceResultCropHSize" class="form-control" id="startUploadInferenceResultCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
-
-                                                                            <label for="startUploadInferenceResultCropVSize">Vsize for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadInferenceResultCropVSize" class="form-control" id="startUploadInferenceResultCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
-
-                                                                            <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 message (Optional)</label>
-                                                                            <input type="number" name="startUploadInferenceResultNumberOfInferencesPerMessage" class="form-control" id="startUploadInferenceResultNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
-                                                                                    value="" min="1" , max="100">
-
-                                                                            <label for="startUploadInferenceResultModelIdList">Model ID (Optional)</label>
-                                                                            <select name="startUploadInferenceResultModelIdList" id="startUploadInferenceResultModelIdList" class="form-control custom-select" style="min-width:10em"></select>
-                                                                        </div>
-                                                                    </form>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <form id="startUploadInferenceResultForm">
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultDeviceIdList">Device ID</label>
+                                                                                <select name="startUploadInferenceResultDeviceIdList" id="startUploadInferenceResultDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultFrequencyOfInferences">Frequency of Inference (Optional)</label>
+                                                                                <input type="number" name="startUploadInferenceResultFrequencyOfInferences" class="form-control" id="startUploadInferenceResultFrequencyOfInferences" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
+                                                                                        min="1" , max="2592000">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultMaxDetectionsPerFrame">Number of objects included in 1 frame (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
+                                                                                        value="" min="1" , max="64">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadInferenceResultCropHOffset" class="form-control" id="startUploadInferenceResultCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadInferenceResultCropVOffset" class="form-control" id="startUploadInferenceResultCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadInferenceResultCropHSize" class="form-control" id="startUploadInferenceResultCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" value="" min="0" , max="4056">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadInferenceResultCropVSize" class="form-control" id="startUploadInferenceResultCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" value="" min="0" , max="3040">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultNumberOfInferencesPerMessage">Number of objects included in 1 message (Optional)</label>
+                                                                                <input type="number" name="startUploadInferenceResultNumberOfInferencesPerMessage" class="form-control" id="startUploadInferenceResultNumberOfInferencesPerMessage" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
+                                                                                        value="" min="1" , max="100">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadInferenceResultModelIdList">Model ID (Optional)</label>
+                                                                                <select name="startUploadInferenceResultModelIdList" id="startUploadInferenceResultModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="row" style="position:relative">
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-success" id="startUploadInferenceResultBtn" disabled>
-                                                                            <i class="fas fa-play btn-fa"></i>Start UploadInferenceResult
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
-                                                                            <i class="fas fa-stop btn-fa"></i>Stop UploadInferenceResult
-                                                                        </button>
-
-                                                                    </div>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='btnStartUploadInferenceResultResult'>Place Holder : To be deleted</div>
-                                                                    </div>
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="startUploadInferenceResultBtn" disabled>
+                                                                        <i class="fas fa-play btn-fa"></i>Start UploadInferenceResult
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-success" id="stopUploadInferenceResultBtn" disabled>
+                                                                        <i class="fas fa-stop btn-fa"></i>Stop UploadInferenceResult
+                                                                    </button>
+                                                                    <div class="info-box-text vertical-center" id='btnStartUploadInferenceResultResult'>Place Holder : To be deleted</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -645,74 +659,82 @@
                                                         </div>
                                                         <div id="accordionStartUploadRetrainingData" class="collapse" data-parent="#accordion">
                                                             <div class="card-body">
-                                                                <div id="startUploadRetrainingDataDiv">
-                                                                    <form id="startUploadRetrainingDataForm">
-                                                                        <div class="form-group">
-                                                                            <label for="startUploadRetrainingDataDeviceIdList">Device ID</label>
-                                                                            <select name="startUploadRetrainingDataDeviceIdList" id="startUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
-
-                                                                            <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
-                                                                            <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
-                                                                                <option selected value="">Select Collection Mode</option>
-                                                                                <option value="0">Image</option>
-                                                                                <option value="1" selected>image & Inference results metadata</option>
-                                                                            </select>
-
-                                                                            <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
-                                                                            <select name="startUploadRetrainingDataFileFormatList" id="startUploadRetrainingDataFileFormatList" class="form-control">
-                                                                                <option selected value="">Select Image File Format</option>
-                                                                                <option value="JPG">JPEG</option>
-                                                                                <option value="BMP">Bitmap (BMP)</option>
-                                                                            </select>
-
-                                                                            <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
-
-                                                                            <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" min="0" max="3040">
-
-                                                                            <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" min="0" max="4056">
-
-                                                                            <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
-
-                                                                            <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" value="3" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000"
-                                                                                    min="0" max="10000">
-
-                                                                            <label for="startUploadRetrainingDataFrequencyOfImages">Frequency of fetching images (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataFrequencyOfImages" class="form-control" id="startUploadRetrainingDataFrequencyOfImages" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
-                                                                                    min="1" max="2592000">
-
-                                                                            <label for="startUploadRetrainingDataMaxDetectionPerFrame">Number of objects included in 1 frame (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
-                                                                                    min="1" max="64">
-
-                                                                            <label for="startUploadRetrainingDataNumInferencePerMessage">Number of inference results to include in one message. (Optional)</label>
-                                                                            <input type="number" name="startUploadRetrainingDataNumInferencePerMessage" class="form-control" id="startUploadRetrainingDataNumInferencePerMessage" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100"
-                                                                                    min="1" max="100">
-
-                                                                            <label for="startUploadRetrainingDataModelIdList">Model ID (Optional)</label>
-                                                                            <select name="startUploadRetrainingDataModelIdList" id="startUploadRetrainingDataModelIdList" class="form-control custom-select" style="min-width:10em"></select>
-                                                                        </div>
-                                                                    </form>
+                                                                <div class="info-box">
+                                                                    <div class="info-box-content">
+                                                                        <form id="startUploadRetrainingDataForm">
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataDeviceIdList">Device ID</label>
+                                                                                <select name="startUploadRetrainingDataDeviceIdList" id="startUploadRetrainingDataDeviceIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataModeList">Collection mode (Optional)</label>
+                                                                                <select name="startUploadRetrainingDataModeList" id="startUploadRetrainingDataModeList" class="form-control">
+                                                                                    <option selected value="">Select Collection Mode</option>
+                                                                                    <option value="0">Image</option>
+                                                                                    <option value="1" selected>image & Inference results metadata</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataFileFormatList">Image file format (Optional)</label>
+                                                                                <select name="startUploadRetrainingDataFileFormatList" id="startUploadRetrainingDataFileFormatList" class="form-control">
+                                                                                    <option selected value="">Select Image File Format</option>
+                                                                                    <option value="JPG">JPEG</option>
+                                                                                    <option value="BMP">Bitmap (BMP)</option>
+                                                                                </select>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataCropHOffset">Hoffset for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataCropHOffset" class="form-control" id="startUploadRetrainingDataCropHOffset" placeholder="Specify Hoffset for image to crop.  0 ~ 4056" min="0" max="4056">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataCropVOffset">Vofset for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataCropVOffset" class="form-control" id="startUploadRetrainingDataCropVOffset" placeholder="Specify Voffset for image to crop.  0 ~ 3040" min="0" max="3040">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataCropHSize">Hsize for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataCropHSize" class="form-control" id="startUploadRetrainingDataCropHSize" placeholder="Specify Hsizefor image to crop.  0 ~ 4056" min="0" max="4056">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataCropVSize">Vsize for Image crop (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataCropVSize" class="form-control" id="startUploadRetrainingDataCropVSize" placeholder="Specify VSize for image to crop.  0 ~ 3040" min="0" max="3040">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataNumImages">Number of Image (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataNumImages" class="form-control" id="startUploadRetrainingDataNumImages" value="3" placeholder="Number of images to be fetched(Input Tensor). When it is 0, continue fetching images until stop instruction is mentioned explicitly. 0 ~ 10000"
+                                                                                        min="0" max="10000">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataFrequencyOfImages">Frequency of fetching images (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataFrequencyOfImages" class="form-control" id="startUploadRetrainingDataFrequencyOfImages" value="100" placeholder="Specify the frequency of fetching the images (Input Tensor). By default, it fetches for each frame. 1 ~ 2592000"
+                                                                                        min="1" max="2592000">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataMaxDetectionPerFrame">Number of objects included in 1 frame (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataMaxDetectionPerFrame" class="form-control" id="startUploadRetrainingDataMaxDetectionPerFrame" placeholder="Specify No. of Objects included in 1 frame with respect to the Inference results metadata. 1 ~ 64"
+                                                                                        min="1" max="64">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataNumInferencePerMessage">Number of inference results to include in one message. (Optional)</label>
+                                                                                <input type="number" name="startUploadRetrainingDataNumInferencePerMessage" class="form-control" id="startUploadRetrainingDataNumInferencePerMessage" placeholder="Specify Number of inference results to include in one message (Output Tensor). 1 ~ 100"
+                                                                                        min="1" max="100">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label for="startUploadRetrainingDataModelIdList">Model ID (Optional)</label>
+                                                                                <select name="startUploadRetrainingDataModelIdList" id="startUploadRetrainingDataModelIdList" class="form-control custom-select" style="min-width:10em"></select>
+                                                                            </div>
+                                                                        </form>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                             <div class="card-footer">
-                                                                <div class="row" style="position:relative">
-                                                                    <div>
-                                                                        <button type="button" class="btn btn-success" id="startUploadRetrainingDataBtn" disabled>
-                                                                            <i class="fas fa-play btn-fa"></i>Start UploadRetrainingData
-                                                                        </button>
-                                                                        <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
-                                                                            <i class="fas fa-stop btn-fa"></i>Stop UploadRetrainingData
-                                                                        </button>
-
-                                                                    </div>
-                                                                    <div class="vertical-center">
-                                                                        <div class="info-box-text" id='startUploadRetrainingDataBtnResult'>Place Holder : To be deleted</div>
-                                                                    </div>
+                                                                <div class="footer-div">
+                                                                    <button type="button" class="btn btn-success" id="startUploadRetrainingDataBtn" disabled>
+                                                                        <i class="fas fa-play btn-fa"></i>Start UploadRetrainingData
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-success" id="stopUploadRetrainingDataBtn" disabled>
+                                                                        <i class="fas fa-stop btn-fa"></i>Stop UploadRetrainingData
+                                                                    </button>
+                                                                    <div class="info-box-text vertical-center" id='startUploadRetrainingDataBtnResult'>Place Holder : To be deleted</div>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -723,6 +745,7 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                             <!-- Telemetry Tab -->
                             <div class="tab-pane fade" id="tab-telemetry" role="tabpanel" aria-labelledby="tab-telemetry-label">
                                 <div class="card-header">
@@ -733,140 +756,147 @@
                                     </h4>
                                 </div>
                                 <div class="card-body">
-                                    <div class="row">
-                                        <div class="card-tools">
-                                            <div class="row" style="position:relative">
-                                                <div class="col">
-                                                    <label for="telemetryTableFilterList">Device ID Filter</label>
+                                    <div class="info-box">
+                                        <div class="info-box-content">
+                                            <div class="row" style="margin-bottom:0.5em">
+                                                <div class="col-md-9">
+                                                    <div class="form-group">
+                                                        <label for="telemetryTableFilterList" style="width:10em">Device ID Filter</label>
+                                                        <select name="telemetryTableFilterList" id="telemetryTableFilterList" class="form-control custom-select" style="min-width:10em;width:30%"></select>
+                                                    </div>
                                                 </div>
-                                                <div class="col">
-                                                    <select name="telemetryTableFilterList" id="telemetryTableFilterList" class="form-control custom-select" style="min-width:10em"></select>
-                                                </div>
-                                                <div class="col">
-                                                    <button type="button" class="btn btn-danger" id="clearTelemetryTableBtn">
-                                                        <i class="far fa-trash-alt btn-fa"></i>Clear Events
-                                                    </button>
+                                                <div class="col-md-3">
+                                                    <div class="div-Button-Right vertical-center" style="margin-top:0">
+                                                        <button type="button" class="btn btn-danger" id="clearTelemetryTableBtn">
+                                                            <i class="far fa-trash-alt btn-fa"></i>Clear Events
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
+                                            <div id="telemetryTableDiv" class="row" style="min-height:10vh; max-height: 55vh; overflow-y:scroll; overflow-x:hidden">
+                                                <table id="telemetryTbl" class="table table-striped" style="max-height: 100%">
+                                                    <thead>
+                                                    <th>&nbsp;</th>
+                                                    <th>Event Time(UTC)</th>
+                                                    <th>Device ID</th>
+                                                    <th>Model ID</th>
+                                                    <th>Event Type</th>
+                                                    <th>Event Source</th>
+                                                    <th>Image Preview</th>
+                                                    </thead>
+                                                    <tbody id="telemetryTblDetails"></tbody>
+                                                </table>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div id="telemetryTableDiv" class="row" style="min-height:10vh; max-height: 55vh; overflow-y:scroll">
-                                        <table id="telemetryTbl" class="table table-striped" style="max-height: 100%">
-                                            <thead>
-                                            <th>&nbsp;</th>
-                                            <th>Event Time(UTC)</th>
-                                            <th>Device ID</th>
-                                            <th>Model ID</th>
-                                            <th>Event Type</th>
-                                            <th>Event Source</th>
-                                            <th>Image Preview</th>
-                                            </thead>
-                                            <tbody id="telemetryTblDetails"></tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
                             <!-- Image Gallery Tab -->
                             <div class="tab-pane fade" id="tab-imageGallery" role="tabpanel" aria-labelledby="tab-imageGallery-label">
-                                <div class="card-header" style="padding:0">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <h3 class="card-title">
-                                                <strong>
-                                                    Images stored in Azure Blob Storage
-                                                </strong>
-                                            </h3>
-                                            <br />
-                                            <h5 class="card-title">
-                                                Select row to preview image
-                                            </h5>
-                                        </div>
-                                        <div class="col" style="max-width:fit-content;min-width:20vh">
-                                            <div id="imagePreviewDiv" style="padding: 0.2em">
-                                                <img id="imagePreview" style="max-height: 20vh; min-height: 20vh; max-width: 200px; object-fit: contain"/>
-                                            </div>
-                                        </div>
-                                        <div class="col">
-                                            <h3 class="card-title">
-                                                <strong>
-                                                    File Name
-                                                </strong>
-                                            </h3>
-                                            <br />
-                                            <h5 class="card-title" id="imagePreviewName"></h5>
-                                        </div>
-                                    </div>
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        <a class="d-block w-100">
+                                            Images stored in Azure Blob Storage
+                                        </a>
+                                    </h4>
                                 </div>
-                                <div class="card-body" style="padding:0.5em 0 0.5em 0">
-                                    <div class="row">
-                                        <div class="card-tools">
-                                            <div class="row" style="position:relative">
-                                                <div class="col">
-                                                    <label for="imageGalleryDeviceIdList">Device ID Filter</label>
+                                <div class="card-body">
+                                    <div class="callout callout-info">
+                                        <h6>Select row to preview image</h6>
+                                    </div>
+                                    <div class="info-box" style="margin-bottom:0.5em">
+                                        <div class="info-box-content">
+                                            <div class="row">
+                                                <div class="col-sm-1" style="min-width:245px; width:fit-content">
+                                                    <div id="imagePreviewDiv">
+                                                        <img id="imagePreview" style="width:240px;height:240px; object-fit: contain"/>
+                                                    </div>
                                                 </div>
-                                                <div class="col">
-                                                    <select name="imageGalleryDeviceIdList" id="imageGalleryDeviceIdList" class="form-control custom-select" style="min-width:15em"></select>
+                                                <div class="col-sm-2" style="padding-left:0.5em">
+                                                    <span class="info-box-text">File Name : <span class="info-box-text" id="imagePreviewName"></span></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" style="margin:0.5em 0 0.5em 0">
-                                        <div class="jsgridDiv">
-                                            <div id="blobStorJsGrid" style="overflow-y:auto"></div>
+                                    <div class="info-box">
+                                        <div class="info-box-content">
+                                            <div class="row" style="margin-bottom:0.5em">
+                                                <div class="col-md-9">
+                                                    <div class="form-group">
+                                                        <label for="imageGalleryDeviceIdList" style="width:10em">Device ID Filter</label>
+                                                        <select name="imageGalleryDeviceIdList" id="imageGalleryDeviceIdList" class="form-control custom-select" style="min-width:10em;width:30%"></select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="div-Button-Right vertical-center" style="margin-top:0">
+                                                        <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
+                                                            <i class="fas fa-sync btn-fa"></i>Refresh
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="overflow-x:hidden">
+                                                <div class="jsgridDiv">
+                                                    <div id="blobStorJsGrid" style="overflow-y:auto"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
-                                        <button type="button" class="btn btn-success" id="refreshImageGalleryBtn">
-                                            <i class="fas fa-sync btn-fa"></i>Refresh
-                                        </button>
                                     </div>
                                 </div>
                             </div>
                             <!-- History Tab -->
                             <div class="tab-pane fade" id="tab-cosmosDb" role="tabpanel" aria-labelledby="tab-cosmosDb-label">
-                                <div class="card-header" style="padding:0">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <h3 class="card-title">
-                                                <strong>
-                                                    AI Inference History stored in Cosmos DB
-                                                </strong>
-                                            </h3>
-                                            <br />
-                                            <h5 class="card-title">
-                                                Select a result with image to preview image
-                                            </h5>
-                                        </div>
+                                <div class="card-header">
+                                    <h4 class="card-title w-100">
+                                        AI Inference History stored in Cosmos DB
+                                    </h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="callout callout-info">
+                                        <h6>Select a result with image to preview image</h6>
                                     </div>
-                                    <div class="card-body" style="padding:0.5em 0 0.5em 0">
-                                        <div class="row">
-                                            <div class="card-tools">
-                                                <div class="row" style="position:relative">
-                                                    <div class="col">
-                                                        <label for="cosmosDbDeviceIdList">Device ID Filter</label>
-                                                    </div>
-                                                    <div class="col">
-                                                        <select name="cosmosDbDeviceIdList" id="cosmosDbDeviceIdList" class="form-control custom-select" style="min-width:15em"></select>
+                                    <div class="info-box">
+                                        <div class="info-box-content">
+                                            <div class="row justify-content-between" style="margin-bottom:0.5em">
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="cosmosDbDeviceIdList" style="width:max-content">Device ID Filter:&nbsp;</label>
+                                                        <select name="cosmosDbDeviceIdList" id="cosmosDbDeviceIdList" class="form-control custom-select" style="min-width:10em;width:max-content"></select>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="margin:0.5em 0 0.5em 0">
-                                           <div class="jsgridDiv">
-                                                <div id="cosmosDbJsGrid"></div>
-                                            </div>
-                                        </div>
-                                        <div class="row" style="margin:0.5em 0 0 0">
-                                            <div class="card-tools">
-                                                <div class="row" style="position:relative">
-                                                    <div style="position:relative">
-                                                        <span style="height:100%">Threshold: <span id="cosmosDbThreshold"></span><span>%</span></span>
+                                                <div class="col-3">
+                                                    <div class="form-group">
+                                                        <label for="cosmosDbThreshold" style="width:max-content">Threshold:&nbsp;</label><span id="cosmosDbThreshold" style="min-width:4em"></span><span>%</span>
                                                         <span class="slider-blue">
-                                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange" style="min-width: 5em">
+                                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange" style="min-width:13em;width:max-content">
                                                         </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="form-group">
+                                                        <label for="cosmosDbRecordCount" style="width:max-content">Records:&nbsp;</label><span id="cosmosDbRecordCount" style="min-width:5em"></span><span>&nbsprecord(s)</span>
+                                                        <span class="slider-blue">
+                                                            <input type="range" class="slider" min="0" max="3000" value="100" step="1" id="cosmosDbRecordCountRange" style="min-width:13em;width:max-content">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-2">
+                                                    <div class="div-Button-Right" style="margin-top:0">
                                                         <button type="button" class="btn btn-success" id="refreshCosmosDbBtn">
                                                             <i class="fas fa-sync btn-fa"></i>Refresh
                                                         </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="jsgridDiv">
+                                                    <div id="cosmosDbJsGrid"></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="card-tools">
+                                                    <div class="row" style="position:relative">
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -1014,18 +1044,16 @@
             </div>
         </div>
         <div class="modal" id="modalPhoto">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog" style="max-width:350px">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Inference Result</h4>
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title">Inference Result</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="btnModalClose">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" style="display:flex;justify-content:center">
+                    <div class="modal-body">
                         <canvas id="photoCanvas" height="320" width="320"></canvas>
-                    </div>
-                    <div class="modal-footer justify-content-between">
                     </div>
                 </div>
             </div>
@@ -1040,10 +1068,28 @@
         var hubConnection;
         var cosmosDbThresholdSlider = document.getElementById("cosmosDbThresholdRange");
         var cosmosDbThreshold = document.getElementById("cosmosDbThreshold");
+        var cosmosDbRecordCountSlider = document.getElementById("cosmosDbRecordCountRange");
+        var cosmosDbRecordCount = document.getElementById("cosmosDbRecordCount");
+        var cosmosDbRecordCountSliderHandler;
+        var cosmosDbThresholdSliderHandler;
+
+        cosmosDbThreshold.innerHTML = cosmosDbThresholdSlider.value;
+        cosmosDbRecordCount.innerHTML = cosmosDbRecordCountSlider.value;
+
+        cosmosDbThresholdSlider.onchange = function () {
+            cosmosDbThreshold.innerHTML = this.value;
+            $("#cosmosDbJsGrid").jsGrid("loadData");
+        }
 
         cosmosDbThreshold.innerHTML = cosmosDbThresholdSlider.value;
         cosmosDbThresholdSlider.onchange = function () {
-            cosmosDbThreshold.innerHTML = this.value;
+            //cosmosDbThreshold.innerHTML = this.value;
+            $("#cosmosDbJsGrid").jsGrid("loadData");
+        }
+
+        cosmosDbRecordCount.innerHTML = cosmosDbRecordCountSlider.value;
+        cosmosDbRecordCountSlider.onchange = function () {
+            //cosmosDbRecordCount.innerHTML = this.value;
             $("#cosmosDbJsGrid").jsGrid("loadData");
         }
 
@@ -1141,20 +1187,6 @@
                 .then(() => console.log('SignalR connected!'))
                 .catch(console.error);
         })
-
-        function toggleLoader(bForceClear) {
-            var loader = document.getElementById("loader");
-
-            if (bForceClear) {
-                loader.style.display = "none";
-            } else {
-                if (loader.style.display == "none") {
-                    loader.style.display = "block";
-                } else {
-                    loader.style.display = "none";
-                }
-            }
-        }
 
         //
         // button clicks
@@ -1298,6 +1330,7 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
+            disableUiButtons(true);
 
             ConvertModel()
                 .then(function (conversion_id) {
@@ -1326,8 +1359,8 @@
             GetBaseModelStatus(model_id, "1")
                 .then(function (project) {
                     var json = JSON.parse(project);
-
-                    if (json.versions[0].stage == "conversion") {
+                    // dnremove
+                    if (json.versions[0].stage == 'conversion' || json.versions[0].stage == 'publish') {
 
                         document.getElementById('convertModelGetBaseModelStatusConversionDiv').innerHTML = json.versions[0].conv_id;
                         document.getElementById('convertModelGetBaseModelStatusStageDiv').innerHTML = json.versions[0].stage;
@@ -1344,7 +1377,7 @@
                         }
                     }
                     else if (json.versions[0].stage == "before") {
-                        $('#convertModelBtn').prop('disabled', false);
+                        //$('#convertModelBtn').prop('disabled', false);
                     }
 
                 })
@@ -1352,7 +1385,7 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(false);
+                    toggleLoader(true);
                 });
         })
 
@@ -1360,11 +1393,12 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
+            disableUiButtons(true);
 
             PublishModel()
                 .then(function (conversion_id) {
                     if (conversion_id) {
-                        console.log("Publish Started : " + conversion_id);
+                        console.log("Conversion Started : " + conversion_id);
                         document.getElementById('publishModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
                     }
                 })
@@ -1413,7 +1447,7 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(false);
+                    toggleLoader(true);
                 });
         })
 
@@ -2264,41 +2298,26 @@
         $('#accordionDeployByConfiguration').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            var targetListName = 'deployByConfiguraionReplaceModelIdList';
+            var targetListName = 'deployByConfiguraionFormConfigIdList';
 
             try {
                 toggleLoader(false);
-                GetDeployConfigurations("deployByConfiguraionFormConfigIdList")
+                GetDeployConfigurations('deployByConfiguraionFormConfigIdList')
                     .then((ret) => {
-
-                        if (ret) {
-                            GetDevices("deployByConfiguraionDeviceIdList", true, false, 'Select Device', '')
-                                .then((ret) => {
-                                    if (ret) {
-                                        GetAllModels(targetListName, true)
-                                            .then((ret) => {
-                                                if (ret) {
-                                                    //    if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                                                    //        setSelectOption(targetListName, currentModel);
-                                                    //    }
-                                                }
-                                            })
-                                            .finally(err => {
-                                                toggleLoader(true);
-                                            })
-                                    }
-                                })
+                        if (ret != null)
+                        {
+                            GetDevices('deployByConfiguraionDeviceIdList', true, false, 'Select Device', '')
+                                .then((ret) => {})
                                 .catch(() => {
                                     toggleLoader(true);
                                 })
                         }
                     })
                     .catch(() => {
-                        toggleLoader(true);
                     })
             } catch (err) {
-                toggleLoader(true);
             } finally { }
+                toggleLoader(true);
         })
 
         $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function (evt) {
@@ -2469,6 +2488,25 @@
 
             toggleLoader(false);
             var targetDeviceListName = 'cosmosDbDeviceIdList';
+
+            cosmosDbRecordCountSlider.addEventListener("input", function cosmosDbRecordCountSliderHandler(evt) {
+                var count = parseInt(evt.target.value);
+
+                if (count == 0)
+                {
+                    cosmosDbRecordCount.innerHTML = "0 (All)"
+                }
+                else
+                {
+                    cosmosDbRecordCount.innerHTML = evt.target.value;
+                }
+            })
+
+            cosmosDbThresholdSlider.addEventListener("input", function cosmosDbThresholdSliderHandler(evt) {
+                var count = parseInt(evt.target.value);
+                cosmosDbThreshold.innerHTML = evt.target.value;
+            })
+
             GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
                 .then((ret) => {
                     $("#cosmosDbJsGrid").jsGrid("loadData");
@@ -2476,6 +2514,12 @@
                 .finally(() => {
                     toggleLoader(true);
                 })   
+        })
+
+        $('#tab-cosmosDb-label').on('hide.bs.tab', function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            cosmosDbRecordCountSlider.removeEventListener("input", cosmosDbRecordCountSliderHandler);
+            cosmosDbThresholdSlider.removeEventListener("input", cosmosDbThresholdSliderHandler);
         })
 
         $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
@@ -2714,6 +2758,8 @@
                 $('#deployByConfiguratonHistoryBtn').prop('disabled', false);
                 $('#getDeployHistoryBtn').prop('disabled', false);
                 currentDeviceId = document.getElementById(targetListId).value;
+                GetModelForDevice('deployByConfiguraionReplaceModelIdList', currentDeviceId);
+
             } else {
                 $('#deployByConfiguratonHistoryBtn').prop('disabled', true);
                 $('#getDeployHistoryBtn').prop('disabled', true);
@@ -2873,6 +2919,15 @@
             console.log("delete Deploy Configuration " + config_id);
 
             DeleteDeployConfiguration(config_id);
+        }
+
+        function disableUiButtons(disable) {
+            $("#convertModelBtn").prop('disabled', disable);
+            $("#publishModelBtn").prop('disabled', disable);
+            $("#createDeployConfigurationBtn").prop('disabled', disable);
+            $("#createDeployConfigurationGetDeployConfigurationsBtn").prop('disabled', disable);
+            $("#deployByConfiguratonHistoryBtn").prop('disabled', disable);
+            $("#deployByConfiguratonBtn").prop('disabled', disable);
         }
 
         $("#btnModalClose").on("click", function (evt) {

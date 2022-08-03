@@ -7,9 +7,29 @@
     margin-right:0.5em;
 }
 
+.disConnectedDevice {
+    color : darkgray;
+}
+
 label {
     margin-bottom : 0.2em;
     margin-top: 0.5em;
+}
+
+select {
+    width: 100%;
+}
+
+.footer-div {
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.btnStatusDiv {
+    position: relative;
+    margin-top: 0.7em;
+    margin-bottom: 0.2em;
 }
 
 .pre-inline {
@@ -204,12 +224,16 @@ label {
 }
 
 .vertical-center {
-    position:absolute;
+    position: absolute;
     top: 50%;
-    right:0;
+    right: 0;
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
-    overflow-x:auto;
+    overflow-x: hidden;
+    max-width: min-content;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 11rem);
 }
 
 .vertical-center-relative {
@@ -219,6 +243,18 @@ label {
     -ms-transform: translateY(-50%);
     transform: translateY(-50%);
     overflow-x: auto;
+    float: right;
+}
+
+.vertical-center-relative-right {
+    position: relative;
+    top: 50%;
+    right: 0;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    overflow-x: auto;
+    justify-content: right;
+    float:right;
 }
 
 /*.modal {
@@ -589,6 +625,7 @@ label {
 .jsgridDiv {
     min-height: calc(40vh);
     max-height: 100%;
+    overflow-x:hidden;
 }
 
 .jsgrid-header-cell {
@@ -617,4 +654,107 @@ label {
 .ui-jqgrid-bdiv {
     overflow-y: scroll !important;
     max-height: 400px !important;
+}
+
+.loader-parent {
+    position: relative;
+}
+
+#canvasLoaderWrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    background-color: rgba(0,0,0,0.3);
+}
+
+#canvasLoaderText {
+    text-align:center;
+    position:absolute;
+    bottom: 0;
+    left: 50%;
+    font-size:medium;
+    font-weight:bold;
+    width:80%;
+    color: white;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+}
+#canvasLoader {
+    position: relative;
+    z-index: 999;
+    margin: auto;
+    left: 50%;
+    top: 50%;
+    width: 100%;
+    height: 100%;
+}
+
+    #canvasLoader:before {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    #canvasLoader:not(:required) {
+        /* hide "loading..." text */
+        font: 0/0 a;
+        color: transparent;
+        text-shadow: none;
+        background-color: transparent;
+        border: 0;
+    }
+
+        #canvasLoader:not(:required):after {
+            content: '';
+            top: 50%;
+            right: 50%;
+            display: block;
+            font-size: 10px;
+            width: 1em;
+            height: 1em;
+            margin-top: 0;
+            -webkit-animation: spinner 1500ms infinite linear;
+            -moz-animation: spinner 1500ms infinite linear;
+            -ms-animation: spinner 1500ms infinite linear;
+            -o-animation: spinner 1500ms infinite linear;
+            animation: spinner 1500ms infinite linear;
+            border-radius: 0.5em;
+            -webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+            box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+        }
+
+/*
+#captureImageCanvas {
+    z-index: 100;
+}
+
+#captureImageCanvasOverlay {
+    z-index: 200;
+}*/
+
+.form-group {
+    margin-bottom:0;
+}
+
+.info-box {
+    margin-bottom:0;
+    padding-bottom:1rem;
+}
+
+.card-body {
+    padding:0.5rem;
+}
+
+.callout {
+    padding: 0.5rem;
+    margin-bottom: 0.5rem;
 }

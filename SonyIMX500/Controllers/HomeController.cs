@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
+using Azure.Storage.Blobs.Specialized;
 
 namespace SonyIMX500.Controllers
 {
@@ -250,6 +251,8 @@ namespace SonyIMX500.Controllers
             {
                 BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
                 BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("iothub-link");
+                BlobContainerClient container = new BlobContainerClient(_appSettings.Blob.ConnectionString, "iothub-link");
+                var block = container.GetBlockBlobClient(timeStamp);
 
                 await foreach (BlobItem item in blobContainerClient.GetBlobsAsync())
                 {
@@ -275,6 +278,43 @@ namespace SonyIMX500.Controllers
                 }
 
                 return StatusCode(StatusCodes.Status404NotFound, Json($"{{\"Status\":\"Image File ({timeStamp}) Not Found in Blob Storage\"}}"));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Excetion in {System.Reflection.MethodBase.GetCurrentMethod().Name}() {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> CheckImage(string deviceId, string imagePath)
+        {
+            int retry = 3;
+
+            try
+            {
+                while (retry > 0)
+                {
+                    //BlobServiceClient blobServiceClient = new BlobServiceClient(_appSettings.Blob.ConnectionString);
+                    //BlobContainerClient blobContainerClient = blobServiceClient.GetBlobContainerClient("iothub-link");
+                    BlobContainerClient container = new BlobContainerClient(_appSettings.Blob.ConnectionString, "iothub-link");
+                    var block = container.GetBlockBlobClient(imagePath);
+
+                    bool bExist = await block.ExistsAsync();
+
+                    if (bExist == true)
+                    {
+                        string sas = GetSasToken();
+                        return Ok(Json($"{{\"uri\":\"{block.Uri.AbsoluteUri}{sas}\"}}"));
+                    }
+                    else
+                    {
+                        System.Threading.Thread.Sleep(5000);
+                        retry--;
+
+                    }
+                }
+                return StatusCode(StatusCodes.Status404NotFound, Json($"{{\"Status\":\"Image File ({imagePath}) Not Found in Blob Storage\"}}"));
             }
             catch (Exception ex)
             {
