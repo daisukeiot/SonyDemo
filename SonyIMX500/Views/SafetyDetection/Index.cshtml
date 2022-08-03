@@ -243,8 +243,8 @@
                                             <div class="col-md-3" style="min-width:330px; min-height:350px">
                                                 <div class="container loader-parent" style="border:1px dashed green;">
                                                     <div class="row justify-content-center align-items-center">
-                                                        <canvas id="inferenceImageCanvas" height="320" width="320" style="position:absolute"></canvas>
                                                         <canvas id="inferenceImageCanvasOverlay" height="320" width="320"></canvas>
+                                                        <canvas id="inferenceImageCanvas" height="320" width="320" style="position:absolute"></canvas>
                                                     </div>
                                                     <div id="canvasLoaderWrapper" height="320" width="320" style="display:none">
                                                         <div id="canvasLoader">
@@ -284,6 +284,7 @@
         let frequencySpinnerHandler;
         let lineChart;
         let currentThreshold = 0.8;
+        let isSafetyDetectionRunning = false;
 
         let chartOptions = {
             showLines: true,
@@ -551,6 +552,9 @@
                         } else {
                             $('#startSafetyDetectionBtn').prop('disabled', true);
                         }
+
+                        // make sure the device is not running inference.
+                        StopInference();
                     });
             }
         })
@@ -561,6 +565,7 @@
             var modelListId = evt.target.id;
             var deviceList = document.getElementById(deviceListId);
             var modelList = document.getElementById(modelListId);
+            currentModelId = modelList[modelList.selectedIndex].value;
 
             if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
 
@@ -640,8 +645,10 @@
         $('#startSafetyDetectionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StartInference('startSafetyDetectionBtnResult')
-                .then(() => { })
+            StartSafetyZone('startSafetyDetectionBtnResult')
+                .then(() => { 
+                    isSafetyDetectionRunning = true;
+                })
                 .finally(() => {
                     disableUiElements(false);
                     $('#stopSafetyDetectionBtn').prop('disabled', false);
@@ -658,6 +665,7 @@
                     disableUiElements(true);
                     $('#stopSafetyDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
+                    isSafetyDetectionRunning = false;
                 });
         })
 

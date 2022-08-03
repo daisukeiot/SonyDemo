@@ -678,8 +678,17 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             }
         }).done(function (response) {
             console.debug(response.value);
+
+            var canvasId;
+            if (isSafetyDetectionRunning == true) {
+                canvasId = 'inferenceImageCanvas';
+            }
+            else {
+                canvasId = 'captureImageCanvas';
+            }
+
             var json = JSON.parse(response.value);
-            var canvasImage = document.getElementById("captureImageCanvas");
+            var canvasImage = document.getElementById(canvasId);
             var ctxImage = canvasImage.getContext('2d');
             var img = new Image();
             img.src = json.uri;
@@ -806,6 +815,85 @@ async function StartInference(resultElementId) {
     }
     return;
 }
+
+async function StartSafetyZone(resultElementId) {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
+    var resultElement = document.getElementById(resultElementId);
+
+    try {
+
+        setResultElement(resultElement, `Starting Safety Zone Inference`);
+        runningInference = true;
+        var frequency = parseInt(document.getElementById("safetyDetectionFrequencyRange").value);
+        // to ms
+        frequency = Math.round((frequency * 1000) / 33.3);
+        var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+        var Mode;
+        var FileFormat = null;
+        var CropHOffset = null;
+        var CropVOffset = null;
+        var CropHSize = null;
+        var CropVSize = null;
+        var NumberOfImages = 0; // continuous
+        var FrequencyOfImages = frequency.toString();
+        var MaxDetectionsPerFrame = null;
+        var NumberOfInferencesPerMessage = null;
+        var model_id = document.getElementById("inferenceDetectionModelIdList").value;
+
+        if (notificationType == 'blob') {
+            Mode = 0;
+        }
+        else {
+            Mode = 1;
+        }
+
+        await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.origin + '/' + 'sony/StartUploadRetrainingData',
+            data: {
+                device_id: currentDeviceId,
+                Mode: Mode,
+                FileFormat: FileFormat,
+                CropHOffset: CropHOffset,
+                CropVOffset: CropVOffset,
+                CropHSize: CropHSize,
+                CropVSize: CropVSize,
+                NumberOfImages: NumberOfImages,
+                FrequencyOfImages: FrequencyOfImages,
+                MaxDetectionsPerFrame: MaxDetectionsPerFrame,
+                NumberOfInferencesPerMessage: NumberOfInferencesPerMessage,
+                model_id: model_id
+            },
+        }).done(function (response) {
+            var result = JSON.parse(response.value);
+
+            if (result.result == "SUCCESS") {
+                pendingImagePath = result.outputSubDirectory;
+                toggleCanvasLoader(false);
+                setResultElement(resultElement, `Processing images @ ${pendingImagePath}`);
+            }
+            else {
+                setResultElement(resultElement, `Failed to start : ${result.result}`);
+            }
+        });
+
+    } catch (err) {
+        await $.ajax({
+            async: true,
+            type: "POST",
+            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
+            data: {
+                device_id: currentDeviceId
+            },
+        }).done(function (response) {
+        });
+    } finally {
+    }
+    return;
+}
+
 
 async function StopInference(resultElementId) {
     var funcName = arguments.callee.name + "()";
