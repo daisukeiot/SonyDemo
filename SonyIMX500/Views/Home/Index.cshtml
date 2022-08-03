@@ -857,30 +857,24 @@
                                     </div>
                                     <div class="info-box">
                                         <div class="info-box-content">
-                                            <div class="row justify-content-between" style="margin-bottom:0.5em">
-                                                <div class="col-3">
+                                            <div class="row" style="margin-bottom:0.5em">
+                                                <div class="d-flex justify-content-between" style="width:100%">
                                                     <div class="form-group">
                                                         <label for="cosmosDbDeviceIdList" style="width:max-content">Device ID Filter:&nbsp;</label>
                                                         <select name="cosmosDbDeviceIdList" id="cosmosDbDeviceIdList" class="form-control custom-select" style="min-width:10em;width:max-content"></select>
                                                     </div>
-                                                </div>
-                                                <div class="col-3">
                                                     <div class="form-group">
                                                         <label for="cosmosDbThreshold" style="width:max-content">Threshold:&nbsp;</label><span id="cosmosDbThreshold" style="min-width:4em"></span><span>%</span>
                                                         <span class="slider-blue">
                                                             <input type="range" class="slider" min="0" max="100" value="80" step="1" id="cosmosDbThresholdRange" style="min-width:13em;width:max-content">
                                                         </span>
                                                     </div>
-                                                </div>
-                                                <div class="col-4">
                                                     <div class="form-group">
                                                         <label for="cosmosDbRecordCount" style="width:max-content">Records:&nbsp;</label><span id="cosmosDbRecordCount" style="min-width:5em"></span><span>&nbsprecord(s)</span>
                                                         <span class="slider-blue">
                                                             <input type="range" class="slider" min="0" max="3000" value="100" step="1" id="cosmosDbRecordCountRange" style="min-width:13em;width:max-content">
                                                         </span>
                                                     </div>
-                                                </div>
-                                                <div class="col-2">
                                                     <div class="div-Button-Right" style="margin-top:0">
                                                         <button type="button" class="btn btn-success" id="refreshCosmosDbBtn">
                                                             <i class="fas fa-sync btn-fa"></i>Refresh
