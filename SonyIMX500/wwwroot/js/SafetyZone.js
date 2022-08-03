@@ -45,6 +45,8 @@ function disableUiElements(bDisable) {
     $('#stopInferenceBtn').prop('disabled', bDisable);
     $('#safetyDetectionFrequencyRange').prop('disabled', bDisable);
     $('#safetyDetectionImageCountRange').prop('disabled', bDisable);
+    $('#startSafetyDetectionBtn').prop('disabled', bDisable);
+    $('#stopSafetyDetectionBtn').prop('disabled', bDisable);
 }
 
 var region = {
@@ -553,7 +555,7 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
             var imagePath = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[inferenceResult].T}.jpg`;
             //var found = await CheckImage(currentDeviceId, imagePath);
 
-            await CheckImageForInference(currentDeviceId, imagePath, message.inferenceResults[inferenceResult].inferenceResults, threshold);
+            await canvasId(currentDeviceId, imagePath, message.inferenceResults[inferenceResult].inferenceResults, threshold);
         }
     } catch (err) {
     } finally {
