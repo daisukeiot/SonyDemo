@@ -11,6 +11,7 @@ var pendingImagePath = '';
 var runningInference = false;
 var ratio_x = 1;
 var ratio_y = 1;
+let rect_zone = [0, 0, 0, 0];
 
 function printTime(msg) {
     let dateObj = new Date();
@@ -163,11 +164,16 @@ function mouseUp(e) {
     $('#region_x').html(x.padStart(3, ' '));
     $('#region_y').html(y.padStart(3, ' '));
 
-    var w = parseInt((region.x + region.w)/ratio_x).toString();
+    var w = parseInt((region.x + region.w) / ratio_x).toString();
     var h = parseInt((region.y + region.h)/ratio_y).toString();
 
     $('#region_w').html(w.padStart(3, ' '));
     $('#region_h').html(h.padStart(3, ' '));
+
+    rect_zone[0] = x;
+    rect_zone[1] = y;
+    rect_zone[2] = w;
+    rect_zone[3] = h;
 
     drawRegion();
 }
@@ -928,4 +934,9 @@ async function StopInference(resultElementId) {
         }
     } finally {
     }
+}
+
+function isInArea(rect_zone, rect_obj) {
+
+
 }

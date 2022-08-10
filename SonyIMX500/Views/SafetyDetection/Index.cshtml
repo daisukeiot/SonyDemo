@@ -65,10 +65,10 @@
                                                     <div class="card-body">
                                                         <div class="info-box">
                                                             <div class="info-box-content">
-                                                                <label for="safetyDetectionDeviceIdList">Device ID</label>
+                                                                <label for="testDetectionDeviceIdList">Device ID</label>
                                                                 <div class="form-group">
                                                                     <div class="input-group">
-                                                                        <select name="safetyDetectionDeviceIdList" id="safetyDetectionDeviceIdList" class="form-control custom-select"></select>
+                                                                        <select name="testDetectionDeviceIdList" id="testDetectionDeviceIdList" class="form-control custom-select"></select>
                                                                         <div class="input-group-append">
                                                                             <button type="button" class="btn btn-success" style="min-width:1em" id="captureImageRefreshDeviceListBtn">
                                                                                 <i class="fas fa-sync btn-fa" style="margin:0"></i>
@@ -77,21 +77,21 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="form-group">
-                                                                    <label for="safetyDetectionModelIdList">Model ID</label>
-                                                                    <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" disabled></select>
+                                                                    <label for="testDetectionModelIdList">Model ID</label>
+                                                                    <select name="testDetectionModelIdList" id="testDetectionModelIdList" class="form-control custom-select" disabled></select>
                                                                 </div>
                                                                 <div class="form-group">
                                                                     <label for="divTrigger">Trigger</label>
                                                                     <div id="divTrigger" >
                                                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                                                             <label class="btn btn-info" style="min-width:8em">
-                                                                                <input type="radio" name="safetyDetectionImageNotification" id="safetyDetectionImageNotification_Telemetry" autocomplete="off" value="telemetry">Telemetry
+                                                                                <input type="radio" name="testDetectionImageNotification" id="testDetectionImageNotification_Telemetry" autocomplete="off" value="telemetry">Telemetry
                                                                             </label>
                                                                             <label class="btn btn-info active" style="min-width:8em">
-                                                                                <input type="radio" name="safetyDetectionImageNotification" id="safetyDetectionImageNotification_CosmosDb" autocomplete="off" value="cosmosDb" checked>Cosmos DB  
+                                                                                <input type="radio" name="testDetectionImageNotification" id="testDetectionImageNotification_CosmosDb" autocomplete="off" value="cosmosDb" checked>Cosmos DB  
                                                                             </label>
                                                                             <label class="btn btn-info" style="min-width:8em">
-                                                                                <input type="radio" name="safetyDetectionImageNotification" id="safetyDetectionImageNotification_Telemetry_Blob" autocomplete="off" value="blob">Blob Storage
+                                                                                <input type="radio" name="testDetectionImageNotification" id="testDetectionImageNotification_Telemetry_Blob" autocomplete="off" value="blob">Blob Storage
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -157,25 +157,25 @@
                                                         <div class="info-box">
                                                             <div class="info-box-content">
                                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                                    <label for="safetyDetectionImageCountRange" style="margin-right:0.5em; width:11em">Number of images : </label>
+                                                                    <label for="testDetectionImageCountRange" style="margin-right:0.5em; width:11em">Number of images : </label>
                                                                     <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
-                                                                        <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountRange" style="width:100%">
+                                                                        <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="testDetectionImageCountRange" style="width:100%">
                                                                     </div>
-                                                                    <span><span id="safetyDetectionImageCount"></span><span> images</span></span>
+                                                                    <span><span id="testDetectionImageCount"></span><span> images</span></span>
                                                                 </div>
                                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                                    <label for="safetyDetectionThresholdRange" style="margin-right:0.5em; width:11em">Threashold (percent) : </label>
+                                                                    <label for="testDetectionThresholdRange" style="margin-right:0.5em; width:11em">Threashold (percent) : </label>
                                                                     <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
-                                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdRange" style="width:100%">
+                                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="testDetectionThresholdRange" style="width:100%">
                                                                     </div>
-                                                                    <span> <span id="safetyDetectionThreshold"></span><span> %</span></span>
+                                                                    <span> <span id="testDetectionThreshold"></span><span> %</span></span>
                                                                 </div>
                                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                                    <label for="safetyDetectionFrequencyRange" style="margin-right:0.5em; width:11em">Frequency (seconds) : </label>
+                                                                    <label for="testDetectionFrequencyRange" style="margin-right:0.5em; width:11em">Frequency (seconds) : </label>
                                                                     <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
-                                                                        <input type="range" class="slider" min="10" max="600" value="10" step="1" id="safetyDetectionFrequencyRange" style="width:100%">
+                                                                        <input type="range" class="slider" min="10" max="600" value="10" step="1" id="testDetectionFrequencyRange" style="width:100%">
                                                                     </div>
-                                                                    <span id="safetyDetectionFrequency"></span><span> sec</span>
+                                                                    <span id="testDetectionFrequency"></span><span> sec</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -219,21 +219,48 @@
                                 <div class="info-box" style="margin-bottom:0.5em">
                                     <div class="info-box-content">
                                         <div class="form-group">
-                                            <label for="inferenceDetectionDeviceIdList" style="width:10em">Select Device ID : </label>
-                                            <select name="inferenceDetectionDeviceIdList" id="inferenceDetectionDeviceIdList" class="form-control custom-select" style="min-width:15em; width:30%"></select>
+                                            <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                <label for="safetyDetectionDeviceIdList" style="margin-right:0.5em; width:11em;justify-content:right">Select Device ID : </label>
+                                                <select name="safetyDetectionDeviceIdList" id="safetyDetectionDeviceIdList" class="form-control custom-select" style="min-width:15em; width:30%"></select>
+                                            </div>
                                         </div>
                                         <div class="form-group">
-                                            <label for="inferenceDetectionModelIdList" style="width:10em">Select Model ID : </label>
-                                            <select name="inferenceDetectionModelIdList" id="inferenceDetectionModelIdList" class="form-control custom-select" style="min-width:15em; width:30%" disabled></select>
+                                            <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                <label for="safetyDetectionModelIdList" style="margin-right:0.5em; width:11em;justify-content:right">Select Model ID : </label>
+                                                <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" style="min-width:15em; width:30%" disabled></select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                <label for="safetyDetectionImageCountRange" style="margin-right:0.5em; width:11em;justify-content:right">Number of images : </label>
+                                                <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                    <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountRange" style="width:100%">
+                                                </div>
+                                                <span><span id="safetyDetectionDetectionImageCount"></span><span> images</span></span>
+                                            </div>
+                                        </div>
+                                        <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                            <label for="safetyDetectionThresholdRange" style="margin-right:0.5em; width:11em;justify-content:right">Threashold (percent) : </label>
+                                            <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdRange" style="width:100%">
+                                            </div>
+                                            <span> <span id="safetyDetectionThreshold"></span><span> %</span></span>
+                                        </div>
+                                        <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                            <label for="safetyDetectionFrequencyRange" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
+                                            <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                <input type="range" class="slider" min="10" max="600" value="10" step="1" id="safetyDetectionFrequencyRange" style="width:100%">
+                                            </div>
+                                            <span id="safetyDetectionDetectionFrequency"></span><span> sec</span>
                                         </div>
                                         <div class="btnStatusDiv">
-                                            <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="starttestDetectionBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference
                                             </button>
-                                            <button type="button" class="btn btn-success" id="stopSafetyDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="stoptestDetectionBtn" disabled>
                                                 <i class="fas fa-stop btn-fa"></i>Stop Inference
                                             </button>
-                                            <div class="info-box-text vertical-center" id='startSafetyDetectionBtnResult'>Place Holder : To be deleted</div>
+                                            <div class="info-box-text vertical-center" id='starttestDetectionBtnResult'>Place Holder : To be deleted</div>
                                         </div>
                                     </div>
                                 </div>
@@ -273,18 +300,27 @@
         let start;
         let currentDeviceId;
         let currentModelId;
-        let thresholdSlider = document.getElementById("safetyDetectionThresholdRange");
-        let thresholdLabel = document.getElementById("safetyDetectionThreshold");
-        let frequencySlider = document.getElementById("safetyDetectionFrequencyRange");
-        let frequencyLabel = document.getElementById("safetyDetectionFrequency");
-        let imageCountSlider = document.getElementById("safetyDetectionImageCountRange");
-        let imageCountLabel = document.getElementById("safetyDetectionImageCount");
+        let testThresholdSlider = document.getElementById("testDetectionThresholdRange");
+        let testThresholdLabel = document.getElementById("testDetectionThreshold");
+        let testFrequencySlider = document.getElementById("testDetectionFrequencyRange");
+        let testFrequencyLabel = document.getElementById("testDetectionFrequency");
+        let testImageCountSlider = document.getElementById("testDetectionImageCountRange");
+        let testImageCountLabel = document.getElementById("testDetectionImageCount");
+        let safetyDetectionimageCountSlider = document.getElementById("safetyDetectionImageCountRange");
+        let safetyDetectionImageCountLabel = document.getElementById("safetyDetectionImageCount");
+        let safetyDetectionImageCountSlider = document.getElementById("safetyDetectionThresholdRange");
+        let safetyDetectionImageCountLabel = document.getElementById("safetyDetectionThreshold");
+        let safetyDetectionImageCountSlider = document.getElementById("safetyDetectionImageCountRange");
+        let safetyDetectionImageCountLabel = document.getElementById("safetyDetectionImageCount");
         let thresholdSliderHandler;
         let imageCountSliderHandler;
+        let safetyDetectionFrequencySpinnerHandler;
+        let safetyDetectionThresholdSliderHandler;
+        let safetyDetectionImageCountSliderHandler;
         let frequencySpinnerHandler;
         let lineChart;
         let currentThreshold = 0.8;
-        let isSafetyDetectionRunning = false;
+        let istestDetectionRunning = false;
 
         let chartOptions = {
             showLines: true,
@@ -352,9 +388,12 @@
             document.getElementById('nav-link-home').classList.remove('active');
             document.getElementById('nav-link-sd').classList.add('active');
 
-            thresholdLabel.innerHTML = thresholdSlider.value;
-            frequencyLabel.innerHTML = frequencySlider.value;
-            imageCountLabel.innerHTML = imageCountSlider.value;
+            testThresholdLabel.innerHTML = testThresholdSlider.value;
+            testFrequencyLabel.innerHTML = testFrequencySlider.value;
+            testImageCountLabel.innerHTML = testImageCountSlider.value;
+            safetyDetectionThresholdLabel.innerHTML = safetyDetectionThresholdSlider.value;
+            safetyDetectionFrequencyLabel.innerHTML = safetyDetectionFrequencySlider.value;
+            safetyDetectionImageCountLabel.innerHTML = safetyDetectionImageCountSlider.value;
 
             initCanvas('captureImageCanvasOverlay', 'captureImageCanvas');
 
@@ -409,7 +448,7 @@
             if (currentDeviceId == undefined) {
                 toggleLoader(false);
 
-                GetDevices("safetyDetectionDeviceIdList", true, true, 'Select Device', '0')
+                GetDevices("testDetectionDeviceIdList", true, true, 'Select Device', '0')
                     .then((response) => { 
                         if (response == false) {
                             var resultElement = document.getElementById('captureImageBtnResult');
@@ -437,34 +476,34 @@
         $('#accordionStartInference').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            imageCountSlider.addEventListener("input", function imageCountSliderHandler(evt) {
+            testImageCountSlider.addEventListener("input", function imageCountSliderHandler(evt) {
                 var count = parseInt(evt.target.value);
 
                 if (count == 0)
                 {
-                    imageCountLabel.innerHTML = "0 (Continuous)"
+                    testImageCountLabel.innerHTML = "0 (Continuous)"
                 }
                 else
                 {
-                    imageCountLabel.innerHTML = evt.target.value;
+                    testImageCountLabel.innerHTML = evt.target.value;
                 }
             })
 
-            thresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
-                thresholdLabel.innerHTML = evt.target.value;
+            testThresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
+                testThresholdLabel.innerHTML = evt.target.value;
                 currentThreshold = parseInt(evt.target.value) / 100;
             })
 
-            frequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
-                frequencyLabel.innerHTML = evt.target.value;
+            testFrequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
+                testFrequencyLabel.innerHTML = evt.target.value;
             })
         })
 
         $('#accordionStartInference').on('hide.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            thresholdSlider.removeEventListener("input", thresholdSliderHandler);
-            frequencySlider.removeEventListener("input", frequencySpinnerHandler);
-            imageCountSlider.removeEventListener("input", imageCountSliderHandler);
+            testThresholdSlider.removeEventListener("input", thresholdSliderHandler);
+            testFrequencySlider.removeEventListener("input", frequencySpinnerHandler);
+            testImageCountSlider.removeEventListener("input", imageCountSliderHandler);
         })
 
         $('#accordionSaveParameter').on('show.bs.collapse', function (evt) {
@@ -481,7 +520,7 @@
         $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            GetDevices("inferenceDetectionDeviceIdList", true, false, 'Select Device', '0')
+            GetDevices("safetyDetectionDeviceIdList", true, false, 'Select Device', '0')
                 .then((response) => { 
 
                 })
@@ -490,19 +529,41 @@
                 .finally(() => {
                     toggleLoader(true);
                 })
+
+            testImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
+                var count = parseInt(evt.target.value);
+
+                if (count == 0)
+                {
+                    testImageCountLabel.innerHTML = "0 (Continuous)"
+                }
+                else
+                {
+                    testImageCountLabel.innerHTML = evt.target.value;
+                }
+            })
+
+            testThresholdSlider.addEventListener("input", function safetyDetectionFrequencyLabel(evt) {
+                testThresholdLabel.innerHTML = evt.target.value;
+                currentThreshold = parseInt(evt.target.value) / 100;
+            })
+
+            testFrequencySlider.addEventListener("input", function safetyDetectionImageCountLabel(evt) {
+                testFrequencyLabel.innerHTML = evt.target.value;
+            })
         })
 
         //
         // Change event
         //
-        $('#safetyDetectionDeviceIdList').on('change', async function (evt) {
+        $('#testDetectionDeviceIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
             if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value)) {
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
-                await GetSingleDevice(currentDeviceId, 'safetyDetectionModelIdList', 'captureImageBtnResult')
+                await GetSingleDevice(currentDeviceId, 'testDetectionModelIdList', 'captureImageBtnResult')
                     .then(function(isDisconnected) {
                         if (isDisconnected == false)
                         {
@@ -517,7 +578,7 @@
             }
         })
 
-        $('#safetyDetectionModelIdList').on('change', function (evt) {
+        $('#testDetectionModelIdList').on('change', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
@@ -533,10 +594,10 @@
             }
         })
 
-        $('#inferenceDetectionDeviceIdList').on('change', async function (evt) {
+        $('#safetyDetectionDeviceIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
-            var modelListId = 'inferenceDetectionModelIdList';
+            var modelListId = 'safetyDetectionModelIdList';
             var deviceList = document.getElementById(targetListId);
             var modelList = document.getElementById(modelListId);
 
@@ -547,10 +608,10 @@
                         deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
 
                         if (modelList.selectedIndex > 0 && isDisconnected == false) {
-                            $('#startSafetyDetectionBtn').prop('disabled', false);
+                            $('#starttestDetectionBtn').prop('disabled', false);
 
                         } else {
-                            $('#startSafetyDetectionBtn').prop('disabled', true);
+                            $('#starttestDetectionBtn').prop('disabled', true);
                         }
 
                         // make sure the device is not running inference.
@@ -559,9 +620,9 @@
             }
         })
 
-        $('#inferenceDetectionModelIdList').on('change', async function (evt) {
+        $('#safetyDetectionModelIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            var deviceListId = 'inferenceDetectionDeviceIdList';
+            var deviceListId = 'safetyDetectionDeviceIdList';
             var modelListId = evt.target.id;
             var deviceList = document.getElementById(deviceListId);
             var modelList = document.getElementById(modelListId);
@@ -570,7 +631,7 @@
             if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
 
                 var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
-                $('#startSafetyDetectionBtn').prop('disabled', isDisconnected);
+                $('#starttestDetectionBtn').prop('disabled', isDisconnected);
             }
         })
         //
@@ -581,9 +642,9 @@
             var resultElement = document.getElementById('saveCustomVisionModelBtnResult');
             toggleLoader(false);
 
-            var selectedVal = $('#safetyDetectionDeviceIdList option:selected').val();
+            var selectedVal = $('#testDetectionDeviceIdList option:selected').val();
 
-            GetDevices('safetyDetectionDeviceIdList', true, false, 'Select Device', '0')
+            GetDevices('testDetectionDeviceIdList', true, false, 'Select Device', '0')
                 .then(() => { 
                 })
                 .catch((err) => {
@@ -593,7 +654,7 @@
                 .finally(() => {
                     if (selectedVal.length > 0) {
                         console.debug(selectedVal);
-                        $('select[name="safetyDetectionDeviceIdList"]').val(selectedVal);
+                        $('select[name="testDetectionDeviceIdList"]').val(selectedVal);
                     }
                     toggleLoader(true);
                 })
@@ -642,30 +703,30 @@
                 });
         })
 
-        $('#startSafetyDetectionBtn').click(function (evt) {
+        $('#starttestDetectionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StartSafetyZone('startSafetyDetectionBtnResult')
+            StartSafetyZone('starttestDetectionBtnResult')
                 .then(() => { 
-                    isSafetyDetectionRunning = true;
+                    istestDetectionRunning = true;
                 })
                 .finally(() => {
                     disableUiElements(false);
-                    $('#startSafetyDetectionBtn').prop('disabled', true);
+                    $('#starttestDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
                 });
         })
 
-        $('#stopSafetyDetectionBtn').click(function (evt) {
+        $('#stoptestDetectionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StopInference('startSafetyDetectionBtnResult')
+            StopInference('starttestDetectionBtnResult')
                 .then(() => { })
                 .finally(() => {
                     disableUiElements(true);
-                    $('#stopSafetyDetectionBtn').prop('disabled', true);
+                    $('#stoptestDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
-                    isSafetyDetectionRunning = false;
+                    istestDetectionRunning = false;
                 });
         })
 
