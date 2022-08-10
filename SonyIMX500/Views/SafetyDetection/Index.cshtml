@@ -85,13 +85,13 @@
                                                                     <div id="divTrigger" >
                                                                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                                                                             <label class="btn btn-info" style="min-width:8em">
-                                                                                <input type="radio" name="testDetectionImageNotification" id="testDetectionImageNotification_Telemetry" autocomplete="off" value="telemetry">Telemetry
+                                                                                <input type="radio" name="imageNotifictionTypeList" id="imageNotifictionTypeList_Telemetry" autocomplete="off" value="telemetry">Telemetry
                                                                             </label>
                                                                             <label class="btn btn-info active" style="min-width:8em">
-                                                                                <input type="radio" name="testDetectionImageNotification" id="testDetectionImageNotification_CosmosDb" autocomplete="off" value="cosmosDb" checked>Cosmos DB  
+                                                                                <input type="radio" name="imageNotifictionTypeList" id="imageNotifictionTypeList_CosmosDb" autocomplete="off" value="cosmosDb" checked>Cosmos DB  
                                                                             </label>
                                                                             <label class="btn btn-info" style="min-width:8em">
-                                                                                <input type="radio" name="testDetectionImageNotification" id="testDetectionImageNotification_Telemetry_Blob" autocomplete="off" value="blob">Blob Storage
+                                                                                <input type="radio" name="imageNotifictionTypeList" id="imageNotifictionTypeList_Telemetry_Blob" autocomplete="off" value="blob">Blob Storage
                                                                             </label>
                                                                         </div>
                                                                     </div>
@@ -236,7 +236,7 @@
                                                 <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
                                                     <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountRange" style="width:100%">
                                                 </div>
-                                                <span><span id="safetyDetectionDetectionImageCount"></span><span> images</span></span>
+                                                <span><span id="safetyDetectionImageCount"></span><span> images</span></span>
                                             </div>
                                         </div>
                                         <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
@@ -251,16 +251,16 @@
                                             <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
                                                 <input type="range" class="slider" min="10" max="600" value="10" step="1" id="safetyDetectionFrequencyRange" style="width:100%">
                                             </div>
-                                            <span id="safetyDetectionDetectionFrequency"></span><span> sec</span>
+                                            <span id="safetyDetectionFrequency"></span><span> sec</span>
                                         </div>
                                         <div class="btnStatusDiv">
-                                            <button type="button" class="btn btn-success" id="starttestDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="startSafetyZoneBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference
                                             </button>
-                                            <button type="button" class="btn btn-success" id="stoptestDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="stopSafetyZoneBtn" disabled>
                                                 <i class="fas fa-stop btn-fa"></i>Stop Inference
                                             </button>
-                                            <div class="info-box-text vertical-center" id='starttestDetectionBtnResult'>Place Holder : To be deleted</div>
+                                            <div class="info-box-text vertical-center" id='startSafetyZoneBtnResult'>Place Holder : To be deleted</div>
                                         </div>
                                     </div>
                                 </div>
@@ -306,12 +306,12 @@
         let testFrequencyLabel = document.getElementById("testDetectionFrequency");
         let testImageCountSlider = document.getElementById("testDetectionImageCountRange");
         let testImageCountLabel = document.getElementById("testDetectionImageCount");
-        let safetyDetectionimageCountSlider = document.getElementById("safetyDetectionImageCountRange");
+        let safetyDetectionImageCountSlider = document.getElementById("safetyDetectionImageCountRange");
         let safetyDetectionImageCountLabel = document.getElementById("safetyDetectionImageCount");
         let safetyDetectionThresholdSlider = document.getElementById("safetyDetectionThresholdRange");
         let safetyDetectionThresholdLabel = document.getElementById("safetyDetectionThreshold");
         let safetyDetectionFrequencySlider = document.getElementById("safetyDetectionFrequencyRange");
-        let safetyDetectionFrequencyLabel  = document.getElementById("safetyDetectionDetectionFrequency");
+        let safetyDetectionFrequencyLabel  = document.getElementById("safetyDetectionFrequency");
         let thresholdSliderHandler;
         let imageCountSliderHandler;
         let safetyDetectionFrequencySpinnerHandler;
@@ -530,26 +530,26 @@
                     toggleLoader(true);
                 })
 
-            testImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
+            safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
                 var count = parseInt(evt.target.value);
 
                 if (count == 0)
                 {
-                    testImageCountLabel.innerHTML = "0 (Continuous)"
+                    safetyDetectionImageCountLabel.innerHTML = "0 (Continuous)"
                 }
                 else
                 {
-                    testImageCountLabel.innerHTML = evt.target.value;
+                    safetyDetectionImageCountLabel.innerHTML = evt.target.value;
                 }
             })
 
-            testThresholdSlider.addEventListener("input", function safetyDetectionFrequencyLabel(evt) {
-                testThresholdLabel.innerHTML = evt.target.value;
+            safetyDetectionThresholdSlider.addEventListener("input", function safetyDetectionFrequencyLabel(evt) {
+                safetyDetectionThresholdLabel.innerHTML = evt.target.value;
                 currentThreshold = parseInt(evt.target.value) / 100;
             })
 
-            testFrequencySlider.addEventListener("input", function safetyDetectionImageCountLabel(evt) {
-                testFrequencyLabel.innerHTML = evt.target.value;
+            safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionImageCountLabel(evt) {
+                safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
             })
         })
 
@@ -608,10 +608,10 @@
                         deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
 
                         if (modelList.selectedIndex > 0 && isDisconnected == false) {
-                            $('#starttestDetectionBtn').prop('disabled', false);
+                            $('#startSafetyZoneBtn').prop('disabled', false);
 
                         } else {
-                            $('#starttestDetectionBtn').prop('disabled', true);
+                            $('#startSafetyZoneBtn').prop('disabled', true);
                         }
 
                         // make sure the device is not running inference.
@@ -631,7 +631,7 @@
             if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
 
                 var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
-                $('#starttestDetectionBtn').prop('disabled', isDisconnected);
+                $('#startSafetyZoneBtn').prop('disabled', isDisconnected);
             }
         })
         //
@@ -703,28 +703,28 @@
                 });
         })
 
-        $('#starttestDetectionBtn').click(function (evt) {
+        $('#startSafetyZoneBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StartSafetyZone('starttestDetectionBtnResult')
+            StartSafetyZone('startSafetyZoneBtnResult')
                 .then(() => { 
                     istestDetectionRunning = true;
                 })
                 .finally(() => {
                     disableUiElements(false);
-                    $('#starttestDetectionBtn').prop('disabled', true);
+                    $('#startSafetyZoneBtn').prop('disabled', true);
                     toggleLoader(true);
                 });
         })
 
-        $('#stoptestDetectionBtn').click(function (evt) {
+        $('#stopSafetyZoneBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StopInference('starttestDetectionBtnResult')
+            StopInference('startSafetyZoneBtnResult')
                 .then(() => { })
                 .finally(() => {
                     disableUiElements(true);
-                    $('#stoptestDetectionBtn').prop('disabled', true);
+                    $('#stopSafetyZoneBtn').prop('disabled', true);
                     toggleLoader(true);
                     istestDetectionRunning = false;
                 });

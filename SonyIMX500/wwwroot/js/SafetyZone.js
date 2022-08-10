@@ -847,7 +847,7 @@ async function StartSafetyZone(resultElementId) {
         var FrequencyOfImages = frequency.toString();
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
-        var model_id = document.getElementById("inferenceDetectionModelIdList").value;
+        var model_id = document.getElementById("safetyDetectionModelIdList").value;
 
         if (notificationType == 'blob') {
             Mode = 0;
