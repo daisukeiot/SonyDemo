@@ -320,7 +320,7 @@
         let frequencySpinnerHandler;
         let lineChart;
         let currentThreshold = 0.8;
-        let istestDetectionRunning = false;
+        let isSafetyDetectionRunning = false;
 
         let chartOptions = {
             showLines: true,
@@ -708,7 +708,7 @@
             toggleLoader(false);
             StartSafetyZone('startSafetyZoneBtnResult')
                 .then(() => { 
-                    istestDetectionRunning = true;
+                    isSafetyDetectionRunning = true;
                 })
                 .finally(() => {
                     disableUiElements(false);
@@ -726,7 +726,7 @@
                     disableUiElements(true);
                     $('#stopSafetyZoneBtn').prop('disabled', true);
                     toggleLoader(true);
-                    istestDetectionRunning = false;
+                    isSafetyDetectionRunning = false;
                 });
         })
 

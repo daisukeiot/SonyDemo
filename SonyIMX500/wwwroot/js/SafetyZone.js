@@ -365,7 +365,7 @@ async function CaptureSingleImage() {
 
     try {
         pendingImagePath = '';
-        var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+        var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var device_id = document.getElementById("safetyDetectionDeviceIdList").value;
         var Mode;
         var FileFormat = null;
@@ -469,7 +469,7 @@ async function processTelemetryMessage(signalRMsg) {
     var funcName = arguments.callee.name + "()";
     //console.debug("=>", funcName);
 
-    var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+    var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
     if (notificationType != 'telemetry') {
         return;
@@ -533,7 +533,7 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
     // console.debug("=>", funcName);
     printTime("processCosmosDbMessage ==>");
 
-    var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+    var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
     if (notificationType != 'cosmosDb') {
         return;
@@ -575,7 +575,7 @@ async function processBlobMessage(signalRMsg) {
     var funcName = arguments.callee.name + "()";
     //console.debug("=>", funcName);
 
-    var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+    var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
     if (notificationType != 'blob') {
         return;
@@ -758,7 +758,7 @@ async function StartInference(resultElementId) {
         var frequency = parseInt(document.getElementById("safetyDetectionFrequencyRange").value);
         // to ms
         frequency = Math.round((frequency * 1000) / 33.3);
-        var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+        var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var Mode;
         var FileFormat = null;
         var CropHOffset = null;
@@ -836,7 +836,7 @@ async function StartSafetyZone(resultElementId) {
         var frequency = parseInt(document.getElementById("safetyDetectionFrequencyRange").value);
         // to ms
         frequency = Math.round((frequency * 1000) / 33.3);
-        var notificationType = $("input[name='safetyDetectionImageNotification']:checked").val();
+        var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var Mode;
         var FileFormat = null;
         var CropHOffset = null;
