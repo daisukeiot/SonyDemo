@@ -20,6 +20,10 @@ function toggleLoader(bForceClear) {
 
 function setResultElement(resultElement, msg) {
 
+    if (resultElement == undefined || resultElement == null) {
+        return;
+    }
+
     if (msg) {
         try {
             var json = JSON.parse(msg);
@@ -166,12 +170,10 @@ function PostToken(token) {
         type: "POST",
         url: window.location.origin + '/' + 'sony/PostToken',
         data: { token: token },
-        success: function (response) {
-            //console.log(response)
-        },
-        error: function (response, status, err) {
-            alert("PostToken Error " + status);
-        }
+    }).done(function (response) {
+        
+    }).fail(function (response, status, err) {
+        alert("PostToken Error " + status);
     });
 }
 
@@ -188,13 +190,11 @@ function SetClientId(ClientId) {
     $.ajax({
         type: "POST",
         url: window.location.origin + '/' + 'home/SetClientId',
-        data: {ClientId: ClientId},
-        success: function (response) {
-            return response.responseText;
-        },
-        error: function (response, status, err) {
-            alert("SetClientId Error " + status);
-        }
+        data: { ClientId: ClientId },
+    }).done(function (response) {
+        return response.responseText;
+    }).fail(function (response, status, err) {
+        alert("SetClientId Error " + status);
     });
 }
 
@@ -216,7 +216,7 @@ async function CreateBaseCustomVisionProject() {
             console.log("Comment " + projectComment.value)
         }
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/CreateBaseCustomVisionProject',
@@ -224,14 +224,13 @@ async function CreateBaseCustomVisionProject() {
                 project_name: projectName.value,
                 comment: projectComment.value.length == 0 ? null : projectComment.value
             },
+        }).done(function (response) {
+            msg = response.value;
+
+            var project_list = document.getElementById('selectCustomVisionProjectList');
+            project_list.append(new Option(projectName.value, projectName.value, true, true));
+            project_list.dispatchEvent(new Event('change'));
         });
-
-        msg = result.value;
-
-        var project_list = document.getElementById('selectCustomVisionProjectList');
-        project_list.append(new Option(projectName.value, projectName.value, true, true));
-        project_list.dispatchEvent(new Event('change'));
-
     } catch (err) {
         msg = processError(funcName, err, true);
     } finally {
@@ -242,21 +241,23 @@ async function CreateBaseCustomVisionProject() {
     }
 }
 
-async function DeleteProject(project_name) {
+async function DeleteProject(project_name, resultElementId) {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName);
 
     var msg;
-    var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
     var ret = true;
-
+    var resultElement = null;
     try {
-        var projectName = document.getElementById("createBaseCustomVisionProjectName");
-        console.log("CreateBaseCustomVisionProject() Name " + projectName.value)
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+        setResultElement(resultElement, `Deleting ${project_name}`);
 
         //Delete Models first
-        const result = await $.ajax({
+        console.debug("GetModels");
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetModels',
@@ -269,31 +270,33 @@ async function DeleteProject(project_name) {
                 device_id: null,
                 latest_type: null
             }
+        }).done(function (response) {
+            var json = JSON.parse(response.value);
+
+            for (var model in json.models) {
+                setResultElement(resultElement, `Deleting ${json.models[model].model_id} model`);
+                DeleteModel(json.models[model].model_id)
+                    .catch(err => {
+                        console.error(funcName + " Error : " + err);
+                        return false;
+                    })
+            }
+
+            if (ret != false) {
+                setResultElement(resultElement, `Deleting ${project_name} project`);
+                console.debug("Delete Project");
+                $.ajax({
+                    async: false,
+                    type: "DELETE",
+                    url: window.location.origin + '/' + 'sony/DeleteProject',
+                    data: {
+                        project_name: project_name
+                    },
+                }).done(function (response) {
+                    msg = response.value;
+                });
+            }
         });
-
-        var json = JSON.parse(result.value);
-
-        for (var model in json.models) {
-            await DeleteModel(json.models[model].model_id)
-                .catch(err => {
-                    console.error(funcName + " Error : " + err);
-                    return false;
-                })
-        }
-
-        if (ret != false) {
-            const result_proj = await $.ajax({
-                async: true,
-                type: "DELETE",
-                url: window.location.origin + '/' + 'sony/DeleteProject',
-                data: {
-                    project_name: project_name
-                },
-            });
-
-            msg = result_proj.value;
-        }
-
     } catch (err) {
         msg = processError(funcName, err, true);
     } finally {
@@ -319,7 +322,7 @@ async function SaveCustomVisionModel() {
         var vendor_name = document.getElementById("saveCustomVisionModelVendorName").value;
         var comment = document.getElementById("saveCustomVisionModelComment").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/SaveCustomVisionModel',
@@ -331,10 +334,9 @@ async function SaveCustomVisionModel() {
                 vendor_name: vendor_name,
                 comment: comment
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-
-        msg = result.value;
-
     } catch (err) {
         msg = processError(funcName, err, true);
     } finally {
@@ -356,7 +358,7 @@ async function ConvertModel() {
     var device_id = document.getElementById("convertModelDeviceIdList").selectedIndex == 0 ? null : document.getElementById("convertModelDeviceIdList").value;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/ConvertModel',
@@ -364,11 +366,10 @@ async function ConvertModel() {
                 model_id: model_id,
                 device_id: device_id
             }
+        }).done(function (response) {
+            json = JSON.parse(response.value);
+            msg = response.value;
         });
-
-        json = JSON.parse(result.value);
-        msg = result.value;
-
     } catch (err) {
         msg = processError(funcName, err, true);
     } finally {
@@ -397,7 +398,7 @@ async function PublishModel() {
     var device_id = document.getElementById("publishModelDeviceIdList").selectedIndex == 0 ? null : document.getElementById("publishModelDeviceIdList").value;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/PublishModel',
@@ -405,11 +406,10 @@ async function PublishModel() {
                 model_id: model_id,
                 device_id: device_id
             }
+        }).done(function (response) {
+            json = JSON.parse(response.value);
+            msg = response.value;
         });
-
-        json = JSON.parse(result.value);
-        msg = result.value;
-
     } catch (err) {
         msg = processError(funcName, err, true);
     } finally {
@@ -435,35 +435,35 @@ async function GetBaseModelStatus(model_id, latest_type) {
     var json = null;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetBaseModelStatus',
             data: {
                 model_id: model_id,
                 latest_type: latest_type
-            }
-        });
+            },
+        }).done(function (response) {
+            msg = response.value;
 
-        msg = result.value;
+            json = JSON.parse(response.value);
 
-        json = JSON.parse(result.value);
+            if (json.model_id == model_id) {
 
-        if (json.model_id == model_id) {
+                if (json.projects.length == 1) {
 
-            if (json.projects.length == 1) {
+                    if ((json.projects[0].versions[0].stage == 'conversion') || (json.projects[0].versions[0].stage == 'publish')) {
 
-                if ((json.projects[0].versions[0].stage == 'conversion') || (json.projects[0].versions[0].stage == 'publish')) {
-
-                    if (json.projects[0].versions[0].result == 'completed') {
-                        disableUiButtons(false);
-                    }
-                    else if (json.projects[0].versions[0].result == 'processing') {
-                        disableUiButtons(true);
+                        if (json.projects[0].versions[0].result == 'completed') {
+                            disableUiButtons(false);
+                        }
+                        else if (json.projects[0].versions[0].result == 'processing') {
+                            disableUiButtons(true);
+                        }
                     }
                 }
             }
-        }
+        });
     } catch (err) {
         if (err.responseJSON) {
             msg = err.responseJSON.value;
@@ -493,7 +493,7 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
     var ret = true;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetFirmwares',
@@ -501,28 +501,28 @@ async function GetFirmwares(firmware_type, ppl, listElementId) {
                 firmware_type: firmware_type,
                 ppl: ppl
             }
-        });
+        }).done(function (response) {
+            if (listElementId) {
+                var json = JSON.parse(response.value);
 
-        if (listElementId) {
-            var json = JSON.parse(result.value);
-
-            var list = document.getElementById(listElementId);
-            list.innerText = null;
-            var option = new Option("Select from list", "");
-            option.disabled = true;
-            list.append(option);
-            for (var firmware in json.firmwares) {
-                for (var version in json.firmwares[firmware].versions) {
-                    list.append(new Option(json.firmwares[firmware].versions[version].version_number, json.firmwares[firmware].versions[version].version_number));
+                var list = document.getElementById(listElementId);
+                list.innerText = null;
+                var option = new Option("Select from list", "");
+                option.disabled = true;
+                list.append(option);
+                for (var firmware in json.firmwares) {
+                    for (var version in json.firmwares[firmware].versions) {
+                        list.append(new Option(json.firmwares[firmware].versions[version].version_number, json.firmwares[firmware].versions[version].version_number));
+                    }
+                }
+                if (list.options.length == 2) {
+                    list.options[1].selected = true;
+                }
+                else {
+                    list.options[0].selected = true;
                 }
             }
-            if (list.options.length == 2) {
-                list.options[1].selected = true;
-            }
-            else {
-                list.options[0].selected = true;
-            }
-        }
+        });
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -562,7 +562,7 @@ async function CreateDeployConfiguration() {
         var dewarp_mode = document.getElementById("createDeployConfigurationDewarpModeList").selectedIndex == 0 ? null : document.getElementById("createDeployConfigurationDewarpModeList").value;
         var prewb_file_name = document.getElementById("createDeployConfigurationDewarpFileName").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/CreateDeployConfiguration',
@@ -586,9 +586,9 @@ async function CreateDeployConfiguration() {
                 dewarp_mode: dewarp_mode,
                 prewb_file_name: prewb_file_name
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-
-        msg = result.value;
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -636,42 +636,46 @@ function CheckCreateDeployConfigurationInputs() {
     }
 }
 
-async function GetDeployConfigurations(listElementId) {
+async function GetDeployConfigurations(listElementId, resultElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName)
     var msg;
-    var ret = true;
+    var resultElement = null;
 
     try {
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+        setResultElement(resultElement, 'Retrieving Config ID List');
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetDeployConfigurations',
             data: {
             },
+        }).done(function (response) {
+            msg = response.value;
+
+            if (listElementId) {
+                var json = JSON.parse(response.value);
+
+                var list = document.getElementById(listElementId);
+                list.innerText = null;
+                var option = new Option("Select deployment", "");
+                option.disabled = false;
+                list.append(option);
+                for (var deploy_configuration in json.deploy_configurations) {
+                    list.append(new Option(json.deploy_configurations[deploy_configuration].config_id, json.deploy_configurations[deploy_configuration].config_id));
+                }
+                if (list.options.length == 2) {
+                    list.options[1].selected = true;
+                }
+                else {
+                    list.options[0].selected = true;
+                }
+            }
         });
-
-        msg = result.value;
-
-        if (listElementId) {
-            var json = JSON.parse(result.value);
-
-            var list = document.getElementById(listElementId);
-            list.innerText = null;
-            var option = new Option("Select deployment", "");
-            option.disabled = false;
-            list.append(option);
-            for (var deploy_configuration in json.deploy_configurations) {
-                list.append(new Option(json.deploy_configurations[deploy_configuration].config_id, json.deploy_configurations[deploy_configuration].config_id));
-            }
-            if (list.options.length == 2) {
-                list.options[1].selected = true;
-            }
-            else {
-                list.options[0].selected = true;
-            }
-        }
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -714,12 +718,13 @@ async function DeployByConfiguration() {
     var ret = true;
 
     try {
+
         var config_id = document.getElementById("deployByConfiguraionFormConfigIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionFormConfigIdList").value;
         var device_ids = document.getElementById("deployByConfiguraionDeviceIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionDeviceIdList").value;
         var comment = document.getElementById("deployByConfiguraionComment").value;
         var replace_model_id = document.getElementById("deployByConfiguraionReplaceModelIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionReplaceModelIdList").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "PUT",
             url: window.location.origin + '/' + 'sony/DeployByConfiguration',
@@ -729,9 +734,9 @@ async function DeployByConfiguration() {
                 comment: comment,
                 replace_model_id: replace_model_id
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-
-        msg = result.value;
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -755,27 +760,17 @@ async function GetDeployHistory() {
     try {
         var device_id = document.getElementById("deployByConfiguraionDeviceIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionDeviceIdList").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetDeployHistory',
             data: {
                 device_id: device_id
             },
+        }).done(function (response) {
+            msg = response.value;
+            resultMsg = '{"result" : "Success"}';
         });
-
-        msg = result.value;
-
-        //if (json.versions[0].result == "processing") {
-        //    // set timer
-        //    GetBaseModelStatusInterval(evt.target.id);
-        //}
-        //else if (json.versions[0].result == "completed") {
-        //    // cancel interval
-        //    GetBaseModelStatusInterval(null);
-        //    $('#convertModelBtn').prop('disabled', true);
-        //}
-        resultMsg = '{"result" : "Success"}';
     } catch (err) {
         msg = processError(funcName, err, true);
         resultMsg = msg;
@@ -810,7 +805,7 @@ async function StartUploadInferenceResult() {
         var NumberOfInferencesPerMessage = document.getElementById("startUploadInferenceResultNumberOfInferencesPerMessage").value;
         var model_id = document.getElementById("startUploadInferenceResultModelIdList").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/StartUploadInferenceResult',
@@ -825,9 +820,9 @@ async function StartUploadInferenceResult() {
                 NumberOfInferencesPerMessage: NumberOfInferencesPerMessage,
                 model_id: model_id
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-
-        msg = result.value;
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -852,16 +847,16 @@ async function StopUploadInferenceResult() {
     try {
         var device_id = document.getElementById("startUploadInferenceResultDeviceIdList").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/StopUploadInferenceResult',
             data: {
                 device_id: device_id
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-
-        msg = result.value;
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -895,7 +890,7 @@ async function StartUploadRetrainingData() {
         var NumberOfInferencesPerMessage = document.getElementById("startUploadRetrainingDataNumInferencePerMessage").value;
         var model_id = document.getElementById("startUploadRetrainingDataModelIdList").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/StartUploadRetrainingData',
@@ -913,9 +908,9 @@ async function StartUploadRetrainingData() {
                 NumberOfInferencesPerMessage: NumberOfInferencesPerMessage,
                 model_id: model_id
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-
-        msg = result.value;
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -939,15 +934,16 @@ async function StopUploadRetrainingData() {
     try {
         var device_id = document.getElementById("startUploadRetrainingDataDeviceIdList").value;
 
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
             data: {
                 device_id: device_id
             },
+        }).done(function (response) {
+            msg = response.value;
         });
-        msg = result.value;
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
@@ -960,58 +956,127 @@ async function StopUploadRetrainingData() {
     return ret;
 }
 
-async function GetDevices(listElementId, silent, isOption, placeHolderText, placeHolderValue) {
+async function GetDevices(listElementId, silent, isOption, placeHolderText, placeHolderValue, resultElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName)
     var ret = true;
+    var resultElement = null;
 
     try {
-        const result = await $.ajax({
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+        setResultElement(resultElement, 'Retrieving Device ID List');
+
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetDevices',
-            data: {}
-        });
+            data: {},
+        }).done(function (response) {
 
-        if (!silent) {
-            AddApiOutput("GetDevices", result.value);
-        }
-
-        if (listElementId) {
-            var json = JSON.parse(result.value);
-
-            var list = document.getElementById(listElementId);
-
-            list.innerText = null;
-            var option = new Option(placeHolderText, placeHolderValue);
-
-            if (isOption) {
-                option.disabled = false;
+            if (!silent) {
+                AddApiOutput("GetDevices", response.value);
             }
-            else {
-                option.disabled = true;
-            }
-            list.append(option);
-            for (var device in json.devices) {
-                //list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
-                var option = new Option(`${json.devices[device].device_id} (${json.devices[device].connectionState})`, json.devices[device].device_id);
 
-                if (json.devices[device].connectionState == 'Connected') {
-                    option.classList.add("connectedDevice");
+            if (listElementId) {
+                var json = JSON.parse(response.value);
+
+                var list = document.getElementById(listElementId);
+
+                list.innerText = null;
+                var option = new Option(placeHolderText, placeHolderValue);
+
+                if (isOption) {
+                    option.disabled = false;
                 }
                 else {
-                    option.classList.add("disConnectedDevice");
+                    option.disabled = true;
                 }
                 list.append(option);
+                for (var device in json.devices) {
+                    //list.append(new Option(json.devices[device].device_id, json.devices[device].device_id))
+                    var option = new Option(`${json.devices[device].device_id} (${json.devices[device].connectionState})`, json.devices[device].device_id);
+
+                    if (json.devices[device].connectionState == 'Connected') {
+                        option.classList.add("connectedDevice");
+                    }
+                    else {
+                        option.classList.add("disConnectedDevice");
+                    }
+                    list.append(option);
+                }
+                list.options[0].selected = true;
             }
-            list.options[0].selected = true;
-        }
+
+            setResultElement(resultElement, '&nbsp;');
+        });
+
     } catch (err) {
         msg = processError(funcName, err, true);
+        setResultElement(resultElement, err.responseJSON.value);
         ret = false;
+    } finally {
     }
-
     console.debug("<=", funcName)
+    return ret;
+}
+
+async function GetSingleDevice(device_id, listElementId, resultElementId) {
+    var funcName = arguments.callee.name + "()";
+    console.debug("=>", funcName)
+    var ret = true; // assume disconnected
+    var msg = null;
+    var resultElement = null;
+
+    try {
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+
+        setResultElement(resultElement, 'Retrieving Model List');
+
+        if (listElementId) {
+            document.getElementById(listElementId).disabled = true;
+        }
+        await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.origin + '/' + 'sony/GetDevice',
+            data: {
+                device_id: device_id
+            },
+        }).done(function (response) {
+            var json = JSON.parse(response.value);
+
+            if (listElementId) {
+
+                var list = document.getElementById(listElementId);
+
+                list.innerText = null;
+                var option = new Option("Select model", "");
+                option.disabled = true;
+                list.append(option);
+                for (var model in json.models) {
+                    var modelId = json.models[model].model_version_id.split(":");
+                    list.append(new Option(modelId[0], modelId[0]));
+                }
+                list.options[0].selected = true;
+                list.disabled = false;
+            }
+
+            if (json.connectionState == 'Connected') {
+                ret = false;
+            }
+
+            setResultElement(resultElement, '&nbsp;');
+        });
+
+    } catch (err) {
+        msg = processError(funcName, err, true);
+    } finally {
+        setResultElement(resultElement, msg);
+    }
     return ret;
 }
 
@@ -1020,23 +1085,24 @@ async function RefreshDevicesList() {
     console.debug("=>", funcName)
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetDevices',
             data: {}
+        }).done(function (response) {
+            AddApiOutput(funcName, response.value);
+
+            $("#deviceListTbl").find("tr:gt(0)").remove();
+            var json = JSON.parse(response.value);
+            for (var device in json.devices) {
+                addDevice(json.devices[device].device_id, json.devices[device].status, json.devices[device].connectionState, json.devices[device]);
+            }
         });
 
-        AddApiOutput(funcName, result.value);
-
-        $("#deviceListTbl").find("tr:gt(0)").remove();
-        //$("#deviceListDetails").hide();
-        var json = JSON.parse(result.value);
-        for (var device in json.devices) {
-            addDevice(json.devices[device].device_id, json.devices[device].status, json.devices[device].connectionState, json.devices[device]);
-        }
     } catch (err) {
         processError(funcName, err, true);
+    } finally {
     }
     return;
 }
@@ -1046,7 +1112,7 @@ async function RefreshModelsList() {
     console.debug("=>", funcName)
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetModels',
@@ -1059,16 +1125,17 @@ async function RefreshModelsList() {
                 device_id: null,
                 latest_type: null
             }
+        }).done(function (response) {
+            AddApiOutput(funcName, response.value);
+
+            $("#modelListTbl").find("tr:gt(0)").remove();
+            //$("#deviceListDetails").hide();
+            var json = JSON.parse(response.value);
+            for (var model in json.models) {
+                addModel(json.models[model].model_id, json.models[model].model_comment, json.models[model]);
+            }
         });
 
-        AddApiOutput(funcName, result.value);
-
-        $("#modelListTbl").find("tr:gt(0)").remove();
-        //$("#deviceListDetails").hide();
-        var json = JSON.parse(result.value);
-        for (var model in json.models) {
-            addModel(json.models[model].model_id, json.models[model].model_comment, json.models[model]);
-        }
     } catch (err) {
         processError(funcName, err, true);
     }
@@ -1080,23 +1147,24 @@ async function RefreshDeployConfiguraions() {
     console.debug("=>", funcName)
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetDeployConfigurations',
             data: {
             }
+        }).done(function (response) {
+            AddApiOutput(funcName, response.value);
+
+            $("#getDeployConfiguraionTbl").find("tr:gt(0)").remove();
+            var json = JSON.parse(response.value);
+            for (var deployConfiguration in json.deploy_configurations) {
+                addDeployConfiguration(json.deploy_configurations[deployConfiguration].config_id, json.deploy_configurations[deployConfiguration].config_comment, json.deploy_configurations[deployConfiguration]);
+            }
         });
-
-        AddApiOutput(funcName, result.value);
-
-        $("#getDeployConfiguraionTbl").find("tr:gt(0)").remove();
-        var json = JSON.parse(result.value);
-        for (var deployConfiguration in json.deploy_configurations) {
-            addDeployConfiguration(json.deploy_configurations[deployConfiguration].config_id, json.deploy_configurations[deployConfiguration].config_comment, json.deploy_configurations[deployConfiguration]);
-        }
     } catch (err) {
         processError(funcName, err, true);
+    } finally {
     }
     return;
 }
@@ -1107,53 +1175,61 @@ async function GetDevicesForImageGallery(listElementId, silent) {
     var ret = true;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetDevices',
             data: {}
-        });
-
-        if (!silent) {
-            AddApiOutput("GetDevices", result.value);
-        }
-
-        if (listElementId) {
-            var json = JSON.parse(result.value);
-
-            var list = document.getElementById(listElementId);
-
-            list.innerText = null;
-            var option = new Option('All', 'All');
-            option.setAttribute('data-filter', 'all');
-            list.append(option);
-            for (var device in json.devices) {
-                var option = new Option(json.devices[device].device_id, json.devices[device].device_id);
-                option.setAttribute('data-filter', json.devices[device].device_id);
-                list.append(option);
+        }).done(function (response) {
+            if (!silent) {
+                AddApiOutput("GetDevices", response.value);
             }
-            list.options[0].selected = true;
-        }
+
+            if (listElementId) {
+                var json = JSON.parse(response.value);
+
+                var list = document.getElementById(listElementId);
+
+                list.innerText = null;
+                var option = new Option('All', 'All');
+                option.setAttribute('data-filter', 'all');
+                list.append(option);
+                for (var device in json.devices) {
+                    var option = new Option(json.devices[device].device_id, json.devices[device].device_id);
+                    option.setAttribute('data-filter', json.devices[device].device_id);
+                    list.append(option);
+                }
+                list.options[0].selected = true;
+            }
+        });
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
+    } finally {
     }
     return ret;
 }
 
-async function GetAllModels(listElement, isOption) {
-    return await GetModels(null, null, null, null, null, null, null, listElement, isOption);
+async function GetAllModels(listElement, isOption, resultElementId) {
+    return await GetModels(null, null, null, null, null, null, null, listElement, isOption, resultElementId);
 }
 
-async function GetModelForDevice(listElementId, device_id) {
+async function GetModelForDevice(listElementId, device_id, resultElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
+    var resultElement = null;
 
     try {
-        toggleLoader(false);
         if (listElementId) {
             document.getElementById(listElementId).disabled = true;
         }
+
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+
+        setResultElement(resultElement, `Retrieving Model List for ${device_id}`);
+
         await $.ajax({
             async: true,
             type: "GET",
@@ -1184,22 +1260,29 @@ async function GetModelForDevice(listElementId, device_id) {
             if (json.connectionState == 'Connected') {
                 ret = false;
             }
+
+            setResultElement(resultElement, '&nbsp;');
         });
 
     } catch (err) {
     } finally {
-        toggleLoader(false);
     }
 
 }
 
-async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption) {
+async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption, resultElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName)
     var ret = true;
+    var resultElement = null;
 
     try {
-        const result = await $.ajax({
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+        setResultElement(resultElement, 'Retrieving Model List');
+
+        await $.ajax({
             async: true,
             type: "GET",
             url: window.location.origin + '/' + 'sony/GetModels',
@@ -1212,31 +1295,33 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
                 device_id: device_id,
                 latest_type: latest_type
             }
+        }).done(function (response) {
+            if (listElement) {
+                var json = JSON.parse(response.value);
+
+                var list = document.getElementById(listElement);
+                list.innerText = null;
+                var option = new Option("Select from list", "");
+                if (isOption) {
+                    option.disabled = false;
+                }
+                else {
+                    option.disabled = true;
+                }
+                list.append(option);
+                for (var model in json.models) {
+                    list.append(new Option(json.models[model].model_id, json.models[model].model_id));
+                }
+                list.options[0].selected = true;
+            }
+
+            setResultElement(resultElement, '&nbsp;');
         });
-
-        if (listElement) {
-            var json = JSON.parse(result.value);
-
-            var list = document.getElementById(listElement);
-            list.innerText = null;
-            var option = new Option("Select from list", "");
-            if (isOption) {
-                option.disabled = false;
-            }
-            else {
-                option.disabled = true;
-            }
-            list.append(option);
-            for (var model in json.models) {
-                list.append(new Option(json.models[model].model_id, json.models[model].model_id));
-            }
-            list.options[0].selected = true;
-        }
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
+    } finally {
     }
-
     return ret;
 }
 
@@ -1246,18 +1331,20 @@ async function DeleteModel(model_id) {
     var ret = true;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "DELETE",
             url: window.location.origin + '/' + 'sony/DeleteModel',
             data: {
                 model_id: model_id
             }
+        }).done(function (response) {
+            
         });
-
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
+    } finally {
     }
 
     return ret;
@@ -1269,20 +1356,20 @@ async function DeleteDeployConfiguration(config_id) {
     var ret = true;
 
     try {
-        const result = await $.ajax({
+        await $.ajax({
             async: true,
             type: "DELETE",
             url: window.location.origin + '/' + 'sony/DeleteDeployConfiguration',
             data: {
                 config_id: config_id
             }
+        }).done(function (response) {
         });
-
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
+    } finally {
     }
-
     return ret;
 }
 
@@ -1337,14 +1424,12 @@ function viewPhoto(item) {
     var dataObj = JSON.parse(preElement.textContent);
 
     try {
-        toggleLoader(false);
-
         GetImage(dataObj.DeviceID, dataObj.Inferences[0].T)
-            .then((result) => {
+            .then((response) => {
 
-                if (result) {
+                if (response) {
 
-                    var json = JSON.parse(result);
+                    var json = JSON.parse(response);
                     var canvas = document.getElementById("photoCanvas");
                     var ctx = canvas.getContext('2d');
                     var img = new Image();
@@ -1371,11 +1456,9 @@ function viewPhoto(item) {
                             }
                         }
                     }
-                    //console.log(result)
                 }
             })
             .finally(() => {
-                toggleLoader(false);
                 var modal = document.getElementById("modalPhoto");
                 modal.style.display = "block";
             });
@@ -1383,7 +1466,7 @@ function viewPhoto(item) {
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
-        toggleLoader(true);
+    } finally {
     }
 }
 
@@ -1398,15 +1481,13 @@ function viewPhotoWithCosmosDb(item) {
     var dataObj = JSON.parse(preElement.textContent);
 
     try {
-        toggleLoader(false);
-
         for (var data in dataObj) {
             
             GetImage(deviceId, dataObj[data].T)
-                .then((result) => {
+                .then((response) => {
 
-                    if (result) {
-                        var json = JSON.parse(result);
+                    if (response) {
+                        var json = JSON.parse(response);
                         var canvas = document.getElementById("photoCanvas");
                         var ctx = canvas.getContext('2d');
                         var img = new Image();
@@ -1434,14 +1515,13 @@ function viewPhotoWithCosmosDb(item) {
                     }
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
 
         }
     } catch (err) {
         msg = processError(funcName, err, true);
         ret = false;
-        toggleLoader(true);
+    } finally {
     }
 }
 

@@ -1223,8 +1223,6 @@
             if ($('#createBaseCustomVisionProjectForm').valid() == false) {
                 return;
             }
-
-            toggleLoader(false);
             console.debug("createBaseCustomVisionProjectBtn Click");
 
             CreateBaseCustomVisionProject()
@@ -1235,44 +1233,23 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
-        $('#deleteCustomVisionProjectCvBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+        $('#deleteCustomVisionProjectBtn').click(function (evt) {
 
             var projectList = document.getElementById('selectCustomVisionProjectList');
+
+            console.debug(`${evt.target.id}() ${evt.type} ${projectList[projectList.selectedIndex].text}`);
+
             if (projectList[projectList.selectedIndex].value != 0) {
-                toggleLoader(false);
-                CvDeleteProject(projectList[projectList.selectedIndex].value)
+
+                DeleteProject(projectList[projectList.selectedIndex].text, 'deleteCustomVisionProjectBtnResult')
                     .then(() => {
                         console.log("Custom Vision Project Deleted");
                         CvGetProjects("selectCustomVisionProjectList");
                     })
                     .finally(() => {
-                        toggleLoader(false);
-                    });
-            }
-        })
-
-        $('#deleteCustomVisionProjectBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-
-            var projectList = document.getElementById('selectCustomVisionProjectList');
-
-            console.debug("deleteCustomVisionProjectBtn Click" + projectList[projectList.selectedIndex].text);
-
-            if (projectList[projectList.selectedIndex].value != 0) {
-                toggleLoader(false);
-
-                DeleteProject(projectList[projectList.selectedIndex].text)
-                    .then(() => {
-                        console.log("Custom Vision Project Deleted");
-                        GetCustomVisionProjects("selectCustomVisionProjectList");
-                    })
-                    .finally(() => {
-                        toggleLoader(false);
                     });
             }
         })
@@ -1280,14 +1257,12 @@
         $('#visitCustomVisionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             console.debug("visitCustomVisionBtn Click");
             var projectList = document.getElementById('visitCustomVisionProjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;
                 window.open(url, "_blank");
             }
-            toggleLoader(false);
         })
 
         $('#clearApiOutputBtn').click(function (evt) {
@@ -1301,7 +1276,6 @@
 
             if ($('#saveCustomVisionModelForm').valid()) {
 
-                toggleLoader(false);
                 console.debug("saveCustomVisionModelBtn Click");
 
                 SaveCustomVisionModel()
@@ -1312,7 +1286,6 @@
                         console.error("ErrorXX : " + err);
                     })
                     .finally(() => {
-                        toggleLoader(false);
                     });
             }
         })
@@ -1320,7 +1293,6 @@
         $('#convertModelBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             disableUiButtons(true);
 
             ConvertModel()
@@ -1334,7 +1306,6 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
@@ -1342,8 +1313,6 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             var modelIdList = 'convertModelModelIdList';
-
-            toggleLoader(false);
 
             var model_id = document.getElementById(modelIdList).selectedIndex == 0 ? null : document.getElementById(modelIdList).value;
 
@@ -1376,14 +1345,12 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(true);
                 });
         })
 
         $('#publishModelBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             disableUiButtons(true);
 
             PublishModel()
@@ -1397,7 +1364,6 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
@@ -1405,8 +1371,6 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             var modelIdList = 'publishModelModelIdList';
-
-            toggleLoader(false);
 
             var model_id = document.getElementById(modelIdList).selectedIndex == 0 ? null : document.getElementById(modelIdList).value;
 
@@ -1438,7 +1402,6 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(true);
                 });
         })
 
@@ -1449,7 +1412,6 @@
                 return;
             }
 
-            toggleLoader(false);
             console.debug("createDeployConfigurationBtn Click");
 
             CreateDeployConfiguration()
@@ -1462,61 +1424,26 @@
                     console.error("Error : " + err);
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
         $('#deployByConfiguratonBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
-
             DeployByConfiguration()
                 .then(() => {
                     console.log("Configuration Deployed");
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
-        })
-
-        $('#getDeployHistoryBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-
-            //toggleLoader(false);
-
-            //GetDeployHistory()
-            //    .then(function (deploys) {
-            //        var json = JSON.parse(deploys);
-
-            //        if (json.deploys) {
-            //            var deploy_status = json.deploys[0].deploy_status;
-            //            var deploy_status_msg;
-            //            if (deploy_status == "0") {
-            //                deploy_status_msg = "0 (Processing)";
-            //            } else if (deploy_status == "1") {
-            //                deploy_status_msg = "1 (Done : Success)";
-            //            } else if (deploy_status == "1") {
-            //                deploy_status_msg = "2 (Fail)";
-            //            }
-            //            document.getElementById('deployByConfiguratonGetDeployHistoryDeployStatusDiv').innerHTML = deploy_status_msg;
-
-            //            document.getElementById('deployByConfiguratonGetDeployHistoryDeployModelIdDiv').innerHTML = json.deploys[0].model.model_id;
-
-            //        }
-            //    })
-            //    .finally(() => {
-            //        toggleLoader(false);
-            //    });
         })
 
         $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             var targetList = 'createDeployConfigurationGetDeployConfigurationsList';
             var currentDeployment = document.getElementById(targetList).value;
-            GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList')
+            GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList', null)
                 .then(() => {
                     console.log("Configuration Acquired");
                     console.debug(currentDeployment);
@@ -1525,7 +1452,6 @@
                     }
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
@@ -1533,11 +1459,9 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#startUploadInferenceResultForm').valid()) {
-                toggleLoader(false);
                 StartUploadInferenceResult()
                     .then(() => { })
                     .finally(() => {
-                        toggleLoader(false);
                     });
             }
         })
@@ -1545,11 +1469,9 @@
         $('#stopUploadInferenceResultBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             StopUploadInferenceResult()
                 .then(() => { })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
@@ -1557,11 +1479,9 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#startUploadRetrainingDataForm').valid()) {
-                toggleLoader(false);
                 StartUploadRetrainingData()
                     .then(() => { })
                     .finally(() => {
-                        toggleLoader(false);
                     });
             }
         })
@@ -1569,11 +1489,9 @@
         $('#stopUploadRetrainingDataBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             StopUploadRetrainingData()
                 .then(() => { })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
@@ -1591,39 +1509,31 @@
         $('#getDevicesBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             RefreshDevicesList()
                 .then(() => {
 
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
         $('#getModelsBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             RefreshModelsList()
                 .then(() => {
-
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
         $('#getDeployConfigurationsBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             RefreshDeployConfiguraions()
                 .then(() => {
-
                 })
                 .finally(() => {
-                    toggleLoader(false);
                 });
         })
 
@@ -2141,9 +2051,7 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'selectCustomVisionProjectList';
-
             toggleLoader(false);
-
             CvGetProjects(targetListName)
                 .then(() => { })
                 .finally(() => {
@@ -2171,9 +2079,9 @@
         $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            var targetListName = 'saveCustomVisionModelProjectNameList';
-
             toggleLoader(false);
+
+            var targetListName = 'saveCustomVisionModelProjectNameList';
 
             CvGetProjects(targetListName)
                 .then(() => {
@@ -2182,66 +2090,64 @@
                     }
                 })
                 .finally(() => {
-                    toggleLoader(false);
+                    toggleLoader(true);
                 });
         })
 
-        $('#accordionConvertModel').on('show.bs.collapse', function (evt) {
+        $('#accordionConvertModel').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'convertModelModelIdList';
-
             toggleLoader(false);
 
-            GetAllModels(targetListName, false)
+            await GetAllModels(targetListName, false, 'convertModelBtnResult')
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("convertModelDeviceIdList", true, true, 'Select Device', '')
+                        GetDevices("convertModelDeviceIdList", true, true, 'Select Device', '', 'convertModelBtnResult')
                             .then(() => { })
                             .finally(() => {
-                                toggleLoader(true);
                             })
                     } else {
-                        toggleLoader(true);
                     }
                 })
                 .catch(err => {
                     msg = processError(err, true);
-                    toggleLoader(true);
                 })
+                .finally(() => {
+                    toggleLoader(true);
+                });
         })
 
-        $('#accordionPublishModel').on('show.bs.collapse', function (evt) {
+        $('#accordionPublishModel').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'publishModelModelIdList';
-
             toggleLoader(false);
 
-            GetAllModels(targetListName, false)
+            await GetAllModels(targetListName, false, 'publishModelBtnResult')
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetListName, currentModel) && currentModel) {
                             setSelectOption(targetListName, currentModel);
                         }
 
-                        GetDevices("publishModelDeviceIdList", true, true, 'Select Device', '')
+                        GetDevices("publishModelDeviceIdList", true, true, 'Select Device', '', 'publishModelBtnResult')
                             .then(() => { })
                             .finally(() => {
-                                toggleLoader(true);
                             })
                     } else {
-                        toggleLoader(true);
                     }
                 })
                 .catch(err => {
                     msg = processError(err, true);
-                    toggleLoader(true);
                 })
+                .finally(() => {
+                    toggleLoader(true);
+                });
         })
 
         $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function (evt) {
@@ -2249,6 +2155,7 @@
 
             try {
                 toggleLoader(false);
+
                 var targetListName = 'createDeployConfigurationModelId';
                 ret = await GetFirmwares('02', null, "createDeployConfigurationSensorLoaderVersionNumber");
 
@@ -2264,26 +2171,25 @@
                     return;
                 }
 
-                GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList")
+                await GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList", null)
                     .then((ret) => {
 
                         if (ret) {
-                            GetAllModels(targetListName, false)
+                            GetAllModels(targetListName, false, null)
                                 .then((ret) => {
                                     if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
                                         setSelectOption(targetListName, currentModel);
                                     }
                                 })
                                 .finally(() => {
-                                    toggleLoader(true);
                                 })
                         } else {
-                            toggleLoader(true);
                         }
                     });
             } catch (err) {
+            } finally {
                 toggleLoader(true);
-            } finally { }
+            }
         })
 
         $('#accordionDeployByConfiguration').on('show.bs.collapse', async function (evt) {
@@ -2293,85 +2199,51 @@
 
             try {
                 toggleLoader(false);
-                GetDeployConfigurations('deployByConfiguraionFormConfigIdList')
-                    .then((ret) => {
+
+                await GetDeployConfigurations('deployByConfiguraionFormConfigIdList', 'deployByConfiguratonBtnResult')
+                    .then(async function (ret) {
                         if (ret != null)
                         {
-                            GetDevices('deployByConfiguraionDeviceIdList', true, false, 'Select Device', '')
+                            await GetDevices('deployByConfiguraionDeviceIdList', true, false, 'Select Device', '', 'deployByConfiguratonBtnResult')
                                 .then((ret) => {})
                                 .catch(() => {
-                                    toggleLoader(true);
                                 })
                         }
                     })
                     .catch(() => {
                     })
             } catch (err) {
-            } finally { }
+            } finally {
                 toggleLoader(true);
+            }
         })
 
-        $('#accordionStartUploadInferenceResult').on('show.bs.collapse', function (evt) {
+        $('#accordionStartUploadInferenceResult').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             try {
                 toggleLoader(false);
+
                 var targetListName = 'startUploadInferenceResultDeviceIdList';
 
-                GetDevices(targetListName, true, false, 'Select Device', '')
+                await GetDevices(targetListName, true, false, 'Select Device', '', 'btnStartUploadInferenceResultResult')
                     .then((ret) => {
                         if (ret) {
-
                             if (currentDeviceId) {
                                 setSelectOption(targetListName, currentDeviceId);
                             }
-
-                            targetListName = 'startUploadInferenceResultModelIdList';
-
-                            GetAllModels(targetListName, true)
-                                .then((ret) => {
-                                    if (ret) {
-                                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                                            setSelectOption(targetListName, currentModel);
-                                        }
-                                    }
-                                })
-                                .finally(() => {
-                                    toggleLoader(true);
-                                })
                         } else {
-                            toggleLoader(true);
                         }
                     })
                     .catch(err => {
-                        toggleLoader(true);
                     })
             } catch (err) {
+            } finally {
                 toggleLoader(true);
-            } finally { }
+            }
         })
 
-        $('#accordionStopUploadInferenceResult').on('show.bs.collapse', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-
-            var targetListName = 'stopUploadInferenceResultDeviceIdList';
-
-            toggleLoader(false);
-
-            GetDevices(targetListName, true, false, 'Select Device', '')
-                .then((ret) => {
-                    if (ret) {
-                        if (!isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
-                            setSelectOption(targetListName, currentDeviceId);
-                        }
-                    }
-                })
-                .finally(() => {
-                    toggleLoader(false);
-                })
-        })
-
-        $('#accordionStartUploadRetrainingData').on('show.bs.collapse', function (evt) {
+        $('#accordionStartUploadRetrainingData').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'startUploadRetrainingDataModelIdList';
@@ -2379,56 +2251,24 @@
             try {
                 toggleLoader(false);
 
-                GetAllModels(targetListName, true)
+                var targetDeviceListName = 'startUploadRetrainingDataDeviceIdList';
+                await GetDevices(targetDeviceListName, true, false, 'Select Device', '', 'startUploadRetrainingDataBtnResult')
                     .then((ret) => {
                         if (ret) {
-                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                                setSelectOption(targetListName, currentModel);
+                            if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
+                                setSelectOption(targetDeviceListName, currentDeviceId);
                             }
-
-                            var targetDeviceListName = 'startUploadRetrainingDataDeviceIdList';
-                            GetDevices(targetDeviceListName, true, false, 'Select Device', '')
-                                .then((ret) => {
-                                    if (ret) {
-                                        if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
-                                            setSelectOption(targetDeviceListName, currentDeviceId);
-                                        }
-                                    }
-                                })
-                                .finally(() => {
-                                    toggleLoader(true);
-                                })
-                        } else {
-                            toggleLoader(true);
                         }
                     })
                     .catch(err => {
-                        toggleLoader(true);
                     })
 
             } catch (err) {
+            } finally {
                 toggleLoader(true);
-            } finally { }
+            }
         })
 
-        $('#accordionStopUploadRetrainingData').on('show.bs.collapse', function (evt) {
-
-            console.debug(evt.target.id + "() " + evt.type);
-
-            var targetListName = 'stopUploadRetrainingDataDeviceIdList';
-
-            toggleLoader(false);
-
-            GetDevices(targetListName, true, false, 'Select Device', '')
-                .then((ret) => {
-                    if (ret && !isItemSelected(targetListName, currentDeviceId) && currentDeviceId) {
-                        setSelectOption(targetListName, currentDeviceId);
-                    }
-                })
-                .finally(() => {
-                    toggleLoader(false);
-                })
-        })
         //
         // modal
         //
@@ -2448,7 +2288,7 @@
         $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetDeviceListName = 'telemetryTableFilterList';
-            GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
+            GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
@@ -2457,27 +2297,23 @@
                     }
                 })
                 .finally(() => {
-                    toggleLoader(true);
                 })
         })
 
         $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
             console.log(evt.target.id + "() " + evt.type);
-            toggleLoader(false);
             var targetDeviceListName = 'imageGalleryDeviceIdList';
-            GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
+            GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
                 .then((ret) => {
                     $("#blobStorJsGrid").jsGrid("loadData");
                 })
                 .finally(() => {
-                    toggleLoader(true);
                 })      
         })
 
         $('#tab-cosmosDb-label').on('show.bs.tab', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
             var targetDeviceListName = 'cosmosDbDeviceIdList';
 
             cosmosDbRecordCountSlider.addEventListener("input", function cosmosDbRecordCountSliderHandler(evt) {
@@ -2498,12 +2334,11 @@
                 cosmosDbThreshold.innerHTML = evt.target.value;
             })
 
-            GetDevices(targetDeviceListName, true, true, 'All Devices', '*')
+            GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
                 .then((ret) => {
                     $("#cosmosDbJsGrid").jsGrid("loadData");
                 })
                 .finally(() => {
-                    toggleLoader(true);
                 })   
         })
 
@@ -2556,11 +2391,9 @@
 
             if (isItemSelected(targetListId, null)) {
                 currentProjectId = projectList[projectList.selectedIndex].value;
-                $('#deleteCustomVisionProjectCvBtn').prop('disabled', false);
                 $('#deleteCustomVisionProjectBtn').prop('disabled', false);
             } else {
                 currentProjectId = null;
-                $('#deleteCustomVisionProjectCvBtn').prop('disabled', true);
                 $('#deleteCustomVisionProjectBtn').prop('disabled', true);
 
             }
@@ -2666,13 +2499,11 @@
         $('#createDeployConfigurationGetDeployConfigurationsList').on('change', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            toggleLoader(false);
-
             var currentDeployment = document.getElementById(evt.target.id).value;
 
             if (currentDeployment.length > 0)
             {
-                GetDeployConfigurations(null)
+                GetDeployConfigurations(null, null)
                     .then((deployments) => {
                         var json = JSON.parse(deployments);
                         var config_id = document.getElementById(evt.target.id).selectedIndex == 0 ? null : document.getElementById(evt.target.id).value;
@@ -2724,22 +2555,20 @@
 
                     })
                     .finally(() => {
-                        toggleLoader(false);
                     });
             }
             else
             {
                 ResetDeploymentUi();
-                toggleLoader(false);
             }
         })
         
-        $('#deployByConfiguraionFormConfigIdList').on('change', function (evt) {
+        $('#deployByConfiguraionFormConfigIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
         })
 
-        $('#deployByConfiguraionDeviceIdList').on('change', function (evt) {
+        $('#deployByConfiguraionDeviceIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
 
@@ -2747,20 +2576,19 @@
 
             if (isItemSelected(targetListId, null)) {
                 $('#deployByConfiguratonHistoryBtn').prop('disabled', false);
-                $('#getDeployHistoryBtn').prop('disabled', false);
                 currentDeviceId = document.getElementById(targetListId).value;
-                GetModelForDevice('deployByConfiguraionReplaceModelIdList', currentDeviceId);
+                toggleLoader(false);
+                await GetModelForDevice('deployByConfiguraionReplaceModelIdList', currentDeviceId, 'deployByConfiguratonBtnResult')
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
 
             } else {
-                $('#deployByConfiguratonHistoryBtn').prop('disabled', true);
-                $('#getDeployHistoryBtn').prop('disabled', true);
                 currentDeviceId = null;
             }
         })
 
-
-
-        $('#startUploadInferenceResultDeviceIdList').on('change', function (evt) {
+        $('#startUploadInferenceResultDeviceIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
@@ -2769,6 +2597,12 @@
                 $('#startUploadInferenceResultBtn').prop('disabled', false);
                 $('#stopUploadInferenceResultBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
+
+                toggleLoader(false);
+                await GetSingleDevice(currentDeviceId, 'startUploadInferenceResultModelIdList', 'btnStartUploadInferenceResultResult')
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
             } else {
                 $('#startUploadInferenceResultBtn').prop('disabled', true);
                 $('#stopUploadInferenceResultBtn').prop('disabled', true);
@@ -2788,21 +2622,7 @@
             }
         })
 
-        $('#stopUploadInferenceResultDeviceIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-            var targetListId = evt.target.id;
-            var deviceList = document.getElementById(targetListId);
-
-            if (isItemSelected(targetListId, null)) {
-                $('#stopUploadInferenceResultBtn').prop('disabled', false);
-                currentDeviceId = deviceList[deviceList.selectedIndex].value;
-            } else {
-                $('#stopUploadInferenceResultBtn').prop('disabled', true);
-                currentDeviceId = null;
-            }
-        })
-
-        $('#startUploadRetrainingDataDeviceIdList').on('change', function (evt) {
+        $('#startUploadRetrainingDataDeviceIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
@@ -2811,6 +2631,12 @@
                 $('#startUploadRetrainingDataBtn').prop('disabled', false);
                 $('#stopUploadRetrainingDataBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
+                toggleLoader(false);
+                await GetSingleDevice(currentDeviceId, 'startUploadInferenceResultModelIdList', 'btnStartUploadInferenceResultResult')
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
+
             } else {
                 $('#startUploadRetrainingDataBtn').prop('disabled', true);
                 $('#stopUploadRetrainingDataBtn').prop('disabled', true);
@@ -2827,20 +2653,6 @@
                 currentModel = modelList[modelList.selectedIndex].value;
             } else {
                 currentModel = null;
-            }
-        })
-
-        $('#stopUploadRetrainingDataDeviceIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
-            var targetListId = evt.target.id;
-            var deviceList = document.getElementById(targetListId);
-
-            if (isItemSelected(targetListId, null)) {
-                $('#stopUploadRetrainingDataBtn').prop('disabled', false);
-                currentDeviceId = deviceList[deviceList.selectedIndex].value;
-            } else {
-                $('#stopUploadRetrainingDataBtn').prop('disabled', true);
-                currentDeviceId = null;
             }
         })
 

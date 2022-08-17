@@ -660,7 +660,7 @@ select {
     position: relative;
 }
 
-#canvasLoaderWrapper {
+.canvasLoaderWrapper {
     position: absolute;
     top: 0;
     left: 0;
@@ -670,7 +670,7 @@ select {
     background-color: rgba(0,0,0,0.3);
 }
 
-#canvasLoaderText {
+.canvasLoaderText {
     text-align:center;
     position:absolute;
     bottom: 0;

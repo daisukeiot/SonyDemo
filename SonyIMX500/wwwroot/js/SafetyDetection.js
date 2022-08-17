@@ -1,14 +1,21 @@
 ﻿//
 // Canvas
 //
-var canvas;
-var ctx;
+var captureOvelayCanvas;
+var captureOverlayCanvasCtx;
+var captureCanvas;
+var captureCanvasCtx;
+var captureOverlayCanvasOffset_X;
+var captureOverlayCanvasOffset_Y;
+
 var handleSize = 8;
 var currentHandle = false;
 var isResize = false;
 var isMouseDown = false;
 var pendingImagePath = '';
-var runningInference = false;
+var runninigSafetyZone = false;
+var captureInProgress = false;
+
 var ratio_x = 1;
 var ratio_y = 1;
 let rect_zone = [0, 0, 0, 0];
@@ -27,25 +34,23 @@ function printTime(msg) {
 
 function toggleMouseEvent(bDisable) {
 
-    var canvas = document.getElementById('captureImageCanvasOverlay');
-
     if (bDisable) {
-        canvas.removeEventListener('mousedown', mouseDown, false);
-        canvas.removeEventListener('mouseup', mouseUp, false);
-        canvas.removeEventListener('mousemove', mouseMove, false);
+        captureOvelayCanvas.removeEventListener('mousedown', mouseDown, false);
+        captureOvelayCanvas.removeEventListener('mouseup', mouseUp, false);
+        captureOvelayCanvas.removeEventListener('mousemove', mouseMove, false);
     } else {
-        canvas.addEventListener('mousedown', mouseDown, false);
-        canvas.addEventListener('mouseup', mouseUp, false);
-        canvas.addEventListener('mousemove', mouseMove, false);
+        captureOvelayCanvas.addEventListener('mousedown', mouseDown, false);
+        captureOvelayCanvas.addEventListener('mouseup', mouseUp, false);
+        captureOvelayCanvas.addEventListener('mousemove', mouseMove, false);
     }
 }
 
 function disableUiElements(bDisable) {
     $('#captureImageBtn').prop('disabled', bDisable);
-    $('#startInferenceBtn').prop('disabled', bDisable);
-    $('#stopInferenceBtn').prop('disabled', bDisable);
-    $('#safetyDetectionFrequencyRange').prop('disabled', bDisable);
-    $('#safetyDetectionImageCountRange').prop('disabled', bDisable);
+    $('#captureStartInferenceBtn').prop('disabled', bDisable);
+    $('#captureStopInferenceBtn').prop('disabled', bDisable);
+    $('#safetyDetectionFrequencySlider').prop('disabled', bDisable);
+    $('#safetyDetectionImageCountSlider').prop('disabled', bDisable);
     $('#startSafetyDetectionBtn').prop('disabled', bDisable);
     $('#stopSafetyDetectionBtn').prop('disabled', bDisable);
 }
@@ -56,11 +61,17 @@ var region = {
     w: 0,
     h: 0
 };
-var offsetX;
-var offsetY;
 
 function toggleCanvasLoader(bForceClear) {
-    var loader = document.getElementById("canvasLoaderWrapper");
+
+    if (isSafetyDetectionRunning == true) {
+        canvasId = 'safetyDetectionCanvasLoaderWrapper';
+    }
+    else {
+        canvasId = 'captureImageCanvasLoaderWrapper';
+    }
+
+    var loader = document.getElementById(canvasId);
 
     if (bForceClear) {
         loader.style.display = "none";
@@ -73,18 +84,38 @@ function toggleCanvasLoader(bForceClear) {
     }
 }
 
-function initCanvas(canvasIdOverlay, canvasIdImage) {
+function initCaptureCanvas(canvasIdOverlay, canvasIdImage) {
 
-    canvas = document.getElementById(canvasIdOverlay);
-    ctx = canvas.getContext("2d");
-    ctx.strokeStyle = "red";
-    ctx.lineWidth = 3;
-    ctx.globalCompositeOperation = 'destination-over';
+    captureCanvas = document.getElementById(canvasIdImage);
+    captureCanvasCtx = captureCanvas.getContext("2d");
+    captureOvelayCanvas = document.getElementById(canvasIdOverlay);
+    captureOverlayCanvasCtx = captureOvelayCanvas.getContext("2d");
+    captureOverlayCanvasCtx.strokeStyle = "red";
+    captureOverlayCanvasCtx.lineWidth = 3;
+    captureOverlayCanvasCtx.globalCompositeOperation = 'destination-over';
 
     var $canvas = $('#' + canvasIdOverlay);
     var canvasOffset = $canvas.offset();
-    offsetX = canvasOffset.left;
-    offsetY = canvasOffset.top;
+    captureOverlayCanvasOffset_X = canvasOffset.left;
+    captureOverlayCanvasOffset_Y = canvasOffset.top;
+}
+
+function initSafetyDetectionCanvas(canvasIdOverlay, canvasIdImage) {
+
+//    captureOvelayCanvas = document.getElementById(canvasIdOverlay);
+//    captureOverlayCanvasCtx = captureOvelayCanvas.getContext("2d");
+//    captureOverlayCanvasCtx.strokeStyle = "yellow";
+//    captureOverlayCanvasCtx.lineWidth = 3;
+}
+
+function ClearCaptureCanvas()
+{
+    captureCanvasCtx.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
+    captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+    captureCanvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
+    captureCanvasCtx.fillStyle = 'lightgray';
+    captureCanvasCtx.fill();
+    captureCanvasCtx.stroke();
 }
 
 function point(x, y) {
@@ -117,17 +148,17 @@ function mouseDown(e) {
     e.preventDefault();
     e.stopPropagation();
 
-    currentHandle = getHandle(point(e.pageX - offsetX, e.pageY - offsetY));
+    currentHandle = getHandle(point(e.pageX - captureOverlayCanvasOffset_X, e.pageY - captureOverlayCanvasOffset_Y));
 
     if (currentHandle == false) {
         // Clicked not on region's line.
         // Start a new region
         currentHandle = 'bottomright';
-        region.x = parseInt(e.clientX - offsetX);
-        region.y = parseInt(e.clientY - offsetY);
+        region.x = parseInt(e.clientX - captureOverlayCanvasOffset_X);
+        region.y = parseInt(e.clientY - captureOverlayCanvasOffset_Y);
         isMouseDown = true;
         isResize = false;
-        ctx.strokeStyle = "yellow";
+        captureOverlayCanvasCtx.strokeStyle = "yellow";
     }
     else {
         // Clicked on a corner or on line
@@ -146,8 +177,6 @@ function mouseUp(e) {
     isMouseDown = false;
 
     currentHandle = false;
-
-    ctx.strokeStyle = "green";
 
     if (region.w < 0) {
         region.x = region.x + region.w;
@@ -187,18 +216,18 @@ function mouseMove(e) {
 
     if (isMouseDown) {
         // draw region (not resize)
-        var mouseX = parseInt(e.clientX - offsetX);
-        var mouseY = parseInt(e.clientY - offsetY);
+        var mouseX = parseInt(e.clientX - captureOverlayCanvasOffset_X);
+        var mouseY = parseInt(e.clientY - captureOverlayCanvasOffset_Y);
 
         region.w = mouseX - region.x;
         region.h = mouseY - region.y;
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
         drawRegion();
     }
     else if (isResize) {
 
-        var mousePos = point(e.pageX - offsetX, e.pageY - offsetY);
+        var mousePos = point(e.pageX - captureOverlayCanvasOffset_X, e.pageY - captureOverlayCanvasOffset_Y);
         switch (currentHandle) {
             case 'topleft':
                 region.w += parseInt(region.x - mousePos.x);
@@ -248,17 +277,16 @@ function drawRegion() {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName);
 
+    captureOverlayCanvasCtx.strokeStyle = "red";
+
     if (currentHandle == false) {
         // mouse pointer not on a corner / line.  Clear region
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.strokeRect(region.x, region.y, region.w, region.h);
+        captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+        captureOverlayCanvasCtx.strokeRect(region.x, region.y, region.w, region.h);
     }
     else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        // ctx.fillStyle = 'black';
-        // ctx.fillRect(region.x, region.y, region.w, region.h);
-        // ctx.strokeStyle = "green";
-        ctx.strokeRect(region.x, region.y, region.w, region.h);
+        captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+        captureOverlayCanvasCtx.strokeRect(region.x, region.y, region.w, region.h);
 
         var posHandle = point(0, 0);
         switch (currentHandle) {
@@ -295,78 +323,36 @@ function drawRegion() {
                 posHandle.y = region.y + region.h / 2;
                 break;
         }
-        ctx.globalCompositeOperation = 'xor';
-        ctx.beginPath();
-        ctx.strokeStyle = "black";
-        ctx.arc(posHandle.x, posHandle.y, handleSize, 0, 2 * Math.PI);
-        ctx.fillStyle = 'white';
-        ctx.fill();
-        ctx.stroke();
-        ctx.globalCompositeOperation = 'source-over';
+        captureOverlayCanvasCtx.globalCompositeOperation = 'xor';
+        captureOverlayCanvasCtx.beginPath();
+        captureOverlayCanvasCtx.arc(posHandle.x, posHandle.y, handleSize, 0, 2 * Math.PI);
+        captureOverlayCanvasCtx.fillStyle = 'white';
+        captureOverlayCanvasCtx.fill();
+        captureOverlayCanvasCtx.stroke();
+        captureOverlayCanvasCtx.globalCompositeOperation = 'source-over';
     }
 }
 
-async function GetSingleDevice(device_id, listElementId, resultElementId) {
+
+
+async function CaptureSingleImage(resultElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName)
-    var ret = true; // assume disconnected
-    var msg = null;
-    var resultElement = document.getElementById(resultElementId);
+    var resultElement = null;
+    captureInProgress = true;
 
     try {
-        toggleLoader(false);
-        if (listElementId) {
-            document.getElementById(listElementId).disabled = true;
-        }
-        await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.origin + '/' + 'sony/GetDevice',
-            data: {
-                device_id: device_id
-            },
-        }).done(function (response) {
-            var json = JSON.parse(response.value);
 
-            if (listElementId) {
-
-                var list = document.getElementById(listElementId);
-
-                list.innerText = null;
-                var option = new Option("Select model", "");
-                option.disabled = true;
-                list.append(option);
-                for (var model in json.models) {
-                    var modelId = json.models[model].model_version_id.split(":");
-                    list.append(new Option(modelId[0], modelId[0]));
-                }
-                list.options[0].selected = true;
-                list.disabled = false;
-            }
-
-            if (json.connectionState == 'Connected') {
-                ret = false;
-            }
-        });
-
-    } catch (err) {
-        msg = processError(funcName, err, true);
-    } finally {
-        setResultElement(resultElement, msg);
-        toggleLoader(false);
-    }
-    return ret;
-}
-
-async function CaptureSingleImage() {
-    var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName)
-    var startStart = Date.now();
-
-    try {
         pendingImagePath = '';
+
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+
+        setResultElement(resultElement, `Capturing a single image from ${currentDeviceId}`);
+
         var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
-        var device_id = document.getElementById("safetyDetectionDeviceIdList").value;
+        var device_id = currentDeviceId;
         var Mode;
         var FileFormat = null;
         var CropHOffset = null;
@@ -377,7 +363,7 @@ async function CaptureSingleImage() {
         var FrequencyOfImages = 1;
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
-        var model_id = document.getElementById("safetyDetectionModelIdList").value;
+        var model_id = currentModelId;
 
         if (notificationType == 'blob') {
             Mode = 0;
@@ -406,14 +392,10 @@ async function CaptureSingleImage() {
             },
         }).done(function (response) {
             var result = JSON.parse(response.value);
-            var millis = Date.now() - startStart;
-            console.debug(`StartUploadRetrainingData took = ${Math.floor(millis / 1000)}`);
 
             if (result.result == "SUCCESS") {
                 pendingImagePath = result.outputSubDirectory;
-                console.debug(pendingImagePath);
-
-                toggleCanvasLoader(false);
+                setResultElement(resultElement, `Waiting for an image at ${pendingImagePath}`);
             }
         });
 
@@ -517,10 +499,18 @@ async function processTelemetryForChart(signalRMsg, lineChart) {
         // add device id filter.
         var inferenceData = JSON.parse(message.data);
         lineChart.data.labels.push(message.eventTime);
-        lineChart.data.datasets[0].data.push(inferenceData.Inferences[0][1].P);
+
+        var p_value = 0.0;
+
+        if (inferenceData.Inferences[0][1] != undefined) {
+            p_value = inferenceData.Inferences[0][1].P
+        }
+
+        lineChart.data.datasets[0].data.push(p_value);
         lineChart.update();
 
     } catch (err) {
+        console.error("Error processing Telemetry data for chart ");
     } finally {
         //printTime("processTelemetryForChart exit");
     }
@@ -556,13 +546,26 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
             return;
         }
 
-        for (var inferenceResult in message.inferenceResults) {
+        if (captureInProgress == true) {
 
-            var imagePath = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[inferenceResult].T}.jpg`;
-            //var found = await CheckImage(currentDeviceId, imagePath);
+            var imageUrl = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[0].T}.jpg`;
 
-            await CheckImageForInference(currentDeviceId, imagePath, message.inferenceResults[inferenceResult].inferenceResults, threshold);
+            var found = await CheckImageForInference(currentDeviceId, imageUrl, null, threshold);
+
+            if (found) {
+                var resultElement = document.getElementById('captureImageBtnResult');
+                setResultElement(resultElement, 'Image loaded');
+                captureInProgress = false;
+            }
         }
+        else {
+            for (var inferenceResult in message.inferenceResults) {
+
+                var imageUrl = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[inferenceResult].T}.jpg`;
+                await CheckImageForInference(currentDeviceId, imageUrl, message.inferenceResults[inferenceResult].inferenceResults, threshold);
+            }
+        }
+
     } catch (err) {
     } finally {
         printTime("processCosmosDbMessage <==");
@@ -616,12 +619,12 @@ async function processBlobMessage(signalRMsg) {
         }).done(function (response) {
             console.debug(response.value);
             var json = JSON.parse(response.value);
-            var canvas = document.getElementById("captureImageCanvas");
-            var ctx = canvas.getContext('2d');
+            var captureOvelayCanvas = document.getElementById("captureImageCanvas");
+            var captureOverlayCanvasCtx = captureOvelayCanvas.getContext('2d');
             var img = new Image();
             img.src = json.uri;
             img.onload = function () {
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+                captureOverlayCanvasCtx.drawImage(img, 0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height)
             }
 
             toggleCanvasLoader(true);
@@ -631,43 +634,6 @@ async function processBlobMessage(signalRMsg) {
     }
 }
 
-async function CheckImage(deviceId, imagePath) {
-    var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
-    var found = false;
-
-    try {
-        toggleCanvasLoader(false);
-        await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.origin + '/' + 'home/checkImage',
-            data: {
-                deviceId: deviceId,
-                imagePath: imagePath
-            }
-        }).done(function (response) {
-            console.debug(response.value);
-            var json = JSON.parse(response.value);
-            var canvasImage = document.getElementById("captureImageCanvas");
-            var ctxImage = canvasImage.getContext('2d');
-            var img = new Image();
-            img.src = json.uri;
-            img.onload = function () {
-                ctxImage.clearRect(0, 0, canvas.width, canvas.height);
-                ctxImage.drawImage(img, 0, 0, canvas.width, canvas.height);
-            }
-            found = true;
-        });
-    } catch (err) {
-    } finally {
-        canvasImage.setAttribute("style", "z-index: 100");
-        canvas.setAttribute("style", "z-index: 200");
-        toggleCanvasLoader(true);
-    }
-
-    return found;
-}
 
 async function CheckImageForInference(deviceId, imagePath, inferenceResults, threshold) {
     var funcName = arguments.callee.name + "()";
@@ -675,7 +641,6 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
     var found = false;
 
     try {
-        //toggleCanvasLoader(false);
         await $.ajax({
             async: true,
             type: "GET",
@@ -689,7 +654,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
 
             var canvasId;
             if (isSafetyDetectionRunning == true) {
-                canvasId = 'inferenceImageCanvas';
+                canvasId = 'safetyDetectionCanvas';
             }
             else {
                 canvasId = 'captureImageCanvas';
@@ -701,42 +666,42 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             var img = new Image();
             img.src = json.uri;
             img.onload = function () {
-                ctxImage.clearRect(0, 0, canvas.width, canvas.height);
-                ctxImage.globalCompositeOperation = 'destination-over';
-                ctxImage.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctxImage.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+                ctxImage.globalCompositeOperation = 'source-over';
+                    //'destination-over';
+                ctxImage.drawImage(img, 0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
 
                 ratio_x = canvasImage.width / img.width;
                 ratio_y = canvasImage.height / img.height;
 
-                for (var i = 0; i < inferenceResults.length; i++) {
-                    data = inferenceResults[i];
+                if (inferenceResults != null) {
 
-                    if (data.P < threshold) {
-                        continue;
+                    for (var i = 0; i < inferenceResults.length; i++) {
+                        data = inferenceResults[i];
+
+                        if (data.P < threshold) {
+                            continue;
+                        }
+
+                        ctxImage.font = '12px serif';
+                        ctxImage.lineWidth = 1;
+                        ctxImage.textBaseline = "bottom";
+                        ctxImage.strokeStyle = "yellow";
+                        var offset_x = canvasImage.width / img.width;
+                        var offset_y = canvasImage.height / img.height;
+
+                        var X = parseInt(data.X * offset_x);
+                        var Y = parseInt(data.Y * offset_y);
+                        var x = parseInt(data.x * offset_x);
+                        var y = parseInt(data.y * offset_y);
+                        ctxImage.lineWidth = 2;
+                        ctxImage.strokeRect(X, Y, x - X, y - Y);
+
+                        var confidence = `${(data.P * 100).toFixed(1).toString()}%`;
+                        ctxImage.lineWidth = 1;
+                        ctxImage.strokeText(confidence, X + 2, y);
                     }
-
-                    ctxImage.font = '12px serif';
-                    ctxImage.lineWidth = 1;
-                    ctxImage.textBaseline = "bottom";
-                    ctxImage.strokeStyle = "yellow";
-                    var offset_x = canvasImage.width / img.width;
-                    var offset_y = canvasImage.height / img.height;
-
-                    var X = parseInt(data.X * offset_x);
-                    var Y = parseInt(data.Y * offset_y);
-                    var x = parseInt(data.x * offset_x);
-                    var y = parseInt(data.y * offset_y);
-                    ctxImage.lineWidth = 2;
-                    ctxImage.strokeRect(X, Y, x - X, y - Y);
-
-                    var confidence = `${(data.P * 100).toFixed(1).toString()}%`;
-                    ctxImage.lineWidth = 1;
-                    ctxImage.strokeText(confidence, X + 2, y);
                 }
-
-                canvasImage.setAttribute("style", "z-index: 100; position:absolute;");
-                canvas.setAttribute("style", "z-index: 200; position:relative;");
-
             }
             found = true;
         });
@@ -754,8 +719,8 @@ async function StartInference(resultElementId) {
     var resultElement = document.getElementById(resultElementId);
 
     try {
-        runningInference = true;
-        var frequency = parseInt(document.getElementById("safetyDetectionFrequencyRange").value);
+        setResultElement(resultElement, `Starting Inference`);
+        var frequency = parseInt(document.getElementById("safetyDetectionFrequencySlider").value);
         // to ms
         frequency = Math.round((frequency * 1000) / 33.3);
         var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
@@ -765,7 +730,7 @@ async function StartInference(resultElementId) {
         var CropVOffset = null;
         var CropHSize = null;
         var CropVSize = null;
-        var NumberOfImages = document.getElementById("safetyDetectionImageCountRange").value;
+        var NumberOfImages = document.getElementById("safetyDetectionImageCountSlider").value;
         var FrequencyOfImages = frequency.toString();
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
@@ -824,16 +789,15 @@ async function StartInference(resultElementId) {
     return;
 }
 
-async function StartSafetyZone(resultElementId) {
+async function StartSafetyDetection(resultElementId) {
     var funcName = arguments.callee.name + "()";
     console.debug("=>", funcName)
     var resultElement = document.getElementById(resultElementId);
 
     try {
-
+        runninigSafetyZone = true;
         setResultElement(resultElement, `Starting Safety Zone Inference`);
-        runningInference = true;
-        var frequency = parseInt(document.getElementById("safetyDetectionFrequencyRange").value);
+        var frequency = parseInt(document.getElementById("safetyDetectionFrequencySlider").value);
         // to ms
         frequency = Math.round((frequency * 1000) / 33.3);
         var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
@@ -911,10 +875,16 @@ async function StopInference(resultElementId) {
     if (resultElementId != undefined) {
         resultElement = document.getElementById(resultElementId);
     }
-    runningInference = false;
+
+
+    runninigSafetyZone = false;
     pendingImagePath = '';
 
     try {
+
+        if (resultElement != undefined) {
+            setResultElement(resultElement, `Stopping Inference`);
+        }
 
         await $.ajax({
             async: true,
