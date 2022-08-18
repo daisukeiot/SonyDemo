@@ -1206,7 +1206,7 @@
                         console.log("Login End");
                     })
                     .finally(() => {
-                        toggleLoader(false);
+                        toggleLoader(true);
                     });
             }
         })
@@ -1309,10 +1309,13 @@
                     if (conversion_id) {
                         console.log("Conversion Started : " + conversion_id);
                         document.getElementById('convertModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
+                    } else {
+                        disableUiButtons(false);
                     }
                 })
                 .catch(err => {
                     console.error(`Error : ${err.statusText}`);
+                    disableUiButtons(false);
                 })
                 .finally(() => {
                     toggleLoader(true);
@@ -1369,9 +1372,14 @@
                         console.log("Conversion Started : " + conversion_id);
                         document.getElementById('publishModelGetBaseModelStatusBtn').dispatchEvent(new Event("click"));
                     }
+                    else
+                    {
+                        disableUiButtons(false);
+                    }
                 })
                 .catch(function (err) {
                     console.error(`Error : ${err.statusText}`);
+                    disableUiButtons(false);
                 })
                 .finally(() => {
                     toggleLoader(true);
@@ -2813,18 +2821,32 @@
             }
         }
 
-        function deleteModel(item) {
+        async function deleteModel(item) {
             var modelName = item.attributes.getNamedItem('targetmodel').nodeValue;
             console.log("delete Model " + modelName);
 
-            DeleteModel(modelName);
+            toggleLoader(false);
+            await DeleteModel(modelName)
+                    .then(() => {
+                        document.getElementById('getModelsBtn').dispatchEvent(new Event("click"));
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
         }
 
-        function deleteDeloyConfiguraions(item) {
+        async function deleteDeloyConfiguraions(item) {
             var config_id = item.attributes.getNamedItem('target_config_id').nodeValue;
             console.log("delete Deploy Configuration " + config_id);
 
-            DeleteDeployConfiguration(config_id);
+            toggleLoader(false);
+            await DeleteDeployConfiguration(config_id)
+                    .then(() => {
+                        document.getElementById('getDeployConfigurationsBtn').dispatchEvent(new Event("click"));
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
         }
 
         function disableUiButtons(disable) {
@@ -2963,8 +2985,8 @@
             <td>{{modelId}}</td>
             <td>{{comment}}</td>
             <td>
-                <button class="btn btn-primary btn-fa-icon">
-                    <i class="fas fa-trash-alt" onclick="deleteModel(this)" targetModel="{{modelId}}"></i>
+                <button class="btn btn-primary btn-fa-icon" onclick="deleteModel(this)" targetModel="{{modelId}}">
+                    <i class="fas fa-trash-alt" ></i>
                 </button>
             </td>
 
@@ -2988,8 +3010,8 @@
             <td>{{config_id}}</td>
             <td>{{config_comment}}</td>
             <td>
-                <button class="btn btn-primary btn-fa-icon">
-                    <i class="fas fa-trash-alt" onclick="deleteDeloyConfiguraions(this)" target_config_id="{{config_id}}"></i>
+                <button class="btn btn-primary btn-fa-icon" onclick="deleteDeloyConfiguraions(this)" target_config_id="{{config_id}}">
+                    <i class="fas fa-trash-alt"></i>
                 </button>
             </td>
 
