@@ -82,7 +82,7 @@
 
 function viewPhotoWithCosmosDbTable(item) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     if (item.Image == false) {
         return;

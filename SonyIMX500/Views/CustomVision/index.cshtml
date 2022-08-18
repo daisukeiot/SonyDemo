@@ -2,6 +2,7 @@
 @{
 }
 @section scripts {
+    <script type="text/javascript" src="/js/SonyApi.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
     @*<script type="text/javascript" src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>*@
     <script type="text/javascript" src="/js/BlobStorage.js"></script>
@@ -217,8 +218,8 @@
 
         $(document).ready(function () {
             console.debug("Custom Vision : document.Ready");
-            CvGetProjects('cvProjectList');
-            CvGetProjects('cvTrainProjectList');
+            CvGetProjects('cvProjectList', null);
+            CvGetProjects('cvTrainProjectList', null);
             document.getElementById('nav-link-home').classList.remove('active');
             document.getElementById('nav-link-cv').classList.add('active');
         })

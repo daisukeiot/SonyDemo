@@ -13,7 +13,7 @@ let authConfig = null;
 function sonyApiInitializeMsal() {
 
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     var url = window.location.href;
     var clientId = document.getElementById('clientId').value;
@@ -61,7 +61,7 @@ function sonyApiInitializeMsal() {
 async function sonyApiGetToken() {
 
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     var url = window.location.href;
     if (url.includes("localhost") && !url.includes("index.html")) {
@@ -115,7 +115,7 @@ async function sonyApiGetToken() {
 async function getToken() {
 
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     if (interval) {
         clearInterval(interval);
@@ -135,7 +135,7 @@ async function getToken() {
 function updateLoginTab(tokenResp) {
 
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     if (tokenResp == null) {
         document.getElementById('taToken').value = "Access Token not found in response.";

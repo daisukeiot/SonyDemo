@@ -1,7 +1,7 @@
 ﻿async function GetImage(deviceId, timeStamp) {
 
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
     var msg = null;
     var image = null;
     try {

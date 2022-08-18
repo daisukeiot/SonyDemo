@@ -43,13 +43,19 @@ function RefreshIterationGrid() {
     }
 }
 
-async function CvGetProjects(listElementId) {
+async function CvGetProjects(listElementId, resultElementId) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
+    var resultElement = null;
 
     if (listElementId) {
         var list = document.getElementById(listElementId);
         list.disabled = true;
+
+        if (resultElementId != null) {
+            resultElement = document.getElementById(resultElementId);
+        }
+        setResultElement(resultElement, `Retrieving Custom Vision projects`);
 
         try {
 
@@ -93,10 +99,12 @@ async function CvGetProjects(listElementId) {
 
                         }
                     }
+                    setResultElement(resultElement, '&nbsp;');
                 },
                 error: function (response, status, err) {
                     console.error(err);
                     alert(funcName + " Error " + status);
+                    setResultElement(resultElement, status);
                 }
             });
         } catch (err) {
@@ -108,7 +116,7 @@ async function CvGetProjects(listElementId) {
 
 async function CvGetTags(projectId, listElementId) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     if (listElementId) {
         var list = document.getElementById(listElementId);
@@ -180,7 +188,7 @@ async function CvGetTags(projectId, listElementId) {
 
 async function CvCreateTag(projectId) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     try {
         var tagName = document.getElementById("cvCreateTagName").value;
@@ -209,7 +217,7 @@ async function CvCreateTag(projectId) {
 
 async function CvAssignRegion(projectId, tagId) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     try {
         await $.ajax({
@@ -252,7 +260,7 @@ async function CvAssignRegion(projectId, tagId) {
 
 async function CvDeleteProject(project_name) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
 
@@ -280,7 +288,7 @@ async function CvDeleteProject(project_name) {
 
 async function CvTrainProject(resultElement) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     var resultElement = document.getElementById('cvStartTrainingBtnResult');
 
@@ -506,7 +514,7 @@ $("#cvIterationsJsGrid").jsGrid({
 
 function CvPreviewPhoto(item) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     var canvas = document.getElementById("cvImageCanvas");
     canvas.setAttribute("data-imageId", item.Id);
@@ -559,7 +567,7 @@ function CvPreviewPhoto(item) {
 
 function CvUploadImages() {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     var msg;
 

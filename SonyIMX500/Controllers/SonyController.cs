@@ -44,7 +44,7 @@ namespace SonyIMX500.Controllers
         {
             if (string.IsNullOrEmpty(_token))
             {
-                throw new ArgumentException(@"{'status':'Need Token'}");
+                throw new ArgumentException("{\"status\":\"Need Token\"}");
             }
             using (HttpClient client = new HttpClient())
             {

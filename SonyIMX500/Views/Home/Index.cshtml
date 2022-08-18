@@ -1225,14 +1225,16 @@
             }
             console.debug("createBaseCustomVisionProjectBtn Click");
 
+            toggleLoader(false);
             CreateBaseCustomVisionProject()
                 .then(() => {
                     // GetCustomVisionProjects("selectCustomVisionProjectList");
                 })
                 .catch(err => {
-                    console.error("Error : " + err);
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
@@ -1243,13 +1245,17 @@
             console.debug(`${evt.target.id}() ${evt.type} ${projectList[projectList.selectedIndex].text}`);
 
             if (projectList[projectList.selectedIndex].value != 0) {
-
+                toggleLoader(false);
                 DeleteProject(projectList[projectList.selectedIndex].text, 'deleteCustomVisionProjectBtnResult')
                     .then(() => {
                         console.log("Custom Vision Project Deleted");
-                        CvGetProjects("selectCustomVisionProjectList");
+                        CvGetProjects("selectCustomVisionProjectList", null);
+                    })
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
                     })
                     .finally(() => {
+                        toggleLoader(true);
                     });
             }
         })
@@ -1276,16 +1282,19 @@
 
             if ($('#saveCustomVisionModelForm').valid()) {
 
-                console.debug("saveCustomVisionModelBtn Click");
+                var resultElementId = 'saveCustomVisionModelBtnResult';
 
-                SaveCustomVisionModel()
+                toggleLoader(false);
+
+                SaveCustomVisionModel(resultElementId)
                     .then(() => {
                         console.log("Model Saved");
                     })
                     .catch(err => {
-                        console.error("ErrorXX : " + err);
+                        console.error(`Error : ${err.statusText}`);
                     })
                     .finally(() => {
+                        toggleLoader(true);
                     });
             }
         })
@@ -1294,7 +1303,7 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             disableUiButtons(true);
-
+            toggleLoader(false);
             ConvertModel()
                 .then(function (conversion_id) {
                     if (conversion_id) {
@@ -1303,9 +1312,10 @@
                     }
                 })
                 .catch(err => {
-                    console.error("Error : " + err);
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
@@ -1342,7 +1352,7 @@
 
                 })
                 .catch(function (err) {
-                    console.error("Error : " + err);
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
                 });
@@ -1352,7 +1362,7 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             disableUiButtons(true);
-
+            toggleLoader(false);
             PublishModel()
                 .then(function (conversion_id) {
                     if (conversion_id) {
@@ -1361,9 +1371,10 @@
                     }
                 })
                 .catch(function (err) {
-                    console.error("Error : " + err);
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
@@ -1399,7 +1410,7 @@
                     }
                 })
                 .catch(function (err) {
-                    console.error("Error : " + err);
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
                 });
@@ -1421,29 +1432,34 @@
 
                 })
                 .catch(function (err) {
-                    console.error("Error : " + err);
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
                 });
         })
 
-        $('#deployByConfiguratonBtn').click(function (evt) {
+        $('#deployByConfiguratonBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-
-            DeployByConfiguration()
+            toggleLoader(false);
+            await DeployByConfiguration()
                 .then(() => {
                     console.log("Configuration Deployed");
                 })
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
+                })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
-        $('#createDeployConfigurationGetDeployConfigurationsBtn').click(function (evt) {
+        $('#createDeployConfigurationGetDeployConfigurationsBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetList = 'createDeployConfigurationGetDeployConfigurationsList';
             var currentDeployment = document.getElementById(targetList).value;
-            GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList', null)
+            toggleLoader(false);
+            await GetDeployConfigurations('createDeployConfigurationGetDeployConfigurationsList', null)
                 .then(() => {
                     console.log("Configuration Acquired");
                     console.debug(currentDeployment);
@@ -1451,48 +1467,68 @@
                         setSelectOption(targetList, currentDeployment);
                     }
                 })
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
+                })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
-        $('#startUploadInferenceResultBtn').click(function (evt) {
+        $('#startUploadInferenceResultBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#startUploadInferenceResultForm').valid()) {
-                StartUploadInferenceResult()
-                    .then(() => { })
+                toggleLoader(false);
+                await StartUploadInferenceResult()
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
                     .finally(() => {
+                        toggleLoader(true);
                     });
             }
         })
 
-        $('#stopUploadInferenceResultBtn').click(function (evt) {
+        $('#stopUploadInferenceResultBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            StopUploadInferenceResult()
-                .then(() => { })
+            toggleLoader(false);
+            await StopUploadInferenceResult()
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
+                })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
-        $('#startUploadRetrainingDataBtn').click(function (evt) {
+        $('#startUploadRetrainingDataBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#startUploadRetrainingDataForm').valid()) {
-                StartUploadRetrainingData()
-                    .then(() => { })
-                    .finally(() => {
-                    });
+                toggleLoader(false);
+                await StartUploadRetrainingData()
+                        .catch(err => {
+                            console.error(`Error : ${err.statusText}`);
+                        })
+                        .finally(() => {
+                            toggleLoader(true);
+                        });
             }
         })
 
-        $('#stopUploadRetrainingDataBtn').click(function (evt) {
+        $('#stopUploadRetrainingDataBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            StopUploadRetrainingData()
-                .then(() => { })
-                .finally(() => {
-                });
+            toggleLoader(false);
+            await StopUploadRetrainingData()
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    });
         })
 
         $('#clearTelemetryTableBtn').click(function (evt) {
@@ -1509,31 +1545,39 @@
         $('#getDevicesBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            RefreshDevicesList()
-                .then(() => {
-
+            toggleLoader(false);
+            RefreshDevicesListTable()
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
         $('#getModelsBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            RefreshModelsList()
-                .then(() => {
+            toggleLoader(false);
+            RefreshModelsListTable()
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
         $('#getDeployConfigurationsBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
+            toggleLoader(false);
             RefreshDeployConfiguraions()
-                .then(() => {
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 });
         })
 
@@ -2051,9 +2095,13 @@
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'selectCustomVisionProjectList';
+            var resultElementId = 'deleteCustomVisionProjectBtnResult';
+
             toggleLoader(false);
-            CvGetProjects(targetListName)
-                .then(() => { })
+            CvGetProjects(targetListName, resultElementId)
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
+                })
                 .finally(() => {
                     toggleLoader(false);
                 });
@@ -2065,11 +2113,14 @@
             var targetListName = 'visitCustomVisionProjectList';
 
             toggleLoader(false);
-            CvGetProjects(targetListName)
+            CvGetProjects(targetListName, null)
                 .then(() => {
                     if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
                         setSelectOption(targetListName, currentProjectId);
                     }
+                })
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
                     toggleLoader(false);
@@ -2082,12 +2133,17 @@
             toggleLoader(false);
 
             var targetListName = 'saveCustomVisionModelProjectNameList';
+            var resultElementId = 'saveCustomVisionModelBtnResult';
 
-            CvGetProjects(targetListName)
+            toggleLoader(false);
+            CvGetProjects(targetListName, resultElementId)
                 .then(() => {
                     if (!isItemSelected(targetListName, currentProjectId) && currentProjectId) {
                         setSelectOption(targetListName, currentProjectId);
                     }
+                })
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
                 })
                 .finally(() => {
                     toggleLoader(true);
@@ -2097,57 +2153,62 @@
         $('#accordionConvertModel').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            var targetListName = 'convertModelModelIdList';
-            toggleLoader(false);
+            try {
+                var targetListName = 'convertModelModelIdList';
+                toggleLoader(false);
 
-            await GetAllModels(targetListName, false, 'convertModelBtnResult')
-                .then((ret) => {
-                    if (ret) {
-                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                            setSelectOption(targetListName, currentModel);
+                await GetAllModels(targetListName, false, 'convertModelBtnResult')
+                    .then((ret) => {
+                        if (ret) {
+                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                setSelectOption(targetListName, currentModel);
+                            }
+                        } else {
                         }
+                    })
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    });
 
-                        GetDevices("convertModelDeviceIdList", true, true, 'Select Device', '', 'convertModelBtnResult')
-                            .then(() => { })
-                            .finally(() => {
-                            })
-                    } else {
-                    }
-                })
-                .catch(err => {
-                    msg = processError(err, true);
-                })
-                .finally(() => {
-                    toggleLoader(true);
-                });
+                await GetDevices("convertModelDeviceIdList", true, true, 'Select Device', '', 'convertModelBtnResult')
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    });
+
+            } finally {
+                toggleLoader(true);
+            }
         })
 
         $('#accordionPublishModel').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'publishModelModelIdList';
-            toggleLoader(false);
 
-            await GetAllModels(targetListName, false, 'publishModelBtnResult')
-                .then((ret) => {
-                    if (ret) {
-                        if (!isItemSelected(targetListName, currentModel) && currentModel) {
-                            setSelectOption(targetListName, currentModel);
+            try {
+                toggleLoader(false);
+
+                await GetAllModels(targetListName, false, 'publishModelBtnResult')
+                    .then((ret) => {
+                        if (ret) {
+                            if (!isItemSelected(targetListName, currentModel) && currentModel) {
+                                setSelectOption(targetListName, currentModel);
+                            }
                         }
+                    })
+                    .catch(err => {
+                        debugger;
+                        console.error(`Error : ${err.statusText}`);
+                    });
 
-                        GetDevices("publishModelDeviceIdList", true, true, 'Select Device', '', 'publishModelBtnResult')
-                            .then(() => { })
-                            .finally(() => {
-                            })
-                    } else {
-                    }
-                })
-                .catch(err => {
-                    msg = processError(err, true);
-                })
-                .finally(() => {
-                    toggleLoader(true);
-                });
+                await GetDevices("publishModelDeviceIdList", true, true, 'Select Device', '', 'publishModelBtnResult')
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    });
+
+            } finally {
+                toggleLoader(true);
+            }
         })
 
         $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function (evt) {
@@ -2155,38 +2216,48 @@
 
             try {
                 toggleLoader(false);
+                var resultElementId = 'createDeployConfigurationResult';
 
                 var targetListName = 'createDeployConfigurationModelId';
-                ret = await GetFirmwares('02', null, "createDeployConfigurationSensorLoaderVersionNumber");
+                ret = await GetFirmwares('02', null, "createDeployConfigurationSensorLoaderVersionNumber", resultElementId)
+                                .catch(err => {
+                                    debugger;
+                                    console.error(`Error : ${err.statusText}`);
+                                });
 
                 if (!ret) {
                     return;
                 }
-                ret = await GetFirmwares('01', null, "createDeployConfigurationSensorVersionNumber");
+                ret = await GetFirmwares('01', null, "createDeployConfigurationSensorVersionNumber", resultElementId)
+                                .catch(err => {
+                                    console.error(`Error : ${err.statusText}`);
+                                });
                 if (!ret) {
                     return;
                 }
-                ret = await GetFirmwares('00', null, "createDeployConfigurationApFwVersionNumber");
+                ret = await GetFirmwares('00', null, "createDeployConfigurationApFwVersionNumber", resultElementId)
+                                .catch(err => {
+                                    console.error(`Error : ${err.statusText}`);
+                                });
                 if (!ret) {
                     return;
                 }
 
-                await GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList", null)
+                ret = await GetDeployConfigurations("createDeployConfigurationGetDeployConfigurationsList", resultElementId)
+
+                if (!ret) {
+                    return;
+                }
+
+                GetAllModels(targetListName, false, null)
                     .then((ret) => {
-
-                        if (ret) {
-                            GetAllModels(targetListName, false, null)
-                                .then((ret) => {
-                                    if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
-                                        setSelectOption(targetListName, currentModel);
-                                    }
-                                })
-                                .finally(() => {
-                                })
-                        } else {
+                        if (ret && !isItemSelected(targetListName, currentModel) && currentModel) {
+                            setSelectOption(targetListName, currentModel);
                         }
+                    })
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
                     });
-            } catch (err) {
             } finally {
                 toggleLoader(true);
             }
@@ -2202,7 +2273,8 @@
 
                 await GetDeployConfigurations('deployByConfiguraionFormConfigIdList', 'deployByConfiguratonBtnResult')
                     .then(async function (ret) {
-                        if (ret != null)
+                        console.debug(ret);
+                        if (ret == true)
                         {
                             await GetDevices('deployByConfiguraionDeviceIdList', true, false, 'Select Device', '', 'deployByConfiguratonBtnResult')
                                 .then((ret) => {})
@@ -2210,9 +2282,9 @@
                                 })
                         }
                     })
-                    .catch(() => {
-                    })
-            } catch (err) {
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    });
             } finally {
                 toggleLoader(true);
             }
@@ -2236,8 +2308,8 @@
                         }
                     })
                     .catch(err => {
-                    })
-            } catch (err) {
+                        console.error(`Error : ${err.statusText}`);
+                    });
             } finally {
                 toggleLoader(true);
             }
@@ -2261,9 +2333,8 @@
                         }
                     })
                     .catch(err => {
-                    })
-
-            } catch (err) {
+                        console.error(`Error : ${err.statusText}`);
+                    });
             } finally {
                 toggleLoader(true);
             }
@@ -2285,10 +2356,11 @@
             console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+        $('#tab-telemetry-label').on('show.bs.tab', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetDeviceListName = 'telemetryTableFilterList';
-            GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
+            toggleLoader(false);
+            await GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
                 .then((ret) => {
                     if (ret) {
                         if (!isItemSelected(targetDeviceListName, currentDeviceId) && currentDeviceId) {
@@ -2296,24 +2368,37 @@
                         }
                     }
                 })
-                .finally(() => {
+                .catch(err => {
+                    console.error(`Error : ${err.statusText}`);
                 })
+                .finally(() => {
+                    toggleLoader(true);
+                });
         })
 
-        $('#tab-imageGallery-label').on('show.bs.tab', function (evt) {
+        $('#tab-imageGallery-label').on('show.bs.tab', async function (evt) {
             console.log(evt.target.id + "() " + evt.type);
             var targetDeviceListName = 'imageGalleryDeviceIdList';
-            GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
-                .then((ret) => {
-                    $("#blobStorJsGrid").jsGrid("loadData");
-                })
-                .finally(() => {
-                })      
+            toggleLoader(false);
+            await GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
+                    .then((ret) => {
+                        if (ret == true)
+                        {
+                            $("#blobStorJsGrid").jsGrid("loadData");
+                        }
+                    })
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    });      
         })
 
-        $('#tab-cosmosDb-label').on('show.bs.tab', function (evt) {
+        $('#tab-cosmosDb-label').on('show.bs.tab', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
+            toggleLoader(false);
             var targetDeviceListName = 'cosmosDbDeviceIdList';
 
             cosmosDbRecordCountSlider.addEventListener("input", function cosmosDbRecordCountSliderHandler(evt) {
@@ -2334,11 +2419,15 @@
                 cosmosDbThreshold.innerHTML = evt.target.value;
             })
 
-            GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
+            await GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
                 .then((ret) => {
-                    $("#cosmosDbJsGrid").jsGrid("loadData");
+                    if (ret == true)
+                    {
+                        $("#cosmosDbJsGrid").jsGrid("loadData");
+                    }
                 })
                 .finally(() => {
+                    toggleLoader(true);
                 })   
         })
 
@@ -2496,14 +2585,15 @@
             CheckCreateDeployConfigurationInputs();
         })
 
-        $('#createDeployConfigurationGetDeployConfigurationsList').on('change', function (evt) {
+        $('#createDeployConfigurationGetDeployConfigurationsList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
             var currentDeployment = document.getElementById(evt.target.id).value;
 
             if (currentDeployment.length > 0)
             {
-                GetDeployConfigurations(null, null)
+                toggleLoader(false);
+                await GetDeployConfigurations(null, null)
                     .then((deployments) => {
                         var json = JSON.parse(deployments);
                         var config_id = document.getElementById(evt.target.id).selectedIndex == 0 ? null : document.getElementById(evt.target.id).value;
@@ -2554,7 +2644,11 @@
                         });
 
                     })
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
                     .finally(() => {
+                        toggleLoader(true);
                     });
             }
             else
@@ -2579,6 +2673,9 @@
                 currentDeviceId = document.getElementById(targetListId).value;
                 toggleLoader(false);
                 await GetModelForDevice('deployByConfiguraionReplaceModelIdList', currentDeviceId, 'deployByConfiguratonBtnResult')
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
                     .finally(() => {
                         toggleLoader(true);
                     });
@@ -2599,7 +2696,10 @@
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
 
                 toggleLoader(false);
-                await GetSingleDevice(currentDeviceId, 'startUploadInferenceResultModelIdList', 'btnStartUploadInferenceResultResult')
+                await GetModelForDevice('startUploadInferenceResultModelIdList', currentDeviceId, 'btnStartUploadInferenceResultResult')
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
                     .finally(() => {
                         toggleLoader(true);
                     });
@@ -2632,7 +2732,10 @@
                 $('#stopUploadRetrainingDataBtn').prop('disabled', false);
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
                 toggleLoader(false);
-                await GetSingleDevice(currentDeviceId, 'startUploadInferenceResultModelIdList', 'btnStartUploadInferenceResultResult')
+                await GetModelForDevice('startUploadRetrainingDataModelIdList', currentDeviceId, 'startUploadRetrainingDataBtnResult')
+                    .catch(err => {
+                        console.error(`Error : ${err.statusText}`);
+                    })
                     .finally(() => {
                         toggleLoader(true);
                     });

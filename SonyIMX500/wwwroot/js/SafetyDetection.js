@@ -143,7 +143,7 @@ function getHandle(mouse) {
 
 function mouseDown(e) {
     var funcName = arguments.callee.name + "()";
-    //console.debug("=>", funcName);
+    //console.debug(`=> ${funcName}`);
 
     e.preventDefault();
     e.stopPropagation();
@@ -169,7 +169,7 @@ function mouseDown(e) {
 
 function mouseUp(e) {
     var funcName = arguments.callee.name + "()";
-    //console.debug("=>", funcName);
+    //console.debug(`=> ${funcName}`);
     e.preventDefault();
     e.stopPropagation();
 
@@ -194,7 +194,7 @@ function mouseUp(e) {
     $('#region_y').html(y.padStart(3, ' '));
 
     var w = parseInt((region.x + region.w) / ratio_x).toString();
-    var h = parseInt((region.y + region.h)/ratio_y).toString();
+    var h = parseInt((region.y + region.h) / ratio_y).toString();
 
     $('#region_w').html(w.padStart(3, ' '));
     $('#region_h').html(h.padStart(3, ' '));
@@ -209,7 +209,7 @@ function mouseUp(e) {
 
 function mouseMove(e) {
     var funcName = arguments.callee.name + "()";
-   // console.debug("=>", funcName);
+   // console.debug(`=> ${funcName}`);
 
     e.preventDefault();
     e.stopPropagation();
@@ -275,7 +275,7 @@ function mouseMove(e) {
 
 function drawRegion() {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
 
     captureOverlayCanvasCtx.strokeStyle = "red";
 
@@ -449,7 +449,7 @@ async function StopUploadRetrainingData() {
 async function processTelemetryMessage(signalRMsg) {
 
     var funcName = arguments.callee.name + "()";
-    //console.debug("=>", funcName);
+    //console.debug(`=> ${funcName}`);
 
     var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
@@ -478,6 +478,7 @@ async function processTelemetryMessage(signalRMsg) {
             CheckImage(currentDeviceId, imagePath);
         }
     } catch (err) {
+        console.error(`Check Image Error : ${err}`);
     } finally {
         //printTime("processTelemetryMessage exit");
     }
@@ -486,13 +487,17 @@ async function processTelemetryMessage(signalRMsg) {
 // process SignalR message for Telemetry
 async function processTelemetryForChart(signalRMsg, lineChart) {
 
-    var funcName = arguments.callee.name + "()";
-    //console.debug("=>", funcName);
+    // var funcName = arguments.callee.name + "()";
+    //console.debug(`=> ${funcName}`);
 
     try {
         var message = JSON.parse(signalRMsg);
 
         if (message.data == null) {
+            return;
+        }
+
+        if (message.deviceId != currentDeviceId) {
             return;
         }
 
@@ -512,16 +517,15 @@ async function processTelemetryForChart(signalRMsg, lineChart) {
     } catch (err) {
         console.error("Error processing Telemetry data for chart ");
     } finally {
-        //printTime("processTelemetryForChart exit");
     }
 }
 
 // process SignalR message for Cosmos DB
 async function processCosmosDbMessage(signalRMsg, threshold) {
 
-    var funcName = arguments.callee.name + "()";
-    // console.debug("=>", funcName);
-    printTime("processCosmosDbMessage ==>");
+    // var funcName = arguments.callee.name + "()";
+    // console.debug(`=> ${funcName}`);
+    // printTime("processCosmosDbMessage ==>");
 
     var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
@@ -568,15 +572,15 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
 
     } catch (err) {
     } finally {
-        printTime("processCosmosDbMessage <==");
+        // printTime("processCosmosDbMessage <==");
     }
 }
 
 // process SignalR message for Blob
 async function processBlobMessage(signalRMsg) {
 
-    var funcName = arguments.callee.name + "()";
-    //console.debug("=>", funcName);
+    // var funcName = arguments.callee.name + "()";
+    //console.debug(`=> ${funcName}`);
 
     var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
@@ -637,7 +641,7 @@ async function processBlobMessage(signalRMsg) {
 
 async function CheckImageForInference(deviceId, imagePath, inferenceResults, threshold) {
     var funcName = arguments.callee.name + "()";
-    console.debug("=>", funcName);
+    console.debug(`=> ${funcName}`);
     var found = false;
 
     try {
@@ -704,8 +708,11 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
                 }
             }
             found = true;
+        }).fail(function (response, status, err) {
+            console.error(`checkImage error : ${err}`)
         });
     } catch (err) {
+        console.error(`checkImage error : ${err}`)
     } finally {
         toggleCanvasLoader(true);
     }

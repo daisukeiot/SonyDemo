@@ -175,7 +175,7 @@
                                                                     <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
                                                                         <input type="range" class="slider" min="10" max="600" value="10" step="1" id="captureFrequencySlider" style="width:100%">
                                                                     </div>
-                                                                    <span id="captureFrequencySliderLabel"></span><span> sec</span>
+                                                                    <span id="captureFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -251,14 +251,14 @@
                                             <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
                                                 <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdSlider" style="width:100%">
                                             </div>
-                                            <span> <span id="safetyDetectionThresholdSliderLabel"></span><span> %</span></span>
+                                            <span> <span id="safetyDetectionThresholdSliderLabel"></span><span>&nbsp;%</span></span>
                                         </div>
                                         <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                             <label for="safetyDetectionFrequencySlider" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
                                             <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                <input type="range" class="slider" min="10" max="600" value="10" step="1" id="safetyDetectionFrequencySlider" style="width:100%">
+                                                <input type="range" class="slider" min="1" max="600" value="10" step="1" id="safetyDetectionFrequencySlider" style="width:100%">
                                             </div>
-                                            <span id="safetyDetectionFrequencySliderLabel"></span><span> sec</span>
+                                            <span id="safetyDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                         </div>
                                         <div class="btnStatusDiv">
                                             <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
@@ -307,12 +307,12 @@
         let start;
         let currentDeviceId;
         let currentModelId;
-        let testThresholdSlider = document.getElementById("captureThresholdSlider");
-        let testThresholdLabel = document.getElementById("captureThresholdSliderLabel");
-        let testFrequencySlider = document.getElementById("captureFrequencySlider");
-        let testFrequencyLabel = document.getElementById("captureFrequencySliderLabel");
-        let testImageCountSlider = document.getElementById("captureImageCountSlider");
-        let testImageCountLabel = document.getElementById("captureImageCountSliderLabel");
+        let captureThresholdSlider = document.getElementById("captureThresholdSlider");
+        let captureThresholdSliderLabel = document.getElementById("captureThresholdSliderLabel");
+        let captureFrequencySlider = document.getElementById("captureFrequencySlider");
+        let captureFrequencySliderLabel = document.getElementById("captureFrequencySliderLabel");
+        let captureImageCountSlider = document.getElementById("captureImageCountSlider");
+        let captureImageCountSliderLabel = document.getElementById("captureImageCountSliderLabel");
         let safetyDetectionImageCountSlider = document.getElementById("safetyDetectionImageCountSlider");
         let safetyDetectionImageCountLabel = document.getElementById("safetyDetectionImageCountSliderLabel");
         let safetyDetectionThresholdSlider = document.getElementById("safetyDetectionThresholdSlider");
@@ -395,9 +395,9 @@
             document.getElementById('nav-link-home').classList.remove('active');
             document.getElementById('nav-link-sd').classList.add('active');
 
-            testThresholdLabel.innerHTML = testThresholdSlider.value;
-            testFrequencyLabel.innerHTML = testFrequencySlider.value;
-            testImageCountLabel.innerHTML = testImageCountSlider.value;
+            captureThresholdSliderLabel.innerHTML = captureThresholdSlider.value;
+            captureFrequencySliderLabel.innerHTML = captureFrequencySlider.value;
+            captureImageCountSliderLabel.innerHTML = captureImageCountSlider.value;
             safetyDetectionThresholdLabel.innerHTML = safetyDetectionThresholdSlider.value;
             safetyDetectionFrequencyLabel.innerHTML = safetyDetectionFrequencySlider.value;
             safetyDetectionImageCountLabel.innerHTML = safetyDetectionImageCountSlider.value;
@@ -446,17 +446,16 @@
         //
         // Accordion
         //
-        $('#accordionCaptureImage').on('show.bs.collapse', function (evt) {
+        $('#accordionCaptureImage').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var resultElementId = 'captureImageBtnResult';
             
-
             if (currentDeviceId == undefined) {
                 // only first time
 
                 toggleLoader(false);
 
-                GetDevices("captureDeviceIdList", true, true, 'Select Device', '0', resultElementId)
+                await GetDevices("captureDeviceIdList", true, true, 'Select Device', '0', resultElementId)
                     .then((response) => { 
                         if (response == false) {
                             // handle error?
@@ -483,34 +482,34 @@
         $('#accordionStartInference').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
 
-            testImageCountSlider.addEventListener("input", function imageCountSliderHandler(evt) {
+            captureImageCountSlider.addEventListener("input", function imageCountSliderHandler(evt) {
                 var count = parseInt(evt.target.value);
 
                 if (count == 0)
                 {
-                    testImageCountLabel.innerHTML = "Continuous"
+                    captureImageCountSliderLabel.innerHTML = "Continuous"
                 }
                 else
                 {
-                    testImageCountLabel.innerHTML = evt.target.value;
+                    captureImageCountSliderLabel.innerHTML = evt.target.value;
                 }
             })
 
-            testThresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
-                testThresholdLabel.innerHTML = evt.target.value;
+            captureThresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
+                captureThresholdSliderLabel.innerHTML = evt.target.value;
                 currentThreshold = parseInt(evt.target.value) / 100;
             })
 
-            testFrequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
-                testFrequencyLabel.innerHTML = evt.target.value;
+            captureFrequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
+                captureFrequencySliderLabel.innerHTML = evt.target.value;
             })
         })
 
         $('#accordionStartInference').on('hide.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            testThresholdSlider.removeEventListener("input", thresholdSliderHandler);
-            testFrequencySlider.removeEventListener("input", frequencySpinnerHandler);
-            testImageCountSlider.removeEventListener("input", imageCountSliderHandler);
+            captureThresholdSlider.removeEventListener("input", thresholdSliderHandler);
+            captureFrequencySlider.removeEventListener("input", frequencySpinnerHandler);
+            captureImageCountSlider.removeEventListener("input", imageCountSliderHandler);
         })
 
         $('#accordionSaveParameter').on('show.bs.collapse', function (evt) {
@@ -528,14 +527,14 @@
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
             GetDevices("safetyDetectionDeviceIdList", true, false, 'Select Device', '0', 'startSafetyDetectionBtnResult')
-                .then((response) => { 
+                .then((response) => {
 
                 })
                 .catch((error) => {
                 })
                 .finally(() => {
                     toggleLoader(true);
-                })
+                });
 
             safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
                 var count = parseInt(evt.target.value);
@@ -572,17 +571,24 @@
 
             if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value)) {
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
-                await GetSingleDevice(currentDeviceId, modelListId, resultElementId)
-                    .then(function(isDisconnected) {
+                toggleLoader(false);
+                await GetModelForDevice(modelListId, currentDeviceId, resultElementId)
+                    .then(async function(isDisconnected) {
+
+                        deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
+
                         if (isDisconnected == false)
                         {
                             // Make sure the device is not running inference.
-                            StopInference();
+                            await StopInference();
                         }
                     })
                     .catch((err) => {
                         var resultElement = document.getElementById(resultElementId);
                         setResultElement(resultElement, "Failed to retrieve model list");
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
                     });
             }
         })
@@ -590,7 +596,10 @@
         $('#captureModelIdList').on('change', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
+            var deviceListId = 'captureDeviceIdList';
             var modelList = document.getElementById(targetListId);
+            var deviceList = document.getElementById(deviceListId);
+
             currentModelId = modelList[modelList.selectedIndex].value;
 
             if (modelList.selectedIndex > 0)
@@ -600,6 +609,13 @@
             else
             {
                 disableUiElements(true);
+            }
+
+            debugger
+            if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
+
+                var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
+                $('#captureImageBtn').prop('disabled', isDisconnected);
             }
         })
 
@@ -614,8 +630,9 @@
 
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
 
-                await GetSingleDevice(currentDeviceId, modelListId, resultElementId)
-                    .then(function(isDisconnected) {
+                toggleLoader(false);
+                await GetModelForDevice(modelListId, currentDeviceId, resultElementId)
+                    .then(async function(isDisconnected) {
 
                         var modelList = document.getElementById(modelListId);
 
@@ -629,7 +646,13 @@
                         }
 
                         // make sure the device is not running inference.
-                        StopInference();
+                        if (isDisconnected == false)
+                        {
+                            await StopInference();
+                        }
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
                     });
             }
         })
@@ -751,8 +774,8 @@
             StopInference('startSafetyDetectionBtnResult')
                 .then(() => { })
                 .finally(() => {
-                    disableUiElements(true);
-                    $('#startSafetyDetectionBtn').prop('disabled', false);
+                    disableUiElements(false);
+                    $('#stopSafetyDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
                     isSafetyDetectionRunning = false;
                 });
