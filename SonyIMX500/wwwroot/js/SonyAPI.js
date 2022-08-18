@@ -743,7 +743,7 @@ async function DeployByConfiguration() {
     var ret = true;
 
     try {
-        setResultElement(resultElement, "Sending Deply Request");
+        setResultElement(resultElement, "Sending Deploy Request");
         var config_id = document.getElementById("deployByConfiguraionFormConfigIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionFormConfigIdList").value;
         var device_ids = document.getElementById("deployByConfiguraionDeviceIdList").selectedIndex == 0 ? null : document.getElementById("deployByConfiguraionDeviceIdList").value;
         var comment = document.getElementById("deployByConfiguraionComment").value;
