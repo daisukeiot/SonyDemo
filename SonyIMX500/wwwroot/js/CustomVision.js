@@ -44,7 +44,7 @@ function RefreshIterationGrid() {
 }
 
 async function CvGetProjects(listElementId, resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
     var resultElement = null;
 
@@ -115,7 +115,7 @@ async function CvGetProjects(listElementId, resultElementId) {
 }
 
 async function CvGetTags(projectId, listElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     if (listElementId) {
@@ -187,7 +187,7 @@ async function CvGetTags(projectId, listElementId) {
 }
 
 async function CvCreateTag(projectId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     try {
@@ -216,7 +216,7 @@ async function CvCreateTag(projectId) {
 }
 
 async function CvAssignRegion(projectId, tagId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     try {
@@ -259,7 +259,7 @@ async function CvAssignRegion(projectId, tagId) {
 }
 
 async function CvDeleteProject(project_name) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var resultElement = document.getElementById('deleteCustomVisionProjectBtnResult');
@@ -287,7 +287,7 @@ async function CvDeleteProject(project_name) {
 }
 
 async function CvTrainProject(resultElement) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var resultElement = document.getElementById('cvStartTrainingBtnResult');
@@ -513,7 +513,7 @@ $("#cvIterationsJsGrid").jsGrid({
 });
 
 function CvPreviewPhoto(item) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var canvas = document.getElementById("cvImageCanvas");
@@ -566,7 +566,7 @@ function CvPreviewPhoto(item) {
 }
 
 function CvUploadImages() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var msg;

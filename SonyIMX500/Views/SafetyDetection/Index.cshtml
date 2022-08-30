@@ -41,7 +41,7 @@
                                     <div class="col-md-3" style="min-width:640px">
                                         <div class="container loader-parent">
                                             <div class="row justify-content-center align-items-center" style="position:relative">
-                                                <canvas id="captureImageCanvasOverlay" height="640" width="640" style="z-index:200"></canvas>
+                                                <canvas id="captureImageCanvasOverlay" height="640" width="640" style="z-index:200;max-width:640"></canvas>
                                                 <canvas id="captureImageCanvas" height="640" width="640" style="z-index:100; position:absolute"></canvas>
                                             </div>
                                             <div id="captureImageCanvasLoaderWrapper"  class="canvasLoaderWrapper" height="640" width="640" style="display:none">
@@ -264,6 +264,13 @@
                                             <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference
                                             </button>
+@*                                            <span>
+                                                <input type="checkbox" id="safetyDetectionImageCb" checked>
+                                                <label for="safetyDetectionImageCb" style="margin-right:0.5em; width:11em;justify-content:right">Upload Images </label>
+                                            </span>*@
+                                            <button type="button" class="btn btn-success" id="startSafetyDetectionWithImageBtn" disabled>
+                                                <i class="fas fa-play btn-fa"></i>Start Inference (No Image)
+                                            </button>
                                             <button type="button" class="btn btn-success" id="stopSafetyDetectionBtn" disabled>
                                                 <i class="fas fa-stop btn-fa"></i>Stop Inference
                                             </button>
@@ -274,10 +281,10 @@
                                 <div class="info-box">
                                     <div class="info-box-content">
                                         <div class="row">
-                                            <div class="col-md-3" style="min-width:330px; min-height:350px">
+                                            <div class="col-md-3" style="min-width:330px; max-width:330px;min-height:350px">
                                                 <div class="container loader-parent" style="border:1px dashed green;">
                                                     <div class="row justify-content-center align-items-center">
-                                                        <canvas id="safetyDetectionCanvasOverlay" height="320" width="320"></canvas>
+                                                        <canvas id="safetyDetectionCanvasOverlay" height="320" width="320" style="max-width:320"></canvas>
                                                         <canvas id="safetyDetectionCanvas" height="320" width="320" style="position:absolute"></canvas>
                                                     </div>
                                                     <div id="safetyDetectionCanvasLoaderWrapper" class="canvasLoaderWrapper" height="320" width="320" style="display:none">
@@ -287,9 +294,9 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-9" style="min-width:330px">
+                                            <div class="col-md" style="min-width:60vw">
                                                 <div class="chart">
-                                                    <canvas id="lineChart" style="min-height: 330px; height: 330px; max-height: 330px;"></canvas>
+                                                    <canvas id="lineChart" style="min-height: 330px; height: 330px; max-height: 330px;width:auto"></canvas>
                                                 </div>
                                             </div>
                                         </div>
@@ -305,8 +312,8 @@
     <script>
         let hubConnection;
         let start;
-        let currentDeviceId;
-        let currentModelId;
+        let currentDeviceId = undefined;
+        let currentModelId = undefined;
         let captureThresholdSlider = document.getElementById("captureThresholdSlider");
         let captureThresholdSliderLabel = document.getElementById("captureThresholdSliderLabel");
         let captureFrequencySlider = document.getElementById("captureFrequencySlider");
@@ -328,6 +335,9 @@
         let lineChart;
         let currentThreshold = 0.8;
         let isSafetyDetectionRunning = false;
+        let isPendingCapture = false;
+        let rect_zone = [-1, -1, -1, -1];
+        var capture_photo_url = undefined;
 
         let chartOptions = {
             showLines: true,
@@ -391,16 +401,10 @@
             };
 
         $(document).ready(function() {
+
             console.debug("Safety Detection : document.Ready");
             document.getElementById('nav-link-home').classList.remove('active');
             document.getElementById('nav-link-sd').classList.add('active');
-
-            captureThresholdSliderLabel.innerHTML = captureThresholdSlider.value;
-            captureFrequencySliderLabel.innerHTML = captureFrequencySlider.value;
-            captureImageCountSliderLabel.innerHTML = captureImageCountSlider.value;
-            safetyDetectionThresholdLabel.innerHTML = safetyDetectionThresholdSlider.value;
-            safetyDetectionFrequencyLabel.innerHTML = safetyDetectionFrequencySlider.value;
-            safetyDetectionImageCountLabel.innerHTML = safetyDetectionImageCountSlider.value;
 
             // Need more work.  Ok for now..
             initSafetyDetectionCanvas('safetyDetectionCanvasOverlay', 'safetyDetectionCanvas');
@@ -441,6 +445,68 @@
                 data: chartData,
                 options: chartOptions
             });
+
+            if (document.cookie.length > 0)
+            {
+                var settings = parseCookie(document.cookie);
+
+                if (settings.SafetyZoneDevId != undefined)
+                {
+                    currentDeviceId = settings.SafetyZoneDevId;
+                }
+
+                if (settings.SafetyZoneModelId != undefined)
+                {
+                    currentModelId = settings.SafetyZoneModelId;
+                }
+
+                if (settings.SafetyZoneRect != undefined)
+                {
+                    var json = JSON.parse(settings.SafetyZoneRect);
+
+                    for (var i = 0; i < json.length; i++)
+                    {
+                        rect_zone[i] = parseInt(json[i]);
+                    }
+                }
+
+                if (settings.SafetyZoneThreshold != undefined)
+                {
+                    captureThresholdSlider.value = settings.SafetyZoneThreshold;
+                    safetyDetectionThresholdSlider.value = settings.SafetyZoneThreshold;
+                    currentThreshold = parseInt(settings.SafetyZoneThreshold) / 100;
+                }
+
+                if (settings.capture_photo_url != undefined)
+                {
+                    capture_photo_url = settings.capture_photo_url;
+                }
+
+                if (currentDeviceId != undefined && currentModelId != undefined)
+                {
+                    // Set up UI with initial values
+                    SetDeviceLists(currentDeviceId, currentModelId);
+                }
+               
+                if (currentDeviceId != undefined && currentModelId != undefined && capture_photo_url != undefined && rect_zone[0] != -1 && rect_zone[1] != -1 && rect_zone[2] != -1 && rect_zone[3] != -1)
+                {
+                    
+                    //$('#accordionCaptureImage').collapse('toggle');
+                    SetCaptureCanvas(currentDeviceId, capture_photo_url, rect_zone);
+                }
+                console.debug(`Dev   : ${currentDeviceId}`);
+                console.debug(`Model : ${currentModelId}`);
+                console.debug(`Ratio : ${ratio_x}:${ratio_y}`);
+                console.debug(`Url   : ${capture_photo_url}`);
+                console.debug(`Rect  : ${rect_zone[0]}, ${rect_zone[1]}, ${rect_zone[2]}, ${rect_zone[3]}`);
+            }
+
+            captureThresholdSliderLabel.innerHTML = captureThresholdSlider.value;
+            captureFrequencySliderLabel.innerHTML = captureFrequencySlider.value;
+            captureImageCountSliderLabel.innerHTML = captureImageCountSlider.value;
+            safetyDetectionThresholdLabel.innerHTML = safetyDetectionThresholdSlider.value;
+            safetyDetectionFrequencyLabel.innerHTML = safetyDetectionFrequencySlider.value;
+            safetyDetectionImageCountLabel.innerHTML = safetyDetectionImageCountSlider.value;
         });
 
         //
@@ -455,7 +521,7 @@
 
                 toggleLoader(false);
 
-                await GetDevices("captureDeviceIdList", true, true, 'Select Device', '0', resultElementId)
+                await GetDevices("captureDeviceIdList", true, false, 'Select Device', '0', resultElementId)
                     .then((response) => { 
                         if (response == false) {
                             // handle error?
@@ -471,12 +537,18 @@
 
         $('#accordionSpecifyZone').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            toggleMouseEvent(false);
+            enableDisableMouseEvent(true);
+
+            $('#region_x').html(rect_zone[0].toString().padStart(3, ' '));
+            $('#region_y').html(rect_zone[1].toString().padStart(3, ' '));
+
+            $('#region_w').html(rect_zone[2].toString().padStart(3, ' '));
+            $('#region_h').html(rect_zone[3].toString().padStart(3, ' '));
         })
 
         $('#accordionSpecifyZone').on('hide.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            toggleMouseEvent(true);
+            enableDisableMouseEvent(true);
         })
 
         $('#accordionStartInference').on('show.bs.collapse', function (evt) {
@@ -514,6 +586,14 @@
 
         $('#accordionSaveParameter').on('show.bs.collapse', function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
+
+            if ((currentDeviceId == undefined) || (currentModelId == undefined))
+            {
+                $('#captureSaveParameterBtn').prop('disabled', true);
+                return;
+            }
+
+            $('#captureSaveParameterBtn').prop('disabled', false);
         })
 
         //
@@ -523,18 +603,9 @@
             console.debug(evt.target.id + "() " + evt.type);
         })
 
-        $('#tab-telemetry-label').on('show.bs.tab', function (evt) {
+        $('#tab-telemetry-label').on('show.bs.tab', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            GetDevices("safetyDetectionDeviceIdList", true, false, 'Select Device', '0', 'startSafetyDetectionBtnResult')
-                .then((response) => {
-
-                })
-                .catch((error) => {
-                })
-                .finally(() => {
-                    toggleLoader(true);
-                });
 
             safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
                 var count = parseInt(evt.target.value);
@@ -557,6 +628,7 @@
             safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionImageCountLabel(evt) {
                 safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
             })
+            toggleLoader(true);
         })
 
         //
@@ -569,18 +641,21 @@
             var deviceList = document.getElementById(targetListId);
             var resultElementId = 'captureImageBtnResult';
 
-            if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value)) {
+            if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value) || (document.getElementById(modelListId).length == 0)) {
                 currentDeviceId = deviceList[deviceList.selectedIndex].value;
                 toggleLoader(false);
                 await GetModelForDevice(modelListId, currentDeviceId, resultElementId)
                     .then(async function(isDisconnected) {
-
                         deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
 
                         if (isDisconnected == false)
                         {
                             // Make sure the device is not running inference.
-                            await StopInference();
+                            await StopInference(null, true);
+                        }
+                        if (currentModelId != undefined) {
+                            document.getElementById(modelListId).value = currentModelId;
+                            document.getElementById(modelListId).dispatchEvent(new Event("change"));
                         }
                     })
                     .catch((err) => {
@@ -600,10 +675,9 @@
             var modelList = document.getElementById(targetListId);
             var deviceList = document.getElementById(deviceListId);
 
-            currentModelId = modelList[modelList.selectedIndex].value;
-
             if (modelList.selectedIndex > 0)
             {
+                currentModelId = modelList[modelList.selectedIndex].value;
                 disableUiElements(false);
             }
             else
@@ -611,7 +685,6 @@
                 disableUiElements(true);
             }
 
-            debugger
             if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
 
                 var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
@@ -626,35 +699,32 @@
             var resultElementId = 'startSafetyDetectionBtnResult';
             var deviceList = document.getElementById(targetListId);
 
-            if ((currentDeviceId == undefined) || (currentDeviceId != deviceList[deviceList.selectedIndex].value)) {
+            currentDeviceId = deviceList[deviceList.selectedIndex].value;
 
-                currentDeviceId = deviceList[deviceList.selectedIndex].value;
+            toggleLoader(false);
+            await GetModelForDevice(modelListId, currentDeviceId, resultElementId)
+                .then(async function(isDisconnected) {
 
-                toggleLoader(false);
-                await GetModelForDevice(modelListId, currentDeviceId, resultElementId)
-                    .then(async function(isDisconnected) {
+                    var modelList = document.getElementById(modelListId);
 
-                        var modelList = document.getElementById(modelListId);
+                    deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
 
-                        deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
+                    if (modelList.selectedIndex > 0 && isDisconnected == false) {
+                        $('#startSafetyDetectionBtn').prop('disabled', false);
 
-                        if (modelList.selectedIndex > 0 && isDisconnected == false) {
-                            $('#startSafetyDetectionBtn').prop('disabled', false);
+                    } else {
+                        $('#startSafetyDetectionBtn').prop('disabled', true);
+                    }
 
-                        } else {
-                            $('#startSafetyDetectionBtn').prop('disabled', true);
-                        }
-
-                        // make sure the device is not running inference.
-                        if (isDisconnected == false)
-                        {
-                            await StopInference();
-                        }
-                    })
-                    .finally(() => {
-                        toggleLoader(true);
-                    });
-            }
+                    // make sure the device is not running inference.
+                    if (isDisconnected == false)
+                    {
+                        await StopInference(null, true);
+                    }
+                })
+                .finally(() => {
+                    toggleLoader(true);
+                });
         })
 
         $('#safetyDetectionModelIdList').on('change', async function (evt) {
@@ -703,7 +773,6 @@
             ClearCaptureCanvas();
             CaptureSingleImage(resultElementId)
                 .then((response) => {
-                    toggleCanvasLoader(false);                
                 })
                 .finally(() => {
                     toggleLoader(true);
@@ -724,7 +793,8 @@
 
         $('#captureStopInferenceBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            StopInference('captureStartInferenceBtnResult')
+
+            StopInference('captureStartInferenceBtnResult', true)
                 .then(() => { })
                 .finally(() => {
                     disableUiElements(false);
@@ -757,7 +827,10 @@
         $('#startSafetyDetectionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StartSafetyDetection('startSafetyDetectionBtnResult')
+
+            document.getElementById('stopSafetyDetectionBtn').setAttribute("data-withImage", false);
+
+            StartSafetyDetection('startSafetyDetectionBtnResult', true)
                 .then(() => { 
                     isSafetyDetectionRunning = true;
                 })
@@ -768,10 +841,32 @@
                 });
         })
 
+        $('#startSafetyDetectionWithImageBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+
+            document.getElementById('stopSafetyDetectionBtn').setAttribute("data-withImage", true);
+
+            StartSafetyDetection('startSafetyDetectionBtnResult', false)
+                .then(() => { 
+                    isSafetyDetectionRunning = true;
+                })
+                .finally(() => {
+                    disableUiElements(false);
+                    $('#startSafetyDetectionBtn').prop('disabled', true);
+                    toggleLoader(true);
+                });
+        })
+
+
         $('#stopSafetyDetectionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
-            StopInference('startSafetyDetectionBtnResult')
+
+            var withImage = (document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage") === 'true');
+
+                console.debug(`With Image ${document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage")}`)
+            StopInference('startSafetyDetectionBtnResult', withImage)
                 .then(() => { })
                 .finally(() => {
                     disableUiElements(false);
@@ -781,6 +876,16 @@
                 });
         })
 
+        $('#captureSaveParameterBtn').click(function (evt) {
+            console.debug(evt.target.id + "() " + evt.type);
+            toggleLoader(false);
+            SaveParameterToCookie()
+                .then(() => { })
+                .finally(() => {
+                    toggleLoader(true);
+                });
+        })
+        
         $('input[type=radio]').change(function(evt) {
             console.debug(evt.target.id + "() " + evt.type);
         });

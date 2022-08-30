@@ -89,7 +89,7 @@ function GetBaseModelStatusRefresh(target) {
 
 function GetBaseModelStatusInterval(target) {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     if (target == null) {
@@ -109,7 +109,7 @@ function GetDeployHistoryRefresh(target) {
 
 function GetDeployHistoryInterval() {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
     target = 'deploymentHistoryModalRefreshBtn';
 
@@ -167,7 +167,7 @@ function telemetryTableFilter2(targetListId) {
 
 function PostToken(token) {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     $.ajax({
@@ -183,12 +183,12 @@ function PostToken(token) {
 
 
 function UpdateHomeController(loginResponse) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 }
 
 function SetClientId(ClientId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     $.ajax({
@@ -204,7 +204,7 @@ function SetClientId(ClientId) {
 
 async function CreateBaseCustomVisionProject() {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var msg = null;
@@ -313,7 +313,7 @@ async function DeleteProject(project_name, resultElementId) {
 }
 
 async function SaveCustomVisionModel(resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
     var msg = null;
     var resultElement;
@@ -358,7 +358,7 @@ async function SaveCustomVisionModel(resultElementId) {
 }
 
 async function ConvertModel() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
     var msg = null;
     var json = null;
@@ -400,7 +400,7 @@ async function ConvertModel() {
 }
 
 async function PublishModel() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
     var msg = null;
     var resultElement = document.getElementById('publishModelBtnResult');
@@ -442,7 +442,7 @@ async function PublishModel() {
 
 async function GetBaseModelStatus(model_id, latest_type) {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var json = null;
@@ -500,7 +500,7 @@ async function GetBaseModelStatus(model_id, latest_type) {
 }
 
 async function GetFirmwares(firmware_type, ppl, listElementId, resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var ret = true;
@@ -558,7 +558,7 @@ async function GetFirmwares(firmware_type, ppl, listElementId, resultElementId) 
 }
 
 async function CreateDeployConfiguration() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = document.getElementById('createDeployConfigurationResult');
@@ -625,7 +625,7 @@ async function CreateDeployConfiguration() {
 }
 
 function CheckCreateDeployConfigurationInputs() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var enable = true;
     var configId = document.getElementById('createDeployConfigurationConfigId').value;
@@ -659,7 +659,7 @@ function CheckCreateDeployConfigurationInputs() {
 }
 
 async function GetDeployConfigurations(listElementId, resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = null;
@@ -714,7 +714,7 @@ async function GetDeployConfigurations(listElementId, resultElementId) {
 }
 
 function CheckDeployByConfigurationInputs() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var enable = true;
     var configId = document.getElementById('deployByConfiguraionFormConfigIdList');
@@ -736,7 +736,7 @@ function CheckDeployByConfigurationInputs() {
 }
 
 async function DeployByConfiguration() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = document.getElementById('deployByConfiguratonBtnResult');
@@ -776,7 +776,7 @@ async function DeployByConfiguration() {
 }
 
 async function GetDeployHistory() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultMsg;
@@ -813,7 +813,7 @@ async function GetDeployHistory() {
 }
 
 async function StartUploadInferenceResult() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
@@ -864,7 +864,7 @@ async function StartUploadInferenceResult() {
 }
 
 async function StopUploadInferenceResult() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = document.getElementById('btnStartUploadInferenceResultResult');
@@ -900,7 +900,7 @@ async function StopUploadInferenceResult() {
 }
 
 async function StartUploadRetrainingData() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
@@ -957,7 +957,7 @@ async function StartUploadRetrainingData() {
 }
 
 async function StopUploadRetrainingData() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var msg = null;
     var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
@@ -991,7 +991,7 @@ async function StopUploadRetrainingData() {
 }
 
 async function GetDevices(listElementId, silent, isOption, placeHolderText, placeHolderValue, resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var ret = true;
     var resultElement = null;
@@ -1060,7 +1060,7 @@ async function GetDevices(listElementId, silent, isOption, placeHolderText, plac
 }
 
 //async function GetSingleDevice(device_id, listElementId, resultElementId) {
-//    var funcName = arguments.callee.name + "()";
+//    var funcName = `${arguments.callee.name}()`;
 //    console.debug("=>", funcName)
 //    var ret = true; // assume disconnected
 //    var msg = null;
@@ -1120,7 +1120,7 @@ async function GetDevices(listElementId, silent, isOption, placeHolderText, plac
 //}
 
 async function RefreshDevicesListTable() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
 
     try {
@@ -1147,7 +1147,7 @@ async function RefreshDevicesListTable() {
 }
 
 async function RefreshModelsListTable() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
 
     try {
@@ -1182,7 +1182,7 @@ async function RefreshModelsListTable() {
 }
 
 async function RefreshDeployConfiguraions() {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
 
     try {
@@ -1209,7 +1209,7 @@ async function RefreshDeployConfiguraions() {
 }
 
 async function GetDevicesForImageGallery(listElementId, silent) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var ret = true;
 
@@ -1254,8 +1254,9 @@ async function GetAllModels(listElement, isOption, resultElementId) {
 }
 
 async function GetModelForDevice(listElementId, device_id, resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
+
     var resultElement = null;
     var ret = true; // assume disconnected  true = disconnected.
 
@@ -1313,7 +1314,7 @@ async function GetModelForDevice(listElementId, device_id, resultElementId) {
 }
 
 async function GetModels(model_id, comment, project_name, model_platform, project_type, device_id, latest_type, listElement, isOption, resultElementId) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var ret = true;
     var resultElement = null;
@@ -1372,7 +1373,7 @@ async function GetModels(model_id, comment, project_name, model_platform, projec
 }
 
 async function DeleteModel(model_id) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var ret = true;
 
@@ -1397,7 +1398,7 @@ async function DeleteModel(model_id) {
 }
 
 async function DeleteDeployConfiguration(config_id) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var ret = true;
 
@@ -1461,10 +1462,10 @@ function addDeployConfiguration(config_id, config_comment, payload) {
 }
 
 function viewPhoto(item) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     var eventId = item.attributes.getNamedItem('eventId').nodeValue;
     console.debug("=>", funcName, "EventID", eventId);
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     var preElementId = "pre-" + eventId;
     var preElement = document.getElementById(preElementId);
     var dataObj = JSON.parse(preElement.textContent);
@@ -1517,11 +1518,11 @@ function viewPhoto(item) {
 }
 
 function viewPhotoWithCosmosDb(item) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     var eventId = item.attributes.getNamedItem('eventId').nodeValue;
     var deviceId = item.attributes.getNamedItem('deviceId').nodeValue;
     console.log(funcName + eventId);
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     var preElementId = "pre-" + eventId;
     var preElement = document.getElementById(preElementId);
     var dataObj = JSON.parse(preElement.textContent);

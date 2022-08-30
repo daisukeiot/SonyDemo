@@ -81,7 +81,7 @@
 });
 
 function viewPhotoWithCosmosDbTable(item) {
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     if (item.Image == false) {

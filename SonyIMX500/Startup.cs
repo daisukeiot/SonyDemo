@@ -40,11 +40,10 @@ namespace SonyIMX500
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            //app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseCookiePolicy();
             app.UseAuthorization();
 
             app.UseAzureSignalR(routes =>

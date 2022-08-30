@@ -12,7 +12,7 @@ let authConfig = null;
 
 function sonyApiInitializeMsal() {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var url = window.location.href;
@@ -60,7 +60,7 @@ function sonyApiInitializeMsal() {
 
 async function sonyApiGetToken() {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     var url = window.location.href;
@@ -114,7 +114,7 @@ async function sonyApiGetToken() {
 
 async function getToken() {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     if (interval) {
@@ -134,7 +134,7 @@ async function getToken() {
 
 function updateLoginTab(tokenResp) {
 
-    var funcName = arguments.callee.name + "()";
+    var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
     if (tokenResp == null) {

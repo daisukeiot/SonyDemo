@@ -2205,7 +2205,6 @@
                         }
                     })
                     .catch(err => {
-                        debugger;
                         console.error(`Error : ${err.statusText}`);
                     });
 
@@ -2229,7 +2228,6 @@
                 var targetListName = 'createDeployConfigurationModelId';
                 ret = await GetFirmwares('02', null, "createDeployConfigurationSensorLoaderVersionNumber", resultElementId)
                                 .catch(err => {
-                                    debugger;
                                     console.error(`Error : ${err.statusText}`);
                                 });
 
