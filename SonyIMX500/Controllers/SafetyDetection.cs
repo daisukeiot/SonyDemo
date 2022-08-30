@@ -34,8 +34,8 @@ namespace SonyIMX500.Controllers
                 var cOptions = new CookieOptions()
                 {
                     Path = "/SafetyDetection",
-                    //Expires = new DateTimeOffset(DateTime.Now.AddDays(3))
-                    Expires = new DateTimeOffset(DateTime.Now.AddHours(3))
+                    Expires = new DateTimeOffset(DateTime.Now.AddDays(7))
+                    //Expires = new DateTimeOffset(DateTime.Now.AddHours(3))
                 };
 
                 HttpContext.Response.Cookies.Append("SafetyZoneDevId", device_id, cOptions);
