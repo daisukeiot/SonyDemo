@@ -1126,7 +1126,6 @@ async function SetDeviceLists(deviceId, modelId) {
                         setResultElement(resultElement, "Failed to retrieve model list");
                     })
                     .finally(() => {
-                        toggleLoader(true);
                     });
             })
             .catch((err) => {
