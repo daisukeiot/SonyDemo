@@ -865,7 +865,7 @@
 
             var withImage = (document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage") === 'true');
 
-                console.debug(`With Image ${document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage")}`)
+            console.debug(`With Image ${document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage")}`)
             StopInference('startSafetyDetectionBtnResult', withImage)
                 .then(() => { })
                 .finally(() => {

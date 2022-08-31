@@ -400,49 +400,11 @@ async function CaptureSingleImage(resultElementId) {
         });
 
     } catch (err) {
-        var millis = Date.now() - start;
-        console.debug(`StartUploadRetrainingData() Err took = ${Math.floor(millis / 1000)}`);
+        console.error(`${funcName}: ${err.statusText}`)
     } finally {
-        var stopStart = Date.now();
-        await $.ajax({
-            async: true,
-            type: "POST",
-            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
-            data: {
-                device_id: device_id
-            },
-        }).done(function (response) {
-            var millis = Date.now() - stopStart;
-            console.debug(`StopUploadRetrainingData() took = ${Math.floor(millis / 1000)}`);
-        });
+        await StopInference(resultElementId, true);
     }
     return pendingImagePath;
-}
-
-async function StopUploadRetrainingData() {
-    var funcName = `${arguments.callee.name}()`;
-    console.debug("=>", funcName)
-    var resultElement = document.getElementById('startUploadRetrainingDataBtnResult');
-
-    try {
-        toggleLoader(false);
-        var device_id = document.getElementById("startUploadRetrainingDataDeviceIdList").value;
-
-        await $.ajax({
-            async: true,
-            type: "POST",
-            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
-            data: {
-                device_id: device_id
-            },
-        }).done(function (response) {
-        });
-    } catch (err) {
-        setResultElement(resultElement, err);
-    } finally {
-        toggleLoader(true);
-    }
-    return ret;
 }
 
 // process SignalR message for Telemetry
@@ -478,7 +440,7 @@ async function processTelemetryMessage(signalRMsg) {
             CheckImage(currentDeviceId, imagePath);
         }
     } catch (err) {
-        console.error(`${funcName} error : ${err.statusText}`)
+        console.error(`${funcName} : ${err.statusText}`)
     } finally {
         //printTime("processTelemetryMessage exit");
     }
@@ -561,6 +523,7 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
                 setResultElement(resultElement, 'Image loaded');
                 capture_photo_url = imageUrl;
                 captureInProgress = false;
+                pendingImagePath = '';
             }
         }
         else {
@@ -572,6 +535,7 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
         }
 
     } catch (err) {
+        console.error(`${funcName}: ${err.statusText}`)
     } finally {
         // printTime("processCosmosDbMessage <==");
     }
@@ -634,6 +598,7 @@ async function processBlobMessage(signalRMsg) {
             }
         });
     } catch (err) {
+        console.error(`${funcName}: ${err.statusText}`)
     } finally {
     }
 }
@@ -718,7 +683,6 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             var img = new Image();
             img.src = json.uri;
             img.onload = function () {
-                console.debug("==>Onload");
                 ctxImage.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
                 ctxImage.globalCompositeOperation = 'source-over';
                     //'destination-over';
@@ -760,9 +724,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
                         
                         var iou = calcIoU(data.X, data.Y, data.x, data.y);
 
-                        if (iou > 0) {
-                            confidence = `${confidence} ${iou}`;
-                        }
+                        confidence = `${confidence} ${iou}%`;
                         ctxImage.lineWidth = 1;
                         ctxImage.strokeText(confidence, X + 2, y);
 
@@ -776,7 +738,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             toggleCanvasLoader(true);
         });
     } catch (err) {
-        console.error(`${funcName}error : ${err.statusText}`)
+        console.error(`${funcName} : ${err.statusText}`)
     } finally {
     }
 
@@ -959,10 +921,9 @@ async function StartSafetyDetection(resultElementId, withImage) {
     return;
 }
 
-
 async function StopInference(resultElementId, withImage) {
     var funcName = `${arguments.callee.name}()`;
-    console.debug(`=> funcName : Image ${withImage}`)
+    console.debug(`=> ${funcName} : Image ${withImage}`)
     var resultElement = undefined;
     var bStopped = false;
 
@@ -970,8 +931,11 @@ async function StopInference(resultElementId, withImage) {
         resultElement = document.getElementById(resultElementId);
     }
 
-    runninigSafetyZone = false;
-    pendingImagePath = '';
+    if (captureInProgress == false) {
+        // During capture, we call to stop, but image process takes place after the call.
+        runninigSafetyZone = false;
+        pendingImagePath = '';
+    }
 
     try {
         if (resultElement != undefined) {
@@ -996,7 +960,7 @@ async function StopInference(resultElementId, withImage) {
             statusCode: {
                 200: function (data) {
                     if (resultElementId != undefined) {
-                        setResultElement(resultElement, "Stopped");
+                        setResultElement(resultElement, `Stopped`);
                         bStopped = true;
                     }
                 },
@@ -1004,6 +968,10 @@ async function StopInference(resultElementId, withImage) {
                 }
             }
         }).then(function (response, textStatus, jqXHR) {
+            if (resultElementId != undefined) {
+                setResultElement(resultElement, `Stopped (Status = ${jqXHR.status})`);
+                bStopped = true;
+            }
         });
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
@@ -1091,7 +1059,8 @@ function calcIoU(x0, y0, x1, y1) {
 
     if (iou > 0) {
         // calculate percentage the region is included in the zone
-        coverage = ((areaIntersect * 1.0) / areaInference).toFixed(1);
+        coverage = ((areaIntersect * 1.0) / areaInference);
+        coverage = (coverage * 100.0).toFixed(2);
     }
 
     console.debug(`-- IoU ${iou} coverage ${coverage}`);
