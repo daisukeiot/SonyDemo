@@ -516,13 +516,15 @@
         $('#accordionCaptureImage').on('show.bs.collapse', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var resultElementId = 'captureImageBtnResult';
+            var deviceListId = 'captureDeviceIdList';
             
-            if (currentDeviceId == undefined) {
-                // only first time
-
+            if (document.getElementById(deviceListId).length == 0)
+            {
+                // List empty.  Gather device list.
+                
                 toggleLoader(false);
 
-                await GetDevices("captureDeviceIdList", true, false, 'Select Device', '0', resultElementId)
+                await GetDevices(deviceListId, true, false, 'Select Device', '0', resultElementId)
                     .then((response) => { 
                         if (response == false) {
                             // handle error?
@@ -606,7 +608,25 @@
 
         $('#tab-telemetry-label').on('show.bs.tab', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            toggleLoader(false);
+            var resultElementId = 'startSafetyDetectionBtnResult';
+            var deviceListId = 'safetyDetectionDeviceIdList';
+
+            if (document.getElementById(deviceListId).length == 0)
+            {
+                toggleLoader(false);
+                // List empty.  Gather device list.
+                await GetDevices(deviceListId, true, false, 'Select Device', '0', resultElementId)
+                    .then((response) => {
+                        if (response == false) {
+                            // handle error?
+                        }
+                    })
+                    .catch((err) => {
+                    })
+                    .finally(() => {
+                        toggleLoader(true);
+                    })
+            }
 
             safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
                 var count = parseInt(evt.target.value);
@@ -629,7 +649,6 @@
             safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionImageCountLabel(evt) {
                 safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
             })
-            toggleLoader(true);
         })
 
         //

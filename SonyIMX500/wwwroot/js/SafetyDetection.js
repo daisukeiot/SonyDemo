@@ -619,6 +619,8 @@ async function processBlobMessage(signalRMsg) {
 }
 
 async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
+    var funcName = `${arguments.callee.name}()`;
+    console.debug(`=> ${funcName}`);
 
     try {
 
