@@ -622,6 +622,11 @@ select {
     cursor: pointer;
 }
 
+.slider:disabled {
+    opacity: 0.3;
+    background: #ebe9e9
+}
+
 .jsgridDiv {
     min-height: calc(40vh);
     max-height: 100%;
