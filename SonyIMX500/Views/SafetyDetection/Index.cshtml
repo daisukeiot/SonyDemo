@@ -41,7 +41,7 @@
                                     <div class="col-md-3" style="min-width:640px">
                                         <div class="container loader-parent">
                                             <div class="row justify-content-center align-items-center" style="position:relative">
-                                                <canvas id="captureImageCanvasOverlay" height="640" width="640" style="z-index:200;max-width:640"></canvas>
+                                                <canvas id="captureImageCanvasOverlay" height="640" width="640" style="z-index:200;max-width:640px"></canvas>
                                                 <canvas id="captureImageCanvas" height="640" width="640" style="z-index:100; position:absolute"></canvas>
                                             </div>
                                             <div id="captureImageCanvasLoaderWrapper"  class="canvasLoaderWrapper" height="640" width="640" style="display:none">
@@ -261,14 +261,14 @@
                                             <span id="safetyDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                         </div>
                                         <div class="btnStatusDiv">
-                                            <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="startSafetyDetectionWithImageBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference
                                             </button>
 @*                                            <span>
                                                 <input type="checkbox" id="safetyDetectionImageCb" checked>
                                                 <label for="safetyDetectionImageCb" style="margin-right:0.5em; width:11em;justify-content:right">Upload Images </label>
                                             </span>*@
-                                            <button type="button" class="btn btn-success" id="startSafetyDetectionWithImageBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference (No Image)
                                             </button>
                                             <button type="button" class="btn btn-success" id="stopSafetyDetectionBtn" disabled>
@@ -284,8 +284,9 @@
                                             <div class="col-md-3" style="min-width:330px; max-width:330px;min-height:350px">
                                                 <div class="container loader-parent" style="border:1px dashed green;">
                                                     <div class="row justify-content-center align-items-center">
-                                                        <canvas id="safetyDetectionCanvasOverlay" height="320" width="320" style="max-width:320"></canvas>
-                                                        <canvas id="safetyDetectionCanvas" height="320" width="320" style="position:absolute"></canvas>
+                                                        <canvas id="safetyDetectionCanvasZoneOverlay" height="320" width="320" style="max-width:320px;z-index:300"></canvas>
+                                                        <canvas id="safetyDetectionCanvasOverlay" height="320" width="320" style="position:absolute;max-width:320px;z-index:200"></canvas>
+                                                        <canvas id="safetyDetectionCanvas" height="320" width="320" style="position:absolute;z-index:100"></canvas>
                                                     </div>
                                                     <div id="safetyDetectionCanvasLoaderWrapper" class="canvasLoaderWrapper" height="320" width="320" style="display:none">
                                                         <div id="canvasLoader">
@@ -824,36 +825,42 @@
                 })
         })
 
-        $('#startSafetyDetectionBtn').click(function (evt) {
+        $('#startSafetyDetectionBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
 
-            document.getElementById('stopSafetyDetectionBtn').setAttribute("data-withImage", false);
+            document.getElementById(evt.target.id).setAttribute("data-withImage", false);
 
-            StartSafetyDetection('startSafetyDetectionBtnResult', true)
-                .then(() => { 
-                    isSafetyDetectionRunning = true;
+            await StartSafetyDetection('startSafetyDetectionBtnResult', false)
+                .then((bStarted) => { 
+                    if (bStarted)
+                    {
+                        isSafetyDetectionRunning = true;
+                        disableUiElements(true);
+                        $('#stopSafetyDetectionBtn').prop('disabled', false);
+                    }
                 })
                 .finally(() => {
-                    disableUiElements(false);
-                    $('#startSafetyDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
                 });
         })
 
-        $('#startSafetyDetectionWithImageBtn').click(function (evt) {
+        $('#startSafetyDetectionWithImageBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
 
-            document.getElementById('stopSafetyDetectionBtn').setAttribute("data-withImage", true);
+            document.getElementById(evt.target.id).setAttribute("data-withImage", true);
 
-            StartSafetyDetection('startSafetyDetectionBtnResult', false)
-                .then(() => { 
-                    isSafetyDetectionRunning = true;
+            await StartSafetyDetection('startSafetyDetectionBtnResult', true)
+                .then((bStarted) => { 
+                    if (bStarted)
+                    {
+                        isSafetyDetectionRunning = true;
+                            disableUiElements(true);
+                            $('#stopSafetyDetectionBtn').prop('disabled', false);
+                        }
                 })
                 .finally(() => {
-                    disableUiElements(false);
-                    $('#startSafetyDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
                 });
         })

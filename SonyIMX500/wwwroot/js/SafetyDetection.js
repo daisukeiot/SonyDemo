@@ -107,6 +107,21 @@ function initSafetyDetectionCanvas(canvasIdOverlay, canvasIdImage) {
 //    captureOverlayCanvasCtx.lineWidth = 3;
 }
 
+function ClearSafetyZoneCanvas() {
+    var canvas = document.getElementById('safetyDetectionCanvas');
+    var canvasCtx = canvas.getContext("2d");
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas = document.getElementById('safetyDetectionCanvasOverlay');
+    canvasCtx = canvas.getContext("2d");
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas = document.getElementById('safetyDetectionCanvasZoneOverlay');
+    canvasCtx = canvas.getContext("2d");
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+
 function ClearCaptureCanvas()
 {
     captureCanvasCtx.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
@@ -825,6 +840,8 @@ async function StartSafetyDetection(resultElementId, withImage) {
     var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var resultElement = document.getElementById(resultElementId);
+    var bStarted = false;
+
     try {
         runninigSafetyZone = true;
 
@@ -839,11 +856,13 @@ async function StartSafetyDetection(resultElementId, withImage) {
         var CropHSize = null;
         var CropVSize = null;
 
+        ClearSafetyZoneCanvas();
+
         if (withImage == true) {
             var Mode;
             var FileFormat = null;
             var NumberOfImages = 0; // continuous
-            var FrequencyOfImages = frequency.toString();
+            var FrequencyOfImages = Math.max(frequency, Math.round(10000 / 33.3)).toString();
             var MaxDetectionsPerFrame = null;
             if (notificationType == 'blob') {
                 Mode = 0;
@@ -871,17 +890,31 @@ async function StartSafetyDetection(resultElementId, withImage) {
                     model_id: model_id
                 },
             }).done(function (response) {
+
                 var result = JSON.parse(response.value);
 
                 if (result.result == "SUCCESS") {
                     pendingImagePath = result.outputSubDirectory;
                     setResultElement(resultElement, `Processing images @ ${pendingImagePath}`);
+                    // draw bounding box for safety zone
+                    overlayCanvas = document.getElementById('safetyDetectionCanvasZoneOverlay');
+                    overlayCanvasCtx = overlayCanvas.getContext("2d");
+                    overlayCanvasCtx.strokeStyle = "red";
+                    overlayCanvasCtx.lineWidth = 3;
+                    overlayCanvasCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+                    //overlayCanvasCtx.strokeRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
+                    overlayCanvasCtx.globalAlpha = 0.3;
+                    overlayCanvasCtx.fillStyle = "red";
+                    overlayCanvasCtx.fillRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
+                    bStarted = true;
                 }
                 else {
                     setResultElement(resultElement, `Failed to start : ${result.result}`);
                 }
+            }).fail(function (response, status, err) {
+                setResultElement(resultElement, `Failed to start : ${response.responseJSON.value}`);
+                console.error(`${funcName}: ${response.responseJSON.value}`)
             });
-
         }
         else {
 
@@ -901,24 +934,19 @@ async function StartSafetyDetection(resultElementId, withImage) {
                     model_id: model_id
                 },
             }).done(function (response) {
-                msg = response.value;
+                setResultElement(resultElement, `Processing Telemetry`);
+                bStarted = true;
+            }).fail(function (response, status, err) {
+                setResultElement(resultElement, `Failed to start : ${response.responseJSON.value}`);
+                console.error(`${funcName}: ${response.responseJSON.value}`)
             });
         }
 
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
-        await $.ajax({
-            async: true,
-            type: "POST",
-            url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
-            data: {
-                device_id: currentDeviceId
-            },
-        }).done(function (response) {
-        });
     } finally {
     }
-    return;
+    return bStarted;
 }
 
 async function StopInference(resultElementId, withImage) {
@@ -970,7 +998,6 @@ async function StopInference(resultElementId, withImage) {
         }).then(function (response, textStatus, jqXHR) {
             if (resultElementId != undefined) {
                 setResultElement(resultElement, `Stopped (Status = ${jqXHR.status})`);
-                bStopped = true;
             }
         });
     } catch (err) {
