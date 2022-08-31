@@ -758,6 +758,7 @@
             if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
 
                 var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
+                $('#startSafetyDetectionWithImageBtn').prop('disabled', isDisconnected);
                 $('#startSafetyDetectionBtn').prop('disabled', isDisconnected);
             }
         })
