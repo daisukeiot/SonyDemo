@@ -47,6 +47,8 @@ function disableUiElements(bDisable) {
     $('#captureImageBtn').prop('disabled', bDisable);
     $('#captureStartInferenceBtn').prop('disabled', bDisable);
     $('#captureStopInferenceBtn').prop('disabled', bDisable);
+    $('#captureFrequencySlider').prop('disabled', bDisable);
+    $('#captureImageCountSlider').prop('disabled', bDisable);
     $('#safetyDetectionFrequencySlider').prop('disabled', bDisable);
     $('#safetyDetectionImageCountSlider').prop('disabled', bDisable);
     $('#startSafetyDetectionBtn').prop('disabled', bDisable);

@@ -818,7 +818,7 @@
 
         $('#captureStopInferenceBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-
+            toggleLoader(false);
             StopInference('captureStartInferenceBtnResult', true)
                 .then(() => { })
                 .finally(() => {
