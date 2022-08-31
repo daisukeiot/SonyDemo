@@ -572,6 +572,8 @@
 
             captureThresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
                 captureThresholdSliderLabel.innerHTML = evt.target.value;
+                safetyDetectionThresholdSlider.value = evt.target.value;
+                safetyDetectionThresholdLabel.innerHTML = evt.target.value;
                 currentThreshold = parseInt(evt.target.value) / 100;
             })
 
@@ -642,6 +644,8 @@
             })
 
             safetyDetectionThresholdSlider.addEventListener("input", function safetyDetectionFrequencyLabel(evt) {
+                captureThresholdSlider.value = evt.target.value;
+                    captureThresholdSliderLabel.innerHTML = evt.target.value;
                 safetyDetectionThresholdLabel.innerHTML = evt.target.value;
                 currentThreshold = parseInt(evt.target.value) / 100;
             })
