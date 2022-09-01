@@ -16,6 +16,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Sas;
 using Azure.Storage.Blobs.Specialized;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SonyIMX500.Controllers
 {
@@ -41,11 +42,18 @@ namespace SonyIMX500.Controllers
             
         }
 
+        [Authorize]
+        public IActionResult LoginAAD()
+        {
+            return View();
+        }
+
         //public IActionResult Spa()
         //{
         //    return File("~/index.html", "text/html");
         //}
 
+        [Authorize]
         public IActionResult Index()
         {
             if (string.IsNullOrEmpty(_clientId))

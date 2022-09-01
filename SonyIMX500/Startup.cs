@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.UI;
 using SonyIMX500.Hubs;
 using SonyIMX500.Models;
 using System;
@@ -24,7 +26,9 @@ namespace SonyIMX500
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
+            services.AddControllersWithViews()
+                .AddMicrosoftIdentityUI();
             services.Configure<AppSettings>(Configuration.GetSection("Azure"));
             services.AddSignalR(options => options.EnableDetailedErrors = true).AddAzureSignalR(Configuration.GetSection("Azure").GetSection("SignalR").GetValue<string>("ConnectionString"));
         }
@@ -44,6 +48,7 @@ namespace SonyIMX500
 
             app.UseRouting();
             app.UseCookiePolicy();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseAzureSignalR(routes =>
