@@ -69,7 +69,7 @@
 		  },
 		  {
 			"name": "aadConfig",
-			"label": "Azure Active Directorysettings",
+			"label": "Azure Active Directory settings",
 			"elements": [
 			  {
 				"name": "aadConfigInfo",
