@@ -68,6 +68,47 @@
 			]
 		  },
 		  {
+			"name": "aadConfig",
+			"label": "Azure Active Directorysettings",
+			"elements": [
+			  {
+				"name": "aadConfigInfo",
+				"type": "Microsoft.Common.InfoBox",
+				"visible": true,
+				"options": {
+				  "icon": "Info",
+				  "text": "Provide Client ID and Tentant ID for user authentication."
+				}
+			  },
+			  {
+				"name": "aadTenantId",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Tenant ID",
+				"defaultValue": "e0a0669e-9ee4-4488-bab6-f91bc9b131e2",
+				"toolTip": "",
+				"placeholder": "Specify Tenant ID",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide AAD Tenant ID."
+				  ]
+				},
+				"visible": true
+			  },
+			  {
+				"name": "aadClientId",
+				"type": "Microsoft.Common.TextBox",
+				"label": "Client ID",
+				"defaultValue": "",
+				"toolTip": "",
+				"placeholder": "Specify Client ID",
+				"constraints": {
+				  "required": true,
+				  "validationMessage": "Provide AAD Client ID."
+				},
+				"visible": true
+			  }
+			},
+		  {
 			"name": "webAppConfig",
 			"label": "Web Portal settings",
 			"elements": [
@@ -295,7 +336,9 @@
 		  "Custom_Vision_AccessKey": "[steps('aitriosConfig').customVisionAccessKey]",
 		  "AITRIOS_URL": "[steps('aitriosConfig').aitriosUrl]",
 		  "AITRIOS_CLIENT_ID": "[steps('aitriosConfig').aitriosClientId]",
-		  "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]"
+		  "APP_GW_VALIDATION_KEY": "[steps('aitriosConfig').appGwValidation]",
+		  "AAD_TENANT_ID" : "[steps('aadConfig').aadTenantId]",
+		  "AAD_CLIENT_ID" : "[steps('aadConfig').aadClientId]"
 		},
 		"kind": "ResourceGroup",
 		"location": "[steps('basics').resourceScope.location.name]",

@@ -56,6 +56,12 @@
 		},
 		"AITRIOS_CLIENT_ID": {
 			"type": "string"
+		},
+		"AAD_TENANT_ID": {
+			"type": "string"
+		},
+		"AAD_CLIENT_ID": {
+			"type": "string"
 		}
 	},
 	"variables": {
@@ -298,6 +304,11 @@
 				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Webapp')]"
 			],
 			"properties": {
+				"AzureAD__Instance" : "https://login.microsoftonline.com/",
+				"AzureAD__TenantId" :  "[parameters('AAD_TENANT_ID')]",
+				"AzureAD__ClientId" :  "[parameters('AAD_CLIENT_ID')]",
+				"AzureAD__CallbackPath" :  "/signin-oidc",
+				"AzureAD__SignedOutCallbackPath" :  "/signout-callback-oidc",
 				"Azure__Blob__ConnectionString": "[parameters('Blob_Storage_Connection_String')]",
 				"Azure__CosmosDb__ConnectionString": "[parameters('Cosmos_Db_Connection_String')]",
 				"Azure__CustomVision__EndPoint": "[parameters('Custom_Vision_Endpoint')]",
