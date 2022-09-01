@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -22,6 +23,7 @@ namespace SonyIMX500.Controllers
         private static readonly string _dbname = "SmartCameras";
         private static readonly string _containerName = "InferenceResult";
 
+        [Authorize]
         public IActionResult Index()
         {
             return View();

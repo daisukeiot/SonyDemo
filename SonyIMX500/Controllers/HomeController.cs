@@ -42,12 +42,6 @@ namespace SonyIMX500.Controllers
             
         }
 
-        [Authorize]
-        public IActionResult LoginAAD()
-        {
-            return View();
-        }
-
         //public IActionResult Spa()
         //{
         //    return File("~/index.html", "text/html");

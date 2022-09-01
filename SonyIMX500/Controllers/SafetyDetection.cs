@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,6 +17,7 @@ namespace SonyIMX500.Controllers
         {
             _logger = logger;
         }
+        [Authorize]
         public IActionResult Index()
         {
             if (HttpContext.Request.Cookies.ContainsKey("SafetyZoneDevId"))
