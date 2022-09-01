@@ -106,7 +106,8 @@
 				},
 				"visible": true
 			  }
-			},
+			]
+		  },
 		  {
 			"name": "webAppConfig",
 			"label": "Web Portal settings",
