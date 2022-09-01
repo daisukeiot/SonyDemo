@@ -320,7 +320,12 @@
 				"Azure__SonyAPI__AppGwValidation": "[parameters('APP_GW_VALIDATION_KEY')]",
 				"Azure__SonyAPI__BaseUrl": "[parameters('AITRIOS_URL')]",
 				"Azure__SonyAPI__ClientId": "[parameters('AITRIOS_CLIENT_ID')]",
-				"Azure__SignalR__ConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]"
+				"Azure__SignalR__ConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]",
+				"AzureAd__Instance" : "https://login.microsoftonline.com/",
+				"AzureAd__TenantId": "[parameters('AAD_TENANT_ID')]",
+    			"AzureAd__ClientId": "[parameters('AAD_CLIENT_ID')]",
+    			"AzureAd__CallbackPath": "/signin-oidc",
+    			"AzureAd__SignedOutCallbackPath": "/signout-callback-oidc"
 			}
 		}
 	]
