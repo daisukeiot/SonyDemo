@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SonyIMX500.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -47,7 +48,7 @@ namespace SonyIMX500.Controllers
         //    return File("~/index.html", "text/html");
         //}
 
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             if (string.IsNullOrEmpty(_clientId))

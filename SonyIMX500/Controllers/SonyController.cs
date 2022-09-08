@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -15,6 +16,7 @@ using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
 {
+    [Authorize]
     public class SonyController : Controller
     {
         private readonly ILogger<SonyController> _logger;

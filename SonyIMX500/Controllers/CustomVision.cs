@@ -19,13 +19,13 @@ using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
 {
+    [Authorize]
     public class CustomVision : Controller
     {
         private readonly ILogger<CustomVision> _logger;
         private readonly AppSettings _appSettings;
         private static CustomVisionTrainingClient _customVisionTrainingClient = null;
 
-        [Authorize]
         public IActionResult Index()
         {
             TraininImages model = new TraininImages();

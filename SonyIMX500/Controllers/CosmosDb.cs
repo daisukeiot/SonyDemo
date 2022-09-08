@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
 {
+    [Authorize]
     public class CosmosDb : Controller
     {
         private readonly ILogger<CosmosDb> _logger;
@@ -23,7 +24,6 @@ namespace SonyIMX500.Controllers
         private static readonly string _dbname = "SmartCameras";
         private static readonly string _containerName = "InferenceResult";
 
-        [Authorize]
         public IActionResult Index()
         {
             return View();

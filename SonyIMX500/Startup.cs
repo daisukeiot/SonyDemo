@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -16,6 +17,7 @@ namespace SonyIMX500
 {
     public class Startup
     {
+        private bool _useAAD = false;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,11 +28,24 @@ namespace SonyIMX500
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
+            var config = Configuration.GetSection("Azure").Get<AppSettings>();
+
+            if (config.UseAAD)
+            {
+                // enable AAD Authentication
+                _useAAD = true;
+                services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAd");
+            }
+
+            services.AddMvc();
             services.AddControllersWithViews()
                 .AddMicrosoftIdentityUI();
+
             services.Configure<AppSettings>(Configuration.GetSection("Azure"));
-            services.AddSignalR(options => options.EnableDetailedErrors = true).AddAzureSignalR(Configuration.GetSection("Azure").GetSection("SignalR").GetValue<string>("ConnectionString"));
+            services.AddSignalR(options => options.EnableDetailedErrors = true)
+                .AddAzureSignalR(Configuration.GetSection("Azure")
+                                    .GetSection("SignalR")
+                                    .GetValue<string>("ConnectionString"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,8 +59,8 @@ namespace SonyIMX500
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseStaticFiles();
 
+            app.UseStaticFiles();
             app.UseRouting();
             app.UseCookiePolicy();
             app.UseAuthentication();
@@ -58,6 +73,11 @@ namespace SonyIMX500
 
             app.UseEndpoints(endpoints =>
             {
+                if (_useAAD != true)
+                {
+                    endpoints.MapControllers().WithMetadata(new AllowAnonymousAttribute());
+                }
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

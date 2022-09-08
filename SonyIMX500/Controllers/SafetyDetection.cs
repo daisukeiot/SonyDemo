@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 namespace SonyIMX500.Controllers
 {
+
+    [Authorize]
     public class SafetyDetection : Controller
     {
         private readonly ILogger<SonyController> _logger;
@@ -17,7 +19,7 @@ namespace SonyIMX500.Controllers
         {
             _logger = logger;
         }
-        [Authorize]
+        //[Authorize]
         public IActionResult Index()
         {
             if (HttpContext.Request.Cookies.ContainsKey("SafetyZoneDevId"))

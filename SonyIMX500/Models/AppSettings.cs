@@ -25,6 +25,7 @@
 
     public class AppSettings
     {
+        public bool UseAAD { get; set; }
         public SonyApiSettings SonyApi {get;set;}
         public BlobSettings Blob { get; set; }
         public CustomVisionSettins CustomVision { get; set; }
