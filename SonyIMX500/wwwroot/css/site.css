@@ -737,15 +737,6 @@ select {
             box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
         }
 
-/*
-#captureImageCanvas {
-    z-index: 100;
-}
-
-#captureImageCanvasOverlay {
-    z-index: 200;
-}*/
-
 .form-group {
     margin-bottom:0;
 }

@@ -5,6 +5,9 @@ var captureOvelayCanvas;
 var captureOverlayCanvasCtx;
 var captureCanvas;
 var captureCanvasCtx;
+var captureCanvasZoneOverlay;
+var captureCanvasZoneOverlayCtx;
+
 var captureOverlayCanvasOffset_X;
 var captureOverlayCanvasOffset_Y;
 
@@ -33,13 +36,13 @@ function printTime(msg) {
 function enableDisableMouseEvent(bEnable) {
 
     if (bEnable) {
-        captureOvelayCanvas.addEventListener('mousedown', mouseDown, false);
-        captureOvelayCanvas.addEventListener('mouseup', mouseUp, false);
-        captureOvelayCanvas.addEventListener('mousemove', mouseMove, false);
+        captureCanvasZoneOverlay.addEventListener('mousedown', mouseDown, false);
+        captureCanvasZoneOverlay.addEventListener('mouseup', mouseUp, false);
+        captureCanvasZoneOverlay.addEventListener('mousemove', mouseMove, false);
     } else {
-        captureOvelayCanvas.removeEventListener('mousedown', mouseDown, false);
-        captureOvelayCanvas.removeEventListener('mouseup', mouseUp, false);
-        captureOvelayCanvas.removeEventListener('mousemove', mouseMove, false);
+        captureCanvasZoneOverlay.removeEventListener('mousedown', mouseDown, false);
+        captureCanvasZoneOverlay.removeEventListener('mouseup', mouseUp, false);
+        captureCanvasZoneOverlay.removeEventListener('mousemove', mouseMove, false);
     }
 }
 
@@ -85,15 +88,20 @@ function toggleCanvasLoader(bForceClear) {
     }
 }
 
-function initCaptureCanvas(canvasIdOverlay, canvasIdImage) {
+function initCaptureCanvas(canvasIdZoneOverlay, canvasIdOverlay, canvasIdImage) {
 
     captureCanvas = document.getElementById(canvasIdImage);
     captureCanvasCtx = captureCanvas.getContext("2d");
     captureOvelayCanvas = document.getElementById(canvasIdOverlay);
     captureOverlayCanvasCtx = captureOvelayCanvas.getContext("2d");
-    captureOverlayCanvasCtx.strokeStyle = "red";
-    captureOverlayCanvasCtx.lineWidth = 3;
+    captureOverlayCanvasCtx.strokeStyle = "yellow";
+    captureOverlayCanvasCtx.lineWidth = 1;
     captureOverlayCanvasCtx.globalCompositeOperation = 'destination-over';
+
+    captureCanvasZoneOverlay = document.getElementById(canvasIdZoneOverlay);
+    captureCanvasZoneOverlayCtx = captureCanvasZoneOverlay.getContext("2d");
+    captureCanvasZoneOverlayCtx.strokeStyle = "red";
+    captureCanvasZoneOverlayCtx.lineWidth = 3;
 
     var $canvas = $('#' + canvasIdOverlay);
     var canvasOffset = $canvas.offset();
@@ -102,17 +110,27 @@ function initCaptureCanvas(canvasIdOverlay, canvasIdImage) {
 }
 
 function initSafetyDetectionCanvas(canvasIdOverlay, canvasIdImage) {
+}
 
-//    captureOvelayCanvas = document.getElementById(canvasIdOverlay);
-//    captureOverlayCanvasCtx = captureOvelayCanvas.getContext("2d");
-//    captureOverlayCanvasCtx.strokeStyle = "yellow";
-//    captureOverlayCanvasCtx.lineWidth = 3;
+function ClearCaptureCanvas() {
+    captureCanvasCtx.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
+    captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+    captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
+
+    captureCanvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
+    captureCanvasCtx.fillStyle = 'lightgray';
+    captureCanvasCtx.fill();
+    captureCanvasCtx.stroke();
 }
 
 function ClearSafetyZoneCanvas() {
     var canvas = document.getElementById('safetyDetectionCanvas');
     var canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+    canvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
+    canvasCtx.fillStyle = 'lightgray';
+    canvasCtx.stroke();
+    canvasCtx.fill();
 
     canvas = document.getElementById('safetyDetectionCanvasOverlay');
     canvasCtx = canvas.getContext("2d");
@@ -121,17 +139,6 @@ function ClearSafetyZoneCanvas() {
     canvas = document.getElementById('safetyDetectionCanvasZoneOverlay');
     canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-}
-
-
-function ClearCaptureCanvas()
-{
-    captureCanvasCtx.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
-    captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
-    captureCanvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
-    captureCanvasCtx.fillStyle = 'lightgray';
-    captureCanvasCtx.fill();
-    captureCanvasCtx.stroke();
 }
 
 function point(x, y) {
@@ -174,7 +181,7 @@ function mouseDown(e) {
         region.y = parseInt(e.clientY - captureOverlayCanvasOffset_Y);
         isMouseDown = true;
         isResize = false;
-        captureOverlayCanvasCtx.strokeStyle = "yellow";
+        captureCanvasZoneOverlayCtx.strokeStyle = "red";
     }
     else {
         // Clicked on a corner or on line
@@ -239,7 +246,7 @@ function mouseMove(e) {
         region.w = mouseX - region.x;
         region.h = mouseY - region.y;
 
-        captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+        captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
         drawRegion();
     }
     else if (isResize) {
@@ -294,16 +301,17 @@ function drawRegion() {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
-    captureOverlayCanvasCtx.strokeStyle = "red";
+    captureCanvasZoneOverlayCtx.strokeStyle = "red";
+    captureCanvasZoneOverlayCtx.globalAlpha = 1;
 
     if (currentHandle == false) {
         // mouse pointer not on a corner / line.  Clear region
-        captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
-        captureOverlayCanvasCtx.strokeRect(region.x, region.y, region.w, region.h);
+        captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
+        captureCanvasZoneOverlayCtx.strokeRect(region.x, region.y, region.w, region.h);
     }
     else {
-        captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
-        captureOverlayCanvasCtx.strokeRect(region.x, region.y, region.w, region.h);
+        captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
+        captureCanvasZoneOverlayCtx.strokeRect(region.x, region.y, region.w, region.h);
 
         var posHandle = point(0, 0);
         switch (currentHandle) {
@@ -340,13 +348,13 @@ function drawRegion() {
                 posHandle.y = region.y + region.h / 2;
                 break;
         }
-        captureOverlayCanvasCtx.globalCompositeOperation = 'xor';
-        captureOverlayCanvasCtx.beginPath();
-        captureOverlayCanvasCtx.arc(posHandle.x, posHandle.y, handleSize, 0, 2 * Math.PI);
-        captureOverlayCanvasCtx.fillStyle = 'white';
-        captureOverlayCanvasCtx.fill();
-        captureOverlayCanvasCtx.stroke();
-        captureOverlayCanvasCtx.globalCompositeOperation = 'source-over';
+        captureCanvasZoneOverlayCtx.globalCompositeOperation = 'xor';
+        captureCanvasZoneOverlayCtx.beginPath();
+        captureCanvasZoneOverlayCtx.arc(posHandle.x, posHandle.y, handleSize, 0, 2 * Math.PI);
+        captureCanvasZoneOverlayCtx.fillStyle = 'white';
+        captureCanvasZoneOverlayCtx.fill();
+        captureCanvasZoneOverlayCtx.stroke();
+        captureCanvasZoneOverlayCtx.globalCompositeOperation = 'source-over';
     }
 }
 
@@ -451,11 +459,6 @@ async function processTelemetryMessage(signalRMsg) {
         if (message.deviceId != currentDeviceId) {
             return;
         }
-
-        for (var inferenceResult in message.inferenceResults) {
-            var imagePath = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[inferenceResult].T}.jpg`;
-            CheckImage(currentDeviceId, imagePath);
-        }
     } catch (err) {
         console.error(`${funcName} : ${err.statusText}`)
     } finally {
@@ -464,7 +467,7 @@ async function processTelemetryMessage(signalRMsg) {
 }
 
 // process SignalR message for Telemetry
-async function processTelemetryForChart(signalRMsg, lineChart) {
+async function processTelemetryForChart(signalRMsg, lineChart, threshold) {
 
     // var funcName = `${arguments.callee.name}()`;
     //console.debug(`=> ${funcName}`);
@@ -486,8 +489,23 @@ async function processTelemetryForChart(signalRMsg, lineChart) {
 
         var p_value = 0.0;
 
+        if ((isSafetyDetectionRunning == true) && (pendingImagePath.length == 0)) {
+            var canvasOverlay = document.getElementById('safetyDetectionCanvasOverlay');
+            var ctxOverlay = canvasOverlay.getContext('2d');
+            ctxOverlay.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
+
+            for (var i = 0; i < inferenceData.Inferences.length; i++) {
+                var inferenceResults = inferenceData.Inferences[i];
+                var j = 1;
+                while (inferenceResults[j] != undefined) {
+                    DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
+                    j++;
+                }
+            }
+        }
+
         if (inferenceData.Inferences[0][1] != undefined) {
-            p_value = inferenceData.Inferences[0][1].P
+            p_value = inferenceData.Inferences[0][1].P;
         }
 
         lineChart.data.datasets[0].data.push(p_value);
@@ -641,20 +659,22 @@ async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
 
             var json = JSON.parse(response.value);
             var canvasImage = document.getElementById(canvasId);
-            var ctxImage = canvasImage.getContext('2d');
+            var canvasImageCtx = canvasImage.getContext('2d');
             var img = new Image();
             img.src = json.uri;
             img.onload = function () {
-                captureCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
-                captureCanvasCtx.globalCompositeOperation = 'source-over';
-                //'destination-over';
-                captureCanvasCtx.drawImage(img, 0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
+                canvasImageCtx.clearRect(0, 0, canvasImage.width, canvasImage.height);
+                canvasImageCtx.globalCompositeOperation = 'source-over';
+                canvasImageCtx.drawImage(img, 0, 0, canvasImage.width, canvasImage.height);
 
-                ratio_x = captureOvelayCanvas.width / img.width;
-                ratio_y = captureOvelayCanvas.height / img.height;
+                ratio_x = captureCanvasZoneOverlay.width / img.width;
+                ratio_y = captureCanvasZoneOverlay.height / img.height;
 
-                captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
-                captureOverlayCanvasCtx.strokeRect(rect_zone[0] * ratio_x, rect_zone[1] * ratio_y, (rect_zone[2] - rect_zone[0]) * ratio_x, (rect_zone[3] - rect_zone[1]) * ratio_y);
+                captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
+                captureCanvasZoneOverlayCtx.fillStyle = "red";
+                captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * ratio_x, rect_zone[1] * ratio_y, (rect_zone[2] - rect_zone[0]) * ratio_x, (rect_zone[3] - rect_zone[1]) * ratio_y);
+                captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
+                captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * ratio_x, rect_zone[1] * ratio_y, (rect_zone[2] - rect_zone[0]) * ratio_x, (rect_zone[3] - rect_zone[1]) * ratio_y);
                 toggleCanvasLoader(true);
             }
             found = true;
@@ -699,13 +719,14 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             var canvasImage = document.getElementById(canvasId);
             var ctxImage = canvasImage.getContext('2d');
             var canvasOverlay = document.getElementById(overlayCanvsId);
+            var ctxOverlay = canvasOverlay.getContext('2d');
             var img = new Image();
             img.src = json.uri;
             img.onload = function () {
-                ctxImage.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
+                ctxOverlay.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
+                ctxImage.clearRect(0, 0, canvasImage.width, canvasImage.height);
                 ctxImage.globalCompositeOperation = 'source-over';
-                    //'destination-over';
-                ctxImage.drawImage(img, 0, 0, canvasOverlay.width, canvasOverlay.height);
+                ctxImage.drawImage(img, 0, 0, canvasImage.width, canvasImage.height);
 
                 ratio_x = canvasImage.width / img.width;
                 ratio_y = canvasImage.height / img.height;
@@ -723,30 +744,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
                             continue;
                         }
 
-                        ctxImage.font = '12px serif';
-                        ctxImage.lineWidth = 1;
-                        ctxImage.textBaseline = "bottom";
-                        ctxImage.strokeStyle = "yellow";
-                        var offset_x = canvasImage.width / img.width;
-                        var offset_y = canvasImage.height / img.height;
-
-                        var X = parseInt(data.X * offset_x);
-                        var Y = parseInt(data.Y * offset_y);
-                        var x = parseInt(data.x * offset_x);
-                        var y = parseInt(data.y * offset_y);
-                        var w = x - X;
-                        var h = y - Y;
-
-                        ctxImage.lineWidth = 2;
-                        ctxImage.strokeRect(X, Y, w, h);
-                        var confidence = `${(data.P * 100).toFixed(1).toString()}%`;
-                        
-                        var iou = calcIoU(data.X, data.Y, data.x, data.y);
-
-                        confidence = `${confidence} ${iou}%`;
-                        ctxImage.lineWidth = 1;
-                        ctxImage.strokeText(confidence, X + 2, y);
-
+                        DrawBoundingBox(data, canvasOverlay, threshold, ratio_x, ratio_y);
                     }
                 }
             }
@@ -762,6 +760,38 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
     }
 
     return found;
+}
+
+function DrawBoundingBox(data, canvasOverlay, threshold, offset_x, offset_y) {
+
+    var funcName = `${arguments.callee.name}()`;
+    console.debug(`=> ${funcName}`);
+
+    var ctxOverlay = canvasOverlay.getContext('2d');
+
+    console.debug(`>> Threashold ${threshold} P ${data.P}`)
+
+    ctxOverlay.font = '12px serif';
+    ctxOverlay.lineWidth = 1;
+    ctxOverlay.textBaseline = "bottom";
+    ctxOverlay.strokeStyle = "yellow";
+
+    var X = parseInt(data.X * offset_x);
+    var Y = parseInt(data.Y * offset_y);
+    var x = parseInt(data.x * offset_x);
+    var y = parseInt(data.y * offset_y);
+    var w = x - X;
+    var h = y - Y;
+
+    ctxOverlay.lineWidth = 2;
+    ctxOverlay.strokeRect(X, Y, w, h);
+    var confidence = `${(data.P * 100).toFixed(1).toString()}%`;
+
+    var iou = calcIoU(data.X, data.Y, data.x, data.y);
+
+    confidence = `${confidence} ${iou}%`;
+    ctxOverlay.lineWidth = 1;
+    ctxOverlay.strokeText(confidence, X + 2, y);
 }
 
 async function StartInference(resultElementId) {
@@ -840,6 +870,18 @@ async function StartInference(resultElementId) {
     return;
 }
 
+function DrawZoneRect(canvasId) {
+    // draw bounding box for safety zone
+    overlayCanvas = document.getElementById(canvasId);
+    overlayCanvasCtx = overlayCanvas.getContext("2d");
+    overlayCanvasCtx.strokeStyle = "red";
+    overlayCanvasCtx.lineWidth = 3;
+    overlayCanvasCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
+    overlayCanvasCtx.globalAlpha = 0.3;
+    overlayCanvasCtx.fillStyle = "red";
+    overlayCanvasCtx.fillRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
+}
+
 async function StartSafetyDetection(resultElementId, withImage) {
     var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
@@ -901,15 +943,7 @@ async function StartSafetyDetection(resultElementId, withImage) {
                     pendingImagePath = result.outputSubDirectory;
                     setResultElement(resultElement, `Processing images @ ${pendingImagePath}`);
                     // draw bounding box for safety zone
-                    overlayCanvas = document.getElementById('safetyDetectionCanvasZoneOverlay');
-                    overlayCanvasCtx = overlayCanvas.getContext("2d");
-                    overlayCanvasCtx.strokeStyle = "red";
-                    overlayCanvasCtx.lineWidth = 3;
-                    overlayCanvasCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
-                    //overlayCanvasCtx.strokeRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
-                    overlayCanvasCtx.globalAlpha = 0.3;
-                    overlayCanvasCtx.fillStyle = "red";
-                    overlayCanvasCtx.fillRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
+                    DrawZoneRect('safetyDetectionCanvasZoneOverlay');
                     bStarted = true;
                 }
                 else {
@@ -939,6 +973,8 @@ async function StartSafetyDetection(resultElementId, withImage) {
                 },
             }).done(function (response) {
                 setResultElement(resultElement, `Processing Telemetry`);
+                // draw bounding box for safety zone
+                DrawZoneRect('safetyDetectionCanvasZoneOverlay');
                 bStarted = true;
             }).fail(function (response, status, err) {
                 setResultElement(resultElement, `Failed to start : ${response.responseJSON.value}`);

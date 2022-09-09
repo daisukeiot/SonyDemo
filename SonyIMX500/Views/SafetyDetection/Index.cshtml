@@ -38,11 +38,12 @@
                         <div class="tab-content" id="tab-main">
                             <div class="tab-pane fade show active" id="tabs-setup" role="tabpanel" aria-labelledby="tab-setup-label">
                                 <div class="row">
-                                    <div class="col-md-3" style="min-width:640px">
-                                        <div class="container loader-parent">
-                                            <div class="row justify-content-center align-items-center" style="position:relative">
-                                                <canvas id="captureImageCanvasOverlay" height="640" width="640" style="z-index:200;max-width:640px"></canvas>
-                                                <canvas id="captureImageCanvas" height="640" width="640" style="z-index:100; position:absolute"></canvas>
+                                    <div class="col-md-3" height="640" width="640" style="min-width:640px; max-width:640px;min-height:640px">
+                                        <div class="container loader-parent"  height="640" width="640">
+                                            <div class="row justify-content-center align-items-center">
+                                                <canvas id="captureImageCanvasZoneOverlay" height="640" width="640" style="max-width:640px;max-height:640px;z-index:300"></canvas>
+                                                <canvas id="captureImageCanvasOverlay"     height="640" width="640" style="max-width:640px;z-index:200;position:absolute"></canvas>
+                                                <canvas id="captureImageCanvas"            height="640" width="640" style="z-index:100;position:absolute"></canvas>
                                             </div>
                                             <div id="captureImageCanvasLoaderWrapper"  class="canvasLoaderWrapper" height="640" width="640" style="display:none">
                                                 <div id="canvasLoader">
@@ -281,12 +282,12 @@
                                 <div class="info-box">
                                     <div class="info-box-content">
                                         <div class="row">
-                                            <div class="col-md-3" style="min-width:330px; max-width:330px;min-height:350px">
-                                                <div class="container loader-parent" style="border:1px dashed green;">
+                                            <div class="col-md-3" height="320" width="320" style="min-width:320px; max-width:320px;min-height:320px">
+                                                <div class="container loader-parent" height="320" width="320" >
                                                     <div class="row justify-content-center align-items-center">
-                                                        <canvas id="safetyDetectionCanvasZoneOverlay" height="320" width="320" style="max-width:320px;z-index:300"></canvas>
-                                                        <canvas id="safetyDetectionCanvasOverlay" height="320" width="320" style="position:absolute;max-width:320px;z-index:200"></canvas>
-                                                        <canvas id="safetyDetectionCanvas" height="320" width="320" style="position:absolute;z-index:100"></canvas>
+                                                        <canvas id="safetyDetectionCanvasZoneOverlay" height="320" width="320" style="max-width:320px;max-height:320px;z-index:300"></canvas>
+                                                        <canvas id="safetyDetectionCanvasOverlay"     height="320" width="320" style="max-width:320px;z-index:200;position:absolute"></canvas>
+                                                        <canvas id="safetyDetectionCanvas"            height="320" width="320" style="z-index:100;position:absolute"></canvas>
                                                     </div>
                                                     <div id="safetyDetectionCanvasLoaderWrapper" class="canvasLoaderWrapper" height="320" width="320" style="display:none">
                                                         <div id="canvasLoader">
@@ -409,7 +410,7 @@
 
             // Need more work.  Ok for now..
             initSafetyDetectionCanvas('safetyDetectionCanvasOverlay', 'safetyDetectionCanvas');
-            initCaptureCanvas('captureImageCanvasOverlay', 'captureImageCanvas');
+            initCaptureCanvas('captureImageCanvasZoneOverlay', 'captureImageCanvasOverlay', 'captureImageCanvas');
             ClearCaptureCanvas();
 
             hubConnection = new signalR.HubConnectionBuilder()
@@ -419,7 +420,7 @@
 
             hubConnection.on('DeviceTelemetry', function(payload) {
                 printTime("Telemetry");
-                processTelemetryForChart(payload, lineChart);
+                processTelemetryForChart(payload, lineChart, currentThreshold);
                 processTelemetryMessage(payload);
             });
 
