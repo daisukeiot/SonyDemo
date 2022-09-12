@@ -630,6 +630,10 @@
                         toggleLoader(true);
                     })
             }
+            
+            if (currentDeviceId != undefined) {
+                setSelectOption('safetyDetectionDeviceIdList', currentDeviceId);
+            }
 
             safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionThresholdLabel(evt) {
                 var count = parseInt(evt.target.value);
@@ -745,6 +749,11 @@
                     if (isDisconnected == false)
                     {
                         await StopInference(null, true);
+                    }
+
+                    if (currentModelId != undefined)
+                    {
+                        setSelectOption('safetyDetectionModelIdList', currentModelId);
                     }
                 })
                 .finally(() => {

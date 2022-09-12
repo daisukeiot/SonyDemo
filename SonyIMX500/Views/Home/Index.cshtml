@@ -1084,13 +1084,6 @@
             $("#cosmosDbJsGrid").jsGrid("loadData");
         }
 
-        function setSelectOption(selectElementId, selectValue) {
-            console.log("Setting " + selectElementId + " to " + selectValue);
-
-            document.getElementById(selectElementId).value = selectValue;
-            document.getElementById(selectElementId).dispatchEvent(new Event("change"));
-        }
-
         function isItemSelected(selectElement, value) {
             if (document.getElementById(selectElement).selectedIndex == 0) {
                 return false;

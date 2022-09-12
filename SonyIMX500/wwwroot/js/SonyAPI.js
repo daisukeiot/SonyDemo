@@ -4,6 +4,13 @@ let getBaseModelInterval = null;
 let getDeployHistoryInterval = null;
 // Utility functions
 
+function setSelectOption(selectElementId, selectValue) {
+    console.log("Setting " + selectElementId + " to " + selectValue);
+
+    document.getElementById(selectElementId).value = selectValue;
+    document.getElementById(selectElementId).dispatchEvent(new Event("change"));
+}
+
 function toggleLoader(bForceClear) {
     var loader = document.getElementById("loader");
 
