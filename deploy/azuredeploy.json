@@ -12,56 +12,74 @@
 			"type": "string",
 			"defaultValue": "[resourceGroup().location]"
 		},
-		"Web_App_Name": {
+		"web_app_name": {
 			"type": "string",
 			"minLength": 1,
 			"maxLength": 40
 		},
-		"Function_App_Name": {
+		"function_app_name": {
 			"type": "string",
 			"minLength": 1,
 			"maxLength": 40
 		},
-		"SignalR_Name": {
+		"signalr_name": {
 			"type": "string",
 			"minLength": 3,
 			"maxLength": 63
 		},
-		"Storage_Account_Name" : {
+		"storage_account_name" : {
 			"type": "string"
 		},
-		"Storage_Account_Type" : {
+		"storage_account_type" : {
 			"type": "string"
 		},
-		"Blob_Storage_Connection_String": {
+		"blob_storage_connection_string": {
 			"type": "string"
 		},
-		"Cosmos_Db_Connection_String": {
+		"cosmos_db_connection_string": {
 			"type": "string"
 		},
-		"Event_Hub_Connection_String": {
+		"event_hub_connection_string": {
 			"type": "string"
 		},
-		"Custom_Vision_Endpoint": {
+		"custom_vision_endpoint": {
 			"type": "string"
 		},
-		"Custom_Vision_AccessKey": {
+		"custom_vision_accessKey": {
 			"type": "string"
 		},
-		"AITRIOS_URL": {
+		"aitrios_url": {
 			"type": "string"
 		},
-		"APP_GW_VALIDATION_KEY": {
+		"app_gw_validation_key": {
 			"type": "string"
 		},
-		"AITRIOS_CLIENT_ID": {
+		"aitrios_client_id": {
 			"type": "string"
 		},
-		"AAD_TENANT_ID": {
-			"type": "string"
+		"aad_tenand_id": {
+			"type": "string",
+			"defaultValue": ""
 		},
-		"AAD_CLIENT_ID": {
-			"type": "string"
+		"aad_client_id": {
+			"type": "string",
+			"defaultValue": ""
+		},
+		"git_webapp_repo": {
+			"type": "string",
+			"defaultValue": ""	
+		},
+		"git_webapp_branch": {
+			"type": "string",
+			"defaultValue": ""	
+		},
+		"git_functionsapp_repo": {
+			"type": "string",
+			"defaultValue": ""	
+		},
+		"git_functionsapp_branch": {
+			"type": "string",
+			"defaultValue": ""	
 		}
 	},
 	"variables": {
@@ -71,32 +89,29 @@
 			"tier": "Standard",
 			"size": "S1",
 			"family": "S",
-			"hostingPlan": "[format('{0}-AppHost-{1}', parameters('Web_App_Name'),parameters('UniqueID'))]",
-			"functionsName": "[format('{0}-{1}', parameters('Function_App_Name'),parameters('UniqueID'))]",
-			"webappName": "[parameters('Web_App_Name')]"
+			"hostingPlan": "[format('{0}-AppHost-{1}', parameters('web_app_name'),parameters('UniqueID'))]",
+			"functionsName": "[format('{0}-{1}', parameters('function_app_name'),parameters('UniqueID'))]",
+			"webappName": "[parameters('web_app_name')]"
 		},
 		"signalr": {
 			"apiVersion": "2022-02-01",
 			"sku": "Free_F1",
 			"skuTier": "Free",
 			"size": "F1",
-			"name": "[format('{0}-{1}', parameters('SignalR_Name'),parameters('UniqueID'))]"
+			"name": "[format('{0}-{1}', parameters('signalr_name'),parameters('UniqueID'))]"
 		},
 		"storageAcct": {
 			"apiVersion": "2021-09-01",
-			"sku": "[parameters('Storage_Account_Type')]",
+			"sku": "[parameters('storage_account_type')]",
 			"tier": "Standard",
-			"name": "[toLower(format('{0}{1}', parameters('Storage_Account_Name'),parameters('UniqueID')))]"
+			"name": "[toLower(format('{0}{1}', parameters('storage_account_name'),parameters('UniqueID')))]"
 		},
 
 		"githubrepo": {
-			"webApp": "https://github.com/daisukeiot/SonyDemo.git",
-			"webAppBranch": "main",
-			"functions": "https://github.com/daisukeiot/IMX500-Functions.git",
-			"functionsBranch": "main"
-		},
-		"deployment": {
-			"apiVersion": "2021-04-01"
+			"webAppRepoUrl": "[parameters('git_webapp_repo')]",
+			"webAppBranch": "[parameters('git_webapp_branch')]",
+			"functionsRepoUrl": "[parameters('git_functionsapp_repo')]",
+			"functionsBranch": "[parameters('git_functionsapp_branch')]"
 		}
 	},
 	"resources": [
@@ -132,123 +147,6 @@
 			}
 		},
 		{
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('deployment').apiVersion]",
-			"name": "Deploy-Functions",
-			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name)]",
-				"[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"expressionEvaluationOptions": {
-					"scope": "outer"
-				},
-				"parameters": {},
-				"template": {
-					"$schema": "https://schema.management.azure.com/schemas/2019-08-01/deploymentTemplate.json#",
-					"contentVersion": "1.0.0.0",
-					"parameters": {},
-					"variables": {},
-					"resources": [{
-						"type": "Microsoft.Web/sites",
-						"apiVersion": "[variables('apps').apiVersion]",
-						"name": "[variables('apps').functionsName]",
-						"location": "[parameters('location')]",
-						"dependsOn": [],
-						"tags": {},
-						"kind": "functionapp",
-						"identity": {
-							"type": "SystemAssigned"
-						},
-						"properties": {
-							"name": "[variables('apps').functionsName]",
-							"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]",
-							"clientAffinityEnabled": false,
-							"enabled": true,
-							"siteConfig": {
-								"alwaysOn": false,
-								"cors": {
-									"allowedOrigins": [
-										"*"
-									]
-								},
-								"appSettings": [{
-										"name": "FUNCTIONS_EXTENSION_VERSION",
-										"value": "~4"
-									},
-									{
-										"name": "AzureWebJobsSecretStorageType",
-										"value": "Files"
-									}
-								]
-							}
-						},
-						"resources": [{
-							"type": "sourcecontrols",
-							"name": "web",
-							"apiVersion": "[variables('apps').apiVersion]",
-							"dependsOn": [
-								"[resourceId('Microsoft.Web/Sites', variables('apps').functionsName)]"
-							],
-							"properties": {
-								"RepoUrl": "[variables('githubrepo').functions]",
-								"branch": "[variables('githubrepo').functionsBranch]",
-								"IsManualIntegration": true
-							}
-						}]
-					}]
-				}
-			}
-		},
-		{
-			"type": "Microsoft.Resources/deployments",
-			"apiVersion": "[variables('deployment').apiVersion]",
-			"name": "Deploy-Webapp",
-			"dependsOn": [
-				"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name)]",
-				"[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
-			],
-			"properties": {
-				"mode": "Incremental",
-				"expressionEvaluationOptions": {
-					"scope": "outer"
-				},
-				"template": {
-					"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-					"contentVersion": "1.0.0.0",
-					"parameters": {},
-					"variables": {},
-					"resources": [{
-						"type": "Microsoft.Web/sites",
-						"apiVersion": "[variables('apps').apiVersion]",
-						"name": "[variables('apps').webappName]",
-						"location": "[parameters('location')]",
-						"dependsOn": [],
-						"tags": {},
-						"kind": "app",
-						"properties": {
-							"enabled": true,
-							"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
-						},
-						"resources": [{
-							"type": "sourcecontrols",
-							"name": "web",
-							"apiVersion": "[variables('apps').apiVersion]",
-							"dependsOn": [
-								"[resourceId('Microsoft.Web/Sites', variables('apps').webappName)]"
-							],
-							"properties": {
-								"RepoUrl": "[variables('githubrepo').webApp]",
-								"branch": "[variables('githubrepo').webAppBranch]",
-								"IsManualIntegration": true
-							}
-						}]
-					}]
-				}
-			}
-		},
-		{
 			"type": "Microsoft.SignalRService/SignalR",
 			"apiVersion": "[variables('signalr').apiVersion]",
 			"name": "[variables('signalr').name]",
@@ -281,22 +179,19 @@
 
 		},
 		{
-			"type": "Microsoft.Web/sites/config",
+			"type": "Microsoft.Web/sites",
 			"apiVersion": "[variables('apps').apiVersion]",
-			"name": "[concat(variables('apps').functionsName, '/appsettings')]",
+			"name": "[variables('apps').webappName]",
+			"location": "[parameters('location')]",
 			"dependsOn": [
-				"[resourceId('Microsoft.SignalRService/SignalR', variables('signalr').name)]",
-				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Functions')]"
+				"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name)]",
+				"[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
 			],
+			"tags": {},
+			"kind": "app",
 			"properties": {
-				"FUNCTIONS_WORKER_RUNTIME": "dotnet",
-				"FUNCTIONS_EXTENSION_VERSION": "~4",
-				"AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
-				"AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
-				"AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]",
-				"CosmosDbConnectionString": "[parameters('Cosmos_Db_Connection_String')]",
-				"EventHubConnectionString": "[parameters('Event_Hub_Connection_String')]"
-
+				"enabled": true,
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
 			}
 		},
 		{
@@ -305,23 +200,114 @@
 			"name": "[concat(variables('apps').webappName, '/appsettings')]",
 			"dependsOn": [
 				"[resourceId('Microsoft.SignalRService/SignalR', variables('signalr').name)]",
-				"[resourceId('Microsoft.Resources/deployments', 'Deploy-Webapp')]"
+				"[resourceId('Microsoft.Web/Sites', variables('apps').webappName)]"
 			],
 			"properties": {
-				"AzureAD__Instance" : "https://login.microsoftonline.com/",
-				"AzureAD__TenantId" :  "[parameters('AAD_TENANT_ID')]",
-				"AzureAD__ClientId" :  "[parameters('AAD_CLIENT_ID')]",
-				"AzureAD__CallbackPath" : "/signin-oidc",
-				"AzureAD__SignedOutCallbackPath" :  "/signout-callback-oidc",
-				"Azure__Blob__ConnectionString": "[parameters('Blob_Storage_Connection_String')]",
-				"Azure__CosmosDb__ConnectionString": "[parameters('Cosmos_Db_Connection_String')]",
-				"Azure__CustomVision__EndPoint": "[parameters('Custom_Vision_Endpoint')]",
-				"Azure__CustomVision__AccessKey": "[parameters('Custom_Vision_AccessKey')]",
-				"Azure__SonyAPI__AppGwValidation": "[parameters('APP_GW_VALIDATION_KEY')]",
-				"Azure__SonyAPI__BaseUrl": "[parameters('AITRIOS_URL')]",
-				"Azure__SonyAPI__ClientId": "[parameters('AITRIOS_CLIENT_ID')]",
+				"AzureAD__TenantId" :  "[if(or(empty(parameters('aad_tenand_id')), empty(parameters('aad_client_id'))), '', parameters('aad_tenand_id'))]",
+				"AzureAD__ClientId" :  "[if(or(empty(parameters('aad_tenand_id')), empty(parameters('aad_client_id'))), '', parameters('aad_client_id'))]",
+				"AzureAD__Instance" :  "[if(or(empty(parameters('aad_tenand_id')), empty(parameters('aad_client_id'))), '', 'https://login.microsoftonline.com/')]",
+				"AzureAD__CallbackPath" : "[if(or(empty(parameters('aad_tenand_id')), empty(parameters('aad_client_id'))), '', '/signin-oidc')]",
+				"AzureAD__SignedOutCallbackPath" :  "[if(or(empty(parameters('aad_tenand_id')), empty(parameters('aad_client_id'))), '', '/signout-callback-oidc')]",
+				"Azure__UseAAD": "[if(or(empty(parameters('aad_tenand_id')), empty(parameters('aad_client_id'))), 'false', 'true')]",
+				"Azure__Blob__ConnectionString": "[parameters('blob_storage_connection_string')]",
+				"Azure__CosmosDb__ConnectionString": "[parameters('cosmos_db_connection_string')]",
+				"Azure__CustomVision__EndPoint": "[parameters('custom_vision_endpoint')]",
+				"Azure__CustomVision__AccessKey": "[parameters('custom_vision_accessKey')]",
+				"Azure__SonyAPI__AppGwValidation": "[parameters('app_gw_validation_key')]",
+				"Azure__SonyAPI__BaseUrl": "[parameters('aitrios_url')]",
+				"Azure__SonyAPI__ClientId": "[parameters('aitrios_client_id')]",
 				"Azure__SignalR__ConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]"
 			}
-		}
+		},
+		{
+			"condition" : "[and(not(empty(variables('githubrepo').webAppRepoUrl)), not(empty(variables('githubrepo').webAppBranch)))]",
+			"type": "Microsoft.Web/sites/sourcecontrols",
+			"name": "[concat(variables('apps').webappName, '/web')]",
+			"apiVersion": "[variables('apps').apiVersion]",
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/Sites', variables('apps').webappName)]",
+				"[resourceId('Microsoft.Web/Sites/config', variables('apps').webappName, 'appsettings')]"
+			],
+			"properties": {
+				"RepoUrl": "[variables('githubrepo').webAppRepoUrl]",
+				"branch": "[variables('githubrepo').webAppBranch]",
+				"IsManualIntegration": true
+			}
+		},
+		{
+			"type": "Microsoft.Web/sites",
+			"apiVersion": "[variables('apps').apiVersion]",
+			"name": "[variables('apps').functionsName]",
+			"location": "[parameters('location')]",
+			"dependsOn": [
+				"[resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name)]",
+				"[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]"
+			],
+			"tags": {},
+			"kind": "functionapp",
+			"identity": {
+				"type": "SystemAssigned"
+			},
+			"properties": {
+				"name": "[variables('apps').functionsName]",
+				"serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apps').hostingPlan)]",
+				"clientAffinityEnabled": false,
+				"enabled": true,
+				"siteConfig": {
+					"alwaysOn": false,
+					"cors": {
+						"allowedOrigins": [
+							"*"
+						]
+					},
+					"appSettings": [{
+							"name": "FUNCTIONS_EXTENSION_VERSION",
+							"value": "~4"
+						},
+						{
+							"name": "AzureWebJobsSecretStorageType",
+							"value": "Files"
+						}
+					]
+				}
+			},
+			"resources": []
+		},
+		{
+			"type": "Microsoft.Web/sites/config",
+			"apiVersion": "[variables('apps').apiVersion]",
+			"name": "[concat(variables('apps').functionsName, '/appsettings')]",
+			"dependsOn": [
+				"[resourceId('Microsoft.SignalRService/SignalR', variables('signalr').name)]",
+				"[resourceId('Microsoft.Web/Sites', variables('apps').functionsName)]"
+			],
+			"properties": {
+				"FUNCTIONS_WORKER_RUNTIME": "dotnet",
+				"FUNCTIONS_EXTENSION_VERSION": "~4",
+				"AzureWebJobsStorage": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
+				"AzureWebJobsDashboard": "[concat('DefaultEndpointsProtocol=https;AccountName=',variables('storageAcct').name,';AccountKey=',listkeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAcct').name), variables('storageAcct').apiVersion).keys[0].value)]",
+				"AzureSignalRConnectionString": "[concat('Endpoint=https://', toLower(variables('signalr').name), '.service.signalr.net;AccessKey=', listKeys(resourceId('Microsoft.SignalRService/signalR', toLower(variables('signalr').name)), variables('signalr').apiVersion).primaryKey, ';Version=1.0;')]",
+				"CosmosDbConnectionString": "[parameters('cosmos_db_connection_string')]",
+				"EventHubConnectionString": "[parameters('event_hub_connection_string')]",
+				"BlobConnectionString" : "[parameters('blob_storage_connection_string')]",
+				"SOLCosmosDbLeasePrefix": "parameters('UniqueID')"
+
+			}
+		},
+		{
+			"condition" : "[and(not(empty(variables('githubrepo').functionsRepoUrl)), not(empty(variables('githubrepo').functionsBranch)))]",
+			"type": "Microsoft.Web/sites/sourcecontrols",
+			"name": "[concat(variables('apps').functionsName, '/web')]",
+			"apiVersion": "[variables('apps').apiVersion]",
+			"dependsOn": [
+				"[resourceId('Microsoft.Web/Sites', variables('apps').functionsName)]",
+				"[resourceId('Microsoft.Web/Sites/config', variables('apps').functionsName, 'appsettings')]"
+			],
+			"properties": {
+				"RepoUrl": "[variables('githubrepo').functionsRepoUrl]",
+				"branch": "[variables('githubrepo').functionsBranch]",
+				"IsManualIntegration": true
+			}
+		}	
 	]
 }
