@@ -35,14 +35,15 @@ function printTime(msg) {
 
 function enableDisableMouseEvent(bEnable) {
 
+    // enabling mouse event for the top most canvas
     if (bEnable) {
-        captureCanvasZoneOverlay.addEventListener('mousedown', mouseDown, false);
-        captureCanvasZoneOverlay.addEventListener('mouseup', mouseUp, false);
-        captureCanvasZoneOverlay.addEventListener('mousemove', mouseMove, false);
+        captureOvelayCanvas.addEventListener('mousedown', mouseDown, false);
+        captureOvelayCanvas.addEventListener('mouseup', mouseUp, false);
+        captureOvelayCanvas.addEventListener('mousemove', mouseMove, false);
     } else {
-        captureCanvasZoneOverlay.removeEventListener('mousedown', mouseDown, false);
-        captureCanvasZoneOverlay.removeEventListener('mouseup', mouseUp, false);
-        captureCanvasZoneOverlay.removeEventListener('mousemove', mouseMove, false);
+        captureOvelayCanvas.removeEventListener('mousedown', mouseDown, false);
+        captureOvelayCanvas.removeEventListener('mouseup', mouseUp, false);
+        captureOvelayCanvas.removeEventListener('mousemove', mouseMove, false);
     }
 }
 
@@ -229,6 +230,10 @@ function mouseUp(e) {
     rect_zone[3] = h;
 
     drawRegion();
+
+    captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
+    captureCanvasZoneOverlayCtx.fillStyle = "red";
+    captureCanvasZoneOverlayCtx.fillRect(region.x, region.y, region.w, region.h);
 }
 
 function mouseMove(e) {
@@ -487,7 +492,7 @@ async function processTelemetryForChart(signalRMsg, lineChart, threshold) {
         var inferenceData = JSON.parse(message.data);
         lineChart.data.labels.push(message.eventTime);
 
-        var p_value = 0.0;
+        var p_value = 0;
 
         if ((isSafetyDetectionRunning == true) && (pendingImagePath.length == 0)) {
             var canvasOverlay = document.getElementById('safetyDetectionCanvasOverlay');
@@ -498,16 +503,24 @@ async function processTelemetryForChart(signalRMsg, lineChart, threshold) {
                 var inferenceResults = inferenceData.Inferences[i];
                 var j = 1;
                 while (inferenceResults[j] != undefined) {
-                    DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
+                    if (inferenceResults[j].P >= threshold) {
+                        DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
+                    }
                     j++;
                 }
             }
         }
 
-        if (inferenceData.Inferences[0][1] != undefined) {
-            p_value = inferenceData.Inferences[0][1].P;
+        for (var i = 0; i < inferenceData.Inferences.length; i++) {
+            var inferenceResults = inferenceData.Inferences[i];
+            var j = 1;
+            while (inferenceResults[j] != undefined) {
+                if (inferenceResults[j].P >= threshold) {
+                    p_value++;
+                }
+                j++;
+            }
         }
-
         lineChart.data.datasets[0].data.push(p_value);
         lineChart.update();
 
@@ -735,7 +748,6 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
                     isPendingCapture = false;
                 } else if (inferenceResults != null) {
 
-                    console.debug(`>Inference Result ${inferenceResults.length}`)
                     for (var i = 0; i < inferenceResults.length; i++) {
                         data = inferenceResults[i];
 
@@ -786,12 +798,16 @@ function DrawBoundingBox(data, canvasOverlay, threshold, offset_x, offset_y) {
     ctxOverlay.lineWidth = 2;
     ctxOverlay.strokeRect(X, Y, w, h);
     var confidence = `${(data.P * 100).toFixed(1).toString()}%`;
-
-    var iou = calcIoU(data.X, data.Y, data.x, data.y);
-
-    confidence = `${confidence} ${iou}%`;
+    confidence = `${confidence}`;
     ctxOverlay.lineWidth = 1;
     ctxOverlay.strokeText(confidence, X + 2, y);
+
+    ctxOverlay.textBaseline = "top";
+    ctxOverlay.strokeStyle = "lime";
+    var iou = calcIoU(data.X, data.Y, data.x, data.y);
+    confidence = `${iou}%`;
+    ctxOverlay.lineWidth = 1;
+    ctxOverlay.strokeText(confidence, X + 2, Y + 2);
 }
 
 async function StartInference(resultElementId) {
@@ -1127,7 +1143,7 @@ function calcIoU(x0, y0, x1, y1) {
     if (iou > 0) {
         // calculate percentage the region is included in the zone
         coverage = ((areaIntersect * 1.0) / areaInference);
-        coverage = (coverage * 100.0).toFixed(2);
+        coverage = (coverage * 100.0).toFixed(1);
     }
 
     console.debug(`-- IoU ${iou} coverage ${coverage}`);
