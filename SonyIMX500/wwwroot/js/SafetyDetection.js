@@ -432,7 +432,6 @@ async function CaptureSingleImage(resultElementId) {
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
     } finally {
-        await StopInference(resultElementId, true);
     }
     return pendingImagePath;
 }
@@ -572,6 +571,7 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
                 capture_photo_url = imageUrl;
                 captureInProgress = false;
                 pendingImagePath = '';
+                await StopInference('captureImageBtnResult', true);
             }
         }
         else {
