@@ -828,7 +828,7 @@ async function StartInference(resultElementId) {
         var CropHSize = null;
         var CropVSize = null;
         var NumberOfImages = document.getElementById("safetyDetectionImageCountSlider").value;
-        var FrequencyOfImages = frequency.toString();
+        var FrequencyOfImages = Math.max(1, frequency).toString();
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
         var model_id = document.getElementById("safetyDetectionModelIdList").value;
