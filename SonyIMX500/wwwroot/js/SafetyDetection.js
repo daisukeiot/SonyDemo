@@ -767,7 +767,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             toggleCanvasLoader(true);
             found = true;
         }).fail(function (response, status, err) {
-            debugger
+            //debugger
             console.error(`${funcName}error : ${err.statusText}`);
             toggleCanvasLoader(true);
         });
