@@ -365,7 +365,7 @@ function drawRegion() {
 
 async function CaptureSingleImage(resultElementId) {
     var funcName = `${arguments.callee.name}()`;
-    console.debug("=>", funcName)
+    printTime(`=> ${funcName}`);
     var resultElement = null;
     captureInProgress = true;
 
@@ -378,28 +378,20 @@ async function CaptureSingleImage(resultElementId) {
             resultElement = document.getElementById(resultElementId);
         }
 
-        setResultElement(resultElement, `Capturing a single image from ${currentDeviceId}`);
+        setResultElement(resultElement, `Capturing image from ${currentDeviceId}`);
 
-        var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var device_id = currentDeviceId;
-        var Mode;
+        var Mode = 0; // Image only
         var FileFormat = null;
         var CropHOffset = null;
         var CropVOffset = null;
         var CropHSize = null;
         var CropVSize = null;
-        var NumberOfImages = 1;
-        var FrequencyOfImages = 1;
+        var NumberOfImages = 0;  // potential race condition between API call and Cosmos DB messages.  Use blob message so that we know the image is available.
+        var FrequencyOfImages = Math.round(500/33); // 0.5 sec.
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
         var model_id = currentModelId;
-
-        if (notificationType == 'blob') {
-            Mode = 0;
-        }
-        else {
-            Mode = 1;
-        }
 
         await $.ajax({
             async: true,
@@ -430,7 +422,8 @@ async function CaptureSingleImage(resultElementId) {
         });
 
     } catch (err) {
-        console.error(`${funcName}: ${err.statusText}`)
+        console.error(`${funcName}: ${err.responseJSON.value}`)
+        setResultElement(resultElement, err.responseJSON.value);
     } finally {
     }
     return pendingImagePath;
@@ -533,12 +526,12 @@ async function processTelemetryForChart(signalRMsg, lineChart, threshold) {
 async function processCosmosDbMessage(signalRMsg, threshold) {
 
     var funcName = `${arguments.callee.name}()`;
-    console.debug(`=> ${funcName}`);
-    // printTime("processCosmosDbMessage ==>");
+    //console.debug(`=> ${funcName}`);
 
     var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
 
-    if (notificationType != 'cosmosDb') {
+    if (notificationType != 'cosmosDb' || captureInProgress == true) // use blob for single image capture
+    {
         return;
     }
 
@@ -559,27 +552,10 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
             return;
         }
 
-        if (captureInProgress == true) {
+        for (var inferenceResult in message.inferenceResults) {
 
-            var imageUrl = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[0].T}.jpg`;
-
-            var found = await CheckImageForInference(currentDeviceId, imageUrl, null, threshold);
-
-            if (found) {
-                var resultElement = document.getElementById('captureImageBtnResult');
-                setResultElement(resultElement, 'Image loaded');
-                capture_photo_url = imageUrl;
-                captureInProgress = false;
-                pendingImagePath = '';
-                await StopInference('captureImageBtnResult', true);
-            }
-        }
-        else {
-            for (var inferenceResult in message.inferenceResults) {
-
-                var imageUrl = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[inferenceResult].T}.jpg`;
-                await CheckImageForInference(currentDeviceId, imageUrl, message.inferenceResults[inferenceResult].inferenceResults, threshold);
-            }
+            var imageUrl = `${imagePath[1]}/${imagePath[2]}/${imagePath[3]}/${message.inferenceResults[inferenceResult].T}.jpg`;
+            await CheckImageForInference(currentDeviceId, imageUrl, message.inferenceResults[inferenceResult].inferenceResults, threshold);
         }
 
     } catch (err) {
@@ -590,32 +566,41 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
 }
 
 // process SignalR message for Blob
+// Use this for image capture (not inference)
 async function processBlobMessage(signalRMsg) {
 
     var funcName = `${arguments.callee.name}()`;
-    console.debug(`=> ${funcName}`);
+    //console.debug(`=> ${funcName}`);
 
-    var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
-
-    if (notificationType != 'blob') {
+    if (captureInProgress == false || pendingImagePath.length == 0) {
+        printTime(`Skiping ${signalRMsg}`);
         return;
     }
 
-    if (pendingImagePath.length == 0) {
-        return;
-    }
+    // stop processing more messages;
+    captureInProgress = false;
+    console.debug(`Processing ${signalRMsg}`)
 
     var imagePath = pendingImagePath.split("/");
 
     if (imagePath.length != 4) {
+        console.error(`pendingImagePath unexpected format ${pendingImagePath}`)
         return;
     }
 
     try {
         var message = JSON.parse(signalRMsg);
+        // blob message format
+        // <device id>/<image format JPG or BMP>/<Folder - timestamp >/<File Name>
+        // e.g. 7c9ebd92cc24/JPG/20220916202631610/20220916203339045.jpg
+        //
+        // Pending Image Path format
+        // iothub-link/<device id>/<image format>/<Folder>
+        // e.g. iothub-link/7c9ebd92cc24/JPG/20220916203416261
+
         var blobPath = message.blobPath.split("/");
 
-        if (imagePath[1] != document.getElementById("safetyDetectionDeviceIdList").value) {
+        if (imagePath[1] != currentDeviceId) {
             return;
         } else if (blobPath[0] != imagePath[1]) {
             return;
@@ -635,6 +620,10 @@ async function processBlobMessage(signalRMsg) {
             }
         }).done(function (response) {
             console.debug(response.value);
+
+            // Found an image, stop capture
+            StopInference('captureImageBtnResult', true);
+
             var json = JSON.parse(response.value);
             var captureOvelayCanvas = document.getElementById("captureImageCanvas");
             var captureOverlayCanvasCtx = captureOvelayCanvas.getContext('2d');
@@ -643,10 +632,16 @@ async function processBlobMessage(signalRMsg) {
             img.onload = function () {
                 captureOverlayCanvasCtx.drawImage(img, 0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height)
                 toggleCanvasLoader(true);
+
+                if (isPendingCapture == true) {
+                    capture_photo_url = message.blobPath;
+                    pendingImagePath = '';
+                }
             }
         });
     } catch (err) {
-        console.error(`${funcName}: ${err.statusText}`)
+        console.error(`${funcName}: ${err.statusText}`);
+        isPendingCapture = true;
     } finally {
     }
 }
@@ -692,7 +687,7 @@ async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
             }
             found = true;
         }).fail(function (response, status, err) {
-            console.error(`SetCaptureCanvas error : ${err.statusText}`)
+            console.error(`home/checkImage : error : ${err}`)
         });
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
@@ -744,9 +739,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
                 ratio_x = canvasImage.width / img.width;
                 ratio_y = canvasImage.height / img.height;
 
-                if (isPendingCapture == true) {
-                    isPendingCapture = false;
-                } else if (inferenceResults != null) {
+                if (inferenceResults != null) {
 
                     for (var i = 0; i < inferenceResults.length; i++) {
                         data = inferenceResults[i];
