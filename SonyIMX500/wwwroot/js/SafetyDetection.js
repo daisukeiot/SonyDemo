@@ -572,7 +572,7 @@ async function processBlobMessage(signalRMsg) {
     //console.debug(`=> ${funcName}`);
 
     if (captureInProgress == false || pendingImagePath.length == 0) {
-        printTime(`Skipping ${signalRMsg}`);
+        //printTime(`Skipping ${signalRMsg}`);
         return;
     }
 
@@ -782,7 +782,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
 function DrawBoundingBox(data, canvasOverlay, threshold, offset_x, offset_y) {
 
     var funcName = `${arguments.callee.name}()`;
-    console.debug(`=> ${funcName}`);
+    //console.debug(`=> ${funcName}`);
 
     var ctxOverlay = canvasOverlay.getContext('2d');
 
