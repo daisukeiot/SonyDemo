@@ -645,45 +645,98 @@
                     })
             }
             
+            // Set selected device
             if (currentDeviceId != undefined) {
                 setSelectOption('safetyDetectionDeviceIdList', currentDeviceId);
             }
 
-            safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionImageCountHandler(evt) {
-                var count = parseInt(evt.target.value);
+            // Add event listeners for sliders if not set.  Otherwise, just enable sliders.
+            if (safetyDetectionImageCountSlider.getAttribute('inputListner') == null)
+            {
+                safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionImageCountHandler(evt) {
+                    var count = parseInt(evt.target.value);
 
-                if (count == 0)
-                {
-                    safetyDetectionImageCountLabel.innerHTML = "Continuous"
-                }
-                else
-                {
-                    safetyDetectionImageCountLabel.innerHTML = evt.target.value;
-                }
-            })
+                    if (count == 0)
+                    {
+                        safetyDetectionImageCountLabel.innerHTML = "Continuous"
+                    }
+                    else
+                    {
+                        safetyDetectionImageCountLabel.innerHTML = evt.target.value;
+                    }
+                });
+                safetyDetectionImageCountSlider.setAttribute('inputListner', 'true');
+            }
+            else{
+                safetyDetectionImageCountSlider.disabled = false; 
+            }
 
-            safetyDetectionThresholdSlider.addEventListener("input", function safetyDetectionThresholdHandler(evt) {
-                captureThresholdSlider.value = evt.target.value;
-                captureThresholdSliderLabel.innerHTML = evt.target.value;
-                safetyDetectionThresholdLabel.innerHTML = evt.target.value;
-                currentThreshold = parseInt(evt.target.value) / 100;
-            })
+            if (safetyDetectionThresholdSlider.getAttribute('inputListner') == null)
+            {
+                safetyDetectionThresholdSlider.addEventListener("input", function safetyDetectionThresholdHandler(evt) {
+                    captureThresholdSlider.value = evt.target.value;
+                    captureThresholdSliderLabel.innerHTML = evt.target.value;
+                    safetyDetectionThresholdLabel.innerHTML = evt.target.value;
+                    currentThreshold = parseInt(evt.target.value) / 100;
+                });
+                safetyDetectionThresholdSlider.setAttribute('inputListner', 'true');
+            }
+            else{
+                safetyDetectionThresholdSlider.disabled = false; 
+            }
 
-            safetyDetectionIoUThresholdSlider.addEventListener("input", function safetyDetectionIoUThresholdHandler(evt) {
-                safetyDetectionIoUThresholdLabel.innerHTML = evt.target.value;
-                currentIoUThreshold = parseInt(evt.target.value) / 100;
-            })
+            if (safetyDetectionIoUThresholdSlider.getAttribute('inputListner') == null)
+            {
+                safetyDetectionIoUThresholdSlider.addEventListener("input", function safetyDetectionIoUThresholdHandler(evt) {
+                    safetyDetectionIoUThresholdLabel.innerHTML = evt.target.value;
+                    currentIoUThreshold = parseInt(evt.target.value) / 100;
+                });
+                safetyDetectionIoUThresholdSlider.setAttribute('inputListner', 'true');
+            }
+            else{
+                safetyDetectionIoUThresholdSlider.disabled = false; 
+            }
 
-            safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionFrequencyHandler(evt) {
-                safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
-            })
+            if (safetyDetectionFrequencySlider.getAttribute('inputListner') == null)
+            {
+                safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionFrequencyHandler(evt) {
+                    safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
+                });
+                safetyDetectionFrequencySlider.setAttribute('inputListner', 'true');
+            }
+            else{
+                safetyDetectionFrequencySlider.disabled = false;
+            }
+
         })
 
         $('#tab-telemetry-label').on('hide.bs.tab', async function (evt) {
-            safetyDetectionImageCountSlider.removeEventListener("input", safetyDetectionImageCountHandler);
-            safetyDetectionThresholdSlider.removeEventListener("input", safetyDetectionThresholdHandler);
-            safetyDetectionIoUThresholdSlider.removeEventListener("input", safetyDetectionIoUThresholdHandler);
-            safetyDetectionFrequencySlider.removeEventListener("input", safetyDetectionFrequencyHandler);
+
+            if (safetyDetectionImageCountSlider.getAttribute('inputListner') == 'true')
+            {
+                safetyDetectionImageCountSlider.disabled = true;
+            }
+            
+            if (safetyDetectionThresholdSlider.getAttribute('inputListner') == 'true')
+            {
+                safetyDetectionThresholdSlider.disabled = true;
+            }
+
+            if (safetyDetectionIoUThresholdSlider.getAttribute('inputListner') == 'true')
+            {
+                safetyDetectionIoUThresholdSlider.disabled = true;
+            }
+
+            if (safetyDetectionFrequencySlider.getAttribute('inputListner') == 'true')
+            {
+                safetyDetectionFrequencySlider.disabled = true;
+            }
+
+            //safetyDetectionImageCountSlider.removeEventListener("input", safetyDetectionImageCountHandler);
+            //safetyDetectionThresholdSlider.removeEventListener("input", safetyDetectionThresholdHandler);
+            //safetyDetectionIoUThresholdSlider.removeEventListener("input", safetyDetectionIoUThresholdHandler);
+            //safetyDetectionFrequencySlider.removeEventListener("input", safetyDetectionFrequencyHandler);
+
         })
 
         //
