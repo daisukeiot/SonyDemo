@@ -900,7 +900,7 @@ async function StartSafetyDetection(resultElementId, withImage) {
 
         setResultElement(resultElement, `Starting Safety Zone Inference`);
         var frequency = parseInt(document.getElementById("safetyDetectionFrequencySlider").value);
-        frequency = Math.round((frequency * 1000) / 33.3);
+        frequency = Math.max(1, Math.round((frequency * 1000) / 33.3));
         var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var model_id = currentModelId;
         var NumberOfInferencesPerMessage = null;
