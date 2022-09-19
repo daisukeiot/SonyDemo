@@ -823,7 +823,8 @@ async function StartInference(resultElementId) {
     try {
         setResultElement(resultElement, `Starting Inference`);
         var frequency = parseInt(document.getElementById("safetyDetectionFrequencySlider").value);
-        // to ms
+        // to ms, but min 10 sec interval
+        frequency = Math.max(10, frequency);
         frequency = Math.round((frequency * 1000) / 33.3);
         var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var Mode;

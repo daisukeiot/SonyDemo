@@ -592,6 +592,8 @@
 
             captureFrequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
                 captureFrequencySliderLabel.innerHTML = evt.target.value;
+                safetyDetectionFrequencySlider.value = evt.target.value;
+                safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
             })
         })
 
@@ -599,7 +601,6 @@
             console.debug(evt.target.id + "() " + evt.type);
             captureThresholdSlider.removeEventListener("input", thresholdSliderHandler);
             captureFrequencySlider.removeEventListener("input", frequencySpinnerHandler);
-            captureImageCountSlider.removeEventListener("input", imageCountSliderHandler);
             captureImageCountSlider.removeEventListener("input", imageCountSliderHandler);
         })
 
@@ -687,6 +688,8 @@
             if (safetyDetectionIoUThresholdSlider.getAttribute('inputListner') == null)
             {
                 safetyDetectionIoUThresholdSlider.addEventListener("input", function safetyDetectionIoUThresholdHandler(evt) {
+                    captureThresholdSlider.value = evt.target.value;
+                    captureThresholdSliderLabel.innerHTML = evt.target.value;
                     safetyDetectionIoUThresholdLabel.innerHTML = evt.target.value;
                     currentIoUThreshold = parseInt(evt.target.value) / 100;
                 });
@@ -699,6 +702,10 @@
             if (safetyDetectionFrequencySlider.getAttribute('inputListner') == null)
             {
                 safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionFrequencyHandler(evt) {
+
+                    // for capture, don't capture < 10 sec interval
+                    captureFrequencySlider.value = Math.max(evt.target.value, 10);
+                    captureFrequencySliderLabel.innerHTML = Math.max(evt.target.value, 10);
                     safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
                 });
                 safetyDetectionFrequencySlider.setAttribute('inputListner', 'true');
