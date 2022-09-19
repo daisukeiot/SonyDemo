@@ -18,8 +18,7 @@ var isMouseDown = false;
 var pendingImagePath = '';
 var runninigSafetyZone = false;
 var captureInProgress = false;
-var ratio_x = 1;
-var ratio_y = 1;
+var capture_ratio = 2;
 
 function printTime(msg) {
     let dateObj = new Date();
@@ -212,14 +211,14 @@ function mouseUp(e) {
         region.h = Math.abs(region.h);
     }
 
-    var x = parseInt(region.x / ratio_x).toString();
-    var y = parseInt(region.y / ratio_y).toString();
+    var x = parseInt(region.x / capture_ratio).toString();
+    var y = parseInt(region.y / capture_ratio).toString();
 
     $('#region_x').html(x.padStart(3, ' '));
     $('#region_y').html(y.padStart(3, ' '));
 
-    var w = parseInt((region.x + region.w) / ratio_x).toString();
-    var h = parseInt((region.y + region.h) / ratio_y).toString();
+    var w = parseInt((region.x + region.w) / capture_ratio).toString();
+    var h = parseInt((region.y + region.h) / capture_ratio).toString();
 
     $('#region_w').html(w.padStart(3, ' '));
     $('#region_h').html(h.padStart(3, ' '));
@@ -675,14 +674,13 @@ async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
                 canvasImageCtx.globalCompositeOperation = 'source-over';
                 canvasImageCtx.drawImage(img, 0, 0, canvasImage.width, canvasImage.height);
 
-                ratio_x = captureCanvasZoneOverlay.width / img.width;
-                ratio_y = captureCanvasZoneOverlay.height / img.height;
+                capture_ratio = captureCanvasZoneOverlay.width / img.width;
 
                 captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
                 captureCanvasZoneOverlayCtx.fillStyle = "red";
-                captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * ratio_x, rect_zone[1] * ratio_y, (rect_zone[2] - rect_zone[0]) * ratio_x, (rect_zone[3] - rect_zone[1]) * ratio_y);
+                captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
                 captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
-                captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * ratio_x, rect_zone[1] * ratio_y, (rect_zone[2] - rect_zone[0]) * ratio_x, (rect_zone[3] - rect_zone[1]) * ratio_y);
+                captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
                 toggleCanvasLoader(true);
             }
             found = true;
