@@ -648,6 +648,8 @@ async function processBlobMessage(signalRMsg) {
 async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
+    var found = false;
+    var imagePath;
 
     try {
 
@@ -660,32 +662,40 @@ async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
                 imagePath: imagePath
             }
         }).done(function (response) {
+            found = true;
+            var json = JSON.parse(response.value);
+            imagePath = json.uri;
+            found = true;
 
+        }).fail(function (response, status, err) {
+            console.error(`home/checkImage : error : ${err}`);
+            imagePath = '/images/imagenotfoundinblob.jpg';
+
+        }).always(function (response, status, err) {
             canvasId = 'captureImageCanvas';
             overlayCanvsId = 'captureImageCanvasOverlay';
 
-            var json = JSON.parse(response.value);
             var canvasImage = document.getElementById(canvasId);
             var canvasImageCtx = canvasImage.getContext('2d');
+
             var img = new Image();
-            img.src = json.uri;
+            img.src = imagePath;
             img.onload = function () {
                 canvasImageCtx.clearRect(0, 0, canvasImage.width, canvasImage.height);
                 canvasImageCtx.globalCompositeOperation = 'source-over';
                 canvasImageCtx.drawImage(img, 0, 0, canvasImage.width, canvasImage.height);
 
-                capture_ratio = captureCanvasZoneOverlay.width / img.width;
+                if (found) {
+                    capture_ratio = captureCanvasZoneOverlay.width / img.width;
 
-                captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
-                captureCanvasZoneOverlayCtx.fillStyle = "red";
-                captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
-                captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
-                captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
+                    captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
+                    captureCanvasZoneOverlayCtx.fillStyle = "red";
+                    captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
+                    captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
+                    captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
+                }
                 toggleCanvasLoader(true);
             }
-            found = true;
-        }).fail(function (response, status, err) {
-            console.error(`home/checkImage : error : ${err}`)
         });
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
