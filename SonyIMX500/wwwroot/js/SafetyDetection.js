@@ -572,7 +572,7 @@ async function processBlobMessage(signalRMsg) {
     //console.debug(`=> ${funcName}`);
 
     if (captureInProgress == false || pendingImagePath.length == 0) {
-        printTime(`Skiping ${signalRMsg}`);
+        printTime(`Skipping ${signalRMsg}`);
         return;
     }
 
@@ -637,6 +637,9 @@ async function processBlobMessage(signalRMsg) {
                     pendingImagePath = '';
                 }
             }
+        }).fail(function (response, status, err) {
+            console.error(`home/GetImagesFromBlob : error : ${err}`);
+            captureInProgress = true;
         });
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`);
@@ -764,6 +767,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             toggleCanvasLoader(true);
             found = true;
         }).fail(function (response, status, err) {
+            debugger
             console.error(`${funcName}error : ${err.statusText}`);
             toggleCanvasLoader(true);
         });
