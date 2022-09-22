@@ -103,10 +103,10 @@ function initCaptureCanvas(canvasIdZoneOverlay, canvasIdOverlay, canvasIdImage) 
     captureCanvasZoneOverlayCtx.strokeStyle = "red";
     captureCanvasZoneOverlayCtx.lineWidth = 3;
 
-    var $canvas = $('#' + canvasIdOverlay);
-    var canvasOffset = $canvas.offset();
-    captureOverlayCanvasOffset_X = canvasOffset.left;
-    captureOverlayCanvasOffset_Y = canvasOffset.top;
+    //var $canvas = $('#' + canvasIdZoneOverlay);
+    //var canvasOffset = $canvas.offset();
+    //captureOverlayCanvasOffset_X = canvasOffset.left;
+    //captureOverlayCanvasOffset_Y = canvasOffset.top;
 }
 
 function initSafetyDetectionCanvas(canvasIdOverlay, canvasIdImage) {
@@ -176,9 +176,13 @@ function mouseDown(e) {
     if (currentHandle == false) {
         // Clicked not on region's line.
         // Start a new region
+        var $canvas = $('#captureImageCanvasZoneOverlay');
+        var canvasOffset = $canvas.offset();
         currentHandle = 'bottomright';
-        region.x = parseInt(e.clientX - captureOverlayCanvasOffset_X);
-        region.y = parseInt(e.clientY - captureOverlayCanvasOffset_Y);
+        captureOverlayCanvasOffset_X = canvasOffset.left;
+        captureOverlayCanvasOffset_Y = canvasOffset.top;
+        region.x = parseInt(e.pageX - captureOverlayCanvasOffset_X);
+        region.y = parseInt(e.pageY - captureOverlayCanvasOffset_Y);
         isMouseDown = true;
         isResize = false;
         captureCanvasZoneOverlayCtx.strokeStyle = "red";
@@ -244,8 +248,8 @@ function mouseMove(e) {
 
     if (isMouseDown) {
         // draw region (not resize)
-        var mouseX = parseInt(e.clientX - captureOverlayCanvasOffset_X);
-        var mouseY = parseInt(e.clientY - captureOverlayCanvasOffset_Y);
+        var mouseX = parseInt(e.pageX - captureOverlayCanvasOffset_X);
+        var mouseY = parseInt(e.pageY - captureOverlayCanvasOffset_Y);
 
         region.w = mouseX - region.x;
         region.h = mouseY - region.y;
