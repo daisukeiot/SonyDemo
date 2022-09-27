@@ -250,44 +250,53 @@
                                                 <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" style="min-width:15em; width:30%" disabled></select>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                <label for="safetyDetectionImageCountSlider" style="margin-right:0.5em; width:11em;justify-content:right">Number of images : </label>
-                                                <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                    <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountSlider" style="width:100%">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                        <label for="safetyDetectionImageCountSlider" style="margin-right:0.5em; width:11em;justify-content:right">Number of images : </label>
+                                                        <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                            <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountSlider" style="width:100%">
+                                                        </div>
+                                                        <span><span id="safetyDetectionImageCountSliderLabel"></span><span> images</span></span>
+                                                    </div>
+                                                    <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                        <label for="safetyDetectionThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">Detection Threashold : </label>
+                                                        <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdSlider" style="width:100%">
+                                                        </div>
+                                                        <span> <span id="safetyDetectionThresholdSliderLabel"></span><span>&nbsp;%</span></span>
+                                                    </div>
+                                                    <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                        <label for="safetyDetectionIoUDetectionTimeSlider" style="margin-right:0.5em; width:11em;justify-content:right">Notificaiton Period : </label>
+                                                        <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                            <input type="range" class="slider" min="1" max="120" value="30" step="1" id="safetyDetectionIoUDetectionTimeSlider" style="width:100%">
+                                                        </div>
+                                                        <span> <span id="safetyDetectionIoUDetectionTimeSliderLabel"></span><span>&nbsp;sec</span></span>
+                                                    </div>
                                                 </div>
-                                                <span><span id="safetyDetectionImageCountSliderLabel"></span><span> images</span></span>
                                             </div>
-                                        </div>
-                                        <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                            <label for="safetyDetectionThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">Detection Threashold : </label>
-                                            <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdSlider" style="width:100%">
+                                            <div class="col-6">
+                                                <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                    <label for="safetyDetectionFrequencySlider" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
+                                                    <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                        <input type="range" class="slider" min="0" max="600" value="10" step="1" id="safetyDetectionFrequencySlider" style="width:100%">
+                                                    </div>
+                                                    <span id="safetyDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
+                                                </div>
+                                                <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
+                                                    <label for="safetyDetectionIoUThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">IoU Threashold : </label>
+                                                    <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
+                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionIoUThresholdSlider" style="width:100%">
+                                                    </div>
+                                                    <span> <span id="safetyDetectionIoUThresholdSliderLabel"></span><span>&nbsp;%</span></span>
+                                                </div>
                                             </div>
-                                            <span> <span id="safetyDetectionThresholdSliderLabel"></span><span>&nbsp;%</span></span>
-                                        </div>
-                                        <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                            <label for="safetyDetectionIoUThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">IoU Threashold : </label>
-                                            <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionIoUThresholdSlider" style="width:100%">
-                                            </div>
-                                            <span> <span id="safetyDetectionIoUThresholdSliderLabel"></span><span>&nbsp;%</span></span>
-                                        </div>
-                                        <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                            <label for="safetyDetectionFrequencySlider" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
-                                            <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                <input type="range" class="slider" min="0" max="600" value="10" step="1" id="safetyDetectionFrequencySlider" style="width:100%">
-                                            </div>
-                                            <span id="safetyDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                         </div>
                                         <div class="btnStatusDiv">
                                             <button type="button" class="btn btn-success" id="startSafetyDetectionWithImageBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference
                                             </button>
-@*                                            <span>
-                                                <input type="checkbox" id="safetyDetectionImageCb" checked>
-                                                <label for="safetyDetectionImageCb" style="margin-right:0.5em; width:11em;justify-content:right">Upload Images </label>
-                                            </span>*@
                                             <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference (No Image)
                                             </button>
@@ -365,12 +374,21 @@
         var capture_photo_url = undefined;
 
         let chartOptions = {
+            legend: {
+                display: false
+            },
             scales: {
                 x : {
                     display: true,
-                    type: 'time',
+                    type: 'timeseries',
                     time: {
                         unit: 'second'
+                    },
+                    ticks: {
+                        source : 'data'
+                    },
+                    grid: {
+                        display: false,
                     }
                 },
                 y: {
@@ -392,23 +410,10 @@
                 datasets: [
                     {
                         label: "Inference Results",
-                        fill: false,
-                        lineTension: 0.0,
-                        backgroundColor: "rgba(75,192,192,0.4)",
-                        borderColor: "rgba(75,192,192,1)",
-                        borderCapStyle: 'butt',
-                        borderDash: [],
-                        borderDashOffset: 0.0,
-                        borderJoinStyle: 'miter',
-                        pointBorderColor: "rgba(75,192,192,1)",
-                        pointBackgroundColor: "#fff",
-                        pointBorderWidth: 1,
-                        pointHoverRadius: 5,
-                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
-                        pointHoverBorderColor: "rgba(220,220,220,1)",
-                        pointHoverBorderWidth: 2,
-                        pointRadius: 5,
-                        pointHitRadius: 10,
+                        backgroundColor: "rgba(75,192,192,0.9)",
+                        borderWidth: 0,
+                        barPercentage: 1.0,
+                        categoryPercentage: 1.0,
                         data: [],
                     }
                 ]
@@ -455,7 +460,7 @@
             var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
 
             lineChart = new Chart(lineChartCanvas, {
-                type: 'line',
+                type: 'bar',
                 data: chartData,
                     options: chartOptions
             });
