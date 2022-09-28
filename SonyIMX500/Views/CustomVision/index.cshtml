@@ -224,34 +224,9 @@
             document.getElementById('nav-link-cv').classList.add('active');
         })
 
-        $(window).load(function() {
-
-            //Dropzone.autoDiscover = false;
-
-            //var previewNode = document.querySelector("#dropZoneTemplate");
-            //previewNode.id = "";
-            //var previewTemplate = previewNode.parentNode.innerHTML;
-            //previewNode.parentNode.removeChild(previewNode);
-
-            //let myDropzone = new Dropzone(document.body, { // Make the whole body a dropzone
-            //    url: "/target-url", // Set the url
-            //    thumbnailWidth: 80,
-            //    thumbnailHeight: 80,
-            //    parallelUploads: 20,
-            //    previewTemplate: previewTemplate,
-            //    acceptedFiles: "image/jpeg, image/png, image/gif, image/jpg",
-            //    autoQueue: false, // Make sure the files aren't queued until manually added
-            //    previewsContainer: "#previews", // Define the container to display the previews
-            //    clickable: ".fileinput-button" // Define the element that should be used as click trigger to select files.
-            //})
-        });
-
-        //window.addEventListener("resize", resizeCanvas, false);
-
         // BS-Stepper Init
         document.addEventListener('DOMContentLoaded', function () {
-            window.stepper = new Stepper(document.querySelector('.bs-stepper'))
-            //stepperEl = new Stepper(document.querySelector('.bs-stepper'))
+            window.stepper = new Stepper(document.querySelector('.bs-stepper'));
         })
 
         stepperEl = document.querySelector('#cvStepper');
@@ -294,7 +269,7 @@
         }
 
         $('#cvProjectList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
@@ -311,7 +286,7 @@
         })
 
         $('#cvTagList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
@@ -333,7 +308,7 @@
 
 
         $('#cvUploadImages').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if (document.getElementById(evt.target.id).value.length > 0) {
                 $("#cvUploadImagesBtn").prop('disabled', false);
@@ -344,7 +319,7 @@
         })
 
         $('#cvCreateTagName').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if (document.getElementById(evt.target.id).value.length > 0) {
                 $("#cvCreateTagModalBtn").prop('disabled', false);
@@ -355,7 +330,7 @@
         })
 
         $('#cvTrainProjectList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             $('#cvIterationsJsGrid').jsGrid('loadData');
         })
 
@@ -363,7 +338,7 @@
         // button clicks
         //
         $('#cvCreateTagBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var projectId = CvGetProjectId();
 
@@ -379,7 +354,7 @@
         })
 
         $('#cvAssignTagBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             
             var projectId = CvGetProjectId();
             $("#cvAssignTagBtn").prop('disabled', true);
@@ -397,7 +372,7 @@
         })
 
         $('#cvStartTrainingBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var response = await CvTrainProject()
                                     .then(() => { 
                                     })
@@ -406,12 +381,12 @@
         })
 
         $('#cvStartTrainingRefreshBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             $('#cvIterationsJsGrid').jsGrid('loadData');
         })
         
         $('#cvVisitCustomVisionBtn').click(async function(evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var projectId = CvGetIterationProjectId();
             var url = "https://www.customvision.ai/projects/" + projectId;
             window.open(url, "_blank");
@@ -422,12 +397,12 @@
         // Tab
         //
         $('#upload-images-step-trigger').on('show.bs.tab', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         // Modal
         $('#cvCreateTagModal').on('hidden.bs.modal', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
              $('#cvCreateTagName').value = "";
              $('#cvCreateTagDesc').value = "";
         })

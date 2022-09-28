@@ -12,6 +12,7 @@ function setSelectOption(selectElementId, selectValue) {
 }
 
 function toggleLoader(bForceClear) {
+
     var loader = document.getElementById("loader");
 
     if (bForceClear) {

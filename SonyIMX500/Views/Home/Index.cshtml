@@ -1096,9 +1096,7 @@
             return true;
         }
 
-        $(window).load(function() { 
-
-            console.debug("Window.Load");
+        $(document).ready(function() { 
 
             if ('@ViewData["Name"]' != null && '@ViewData["Name"]'.length > 0)
             {
@@ -1211,7 +1209,7 @@
         })
 
         $('#createBaseCustomVisionProjectBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#createBaseCustomVisionProjectForm').valid() == false) {
                 return;
@@ -1254,7 +1252,7 @@
         })
 
         $('#visitCustomVisionBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             console.debug("visitCustomVisionBtn Click");
             var projectList = document.getElementById('visitCustomVisionProjectList');
@@ -1265,13 +1263,13 @@
         })
 
         $('#clearApiOutputBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             document.getElementById('tabApiOutput').value = null;
         })
 
         $('#saveCustomVisionModelBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#saveCustomVisionModelForm').valid()) {
 
@@ -1293,7 +1291,7 @@
         })
 
         $('#convertModelBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             disableUiButtons(true);
             toggleLoader(false);
@@ -1316,7 +1314,7 @@
         })
 
         $('#convertModelGetBaseModelStatusBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var modelIdList = 'convertModelModelIdList';
 
@@ -1355,7 +1353,7 @@
         })
 
         $('#publishModelBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             disableUiButtons(true);
             toggleLoader(false);
@@ -1380,7 +1378,7 @@
         })
 
         $('#publishModelGetBaseModelStatusBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var modelIdList = 'publishModelModelIdList';
 
@@ -1418,7 +1416,7 @@
         })
 
         $('#createDeployConfigurationBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#createDeployConfigurationForm').valid() == false) {
                 return;
@@ -1440,7 +1438,7 @@
         })
 
         $('#deployByConfiguratonBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
             await DeployByConfiguration()
                 .then(() => {
@@ -1455,7 +1453,7 @@
         })
 
         $('#createDeployConfigurationGetDeployConfigurationsBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetList = 'createDeployConfigurationGetDeployConfigurationsList';
             var currentDeployment = document.getElementById(targetList).value;
@@ -1477,7 +1475,7 @@
         })
 
         $('#startUploadInferenceResultBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#startUploadInferenceResultForm').valid()) {
                 toggleLoader(false);
@@ -1492,7 +1490,7 @@
         })
 
         $('#stopUploadInferenceResultBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             await StopUploadInferenceResult()
@@ -1505,7 +1503,7 @@
         })
 
         $('#startUploadRetrainingDataBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if ($('#startUploadRetrainingDataForm').valid()) {
                 toggleLoader(false);
@@ -1520,7 +1518,7 @@
         })
 
         $('#stopUploadRetrainingDataBtn').click(async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             await StopUploadRetrainingData()
@@ -1533,18 +1531,18 @@
         })
 
         $('#clearTelemetryTableBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             $("#telemetryTbl").find("tr:gt(0)").remove();
             $("#telemetryTbl").hide();
         })
 
         $('#clearApiOutputBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         $('#getDevicesBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             RefreshDevicesListTable()
@@ -1557,7 +1555,7 @@
         })
 
         $('#getModelsBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             RefreshModelsListTable()
@@ -1570,7 +1568,7 @@
         })
 
         $('#getDeployConfigurationsBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             RefreshDeployConfiguraions()
@@ -1583,12 +1581,12 @@
         })
 
         $('#refreshImageGalleryBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             $("#blobStorJsGrid").jsGrid("loadData");
         })
 
         $('#refreshCosmosDbBtn').click(function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             $("#cosmosDbJsGrid").jsGrid("loadData");
         })
 
@@ -2085,15 +2083,15 @@
         //
 
         $('#accordionSetup').on('show.bs.collapse', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         $('#accordionSetup').on('hide.bs.collapse', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         $('#accordionCreateBaseCustomVisionProject').on('show.bs.collapse', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'selectCustomVisionProjectList';
             var resultElementId = 'deleteCustomVisionProjectBtnResult';
@@ -2109,7 +2107,7 @@
         })
 
         $('#accordionVisitCustomVision').on('show.bs.collapse', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'visitCustomVisionProjectList';
 
@@ -2129,7 +2127,7 @@
         })
 
         $('#accordionSaveCustomVisionModel').on('show.bs.collapse', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
 
@@ -2152,7 +2150,7 @@
         })
 
         $('#accordionConvertModel').on('show.bs.collapse', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             try {
                 var targetListName = 'convertModelModelIdList';
@@ -2182,7 +2180,7 @@
         })
 
         $('#accordionPublishModel').on('show.bs.collapse', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'publishModelModelIdList';
 
@@ -2212,7 +2210,7 @@
         })
 
         $('#accordionCreatePeployConfiguration').on('show.bs.collapse', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             try {
                 toggleLoader(false);
@@ -2263,7 +2261,7 @@
         })
 
         $('#accordionDeployByConfiguration').on('show.bs.collapse', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'deployByConfiguraionFormConfigIdList';
 
@@ -2290,7 +2288,7 @@
         })
 
         $('#accordionStartUploadInferenceResult').on('show.bs.collapse', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             try {
                 toggleLoader(false);
@@ -2315,7 +2313,7 @@
         })
 
         $('#accordionStartUploadRetrainingData').on('show.bs.collapse', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListName = 'startUploadRetrainingDataModelIdList';
 
@@ -2344,7 +2342,7 @@
         //
 
         $('#deploymentHistoryModal').on('show.bs.modal', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             $("#deploymentHistoryGrid").jsGrid("loadData");
         })
 
@@ -2352,11 +2350,11 @@
         // Tab
         //
         $('#tab-setup-label').on('show.bs.tab', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         $('#tab-telemetry-label').on('show.bs.tab', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetDeviceListName = 'telemetryTableFilterList';
             toggleLoader(false);
             await GetDevices(targetDeviceListName, true, true, 'All Devices', '*', null)
@@ -2395,7 +2393,7 @@
         })
 
         $('#tab-cosmosDb-label').on('show.bs.tab', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             toggleLoader(false);
             var targetDeviceListName = 'cosmosDbDeviceIdList';
@@ -2431,24 +2429,24 @@
         })
 
         $('#tab-cosmosDb-label').on('hide.bs.tab', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             cosmosDbRecordCountSlider.removeEventListener("input", cosmosDbRecordCountSliderHandler);
             cosmosDbThresholdSlider.removeEventListener("input", cosmosDbThresholdSliderHandler);
         })
 
         $('#tab-apiOutput-label').on('show.bs.tab', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         $('#tab-other-label').on('show.bs.tab', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
         })
 
         //
         // Change event
         //
         $('#taToken').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             if (document.getElementById('taToken').value.length > 0) {
                 PostToken(document.getElementById('taToken').value);
@@ -2459,7 +2457,7 @@
         })
 
         $('#clientId').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             console.debug("Client ID : " + document.getElementById('clientId').value);
             if (document.getElementById('clientId').value.length > 0) {
                 SetClientId(document.getElementById('clientId').value);
@@ -2472,7 +2470,7 @@
         //
 
         $('#selectCustomVisionProjectList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
@@ -2488,7 +2486,7 @@
         })
 
         $('#visitCustomVisionProjectList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
@@ -2503,7 +2501,7 @@
         })
 
         $('#saveCustomVisionModelProjectNameList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var projectList = document.getElementById(targetListId);
@@ -2519,7 +2517,7 @@
 
 
         $('#convertModelModelIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
@@ -2541,7 +2539,7 @@
         })
 
         $('#publishModelModelIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
@@ -2560,32 +2558,32 @@
         })
 
         $('#createDeployConfigurationConfigId').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
         $('#createDeployConfigurationSensorLoaderVersionNumber').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
         $('#createDeployConfigurationSensorVersionNumber').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
         $('#createDeployConfigurationModelId').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
         $('#createDeployConfigurationApFwVersionNumber').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckCreateDeployConfigurationInputs();
         })
 
         $('#createDeployConfigurationGetDeployConfigurationsList').on('change', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
 
             var currentDeployment = document.getElementById(evt.target.id).value;
 
@@ -2657,12 +2655,12 @@
         })
         
         $('#deployByConfiguraionFormConfigIdList').on('change', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
         })
 
         $('#deployByConfiguraionDeviceIdList').on('change', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             CheckDeployByConfigurationInputs();
 
             var targetListId = evt.target.id;
@@ -2685,7 +2683,7 @@
         })
 
         $('#startUploadInferenceResultDeviceIdList').on('change', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
@@ -2710,7 +2708,7 @@
         })
 
         $('#startUploadInferenceResultModelIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
 
@@ -2722,7 +2720,7 @@
         })
 
         $('#startUploadRetrainingDataDeviceIdList').on('change', async function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
@@ -2747,7 +2745,7 @@
         })
 
         $('#startUploadRetrainingDataModelIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var modelList = document.getElementById(targetListId);
 
@@ -2759,12 +2757,12 @@
         })
 
         $('#telemetryTableFilterList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             telemetryTableFilter2(evt.target.id);
         })
 
         $('#imageGalleryDeviceIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
@@ -2776,7 +2774,7 @@
         })
 
         $('#cosmosDbDeviceIdList').on('change', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
             var deviceList = document.getElementById(targetListId);
 
@@ -2788,7 +2786,7 @@
         })
 
         $('#createBaseCustomVisionProjectName').on('input', function (evt) {
-            console.debug(evt.target.id + "() " + evt.type);
+            //console.debug(evt.target.id + "() " + evt.type);
             var inputField = document.getElementById('createBaseCustomVisionProjectName');
 
             if (inputField.value.length > 0) {

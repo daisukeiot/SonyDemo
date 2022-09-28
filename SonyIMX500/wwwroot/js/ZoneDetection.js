@@ -16,10 +16,40 @@ var currentHandle = false;
 var isResize = false;
 var isMouseDown = false;
 var pendingImagePath = '';
-var runninigZoneDetection = false;
-var captureInProgress = false;
-var capture_ratio = 2;
+var captureInProgress = false;  // flag to indicate image capture is in progress
+var iouStart = null;
 
+
+var capture_ratio = 2;  // For capture canvas, draw image bigger (640x640 vs. 320x320). 
+                        // 320x320 is too small to draw rectangle (or zone) and read letters
+
+var region = {
+    x: 0,
+    y: 0,
+    w: 0,
+    h: 0
+};
+
+// Utility functions for drawing zone
+function point(x, y) {
+    return {
+        x: x,
+        y: y
+    };
+}
+
+function dist(p1, p2) {
+    return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
+}
+
+// parse yyyymmddhhmmssSSS format to Date object
+function getDate(dateString) {
+
+    var date = new Date(Date.UTC(dateString.substr(0, 4), dateString.substr(4, 2), dateString.substr(6, 2), dateString.substr(8, 2), dateString.substr(10, 2), dateString.substr(12, 2), dateString.substr(14, 3)));
+    return date;
+}
+
+// Utility function to print time in cosole to see timings.
 function printTime(msg) {
     let dateObj = new Date();
     let hour = dateObj.getHours();
@@ -32,9 +62,9 @@ function printTime(msg) {
     console.debug(time);
 }
 
+// enable/disable mouse events for the top most canvas
 function enableDisableMouseEvent(bEnable) {
 
-    // enabling mouse event for the top most canvas
     if (bEnable) {
         captureOvelayCanvas.addEventListener('mousedown', mouseDown, false);
         captureOvelayCanvas.addEventListener('mouseup', mouseUp, false);
@@ -46,6 +76,7 @@ function enableDisableMouseEvent(bEnable) {
     }
 }
 
+// Utility function to disable/enable UI elements
 function disableUiElements(bDisable) {
     $('#captureImageBtn').prop('disabled', bDisable);
     $('#captureStartInferenceBtn').prop('disabled', bDisable);
@@ -59,13 +90,7 @@ function disableUiElements(bDisable) {
     $('#stopZoneDetectionBtn').prop('disabled', bDisable);
 }
 
-var region = {
-    x: 0,
-    y: 0,
-    w: 0,
-    h: 0
-};
-
+// Display an overlay to show message on capture canvas
 function toggleCanvasLoader(bForceClear) {
 
     if (isZoneDetectionRunning == true) {
@@ -88,6 +113,7 @@ function toggleCanvasLoader(bForceClear) {
     }
 }
 
+// Initialize capture canvas and draw zone rect
 function initCaptureCanvas(canvasIdZoneOverlay, canvasIdOverlay, canvasIdImage) {
 
     captureCanvas = document.getElementById(canvasIdImage);
@@ -102,56 +128,104 @@ function initCaptureCanvas(canvasIdZoneOverlay, canvasIdOverlay, canvasIdImage) 
     captureCanvasZoneOverlayCtx = captureCanvasZoneOverlay.getContext("2d");
     captureCanvasZoneOverlayCtx.strokeStyle = "red";
     captureCanvasZoneOverlayCtx.lineWidth = 3;
-
-    //var $canvas = $('#' + canvasIdZoneOverlay);
-    //var canvasOffset = $canvas.offset();
-    //captureOverlayCanvasOffset_X = canvasOffset.left;
-    //captureOverlayCanvasOffset_Y = canvasOffset.top;
 }
 
-function initZoneDetectionCanvas(canvasIdOverlay, canvasIdImage) {
+// Display an image in Capture Canvas.
+async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
+    var funcName = `${arguments.callee.name}()`;
+    console.debug(`=> ${funcName}`);
+    var found = false;
+    var imagePath;
+    toggleCanvasLoader(false);
+
+    try {
+        await $.ajax({
+            async: true,
+            type: "GET",
+            url: window.location.origin + '/' + 'home/checkImage',
+            data: {
+                deviceId: deviceId,
+                imagePath: imagePath
+            }
+        }).done(function (response) {
+            found = true;
+            var json = JSON.parse(response.value);
+            imagePath = json.uri;
+            found = true;
+
+        }).fail(function (response, status, err) {
+            console.error(`home/checkImage : error : ${err}`);
+            imagePath = '/images/imagenotfoundinblob.jpg';
+            //debugger
+
+        }).always(function (response, status, err) {
+            canvasId = 'captureImageCanvas';
+            overlayCanvsId = 'captureImageCanvasOverlay';
+
+            var canvasImage = document.getElementById(canvasId);
+            var canvasImageCtx = canvasImage.getContext('2d');
+
+            var img = new Image();
+            img.src = imagePath;
+            img.onload = function () {
+                canvasImageCtx.clearRect(0, 0, canvasImage.width, canvasImage.height);
+                canvasImageCtx.globalCompositeOperation = 'source-over';
+                canvasImageCtx.drawImage(img, 0, 0, canvasImage.width, canvasImage.height);
+
+                if (found) {
+                    capture_ratio = captureCanvasZoneOverlay.width / img.width;
+
+                    captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
+                    captureCanvasZoneOverlayCtx.fillStyle = "red";
+                    captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
+                    captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
+                    captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
+                }
+            }
+        });
+    } catch (err) {
+        console.error(`${funcName}: ${err.statusText}`)
+    } finally {
+        toggleCanvasLoader(true);
+    }
 }
 
+// clear capture canvas.
 function ClearCaptureCanvas() {
+    // clear all layers
     captureCanvasCtx.clearRect(0, 0, captureCanvas.width, captureCanvas.height);
     captureOverlayCanvasCtx.clearRect(0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height);
     captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
 
+    // draw gray background
     captureCanvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
     captureCanvasCtx.fillStyle = 'lightgray';
     captureCanvasCtx.fill();
-    captureCanvasCtx.stroke();
 }
 
+// Clear Zone Detection canvas
 function ClearZoneDetectionCanvas() {
-    var canvas = document.getElementById('zoneDetectionCanvas');
-    var canvasCtx = canvas.getContext("2d");
-    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-    canvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
-    canvasCtx.fillStyle = 'lightgray';
-    canvasCtx.stroke();
-    canvasCtx.fill();
 
-    canvas = document.getElementById('zoneDetectionCanvasOverlay');
-    canvasCtx = canvas.getContext("2d");
+    // clear all layers
+    var canvas = document.getElementById('zoneDetectionCanvasOverlay');
+    var canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
     canvas = document.getElementById('zoneDetectionCanvasZoneOverlay');
     canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    canvas = document.getElementById('zoneDetectionCanvas');
+    canvasCtx = canvas.getContext("2d");
+    canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // draw gray background
+    canvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
+    canvasCtx.fillStyle = 'lightgray';
+    canvasCtx.fill();
 }
 
-function point(x, y) {
-    return {
-        x: x,
-        y: y
-    };
-}
-
-function dist(p1, p2) {
-    return Math.sqrt((p2.x - p1.x) * (p2.x - p1.x) + (p2.y - p1.y) * (p2.y - p1.y));
-}
-
+// returns mouse position
 function getHandle(mouse) {
     if (dist(mouse, point(region.x, region.y)) <= handleSize) return 'topleft';
     if (dist(mouse, point(region.x + region.w, region.y)) <= handleSize) return 'topright';
@@ -164,8 +238,13 @@ function getHandle(mouse) {
     return false;
 }
 
+////////////////////////////////////////////////////////////////
+// Event handlers for mouse move
+////////////////////////////////////////////////////////////////
+
+// Process mouse down (Press and hold)
 function mouseDown(e) {
-    var funcName = `${arguments.callee.name}()`;
+    //var funcName = `${arguments.callee.name}()`;
     //console.debug(`=> ${funcName}`);
 
     e.preventDefault();
@@ -190,10 +269,11 @@ function mouseDown(e) {
     else {
         // Clicked on a corner or on line
         isResize = true;
-        drawRegion();
+        drawZoneRectangle();
     }
 }
 
+// Process mouse button release
 function mouseUp(e) {
     var funcName = `${arguments.callee.name}()`;
     //console.debug(`=> ${funcName}`);
@@ -232,13 +312,14 @@ function mouseUp(e) {
     rect_zone[2] = w;
     rect_zone[3] = h;
 
-    drawRegion();
+    drawZoneRectangle();
 
     captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
     captureCanvasZoneOverlayCtx.fillStyle = "red";
     captureCanvasZoneOverlayCtx.fillRect(region.x, region.y, region.w, region.h);
 }
 
+// Process mouse pointer move
 function mouseMove(e) {
     var funcName = `${arguments.callee.name}()`;
    // console.debug(`=> ${funcName}`);
@@ -255,7 +336,7 @@ function mouseMove(e) {
         region.h = mouseY - region.y;
 
         captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
-        drawRegion();
+        drawZoneRectangle();
     }
     else if (isResize) {
 
@@ -301,11 +382,12 @@ function mouseMove(e) {
                 break;
         }
 
-        drawRegion();
+        drawZoneRectangle();
     }
 }
 
-function drawRegion() {
+// Draw rectangle.  For capture canvas.
+function drawZoneRectangle() {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
@@ -313,7 +395,7 @@ function drawRegion() {
     captureCanvasZoneOverlayCtx.globalAlpha = 1;
 
     if (currentHandle == false) {
-        // mouse pointer not on a corner / line.  Clear region
+        // mouse pointer not on a corner or on line.  Clear region
         captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
         captureCanvasZoneOverlayCtx.strokeRect(region.x, region.y, region.w, region.h);
     }
@@ -366,16 +448,15 @@ function drawRegion() {
     }
 }
 
-async function CaptureSingleImage(resultElementId) {
+// Start image capture
+async function CaptureImage(resultElementId) {
     var funcName = `${arguments.callee.name}()`;
     printTime(`=> ${funcName}`);
     var resultElement = null;
     captureInProgress = true;
 
     try {
-
         pendingImagePath = '';
-        isPendingCapture = true;
 
         if (resultElementId != null) {
             resultElement = document.getElementById(resultElementId);
@@ -390,7 +471,8 @@ async function CaptureSingleImage(resultElementId) {
         var CropVOffset = null;
         var CropHSize = null;
         var CropVSize = null;
-        var NumberOfImages = 0;  // potential race condition between API call and Cosmos DB messages.  Use blob message so that we know the image is available.
+        var NumberOfImages = 0;  // potential race condition between API call and SignalR messages.  Use blob message so that we know the image is available.
+                                 // Continue to capture until the image is found.
         var FrequencyOfImages = Math.round(500/33); // 0.5 sec.
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
@@ -427,118 +509,127 @@ async function CaptureSingleImage(resultElementId) {
     } catch (err) {
         console.error(`${funcName}: ${err.responseJSON.value}`)
         setResultElement(resultElement, err.responseJSON.value);
-    } finally {
     }
     return pendingImagePath;
 }
 
-// process SignalR message for Telemetry
-async function processTelemetryMessage(signalRMsg) {
-
-    var funcName = `${arguments.callee.name}()`;
-    //console.debug(`=> ${funcName}`);
-
-    var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
-
-    if (notificationType != 'telemetry') {
-        return;
-    }
-
-    if (pendingImagePath.length == 0) {
-        return;
-    }
-
-    var imagePath = pendingImagePath.split("/");
-
-    if (imagePath.length != 4) {
-        return;
-    }
-
-    try {
-        var message = JSON.parse(signalRMsg);
-        if (message.deviceId != currentDeviceId) {
-            return;
-        }
-    } catch (err) {
-        console.error(`${funcName} : ${err.statusText}`)
-    } finally {
-        //printTime("processTelemetryMessage exit");
-    }
-}
-
-// process SignalR message for Telemetry
-async function processTelemetryForChart(signalRMsg, lineChart, threshold) {
-
+// process Telemetry SignalR message to update chart
+async function processTelemetryMessage(signalRMsg, barChart, threshold, iouThreshold, notificationThreshold) {
     // var funcName = `${arguments.callee.name}()`;
     //console.debug(`=> ${funcName}`);
 
-    try {
-        var message = JSON.parse(signalRMsg);
+    if (isZoneDetectionRunning == true) {
+        try {
+            var message = JSON.parse(signalRMsg);
 
-        if (message.data == null) {
-            return;
-        }
+            if (message.data == null) {
+                // no data, just return;
+                return;
+            }
 
-        if (message.deviceId != currentDeviceId) {
-            return;
-        }
+            // Apply device id filter.
+            if (message.deviceId != currentDeviceId) {
+                return;
+            }
 
-        // add device id filter.
-        var inferenceData = JSON.parse(message.data);
-        lineChart.data.labels.push(message.eventTime);
+            var inferenceData = JSON.parse(message.data);
+            barChart.data.labels.push(message.eventTime);
 
-        var p_value = 0;
+            var p_value = 0;
 
-        if ((isZoneDetectionRunning == true) && (pendingImagePath.length == 0)) {
-            var canvasOverlay = document.getElementById('zoneDetectionCanvasOverlay');
-            var ctxOverlay = canvasOverlay.getContext('2d');
-            ctxOverlay.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
+            if (pendingImagePath.length == 0) {
+                // Inference in progress without image (inference results only)
+                // Draw bounding box
+                var canvasOverlay = document.getElementById('zoneDetectionCanvasOverlay');
+                var ctxOverlay = canvasOverlay.getContext('2d');
+                ctxOverlay.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
 
-            for (var i = 0; i < inferenceData.Inferences.length; i++) {
-                var inferenceResults = inferenceData.Inferences[i];
-                var j = 1;
-                while (inferenceResults[j] != undefined) {
-                    if (inferenceResults[j].P >= threshold) {
-                        DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
+                for (var i = 0; i < inferenceData.Inferences.length; i++) {
+                    var inferenceResults = inferenceData.Inferences[i];
+                    var j = 1;
+                    while (inferenceResults[j] != undefined) {
+                        if (inferenceResults[j].P >= threshold) {
+                            DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
+
+                            var iou = calcIoU(inferenceResults[j].X, inferenceResults[j].Y, inferenceResults[j].x, inferenceResults[j].y);
+
+                            if (iou >= iouThreshold) {
+
+                                if (iouStart == null) {
+                                    iouStart = getDate(inferenceResults['T']);
+                                } else {
+                                    var dateNow = getDate(inferenceResults['T']);
+                                    var delta = Math.abs(dateNow - iouStart);
+
+                                    if ((delta / 1000) >= notificationThreshold) {
+                                        var chartDiv = document.getElementById('barChartDiv');
+
+                                        if (chartDiv.classList.contains("alertBlink") == false) {
+                                            chartDiv.classList.add("alertBlink");
+                                            var navbarNotificationSpan = document.getElementById("navbarNotificationSpan");
+                                            var navbarAlertHeader = document.getElementById("navbarAlertHeader");
+                                            var navbarAlertSpan = document.getElementById("navbarAlertSpan");
+
+                                            var currentValue = 0;
+
+                                            if (navbarNotificationSpan.innerHTML.length > 0) {
+                                                currentValue = parseInt(navbarNotificationSpan.innerHTML);
+                                            }
+                                            currentValue += 1;
+                                            navbarNotificationSpan.innerHTML = currentValue.toString();
+                                            navbarAlertHeader.innerHTML = `${currentValue.toString()} alert`;
+
+                                            navbarAlertSpan.innerHTML = `${dateNow.toLocaleString('en-US')}`;
+                                        }
+                                    }
+                                }
+                                p_value++;
+                            }
+                        }
+                        j++;
                     }
-                    j++;
                 }
             }
-        }
 
-        for (var i = 0; i < inferenceData.Inferences.length; i++) {
-            var inferenceResults = inferenceData.Inferences[i];
-            var j = 1;
-            while (inferenceResults[j] != undefined) {
-                if (inferenceResults[j].P >= threshold) {
-                    p_value++;
+            //for (var i = 0; i < inferenceData.Inferences.length; i++) {
+            //    var inferenceResults = inferenceData.Inferences[i];
+            //    var j = 1;
+            //    while (inferenceResults[j] != undefined) {
+            //        if (inferenceResults[j].P >= threshold) {
+            //            p_value++;
+            //        }
+            //        j++;
+            //    }
+            //}
+
+            if (p_value == 0) {
+                var chartDiv = document.getElementById('barChartDiv');
+                if (chartDiv.classList.contains("alertBlink") == true) {
+                    chartDiv.classList.remove("alertBlink");
                 }
-                j++;
+                iouStart = null;
             }
-        }
-        lineChart.data.datasets[0].data.push(p_value);
-        lineChart.update();
+            barChart.data.datasets[0].data.push(p_value);
+            barChart.update();
 
-    } catch (err) {
-        console.error("Error processing Telemetry data for chart ");
-    } finally {
+        } catch (err) {
+            console.error("Error processing Telemetry data for chart ");
+        }
     }
 }
 
 // process SignalR message for Cosmos DB
 async function processCosmosDbMessage(signalRMsg, threshold) {
-
     var funcName = `${arguments.callee.name}()`;
     //console.debug(`=> ${funcName}`);
 
-    var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
-
-    if (notificationType != 'cosmosDb' || captureInProgress == true) // use blob for single image capture
+    if (captureInProgress == true) // use blob for image capture
     {
         return;
     }
 
     if (pendingImagePath.length == 0) {
+        // Images are not captured, inference results only.  Nothing to do.
         return;
     }
 
@@ -563,8 +654,6 @@ async function processCosmosDbMessage(signalRMsg, threshold) {
 
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
-    } finally {
-        // printTime("processCosmosDbMessage <==");
     }
 }
 
@@ -576,7 +665,7 @@ async function processBlobMessage(signalRMsg) {
     //console.debug(`=> ${funcName}`);
 
     if (captureInProgress == false || pendingImagePath.length == 0) {
-        //printTime(`Skipping ${signalRMsg}`);
+        //printTime(`Skipping ${signalRMsg} ${captureInProgress} ${pendingImagePath}`);
         return;
     }
 
@@ -603,113 +692,48 @@ async function processBlobMessage(signalRMsg) {
 
         var blobPath = message.blobPath.split("/");
 
-        if (imagePath[1] != currentDeviceId) {
-            return;
-        } else if (blobPath[0] != imagePath[1]) {
-            return;
-        } else if (blobPath[1] != imagePath[2]) {
-            return;
-        } else if (blobPath[2] != imagePath[3]) {
-            return;
-        }
+        if ((imagePath[1] == currentDeviceId) && (blobPath[0] == imagePath[1]) && (blobPath[1] == imagePath[2]) && (blobPath[2] == imagePath[3])) {
 
-        await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.origin + '/' + 'home/GetImagesFromBlob',
-            data: {
-                deviceId: imagePath[1],
-                imagePath: message.blobPath
-            }
-        }).done(function (response) {
-            console.debug(response.value);
-
-            // Found an image, stop capture
-            StopInference('captureImageBtnResult', true);
-
-            var json = JSON.parse(response.value);
-            var captureOvelayCanvas = document.getElementById("captureImageCanvas");
-            var captureOverlayCanvasCtx = captureOvelayCanvas.getContext('2d');
-            var img = new Image();
-            img.src = json.uri;
-            img.onload = function () {
-                captureOverlayCanvasCtx.drawImage(img, 0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height)
-                toggleCanvasLoader(true);
-
-                if (isPendingCapture == true) {
-                    capture_photo_url = message.blobPath;
-                    pendingImagePath = '';
+            await $.ajax({
+                async: true,
+                type: "GET",
+                url: window.location.origin + '/' + 'home/GetImagesFromBlob',
+                data: {
+                    deviceId: imagePath[1],
+                    imagePath: message.blobPath
                 }
-            }
-        }).fail(function (response, status, err) {
-            console.error(`home/GetImagesFromBlob : error : ${err}`);
+            }).done(function (response) {
+                console.debug(response.value);
+
+                var json = JSON.parse(response.value);
+                var captureOvelayCanvas = document.getElementById("captureImageCanvas");
+                var captureOverlayCanvasCtx = captureOvelayCanvas.getContext('2d');
+                var img = new Image();
+                img.src = json.uri;
+                img.onload = function () {
+                    captureOverlayCanvasCtx.drawImage(img, 0, 0, captureOvelayCanvas.width, captureOvelayCanvas.height)
+                    toggleCanvasLoader(true);
+
+                    // Found an image, stop capture
+                    capture_photo_url = message.blobPath;
+//                    pendingImagePath = '';
+                    StopInference('captureImageBtnResult', true);
+                }
+            }).fail(function (response, status, err) {
+                console.error(`home/GetImagesFromBlob : error : ${err}`);
+                captureInProgress = true;
+            });
+        } else {
+            console.debug(`Image Path not match Panding Path : ${pendingImagePath}`);
             captureInProgress = true;
-        });
+        }
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`);
-        isPendingCapture = true;
-    } finally {
+        captureInProgress = true;
     }
 }
 
-async function SetCaptureCanvas(deviceId, imagePath, rect_zone) {
-    var funcName = `${arguments.callee.name}()`;
-    console.debug(`=> ${funcName}`);
-    var found = false;
-    var imagePath;
-
-    try {
-
-        await $.ajax({
-            async: true,
-            type: "GET",
-            url: window.location.origin + '/' + 'home/checkImage',
-            data: {
-                deviceId: deviceId,
-                imagePath: imagePath
-            }
-        }).done(function (response) {
-            found = true;
-            var json = JSON.parse(response.value);
-            imagePath = json.uri;
-            found = true;
-
-        }).fail(function (response, status, err) {
-            console.error(`home/checkImage : error : ${err}`);
-            imagePath = '/images/imagenotfoundinblob.jpg';
-
-        }).always(function (response, status, err) {
-            canvasId = 'captureImageCanvas';
-            overlayCanvsId = 'captureImageCanvasOverlay';
-
-            var canvasImage = document.getElementById(canvasId);
-            var canvasImageCtx = canvasImage.getContext('2d');
-
-            var img = new Image();
-            img.src = imagePath;
-            img.onload = function () {
-                canvasImageCtx.clearRect(0, 0, canvasImage.width, canvasImage.height);
-                canvasImageCtx.globalCompositeOperation = 'source-over';
-                canvasImageCtx.drawImage(img, 0, 0, canvasImage.width, canvasImage.height);
-
-                if (found) {
-                    capture_ratio = captureCanvasZoneOverlay.width / img.width;
-
-                    captureCanvasZoneOverlayCtx.clearRect(0, 0, captureCanvasZoneOverlay.width, captureCanvasZoneOverlay.height);
-                    captureCanvasZoneOverlayCtx.fillStyle = "red";
-                    captureCanvasZoneOverlayCtx.strokeRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
-                    captureCanvasZoneOverlayCtx.globalAlpha = 0.3;
-                    captureCanvasZoneOverlayCtx.fillRect(rect_zone[0] * capture_ratio, rect_zone[1] * capture_ratio, (rect_zone[2] - rect_zone[0]) * capture_ratio, (rect_zone[3] - rect_zone[1]) * capture_ratio);
-                }
-                toggleCanvasLoader(true);
-            }
-        });
-    } catch (err) {
-        console.error(`${funcName}: ${err.statusText}`)
-    } finally {
-    }
-}
-
+// Checks image in Blob Storage and display it.
 async function CheckImageForInference(deviceId, imagePath, inferenceResults, threshold) {
     // need to clear spinner on exit
     var funcName = `${arguments.callee.name}()`;
@@ -759,19 +783,17 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
                     for (var i = 0; i < inferenceResults.length; i++) {
                         data = inferenceResults[i];
 
-                        console.debug(`>> Threashold ${threshold} P ${data.P}`)
-                        if (data.P < threshold) {
-                            continue;
+                        // Draw a bounding box if P is above threshold
+                        //console.debug(`>> Threashold ${threshold} P ${data.P}`)
+                        if (data.P >= threshold) {
+                            DrawBoundingBox(data, canvasOverlay, threshold, ratio_x, ratio_y);
                         }
-
-                        DrawBoundingBox(data, canvasOverlay, threshold, ratio_x, ratio_y);
                     }
                 }
             }
             toggleCanvasLoader(true);
             found = true;
         }).fail(function (response, status, err) {
-            //debugger
             console.error(`${funcName}error : ${err.statusText}`);
             toggleCanvasLoader(true);
         });
@@ -783,6 +805,7 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
     return found;
 }
 
+// Draw bounding box and add annotation
 function DrawBoundingBox(data, canvasOverlay, threshold, offset_x, offset_y) {
 
     var funcName = `${arguments.callee.name}()`;
@@ -790,7 +813,7 @@ function DrawBoundingBox(data, canvasOverlay, threshold, offset_x, offset_y) {
 
     var ctxOverlay = canvasOverlay.getContext('2d');
 
-    console.debug(`>> Threashold ${threshold} P ${data.P}`)
+    // console.debug(`>> Threashold ${threshold} P ${data.P}`)
 
     ctxOverlay.font = '12px serif';
     ctxOverlay.lineWidth = 1;
@@ -819,6 +842,7 @@ function DrawBoundingBox(data, canvasOverlay, threshold, offset_x, offset_y) {
     ctxOverlay.strokeText(confidence, X + 2, Y + 2);
 }
 
+// A wrapper to start inference.  Used to test parameters.
 async function StartInference(resultElementId) {
     var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
@@ -830,8 +854,7 @@ async function StartInference(resultElementId) {
         // to ms, but min 10 sec interval
         frequency = Math.max(10, frequency);
         frequency = Math.round((frequency * 1000) / 33.3);
-        var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
-        var Mode;
+        var Mode = 1;  // image & inference
         var FileFormat = null;
         var CropHOffset = null;
         var CropVOffset = null;
@@ -842,13 +865,6 @@ async function StartInference(resultElementId) {
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
         var model_id = document.getElementById("zoneDetectionModelIdList").value;
-
-        if (notificationType == 'blob') {
-            Mode = 0;
-        }
-        else {
-            Mode = 1;
-        }
 
         await $.ajax({
             async: true,
@@ -882,20 +898,21 @@ async function StartInference(resultElementId) {
 
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
+
+        // call stop just to be certain.
         await $.ajax({
             async: true,
             type: "POST",
             url: window.location.origin + '/' + 'sony/StopUploadRetrainingData',
             data: {
                 device_id: currentDeviceId
-            },
-        }).done(function (response) {
+            }
         });
-    } finally {
     }
     return;
 }
 
+// Utility function to draw zone rect. For Zone Detection canvas.
 function DrawZoneRect(canvasId) {
     // draw bounding box for zone detection
     overlayCanvas = document.getElementById(canvasId);
@@ -908,6 +925,7 @@ function DrawZoneRect(canvasId) {
     overlayCanvasCtx.fillRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
 }
 
+// A wrapper function to start Zone Detection
 async function StartZoneDetection(resultElementId, withImage) {
     var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
@@ -915,12 +933,9 @@ async function StartZoneDetection(resultElementId, withImage) {
     var bStarted = false;
 
     try {
-        runninigZoneDetection = true;
-
         setResultElement(resultElement, `Starting Zone Detection Inference`);
         var frequency = parseInt(document.getElementById("zoneDetectionFrequencySlider").value);
         frequency = Math.max(1, Math.round((frequency * 1000) / 33.3));
-        var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var model_id = currentModelId;
         var NumberOfInferencesPerMessage = null;
         var CropHOffset = null;
@@ -931,17 +946,12 @@ async function StartZoneDetection(resultElementId, withImage) {
         ClearZoneDetectionCanvas();
 
         if (withImage == true) {
-            var Mode;
+            // Image & Inference results
+            var Mode = 1; // Image & Inference results
             var FileFormat = null;
             var NumberOfImages = 0; // continuous
             var FrequencyOfImages = Math.max(frequency, Math.round(10000 / 33.3)).toString();
             var MaxDetectionsPerFrame = null;
-            if (notificationType == 'blob') {
-                Mode = 0;
-            }
-            else {
-                Mode = 1;
-            }
 
             await $.ajax({
                 async: true,
@@ -981,7 +991,7 @@ async function StartZoneDetection(resultElementId, withImage) {
             });
         }
         else {
-
+            // No image.  Inference results only.
             await $.ajax({
                 async: true,
                 type: "POST",
@@ -1010,25 +1020,20 @@ async function StartZoneDetection(resultElementId, withImage) {
 
     } catch (err) {
         console.error(`${funcName}: ${err.statusText}`)
-    } finally {
     }
     return bStarted;
 }
 
+// A wrapper function to stop inference
 async function StopInference(resultElementId, withImage) {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName} : Image ${withImage}`)
     var resultElement = undefined;
     var bStopped = false;
+    pendingImagePath = '';
 
     if (resultElementId != undefined) {
         resultElement = document.getElementById(resultElementId);
-    }
-
-    if (captureInProgress == false) {
-        // During capture, we call to stop, but image process takes place after the call.
-        runninigZoneDetection = false;
-        pendingImagePath = '';
     }
 
     try {
@@ -1057,8 +1062,6 @@ async function StopInference(resultElementId, withImage) {
                         setResultElement(resultElement, `Stopped`);
                         bStopped = true;
                     }
-                },
-                202: function (data) {
                 }
             }
         }).then(function (response, textStatus, jqXHR) {
@@ -1112,6 +1115,7 @@ async function StopInference(resultElementId, withImage) {
     return bStopped;
 }
 
+// A wrapper function to save parameters to cookie.
 async function SaveParameterToCookie() {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
@@ -1134,6 +1138,7 @@ async function SaveParameterToCookie() {
 
 }
 
+// Calculate IoU
 function calcIoU(x0, y0, x1, y1) {
     var iou = 0.0;
     var coverage = 0.0;
@@ -1156,10 +1161,12 @@ function calcIoU(x0, y0, x1, y1) {
         coverage = (coverage * 100.0).toFixed(1);
     }
 
-    console.debug(`-- IoU ${iou} coverage ${coverage}`);
+    //console.debug(`-- IoU ${iou} coverage ${coverage}`);
     return coverage;
 }
 
+// Sets Device List and Model List selected items.
+// Called if Device ID and Model ID are retrieved from cookie
 async function SetDeviceLists(deviceId, modelId) {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
@@ -1168,7 +1175,6 @@ async function SetDeviceLists(deviceId, modelId) {
     var resultElementId = 'captureImageBtnResult';
 
     try {
-        toggleLoader(false);
         await GetDevices(deviceListId, true, false, 'Select Device', '0', resultElementId)
             .then(async function (response) {
                 document.getElementById(deviceListId).value = deviceId;
@@ -1196,9 +1202,7 @@ async function SetDeviceLists(deviceId, modelId) {
             })
             .catch((err) => {
                 console.error(`${funcName}: ${err.statusText}`)
-            })
-            .finally(() => {
-            })
+            });
 
         var deviceListId = 'zoneDetectionDeviceIdList'
         var resultElementId = 'startZoneDetectionBtnResult';
@@ -1219,18 +1223,14 @@ async function SetDeviceLists(deviceId, modelId) {
                     })
                     .catch((err) => {
                         setResultElement(resultElement, "Failed to retrieve model list");
-                    })
-                    .finally(() => {
                     });
 
             })
             .catch((err) => {
                 console.error(`${funcName}: ${err.statusText}`)
-            })
-            .finally(() => {
-            })
+            });
     } finally {
-        toggleLoader(true);
+        // toggleLoader(false);
     } 
 }
 

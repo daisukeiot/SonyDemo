@@ -663,6 +663,7 @@ select {
 
 .loader-parent {
     position: relative;
+    padding: 0;
 }
 
 .canvasLoaderWrapper {
@@ -680,7 +681,7 @@ select {
     position:absolute;
     bottom: 0;
     left: 50%;
-    font-size:medium;
+    font-size:large;
     font-weight:bold;
     width:80%;
     color: white;
@@ -753,4 +754,35 @@ select {
 .callout {
     padding: 0.5rem;
     margin-bottom: 0.5rem;
+}
+
+@-webkit-keyframes alertBlink {
+    from, to {
+        border-color: transparent;
+        background-color: transparent;
+    }
+
+    50% {
+        border-color: red;
+        background-color: rgb(255,0,0,0.2);
+    }
+}
+
+@keyframes alertBlink {
+    from, to {
+        border-color: transparent;
+        background-color: transparent;
+    }
+
+    50% {
+        border-color: red;
+        background-color: rgb(255,0,0,0.2);
+    }
+}
+
+.alertBlink {
+    border: 1px solid red;
+    /* add 'border-color: transparent' if you wish no border to show initially */
+    -webkit-animation: alertBlink 1s step-end infinite;
+    animation: alertBlink 1s step-end infinite;
 }
