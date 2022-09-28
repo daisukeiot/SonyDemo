@@ -16,7 +16,7 @@ var currentHandle = false;
 var isResize = false;
 var isMouseDown = false;
 var pendingImagePath = '';
-var runninigSafetyZone = false;
+var runninigZoneDetection = false;
 var captureInProgress = false;
 var capture_ratio = 2;
 
@@ -52,11 +52,11 @@ function disableUiElements(bDisable) {
     $('#captureStopInferenceBtn').prop('disabled', bDisable);
     $('#captureFrequencySlider').prop('disabled', bDisable);
     $('#captureImageCountSlider').prop('disabled', bDisable);
-    $('#safetyDetectionFrequencySlider').prop('disabled', bDisable);
-    $('#safetyDetectionImageCountSlider').prop('disabled', bDisable);
-    $('#startSafetyDetectionBtn').prop('disabled', bDisable);
-    $('#startSafetyDetectionWithImageBtn').prop('disabled', bDisable);
-    $('#stopSafetyDetectionBtn').prop('disabled', bDisable);
+    $('#zoneDetectionFrequencySlider').prop('disabled', bDisable);
+    $('#zoneDetectionImageCountSlider').prop('disabled', bDisable);
+    $('#startZoneDetectionBtn').prop('disabled', bDisable);
+    $('#startZoneDetectionWithImageBtn').prop('disabled', bDisable);
+    $('#stopZoneDetectionBtn').prop('disabled', bDisable);
 }
 
 var region = {
@@ -68,8 +68,8 @@ var region = {
 
 function toggleCanvasLoader(bForceClear) {
 
-    if (isSafetyDetectionRunning == true) {
-        canvasId = 'safetyDetectionCanvasLoaderWrapper';
+    if (isZoneDetectionRunning == true) {
+        canvasId = 'zoneDetectionCanvasLoaderWrapper';
     }
     else {
         canvasId = 'captureImageCanvasLoaderWrapper';
@@ -109,7 +109,7 @@ function initCaptureCanvas(canvasIdZoneOverlay, canvasIdOverlay, canvasIdImage) 
     //captureOverlayCanvasOffset_Y = canvasOffset.top;
 }
 
-function initSafetyDetectionCanvas(canvasIdOverlay, canvasIdImage) {
+function initZoneDetectionCanvas(canvasIdOverlay, canvasIdImage) {
 }
 
 function ClearCaptureCanvas() {
@@ -123,8 +123,8 @@ function ClearCaptureCanvas() {
     captureCanvasCtx.stroke();
 }
 
-function ClearSafetyZoneCanvas() {
-    var canvas = document.getElementById('safetyDetectionCanvas');
+function ClearZoneDetectionCanvas() {
+    var canvas = document.getElementById('zoneDetectionCanvas');
     var canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
     canvasCtx.rect(0, 0, captureCanvas.width, captureCanvas.height);
@@ -132,11 +132,11 @@ function ClearSafetyZoneCanvas() {
     canvasCtx.stroke();
     canvasCtx.fill();
 
-    canvas = document.getElementById('safetyDetectionCanvasOverlay');
+    canvas = document.getElementById('zoneDetectionCanvasOverlay');
     canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 
-    canvas = document.getElementById('safetyDetectionCanvasZoneOverlay');
+    canvas = document.getElementById('zoneDetectionCanvasZoneOverlay');
     canvasCtx = canvas.getContext("2d");
     canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
 }
@@ -489,8 +489,8 @@ async function processTelemetryForChart(signalRMsg, lineChart, threshold) {
 
         var p_value = 0;
 
-        if ((isSafetyDetectionRunning == true) && (pendingImagePath.length == 0)) {
-            var canvasOverlay = document.getElementById('safetyDetectionCanvasOverlay');
+        if ((isZoneDetectionRunning == true) && (pendingImagePath.length == 0)) {
+            var canvasOverlay = document.getElementById('zoneDetectionCanvasOverlay');
             var ctxOverlay = canvasOverlay.getContext('2d');
             ctxOverlay.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
 
@@ -729,9 +729,9 @@ async function CheckImageForInference(deviceId, imagePath, inferenceResults, thr
             console.debug(response.value);
 
             var canvasId;
-            if (isSafetyDetectionRunning == true) {
-                canvasId = 'safetyDetectionCanvas';
-                overlayCanvsId = 'safetyDetectionCanvasOverlay';
+            if (isZoneDetectionRunning == true) {
+                canvasId = 'zoneDetectionCanvas';
+                overlayCanvsId = 'zoneDetectionCanvasOverlay';
             }
             else {
                 canvasId = 'captureImageCanvas';
@@ -826,7 +826,7 @@ async function StartInference(resultElementId) {
 
     try {
         setResultElement(resultElement, `Starting Inference`);
-        var frequency = parseInt(document.getElementById("safetyDetectionFrequencySlider").value);
+        var frequency = parseInt(document.getElementById("zoneDetectionFrequencySlider").value);
         // to ms, but min 10 sec interval
         frequency = Math.max(10, frequency);
         frequency = Math.round((frequency * 1000) / 33.3);
@@ -837,11 +837,11 @@ async function StartInference(resultElementId) {
         var CropVOffset = null;
         var CropHSize = null;
         var CropVSize = null;
-        var NumberOfImages = document.getElementById("safetyDetectionImageCountSlider").value;
+        var NumberOfImages = document.getElementById("zoneDetectionImageCountSlider").value;
         var FrequencyOfImages = Math.max(1, frequency).toString();
         var MaxDetectionsPerFrame = null;
         var NumberOfInferencesPerMessage = null;
-        var model_id = document.getElementById("safetyDetectionModelIdList").value;
+        var model_id = document.getElementById("zoneDetectionModelIdList").value;
 
         if (notificationType == 'blob') {
             Mode = 0;
@@ -897,7 +897,7 @@ async function StartInference(resultElementId) {
 }
 
 function DrawZoneRect(canvasId) {
-    // draw bounding box for safety zone
+    // draw bounding box for zone detection
     overlayCanvas = document.getElementById(canvasId);
     overlayCanvasCtx = overlayCanvas.getContext("2d");
     overlayCanvasCtx.strokeStyle = "red";
@@ -908,17 +908,17 @@ function DrawZoneRect(canvasId) {
     overlayCanvasCtx.fillRect(rect_zone[0], rect_zone[1], (rect_zone[2] - rect_zone[0]), (rect_zone[3] - rect_zone[1]));
 }
 
-async function StartSafetyDetection(resultElementId, withImage) {
+async function StartZoneDetection(resultElementId, withImage) {
     var funcName = `${arguments.callee.name}()`;
     console.debug("=>", funcName)
     var resultElement = document.getElementById(resultElementId);
     var bStarted = false;
 
     try {
-        runninigSafetyZone = true;
+        runninigZoneDetection = true;
 
-        setResultElement(resultElement, `Starting Safety Zone Inference`);
-        var frequency = parseInt(document.getElementById("safetyDetectionFrequencySlider").value);
+        setResultElement(resultElement, `Starting Zone Detection Inference`);
+        var frequency = parseInt(document.getElementById("zoneDetectionFrequencySlider").value);
         frequency = Math.max(1, Math.round((frequency * 1000) / 33.3));
         var notificationType = $("input[name='imageNotifictionTypeList']:checked").val();
         var model_id = currentModelId;
@@ -928,7 +928,7 @@ async function StartSafetyDetection(resultElementId, withImage) {
         var CropHSize = null;
         var CropVSize = null;
 
-        ClearSafetyZoneCanvas();
+        ClearZoneDetectionCanvas();
 
         if (withImage == true) {
             var Mode;
@@ -968,8 +968,8 @@ async function StartSafetyDetection(resultElementId, withImage) {
                 if (result.result == "SUCCESS") {
                     pendingImagePath = result.outputSubDirectory;
                     setResultElement(resultElement, `Processing images @ ${pendingImagePath}`);
-                    // draw bounding box for safety zone
-                    DrawZoneRect('safetyDetectionCanvasZoneOverlay');
+                    // draw bounding box for zone detection
+                    DrawZoneRect('zoneDetectionCanvasZoneOverlay');
                     bStarted = true;
                 }
                 else {
@@ -999,8 +999,8 @@ async function StartSafetyDetection(resultElementId, withImage) {
                 },
             }).done(function (response) {
                 setResultElement(resultElement, `Processing Telemetry`);
-                // draw bounding box for safety zone
-                DrawZoneRect('safetyDetectionCanvasZoneOverlay');
+                // draw bounding box for zone detection
+                DrawZoneRect('zoneDetectionCanvasZoneOverlay');
                 bStarted = true;
             }).fail(function (response, status, err) {
                 setResultElement(resultElement, `Failed to start : ${response.responseJSON.value}`);
@@ -1027,7 +1027,7 @@ async function StopInference(resultElementId, withImage) {
 
     if (captureInProgress == false) {
         // During capture, we call to stop, but image process takes place after the call.
-        runninigSafetyZone = false;
+        runninigZoneDetection = false;
         pendingImagePath = '';
     }
 
@@ -1119,7 +1119,7 @@ async function SaveParameterToCookie() {
     await $.ajax({
         async: true,
         type: "POST",
-        url: window.location.origin + '/' + 'SafetyDetection/SaveParameters',
+        url: window.location.origin + '/' + 'ZoneDetection/SaveParameters',
         data: {
             device_id: currentDeviceId,
             model_id: currentModelId,
@@ -1200,13 +1200,13 @@ async function SetDeviceLists(deviceId, modelId) {
             .finally(() => {
             })
 
-        var deviceListId = 'safetyDetectionDeviceIdList'
-        var resultElementId = 'startSafetyDetectionBtnResult';
+        var deviceListId = 'zoneDetectionDeviceIdList'
+        var resultElementId = 'startZoneDetectionBtnResult';
         await GetDevices(deviceListId, true, false, 'Select Device', '0', resultElementId)
             .then(async function (response) {
                 document.getElementById(deviceListId).value = deviceId;
 
-                var modelListId = 'safetyDetectionModelIdList';
+                var modelListId = 'zoneDetectionModelIdList';
                 var resultElement = document.getElementById(resultElementId);
 
                 await GetModelForDevice(modelListId, deviceId, resultElementId)

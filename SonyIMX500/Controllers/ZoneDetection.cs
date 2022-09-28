@@ -11,21 +11,21 @@ namespace SonyIMX500.Controllers
 {
 
     [Authorize]
-    public class SafetyDetection : Controller
+    public class ZoneDetection : Controller
     {
         private readonly ILogger<SonyController> _logger;
 
-        public SafetyDetection(IOptions<AppSettings> optionsAccessor, ILogger<SonyController> logger)
+        public ZoneDetection(IOptions<AppSettings> optionsAccessor, ILogger<SonyController> logger)
         {
             _logger = logger;
         }
         //[Authorize]
         public IActionResult Index()
         {
-            if (HttpContext.Request.Cookies.ContainsKey("SafetyZoneDevId"))
+            if (HttpContext.Request.Cookies.ContainsKey("ZoneDetectionDevId"))
             {
                 _logger.LogDebug("Test");
-                //HttpContext.Response.Cookies.Append("SafetyZoneDevId", DateTime.Now.ToString());
+                //HttpContext.Response.Cookies.Append("ZoneDetectionDevId", DateTime.Now.ToString());
             }
             return View();
         }
@@ -37,15 +37,15 @@ namespace SonyIMX500.Controllers
             {
                 var cOptions = new CookieOptions()
                 {
-                    Path = "/SafetyDetection",
+                    Path = "/ZoneDetection",
                     Expires = new DateTimeOffset(DateTime.Now.AddDays(7))
                     //Expires = new DateTimeOffset(DateTime.Now.AddHours(3))
                 };
 
-                HttpContext.Response.Cookies.Append("SafetyZoneDevId", device_id, cOptions);
-                HttpContext.Response.Cookies.Append("SafetyZoneModelId", model_id, cOptions);
-                HttpContext.Response.Cookies.Append("SafetyZoneRect", rect_zone, cOptions);
-                HttpContext.Response.Cookies.Append("SafetyZoneThreshold", threshold, cOptions);
+                HttpContext.Response.Cookies.Append("ZoneDetectionDevId", device_id, cOptions);
+                HttpContext.Response.Cookies.Append("ZoneDetectionModelId", model_id, cOptions);
+                HttpContext.Response.Cookies.Append("ZoneDetectionRect", rect_zone, cOptions);
+                HttpContext.Response.Cookies.Append("ZoneDetectionThreshold", threshold, cOptions);
                 HttpContext.Response.Cookies.Append("capture_photo_url", capture_photo_url, cOptions);
                 return Ok();
             }

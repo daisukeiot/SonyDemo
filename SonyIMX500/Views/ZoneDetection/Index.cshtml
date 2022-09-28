@@ -2,7 +2,7 @@
     <script type="text/javascript" src="/js/SonyApi.js"></script>
     <script type="text/javascript" src="/js/Token.js"></script>
     <script type="text/javascript" src="/js/BlobStorage.js"></script>
-    <script type="text/javascript" src="/js/SafetyDetection.js"></script>
+    <script type="text/javascript" src="/js/ZoneDetection.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>">
 }
@@ -233,11 +233,11 @@
                                     <div class="info-box-content">
                                         <div class="form-group">
                                             <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                <label for="safetyDetectionDeviceIdList" style="margin-right:0.5em; width:11em;justify-content:right">Select Device ID : </label>
+                                                <label for="zoneDetectionDeviceIdList" style="margin-right:0.5em; width:11em;justify-content:right">Select Device ID : </label>
                                                 <div class="input-group" style="min-width:15em; width:30%">
-                                                    <select name="safetyDetectionDeviceIdList" id="safetyDetectionDeviceIdList" class="form-control custom-select"></select>
+                                                    <select name="zoneDetectionDeviceIdList" id="zoneDetectionDeviceIdList" class="form-control custom-select"></select>
                                                     <div class="input-group-append">
-                                                        <button type="button" class="btn btn-success" style="min-width:1em" id="safetyDetectionDeviceIdListRefreshBtn">
+                                                        <button type="button" class="btn btn-success" style="min-width:1em" id="zoneDetectionDeviceIdListRefreshBtn">
                                                             <i class="fas fa-sync btn-fa" style="margin:0"></i>
                                                         </button>
                                                     </div>
@@ -246,64 +246,64 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                <label for="safetyDetectionModelIdList" style="margin-right:0.5em; width:11em;justify-content:right">Select Model ID : </label>
-                                                <select name="safetyDetectionModelIdList" id="safetyDetectionModelIdList" class="form-control custom-select" style="min-width:15em; width:30%" disabled></select>
+                                                <label for="zoneDetectionModelIdList" style="margin-right:0.5em; width:11em;justify-content:right">Select Model ID : </label>
+                                                <select name="zoneDetectionModelIdList" id="zoneDetectionModelIdList" class="form-control custom-select" style="min-width:15em; width:30%" disabled></select>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                        <label for="safetyDetectionImageCountSlider" style="margin-right:0.5em; width:11em;justify-content:right">Number of images : </label>
+                                                        <label for="zoneDetectionImageCountSlider" style="margin-right:0.5em; width:11em;justify-content:right">Number of images : </label>
                                                         <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                            <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="safetyDetectionImageCountSlider" style="width:100%">
+                                                            <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="zoneDetectionImageCountSlider" style="width:100%">
                                                         </div>
-                                                        <span><span id="safetyDetectionImageCountSliderLabel"></span><span> images</span></span>
+                                                        <span><span id="zoneDetectionImageCountSliderLabel"></span><span> images</span></span>
                                                     </div>
                                                     <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                        <label for="safetyDetectionThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">Detection Threashold : </label>
+                                                        <label for="zoneDetectionThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">Detection Threashold : </label>
                                                         <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionThresholdSlider" style="width:100%">
+                                                            <input type="range" class="slider" min="0" max="100" value="80" step="1" id="zoneDetectionThresholdSlider" style="width:100%">
                                                         </div>
-                                                        <span> <span id="safetyDetectionThresholdSliderLabel"></span><span>&nbsp;%</span></span>
+                                                        <span> <span id="zoneDetectionThresholdSliderLabel"></span><span>&nbsp;%</span></span>
                                                     </div>
                                                     <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                        <label for="safetyDetectionIoUDetectionTimeSlider" style="margin-right:0.5em; width:11em;justify-content:right">Notificaiton Period : </label>
+                                                        <label for="zoneDetectionIoUDetectionTimeSlider" style="margin-right:0.5em; width:11em;justify-content:right">Notificaiton Period : </label>
                                                         <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                            <input type="range" class="slider" min="1" max="120" value="30" step="1" id="safetyDetectionIoUDetectionTimeSlider" style="width:100%">
+                                                            <input type="range" class="slider" min="1" max="120" value="30" step="1" id="zoneDetectionIoUDetectionTimeSlider" style="width:100%">
                                                         </div>
-                                                        <span> <span id="safetyDetectionIoUDetectionTimeSliderLabel"></span><span>&nbsp;sec</span></span>
+                                                        <span> <span id="zoneDetectionIoUDetectionTimeSliderLabel"></span><span>&nbsp;sec</span></span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-6">
                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                    <label for="safetyDetectionFrequencySlider" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
+                                                    <label for="zoneDetectionFrequencySlider" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
                                                     <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                        <input type="range" class="slider" min="0" max="600" value="10" step="1" id="safetyDetectionFrequencySlider" style="width:100%">
+                                                        <input type="range" class="slider" min="0" max="600" value="10" step="1" id="zoneDetectionFrequencySlider" style="width:100%">
                                                     </div>
-                                                    <span id="safetyDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
+                                                    <span id="zoneDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                                 </div>
                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
-                                                    <label for="safetyDetectionIoUThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">IoU Threashold : </label>
+                                                    <label for="zoneDetectionIoUThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">IoU Threashold : </label>
                                                     <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="safetyDetectionIoUThresholdSlider" style="width:100%">
+                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="zoneDetectionIoUThresholdSlider" style="width:100%">
                                                     </div>
-                                                    <span> <span id="safetyDetectionIoUThresholdSliderLabel"></span><span>&nbsp;%</span></span>
+                                                    <span> <span id="zoneDetectionIoUThresholdSliderLabel"></span><span>&nbsp;%</span></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="btnStatusDiv">
-                                            <button type="button" class="btn btn-success" id="startSafetyDetectionWithImageBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="startZoneDetectionWithImageBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference
                                             </button>
-                                            <button type="button" class="btn btn-success" id="startSafetyDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="startZoneDetectionBtn" disabled>
                                                 <i class="fas fa-play btn-fa"></i>Start Inference (No Image)
                                             </button>
-                                            <button type="button" class="btn btn-success" id="stopSafetyDetectionBtn" disabled>
+                                            <button type="button" class="btn btn-success" id="stopZoneDetectionBtn" disabled>
                                                 <i class="fas fa-stop btn-fa"></i>Stop Inference
                                             </button>
-                                            <div class="info-box-text vertical-center" id='startSafetyDetectionBtnResult'>Place Holder : To be deleted</div>
+                                            <div class="info-box-text vertical-center" id='startZoneDetectionBtnResult'>Place Holder : To be deleted</div>
                                         </div>
                                     </div>
                                 </div>
@@ -313,11 +313,11 @@
                                             <div class="col-md-3" height="320" width="320" style="min-width:320px; max-width:320px;min-height:320px">
                                                 <div class="container loader-parent" height="320" width="320" >
                                                     <div class="row justify-content-center align-items-center">
-                                                        <canvas id="safetyDetectionCanvasOverlay"     height="320" width="320" style="max-width:320px;max-height:320px;z-index:300"></canvas>
-                                                        <canvas id="safetyDetectionCanvasZoneOverlay" height="320" width="320" style="max-width:320px;max-height:320px;z-index:200;position:absolute"></canvas>
-                                                        <canvas id="safetyDetectionCanvas"            height="320" width="320" style="max-width:320px;max-height:320px;z-index:100;position:absolute"></canvas>
+                                                        <canvas id="zoneDetectionCanvasOverlay"     height="320" width="320" style="max-width:320px;max-height:320px;z-index:300"></canvas>
+                                                        <canvas id="zoneDetectionCanvasZoneOverlay" height="320" width="320" style="max-width:320px;max-height:320px;z-index:200;position:absolute"></canvas>
+                                                        <canvas id="zoneDetectionCanvas"            height="320" width="320" style="max-width:320px;max-height:320px;z-index:100;position:absolute"></canvas>
                                                     </div>
-                                                    <div id="safetyDetectionCanvasLoaderWrapper" class="canvasLoaderWrapper" height="320" width="320" style="display:none">
+                                                    <div id="zoneDetectionCanvasLoaderWrapper" class="canvasLoaderWrapper" height="320" width="320" style="display:none">
                                                         <div id="canvasLoader">
                                                         </div>
                                                         <div class="loading-text canvasLoaderText">Waiting for an image. This can take a few minutes.</div>
@@ -350,25 +350,25 @@
         let captureFrequencySliderLabel = document.getElementById("captureFrequencySliderLabel");
         let captureImageCountSlider = document.getElementById("captureImageCountSlider");
         let captureImageCountSliderLabel = document.getElementById("captureImageCountSliderLabel");
-        let safetyDetectionImageCountSlider = document.getElementById("safetyDetectionImageCountSlider");
-        let safetyDetectionImageCountLabel = document.getElementById("safetyDetectionImageCountSliderLabel");
-        let safetyDetectionThresholdSlider = document.getElementById("safetyDetectionThresholdSlider");
-        let safetyDetectionThresholdLabel = document.getElementById("safetyDetectionThresholdSliderLabel");
-        let safetyDetectionIoUThresholdSlider = document.getElementById("safetyDetectionIoUThresholdSlider");
-        let safetyDetectionIoUThresholdLabel = document.getElementById("safetyDetectionIoUThresholdSliderLabel");
-        let safetyDetectionFrequencySlider = document.getElementById("safetyDetectionFrequencySlider");
-        let safetyDetectionFrequencyLabel  = document.getElementById("safetyDetectionFrequencySliderLabel");
+        let zoneDetectionImageCountSlider = document.getElementById("zoneDetectionImageCountSlider");
+        let zoneDetectionImageCountLabel = document.getElementById("zoneDetectionImageCountSliderLabel");
+        let zoneDetectionThresholdSlider = document.getElementById("zoneDetectionThresholdSlider");
+        let zoneDetectionThresholdLabel = document.getElementById("zoneDetectionThresholdSliderLabel");
+        let zoneDetectionIoUThresholdSlider = document.getElementById("zoneDetectionIoUThresholdSlider");
+        let zoneDetectionIoUThresholdLabel = document.getElementById("zoneDetectionIoUThresholdSliderLabel");
+        let zoneDetectionFrequencySlider = document.getElementById("zoneDetectionFrequencySlider");
+        let zoneDetectionFrequencyLabel  = document.getElementById("zoneDetectionFrequencySliderLabel");
         let thresholdSliderHandler;
         let imageCountSliderHandler;
-        let safetyDetectionFrequencySpinnerHandler;
-        let safetyDetectionThresholdSliderHandler;
-        let safetyDetectionIoUThresholdSliderHandler;
-        let safetyDetectionImageCountSliderHandler;
+        let zoneDetectionFrequencySpinnerHandler;
+        let zoneDetectionThresholdSliderHandler;
+        let zoneDetectionIoUThresholdSliderHandler;
+        let zoneDetectionImageCountSliderHandler;
         let frequencySpinnerHandler;
         let lineChart;
         let currentThreshold = 0.8;
         let currentIoUThreshold = 0.5;
-        let isSafetyDetectionRunning = false;
+        let isZoneDetectionRunning = false;
         let isPendingCapture = false;
         let rect_zone = [-1, -1, -1, -1];
         var capture_photo_url = undefined;
@@ -421,12 +421,12 @@
 
         $(document).ready(function() {
 
-            console.debug("Safety Detection : document.Ready");
+            console.debug("Zone Detection : document.Ready");
             document.getElementById('nav-link-home').classList.remove('active');
             document.getElementById('nav-link-sd').classList.add('active');
 
             // Need more work.  Ok for now..
-            initSafetyDetectionCanvas('safetyDetectionCanvasOverlay', 'safetyDetectionCanvas');
+            initZoneDetectionCanvas('zoneDetectionCanvasOverlay', 'zoneDetectionCanvas');
             initCaptureCanvas('captureImageCanvasZoneOverlay', 'captureImageCanvasOverlay', 'captureImageCanvas');
             ClearCaptureCanvas();
 
@@ -469,19 +469,19 @@
             {
                 var settings = parseCookie(document.cookie);
 
-                if (settings.SafetyZoneDevId != undefined)
+                if (settings.ZoneDetectionDevId != undefined)
                 {
-                    currentDeviceId = settings.SafetyZoneDevId;
+                    currentDeviceId = settings.ZoneDetectionDevId;
                 }
 
-                if (settings.SafetyZoneModelId != undefined)
+                if (settings.ZoneDetectionModelId != undefined)
                 {
-                    currentModelId = settings.SafetyZoneModelId;
+                    currentModelId = settings.ZoneDetectionModelId;
                 }
 
-                if (settings.SafetyZoneRect != undefined)
+                if (settings.ZoneDetectionRect != undefined)
                 {
-                    var json = JSON.parse(settings.SafetyZoneRect);
+                    var json = JSON.parse(settings.ZoneDetectionRect);
 
                     for (var i = 0; i < json.length; i++)
                     {
@@ -489,11 +489,11 @@
                     }
                 }
 
-                if (settings.SafetyZoneThreshold != undefined)
+                if (settings.ZoneDetectionThreshold != undefined)
                 {
-                    captureThresholdSlider.value = settings.SafetyZoneThreshold;
-                    safetyDetectionThresholdSlider.value = settings.SafetyZoneThreshold;
-                    currentThreshold = parseInt(settings.SafetyZoneThreshold) / 100;
+                    captureThresholdSlider.value = settings.ZoneDetectionThreshold;
+                    zoneDetectionThresholdSlider.value = settings.ZoneDetectionThreshold;
+                    currentThreshold = parseInt(settings.ZoneDetectionThreshold) / 100;
                 }
 
                 if (settings.capture_photo_url != undefined)
@@ -522,10 +522,10 @@
             captureThresholdSliderLabel.innerHTML = captureThresholdSlider.value;
             captureFrequencySliderLabel.innerHTML = captureFrequencySlider.value;
             captureImageCountSliderLabel.innerHTML = captureImageCountSlider.value;
-            safetyDetectionThresholdLabel.innerHTML = safetyDetectionThresholdSlider.value;
-            safetyDetectionIoUThresholdLabel.innerHTML = safetyDetectionIoUThresholdSlider.value;
-            safetyDetectionFrequencyLabel.innerHTML = safetyDetectionFrequencySlider.value;
-            safetyDetectionImageCountLabel.innerHTML = safetyDetectionImageCountSlider.value;
+            zoneDetectionThresholdLabel.innerHTML = zoneDetectionThresholdSlider.value;
+            zoneDetectionIoUThresholdLabel.innerHTML = zoneDetectionIoUThresholdSlider.value;
+            zoneDetectionFrequencyLabel.innerHTML = zoneDetectionFrequencySlider.value;
+            zoneDetectionImageCountLabel.innerHTML = zoneDetectionImageCountSlider.value;
         });
 
         //
@@ -590,15 +590,15 @@
 
             captureThresholdSlider.addEventListener("input", function thresholdSliderHandler(evt) {
                 captureThresholdSliderLabel.innerHTML = evt.target.value;
-                safetyDetectionThresholdSlider.value = evt.target.value;
-                safetyDetectionThresholdLabel.innerHTML = evt.target.value;
+                zoneDetectionThresholdSlider.value = evt.target.value;
+                zoneDetectionThresholdLabel.innerHTML = evt.target.value;
                 currentThreshold = parseInt(evt.target.value) / 100;
             })
 
             captureFrequencySlider.addEventListener("input", function frequencySpinnerHandler(evt) {
                 captureFrequencySliderLabel.innerHTML = evt.target.value;
-                safetyDetectionFrequencySlider.value = evt.target.value;
-                safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
+                zoneDetectionFrequencySlider.value = evt.target.value;
+                zoneDetectionFrequencyLabel.innerHTML = evt.target.value;
             })
         })
 
@@ -630,8 +630,8 @@
 
         $('#tab-telemetry-label').on('show.bs.tab', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            var resultElementId = 'startSafetyDetectionBtnResult';
-            var deviceListId = 'safetyDetectionDeviceIdList';
+            var resultElementId = 'startZoneDetectionBtnResult';
+            var deviceListId = 'zoneDetectionDeviceIdList';
 
             if (document.getElementById(deviceListId).length == 0)
             {
@@ -652,101 +652,101 @@
             
             // Set selected device
             if (currentDeviceId != undefined) {
-                setSelectOption('safetyDetectionDeviceIdList', currentDeviceId);
+                setSelectOption('zoneDetectionDeviceIdList', currentDeviceId);
             }
 
             // Add event listeners for sliders if not set.  Otherwise, just enable sliders.
-            if (safetyDetectionImageCountSlider.getAttribute('inputListner') == null)
+            if (zoneDetectionImageCountSlider.getAttribute('inputListner') == null)
             {
-                safetyDetectionImageCountSlider.addEventListener("input", function safetyDetectionImageCountHandler(evt) {
+                zoneDetectionImageCountSlider.addEventListener("input", function zoneDetectionImageCountHandler(evt) {
                     var count = parseInt(evt.target.value);
 
                     if (count == 0)
                     {
-                        safetyDetectionImageCountLabel.innerHTML = "Continuous"
+                        zoneDetectionImageCountLabel.innerHTML = "Continuous"
                     }
                     else
                     {
-                        safetyDetectionImageCountLabel.innerHTML = evt.target.value;
+                        zoneDetectionImageCountLabel.innerHTML = evt.target.value;
                     }
                 });
-                safetyDetectionImageCountSlider.setAttribute('inputListner', 'true');
+                zoneDetectionImageCountSlider.setAttribute('inputListner', 'true');
             }
             else{
-                safetyDetectionImageCountSlider.disabled = false; 
+                zoneDetectionImageCountSlider.disabled = false; 
             }
 
-            if (safetyDetectionThresholdSlider.getAttribute('inputListner') == null)
+            if (zoneDetectionThresholdSlider.getAttribute('inputListner') == null)
             {
-                safetyDetectionThresholdSlider.addEventListener("input", function safetyDetectionThresholdHandler(evt) {
+                zoneDetectionThresholdSlider.addEventListener("input", function zoneDetectionThresholdHandler(evt) {
                     captureThresholdSlider.value = evt.target.value;
                     captureThresholdSliderLabel.innerHTML = evt.target.value;
-                    safetyDetectionThresholdLabel.innerHTML = evt.target.value;
+                    zoneDetectionThresholdLabel.innerHTML = evt.target.value;
                     currentThreshold = parseInt(evt.target.value) / 100;
                 });
-                safetyDetectionThresholdSlider.setAttribute('inputListner', 'true');
+                zoneDetectionThresholdSlider.setAttribute('inputListner', 'true');
             }
             else{
-                safetyDetectionThresholdSlider.disabled = false; 
+                zoneDetectionThresholdSlider.disabled = false; 
             }
 
-            if (safetyDetectionIoUThresholdSlider.getAttribute('inputListner') == null)
+            if (zoneDetectionIoUThresholdSlider.getAttribute('inputListner') == null)
             {
-                safetyDetectionIoUThresholdSlider.addEventListener("input", function safetyDetectionIoUThresholdHandler(evt) {
+                zoneDetectionIoUThresholdSlider.addEventListener("input", function zoneDetectionIoUThresholdHandler(evt) {
                     captureThresholdSlider.value = evt.target.value;
                     captureThresholdSliderLabel.innerHTML = evt.target.value;
-                    safetyDetectionIoUThresholdLabel.innerHTML = evt.target.value;
+                    zoneDetectionIoUThresholdLabel.innerHTML = evt.target.value;
                     currentIoUThreshold = parseInt(evt.target.value) / 100;
                 });
-                safetyDetectionIoUThresholdSlider.setAttribute('inputListner', 'true');
+                zoneDetectionIoUThresholdSlider.setAttribute('inputListner', 'true');
             }
             else{
-                safetyDetectionIoUThresholdSlider.disabled = false; 
+                zoneDetectionIoUThresholdSlider.disabled = false; 
             }
 
-            if (safetyDetectionFrequencySlider.getAttribute('inputListner') == null)
+            if (zoneDetectionFrequencySlider.getAttribute('inputListner') == null)
             {
-                safetyDetectionFrequencySlider.addEventListener("input", function safetyDetectionFrequencyHandler(evt) {
+                zoneDetectionFrequencySlider.addEventListener("input", function zoneDetectionFrequencyHandler(evt) {
 
                     // for capture, don't capture < 10 sec interval
                     captureFrequencySlider.value = Math.max(evt.target.value, 10);
                     captureFrequencySliderLabel.innerHTML = Math.max(evt.target.value, 10);
-                    safetyDetectionFrequencyLabel.innerHTML = evt.target.value;
+                    zoneDetectionFrequencyLabel.innerHTML = evt.target.value;
                 });
-                safetyDetectionFrequencySlider.setAttribute('inputListner', 'true');
+                zoneDetectionFrequencySlider.setAttribute('inputListner', 'true');
             }
             else{
-                safetyDetectionFrequencySlider.disabled = false;
+                zoneDetectionFrequencySlider.disabled = false;
             }
 
         })
 
         $('#tab-telemetry-label').on('hide.bs.tab', async function (evt) {
 
-            if (safetyDetectionImageCountSlider.getAttribute('inputListner') == 'true')
+            if (zoneDetectionImageCountSlider.getAttribute('inputListner') == 'true')
             {
-                safetyDetectionImageCountSlider.disabled = true;
+                zoneDetectionImageCountSlider.disabled = true;
             }
             
-            if (safetyDetectionThresholdSlider.getAttribute('inputListner') == 'true')
+            if (zoneDetectionThresholdSlider.getAttribute('inputListner') == 'true')
             {
-                safetyDetectionThresholdSlider.disabled = true;
+                zoneDetectionThresholdSlider.disabled = true;
             }
 
-            if (safetyDetectionIoUThresholdSlider.getAttribute('inputListner') == 'true')
+            if (zoneDetectionIoUThresholdSlider.getAttribute('inputListner') == 'true')
             {
-                safetyDetectionIoUThresholdSlider.disabled = true;
+                zoneDetectionIoUThresholdSlider.disabled = true;
             }
 
-            if (safetyDetectionFrequencySlider.getAttribute('inputListner') == 'true')
+            if (zoneDetectionFrequencySlider.getAttribute('inputListner') == 'true')
             {
-                safetyDetectionFrequencySlider.disabled = true;
+                zoneDetectionFrequencySlider.disabled = true;
             }
 
-            //safetyDetectionImageCountSlider.removeEventListener("input", safetyDetectionImageCountHandler);
-            //safetyDetectionThresholdSlider.removeEventListener("input", safetyDetectionThresholdHandler);
-            //safetyDetectionIoUThresholdSlider.removeEventListener("input", safetyDetectionIoUThresholdHandler);
-            //safetyDetectionFrequencySlider.removeEventListener("input", safetyDetectionFrequencyHandler);
+            //zoneDetectionImageCountSlider.removeEventListener("input", zoneDetectionImageCountHandler);
+            //zoneDetectionThresholdSlider.removeEventListener("input", zoneDetectionThresholdHandler);
+            //zoneDetectionIoUThresholdSlider.removeEventListener("input", zoneDetectionIoUThresholdHandler);
+            //zoneDetectionFrequencySlider.removeEventListener("input", zoneDetectionFrequencyHandler);
 
         })
 
@@ -811,11 +811,11 @@
             }
         })
 
-        $('#safetyDetectionDeviceIdList').on('change', async function (evt) {
+        $('#zoneDetectionDeviceIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             var targetListId = evt.target.id;
-            var modelListId = 'safetyDetectionModelIdList';
-            var resultElementId = 'startSafetyDetectionBtnResult';
+            var modelListId = 'zoneDetectionModelIdList';
+            var resultElementId = 'startZoneDetectionBtnResult';
             var deviceList = document.getElementById(targetListId);
 
             currentDeviceId = deviceList[deviceList.selectedIndex].value;
@@ -829,10 +829,10 @@
                     deviceList[deviceList.selectedIndex].setAttribute("data-isDisconnected", isDisconnected);
 
                     if (modelList.selectedIndex > 0 && isDisconnected == false) {
-                        $('#startSafetyDetectionBtn').prop('disabled', false);
+                        $('#startZoneDetectionBtn').prop('disabled', false);
 
                     } else {
-                        $('#startSafetyDetectionBtn').prop('disabled', true);
+                        $('#startZoneDetectionBtn').prop('disabled', true);
                     }
 
                     // make sure the device is not running inference.
@@ -843,7 +843,7 @@
 
                     if (currentModelId != undefined)
                     {
-                        setSelectOption('safetyDetectionModelIdList', currentModelId);
+                        setSelectOption('zoneDetectionModelIdList', currentModelId);
                     }
                 })
                 .finally(() => {
@@ -851,9 +851,9 @@
                 });
         })
 
-        $('#safetyDetectionModelIdList').on('change', async function (evt) {
+        $('#zoneDetectionModelIdList').on('change', async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            var deviceListId = 'safetyDetectionDeviceIdList';
+            var deviceListId = 'zoneDetectionDeviceIdList';
             var modelListId = evt.target.id;
             var deviceList = document.getElementById(deviceListId);
             var modelList = document.getElementById(modelListId);
@@ -862,8 +862,8 @@
             if (deviceList.selectedIndex > 0 && modelList.selectedIndex > 0) {
 
                 var isDisconnected = (deviceList[deviceList.selectedIndex].getAttribute("data-isDisconnected") === 'true');
-                $('#startSafetyDetectionWithImageBtn').prop('disabled', isDisconnected);
-                $('#startSafetyDetectionBtn').prop('disabled', isDisconnected);
+                $('#startZoneDetectionWithImageBtn').prop('disabled', isDisconnected);
+                $('#startZoneDetectionBtn').prop('disabled', isDisconnected);
             }
         })
         //
@@ -928,14 +928,14 @@
                 });
         })
 
-        $('#safetyDetectionDeviceIdListRefreshBtn').click(function (evt) {
+        $('#zoneDetectionDeviceIdListRefreshBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
-            var resultElementId = 'startSafetyDetectionBtnResult';
+            var resultElementId = 'startZoneDetectionBtnResult';
 
             toggleLoader(false);
             var selectedVal = $('#captureDeviceIdList option:selected').val();
 
-            GetDevices('safetyDetectionDeviceIdList', true, false, 'Select Device', '0', resultElementId)
+            GetDevices('zoneDetectionDeviceIdList', true, false, 'Select Device', '0', resultElementId)
                 .then(() => {
                 })
                 .catch((err) => {
@@ -949,19 +949,19 @@
                 })
         })
 
-        $('#startSafetyDetectionBtn').click(async function (evt) {
+        $('#startZoneDetectionBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
 
             document.getElementById(evt.target.id).setAttribute("data-withImage", false);
 
-            await StartSafetyDetection('startSafetyDetectionBtnResult', false)
+            await StartZoneDetection('startZoneDetectionBtnResult', false)
                 .then((bStarted) => { 
                     if (bStarted)
                     {
-                        isSafetyDetectionRunning = true;
+                        isZoneDetectionRunning = true;
                         disableUiElements(true);
-                        $('#stopSafetyDetectionBtn').prop('disabled', false);
+                        $('#stopZoneDetectionBtn').prop('disabled', false);
                     }
                 })
                 .finally(() => {
@@ -969,19 +969,19 @@
                 });
         })
 
-        $('#startSafetyDetectionWithImageBtn').click(async function (evt) {
+        $('#startZoneDetectionWithImageBtn').click(async function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
 
             document.getElementById(evt.target.id).setAttribute("data-withImage", true);
 
-            await StartSafetyDetection('startSafetyDetectionBtnResult', true)
+            await StartZoneDetection('startZoneDetectionBtnResult', true)
                 .then((bStarted) => { 
                     if (bStarted)
                     {
-                        isSafetyDetectionRunning = true;
+                        isZoneDetectionRunning = true;
                             disableUiElements(true);
-                            $('#stopSafetyDetectionBtn').prop('disabled', false);
+                            $('#stopZoneDetectionBtn').prop('disabled', false);
                         }
                 })
                 .finally(() => {
@@ -990,20 +990,20 @@
         })
 
 
-        $('#stopSafetyDetectionBtn').click(function (evt) {
+        $('#stopZoneDetectionBtn').click(function (evt) {
             console.debug(evt.target.id + "() " + evt.type);
             toggleLoader(false);
 
-            var withImage = (document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage") === 'true');
+            var withImage = (document.getElementById('stopZoneDetectionBtn').getAttribute("data-withImage") === 'true');
 
-            console.debug(`With Image ${document.getElementById('stopSafetyDetectionBtn').getAttribute("data-withImage")}`)
-            StopInference('startSafetyDetectionBtnResult', withImage)
+            console.debug(`With Image ${document.getElementById('stopZoneDetectionBtn').getAttribute("data-withImage")}`)
+            StopInference('startZoneDetectionBtnResult', withImage)
                 .then(() => { })
                 .finally(() => {
                     disableUiElements(false);
-                    $('#stopSafetyDetectionBtn').prop('disabled', true);
+                    $('#stopZoneDetectionBtn').prop('disabled', true);
                     toggleLoader(true);
-                    isSafetyDetectionRunning = false;
+                    isZoneDetectionRunning = false;
                 });
         })
 
