@@ -536,71 +536,64 @@ async function processTelemetryMessage(signalRMsg, barChart, threshold, iouThres
             barChart.data.labels.push(message.eventTime);
 
             var p_value = 0;
+            var updateCanvas = (pendingImagePath.length == 0)
 
-            if (pendingImagePath.length == 0) {
+            if (updateCanvas == true) {
                 // Inference in progress without image (inference results only)
                 // Draw bounding box
                 var canvasOverlay = document.getElementById('zoneDetectionCanvasOverlay');
                 var ctxOverlay = canvasOverlay.getContext('2d');
                 ctxOverlay.clearRect(0, 0, canvasOverlay.width, canvasOverlay.height);
-
-                for (var i = 0; i < inferenceData.Inferences.length; i++) {
-                    var inferenceResults = inferenceData.Inferences[i];
-                    var j = 1;
-                    while (inferenceResults[j] != undefined) {
-                        if (inferenceResults[j].P >= threshold) {
-                            DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
-
-                            var iou = calcIoU(inferenceResults[j].X, inferenceResults[j].Y, inferenceResults[j].x, inferenceResults[j].y);
-
-                            if (iou >= iouThreshold) {
-
-                                if (iouStart == null) {
-                                    iouStart = getDate(inferenceResults['T']);
-                                } else {
-                                    var dateNow = getDate(inferenceResults['T']);
-                                    var delta = Math.abs(dateNow - iouStart);
-
-                                    if ((delta / 1000) >= notificationThreshold) {
-                                        var chartDiv = document.getElementById('barChartDiv');
-
-                                        if (chartDiv.classList.contains("alertBlink") == false) {
-                                            chartDiv.classList.add("alertBlink");
-                                            var navbarNotificationSpan = document.getElementById("navbarNotificationSpan");
-                                            var navbarAlertHeader = document.getElementById("navbarAlertHeader");
-                                            var navbarAlertSpan = document.getElementById("navbarAlertSpan");
-
-                                            var currentValue = 0;
-
-                                            if (navbarNotificationSpan.innerHTML.length > 0) {
-                                                currentValue = parseInt(navbarNotificationSpan.innerHTML);
-                                            }
-                                            currentValue += 1;
-                                            navbarNotificationSpan.innerHTML = currentValue.toString();
-                                            navbarAlertHeader.innerHTML = `${currentValue.toString()} alert`;
-
-                                            navbarAlertSpan.innerHTML = `${dateNow.toLocaleString('en-US')}`;
-                                        }
-                                    }
-                                }
-                                p_value++;
-                            }
-                        }
-                        j++;
-                    }
-                }
             }
 
-            //for (var i = 0; i < inferenceData.Inferences.length; i++) {
-            //    var inferenceResults = inferenceData.Inferences[i];
-            //    var j = 1;
-            //    while (inferenceResults[j] != undefined) {
-            //        if (inferenceResults[j].P >= threshold) {
-            //            p_value++;
-            //        }
-            //        j++;
-            //    }
-            //}
+            for (var i = 0; i < inferenceData.Inferences.length; i++) {
+                var inferenceResults = inferenceData.Inferences[i];
+                var j = 1;
+                while (inferenceResults[j] != undefined) {
+                    if (inferenceResults[j].P >= threshold) {
+
+                        if (updateCanvas) {
+                            DrawBoundingBox(inferenceResults[j], canvasOverlay, threshold, 1, 1);
+                        }
+
+                        var iou = calcIoU(inferenceResults[j].X, inferenceResults[j].Y, inferenceResults[j].x, inferenceResults[j].y);
+
+                        if (iou >= iouThreshold) {
+
+                            if (iouStart == null) {
+                                iouStart = getDate(inferenceResults['T']);
+                            } else {
+                                var dateNow = getDate(inferenceResults['T']);
+                                var delta = Math.abs(dateNow - iouStart);
+
+                                if ((delta / 1000) >= notificationThreshold) {
+                                    var chartDiv = document.getElementById('barChartDiv');
+
+                                    if (chartDiv.classList.contains("alertBlink") == false) {
+                                        chartDiv.classList.add("alertBlink");
+                                        var navbarNotificationSpan = document.getElementById("navbarNotificationSpan");
+                                        var navbarAlertHeader = document.getElementById("navbarAlertHeader");
+                                        var navbarAlertSpan = document.getElementById("navbarAlertSpan");
+
+                                        var currentValue = 0;
+
+                                        if (navbarNotificationSpan.innerHTML.length > 0) {
+                                            currentValue = parseInt(navbarNotificationSpan.innerHTML);
+                                        }
+                                        currentValue += 1;
+                                        navbarNotificationSpan.innerHTML = currentValue.toString();
+                                        navbarAlertHeader.innerHTML = `${currentValue.toString()} alert`;
+
+                                        navbarAlertSpan.innerHTML = `${dateNow.toLocaleString('en-US')}`;
+                                    }
+                                }
+                            }
+                            p_value++;
+                        }
+                    }
+                    j++;
+                }
+            }
 
             if (p_value == 0) {
                 var chartDiv = document.getElementById('barChartDiv');
