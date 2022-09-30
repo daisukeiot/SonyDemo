@@ -1086,6 +1086,12 @@
 
             console.debug(`With Image ${document.getElementById('stopZoneDetectionBtn').getAttribute("data-withImage")}`)
 
+            // Clear blink on the background if it is set.
+            var chartDiv = document.getElementById('barChartDiv');
+            if (chartDiv.classList.contains("alertBlink") == true) {
+                chartDiv.classList.remove("alertBlink");
+            }
+
             StopInference('startZoneDetectionBtnResult', withImage)
                 .then(() => { })
                 .finally(() => {
