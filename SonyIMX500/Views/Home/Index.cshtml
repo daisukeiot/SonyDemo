@@ -1214,7 +1214,6 @@
             if ($('#createBaseCustomVisionProjectForm').valid() == false) {
                 return;
             }
-            console.debug("createBaseCustomVisionProjectBtn Click");
 
             toggleLoader(false);
             CreateBaseCustomVisionProject()
@@ -1233,7 +1232,7 @@
 
             var projectList = document.getElementById('selectCustomVisionProjectList');
 
-            console.debug(`${evt.target.id}() ${evt.type} ${projectList[projectList.selectedIndex].text}`);
+            //console.debug(`${evt.target.id}() ${evt.type} ${projectList[projectList.selectedIndex].text}`);
 
             if (projectList[projectList.selectedIndex].value != 0) {
                 toggleLoader(false);
@@ -1253,8 +1252,6 @@
 
         $('#visitCustomVisionBtn').click(function (evt) {
             //console.debug(evt.target.id + "() " + evt.type);
-
-            console.debug("visitCustomVisionBtn Click");
             var projectList = document.getElementById('visitCustomVisionProjectList');
             if (projectList[projectList.selectedIndex].value != 0) {
                 var url = "https://www.customvision.ai/projects/" + projectList[projectList.selectedIndex].value;

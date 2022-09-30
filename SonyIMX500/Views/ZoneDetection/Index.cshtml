@@ -487,7 +487,6 @@
                 if (currentDeviceId != undefined && currentModelId != undefined)
                 {
                     // Set up UI with initial values
-                    console.debug("!!!! 490")
                     await SetDeviceLists(currentDeviceId, currentModelId);
                 }
                
@@ -495,7 +494,6 @@
                 {
                     
                     //$('#accordionCaptureImage').collapse('toggle');
-                    console.debug("!!!! 498")
                     await SetCaptureCanvas(currentDeviceId, capture_photo_url, rect_zone);
                 }
                 console.debug(`Dev   : ${currentDeviceId}`);
