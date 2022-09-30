@@ -14,7 +14,7 @@
     <script src="/js/azure/msal/dist/msal.js"></script>
     <script type="text/javascript" src="/js/Token.js"></script>
 
-    <h1>test</h1>
+    <h1>For debugging</h1>
     <input type="text" style="width:30vw" name="clientId" class="form-control" id="clientId" placeholder="Enter Client ID" value="">
     <div>
         <button type="button" id="loginBtn">
@@ -83,7 +83,7 @@
             var dbgAuthConfig = {
                 auth: {
                     clientId: document.getElementById('clientId').value,
-                    redirectUri: replyUrl,
+                    redirectUri: replyUrl
                 }
             };
 
@@ -99,7 +99,6 @@
             };
 
             dbgMsal.handleRedirectCallback((error, response) => {
-                //debugger;
                 console.log("handleRedirectCallback : " + response);
                 postLoginData(response);
             });
