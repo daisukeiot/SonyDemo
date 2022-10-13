@@ -43,11 +43,6 @@ namespace SonyIMX500.Controllers
             
         }
 
-        //public IActionResult Spa()
-        //{
-        //    return File("~/index.html", "text/html");
-        //}
-
         //[Authorize]
         public IActionResult Index()
         {

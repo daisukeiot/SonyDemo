@@ -33,7 +33,6 @@ function sonyApiInitializeMsal() {
             redirectUri: url
         }
     }
-
     console.debug("Redirect Url : " + authConfig.auth.redirectUri);
     console.debug("Client ID    : " + authConfig.auth.clientId);
 
@@ -63,14 +62,6 @@ async function sonyApiGetToken() {
     var funcName = `${arguments.callee.name}()`;
     console.debug(`=> ${funcName}`);
 
-    var url = window.location.href;
-    if (url.includes("localhost") && !url.includes("index.html")) {
-        console.debug("Redirecting to index.html");
-        url = url + "index.html"
-        window.location.href = url;
-        return;
-    }
-
     if (!myMsal.getAccount()) {
         // Not logged in.  Start login.
         console.debug("Redirect to login");
@@ -79,7 +70,6 @@ async function sonyApiGetToken() {
     else {
 
         try {
-            //debugger;
             console.debug("Getting Token");
             tokenResp = await myMsal.acquireTokenSilent(accessTokenRequest);
             console.log('### MSAL acquireTokenSilent was successful')
@@ -87,7 +77,6 @@ async function sonyApiGetToken() {
             return tokenResp.idToken.rawIdToken;
 
         } catch (err) {
-            //debugger;
             console.log('### MSAL acquireTokenSilent was unsuccessful : ' + err);
             switch (err.errorCode) {
                 case "consent_required":
