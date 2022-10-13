@@ -152,7 +152,7 @@
                                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                                                     <label for="captureImageCountSlider" style="margin-right:0.5em; width:11em">Number of images : </label>
                                                                     <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
-                                                                        <input type="range" class="slider" min="0" max="10000" value="5" step="1" id="captureImageCountSlider" style="width:100%">
+                                                                        <input type="range" class="slider" min="0" max="1000" value="5" step="1" id="captureImageCountSlider" style="width:100%">
                                                                     </div>
                                                                     <span><span id="captureImageCountSliderLabel"></span><span> images</span></span>
                                                                 </div>
@@ -166,7 +166,7 @@
                                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                                                     <label for="captureFrequencySlider" style="margin-right:0.5em; width:11em">Frequency (seconds) : </label>
                                                                     <div class="slider-blue" style="margin:0 1em 0 1em;width:50%; min-width:20%">
-                                                                        <input type="range" class="slider" min="10" max="600" value="10" step="1" id="captureFrequencySlider" style="width:100%">
+                                                                        <input type="range" class="slider" min="10" max="60" value="10" step="1" id="captureFrequencySlider" style="width:100%">
                                                                     </div>
                                                                     <span id="captureFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                                                 </div>
@@ -240,7 +240,7 @@
                                                     <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                                         <label for="zoneDetectionImageCountSlider" style="margin-right:0.5em; width:11em;justify-content:right">Number of images : </label>
                                                         <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                            <input type="range" class="slider" min="0" max="10000" value="50" step="1" id="zoneDetectionImageCountSlider" style="width:100%">
+                                                            <input type="range" class="slider" min="0" max="1000" value="50" step="1" id="zoneDetectionImageCountSlider" style="width:100%">
                                                         </div>
                                                         <span><span id="zoneDetectionImageCountSliderLabel"></span><span> images</span></span>
                                                     </div>
@@ -254,7 +254,7 @@
                                                     <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                                         <label for="zoneDetectionNotificationPeriodSlider" style="margin-right:0.5em; width:11em;justify-content:right">Notificaiton Period : </label>
                                                         <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                            <input type="range" class="slider" min="1" max="120" value="30" step="1" id="zoneDetectionNotificationPeriodSlider" style="width:100%">
+                                                            <input type="range" class="slider" min="1" max="60" value="30" step="1" id="zoneDetectionNotificationPeriodSlider" style="width:100%">
                                                         </div>
                                                         <span> <span id="zoneDetectionNotificationPeriodSliderLabel"></span><span>&nbsp;sec</span></span>
                                                     </div>
@@ -264,14 +264,14 @@
                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                                     <label for="zoneDetectionFrequencySlider" style="margin-right:0.5em; width:11em;justify-content:right">Frequency (seconds) : </label>
                                                     <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                        <input type="range" class="slider" min="0" max="600" value="10" step="1" id="zoneDetectionFrequencySlider" style="width:100%">
+                                                        <input type="range" class="slider" min="0" max="60" value="10" step="1" id="zoneDetectionFrequencySlider" style="width:100%">
                                                     </div>
                                                     <span id="zoneDetectionFrequencySliderLabel"></span><span>&nbsp;sec</span>
                                                 </div>
                                                 <div class="row div-Horizontal-Input" style="justify-content:left;width:100%">
                                                     <label for="zoneDetectionIoUThresholdSlider" style="margin-right:0.5em; width:11em;justify-content:right">IoU Threashold : </label>
                                                     <div class="slider-blue" style="margin:0 1em 0 0;width:50%; min-width:20%">
-                                                        <input type="range" class="slider" min="0" max="100" value="80" step="1" id="zoneDetectionIoUThresholdSlider" style="width:100%">
+                                                        <input type="range" class="slider" min="0" max="100" value="50" step="1" id="zoneDetectionIoUThresholdSlider" style="width:100%">
                                                     </div>
                                                     <span> <span id="zoneDetectionIoUThresholdSliderLabel"></span><span>&nbsp;%</span></span>
                                                 </div>
@@ -1085,6 +1085,12 @@
             var withImage = (document.getElementById('stopZoneDetectionBtn').getAttribute("data-withImage") === 'true');
 
             console.debug(`With Image ${document.getElementById('stopZoneDetectionBtn').getAttribute("data-withImage")}`)
+
+            // Clear blink on the background if it is set.
+            var chartDiv = document.getElementById('barChartDiv');
+            if (chartDiv.classList.contains("alertBlink") == true) {
+                chartDiv.classList.remove("alertBlink");
+            }
 
             StopInference('startZoneDetectionBtnResult', withImage)
                 .then(() => { })
